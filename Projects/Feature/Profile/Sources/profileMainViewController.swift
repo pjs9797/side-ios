@@ -104,9 +104,6 @@ public class profileMainViewController: UIViewController, UITextFieldDelegate {
         nickNameView.addSubview(nickNameInputTextField)
         
         view.addSubview(nextBtn)
-        
-
-        
         view.addSubview(progressBar)
         
     }
@@ -128,9 +125,7 @@ public class profileMainViewController: UIViewController, UITextFieldDelegate {
         nickNameInputTextField.layer.cornerRadius = 16
         nickNameInputTextField.layer.sublayerTransform = CATransform3DMakeTranslation(10, 0, 0) //앞칸 공백주기
         //inputTextField.clearButtonMode = .always //한번에 지우기
-        
-        
-        
+
         nextBtn.layer.cornerRadius = 16
         nextBtn.layer.borderWidth = 1
         nextBtn.layer.borderColor = CGColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1)

@@ -32,13 +32,6 @@ class GenderViewController: UIViewController {
         self.view.backgroundColor = .white
         self.navigationController?.navigationBar.tintColor = .black
         self.navigationItem.title = "프로필 설정"
-        
-        
-        
-        
-        
-        
-        
         configureUI()
         setUpValue()
         render()
@@ -157,19 +150,5 @@ class GenderViewController: UIViewController {
             make.top.equalTo(genderLabel.snp.bottom).offset(30)
         }
     }
-    
-
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
