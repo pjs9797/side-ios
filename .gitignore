@@ -113,6 +113,7 @@ xcuserdata
 **/xcshareddata/WorkspaceSettings.xcsettings
 
 ### Tuist ###
+Tuist/Signing/
 XCConfig/
 Tuist/Dependencies
 Derived/
