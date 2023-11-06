@@ -14,7 +14,8 @@ let targets: [Target] = [
         factory: .init(
             dependencies: [
                 .domain,
-                .feature(implements: .SignIn)
+                .feature(implements: .SignIn),
+                .feature(implements: .SignUp)
             ]
         )
     )
