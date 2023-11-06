@@ -6,5 +6,5 @@
 //
 
 
-@_exported import FeatureProfile
-@_exported import FeatureProfileInterface
+@_exported import FeatureSignIn
+@_exported import FeatureSignInInterface
