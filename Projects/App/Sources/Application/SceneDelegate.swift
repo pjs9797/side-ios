@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import FeatureProfile
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
+    
     var window: UIWindow?
 
     func scene(
@@ -16,7 +17,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         willConnectTo session: UISceneSession,
         options connectionOptions: UIScene.ConnectionOptions
     ) {
-        guard let scene = (scene as? UIWindowScene) else { return }
+        guard let windowscene = (scene as? UIWindowScene) else { return }
+        window = UIWindow(frame:UIScreen.main.bounds)
+        window?.windowScene = windowscene
+    
+        
+        let mainViewController = profileMainViewController()
+        
+        let navigationController = UINavigationController(rootViewController: mainViewController)
+        window?.rootViewController = navigationController
+        
+        window?.makeKeyAndVisible()
+        
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {}
