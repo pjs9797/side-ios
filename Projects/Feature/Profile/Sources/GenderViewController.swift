@@ -42,7 +42,7 @@ class GenderViewController: UIViewController {
         configureUI()
         setUpValue()
         render()
-//        nextBtn.addTarget(self, action: #selector(nextBtnTapped), for: .touchUpInside)
+        nextBtn.addTarget(self, action: #selector(nextBtnTapped), for: .touchUpInside)
         manButton.addTarget(self, action: #selector(manButtonTapped), for: .touchUpInside)
         womanButton.addTarget(self, action: #selector(womanButtonTapped), for: .touchUpInside)
     
@@ -50,11 +50,11 @@ class GenderViewController: UIViewController {
       
         // Do any additional setup after loading the view.
     }
-//    @objc func nextBtnTapped(_ button: UIButton){
-//        let birthDayView = BirthDayViewController()
-//        self.navigationController?.pushViewController(birthDayView, animated: false)
-//    }
-//
+    @objc func nextBtnTapped(_ button: UIButton){
+        let birthDayView = BirthDayViewController()
+        self.navigationController?.pushViewController(birthDayView, animated: false)
+    }
+
     
     @objc func manButtonTapped(_ button: UIButton){
         self.manButton.layer.borderColor = CGColor(red: 104/255, green: 190/255, blue: 18/255, alpha: 1)
