@@ -388,7 +388,6 @@ public class PasswordViewController: UIViewController {
             cancelButtonOne.isHidden = false
             pwTextViewOne.layer.borderColor = SharedDSKitAsset.Colors.gr100.color.cgColor
             guard let textOne = pwTextFieldOne.text else { return }
-            
             checkPassword(text: textOne)
             
             if labelStackView.isHidden == false {
