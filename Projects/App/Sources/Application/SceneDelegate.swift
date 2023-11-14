@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Feature
 import FeatureSignUpInterface
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
