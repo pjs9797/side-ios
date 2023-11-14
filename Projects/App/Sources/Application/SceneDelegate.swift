@@ -7,7 +7,6 @@
 
 import UIKit
 import Feature
-import FeatureSignUp
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
@@ -18,6 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         willConnectTo session: UISceneSession,
         options connectionOptions: UIScene.ConnectionOptions
     ) {
+<<<<<<< HEAD
         guard let windowscene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame:UIScreen.main.bounds)
         window?.windowScene = windowscene

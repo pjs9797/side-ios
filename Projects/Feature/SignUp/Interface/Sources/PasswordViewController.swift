@@ -1,7 +1,6 @@
 import UIKit
 import SnapKit
 import Shared
-import FeatureSignUp
 
 public class PasswordViewController: UIViewController {
     let progressBar = UIProgressView()
@@ -71,7 +70,7 @@ public class PasswordViewController: UIViewController {
         title = "회원가입"
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 18),
-            .foregroundColor: CustomColor.gray100 ?? UIColor()
+            .foregroundColor: UIColor(named: "gray100") ?? UIColor()
         ]
         
         let rightButton = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: nil)
@@ -81,7 +80,7 @@ public class PasswordViewController: UIViewController {
     
     func setBackgroundColor() {
         view.backgroundColor = .white
-        signUpButton.backgroundColor = CustomColor.gray10
+        signUpButton.backgroundColor = UIColor(named: "gray10")
     }
     
     func setLayout() {
@@ -201,9 +200,9 @@ public class PasswordViewController: UIViewController {
             $0.text = "비밀번호"
         }
         
-        pwTextFieldOne.attributedPlaceholder = NSAttributedString(string: "비밀번호를 입력해주세요.", attributes: [NSAttributedString.Key.foregroundColor : CustomColor.gray30 ?? UIColor() ])
+        pwTextFieldOne.attributedPlaceholder = NSAttributedString(string: "비밀번호를 입력해주세요.", attributes: [NSAttributedString.Key.foregroundColor : UIColor(named: "gray30") ?? UIColor() ])
         pwTextFieldOne.isSecureTextEntry = true
-        pwTextFieldTwo.attributedPlaceholder = NSAttributedString(string: "비밀번호를 한번 더 입력해주세요.", attributes: [NSAttributedString.Key.foregroundColor : CustomColor.gray30 ?? UIColor() ])
+        pwTextFieldTwo.attributedPlaceholder = NSAttributedString(string: "비밀번호를 한번 더 입력해주세요.", attributes: [NSAttributedString.Key.foregroundColor : UIColor(named: "gray30") ?? UIColor() ])
         emailLabel.text = "이메일"
         signUpButton.setTitle("가입하기", for: .normal)
         englishLabel.text = "영어"
@@ -220,7 +219,7 @@ public class PasswordViewController: UIViewController {
         
         [cancelButtonOne, cancelButtonTwo].forEach {
             $0.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
-            $0.tintColor = CustomColor.gray20
+            $0.tintColor = UIColor(named: "gray20")
             $0.isHidden = true
         }
         
@@ -247,20 +246,20 @@ public class PasswordViewController: UIViewController {
     }
     
     func setTextColor() {
-        guideLabelTwo.textColor = CustomColor.text03
-        signUpButton.setTitleColor(CustomColor.gray30, for: .normal)
-        possibleUseLabel.textColor = CustomColor.green
+        guideLabelTwo.textColor = UIColor(named: "text03")
+        signUpButton.setTitleColor(UIColor(named: "gray30"), for: .normal)
+        possibleUseLabel.textColor = UIColor(named: "green")
         
         [pwLabelOne, pwLabelTwo, emailLabel].forEach {
-            $0.textColor = CustomColor.gray80
+            $0.textColor = UIColor(named: "gray80")
         }
         
         [pwTextFieldOne, pwTextFieldTwo, emailTextField].forEach {
-            $0.textColor = CustomColor.gray100
+            $0.textColor = UIColor(named: "gray100")
         }
         
         [englishLabel, numberLabel, symbolLabel, sixLabel].forEach {
-            $0.textColor = CustomColor.text03
+            $0.textColor = UIColor(named: "text03")
         }
     }
     
@@ -275,44 +274,44 @@ public class PasswordViewController: UIViewController {
         [pwTextViewOne, pwTextViewTwo, emailView, signUpButton].forEach {
             $0.layer.borderWidth = 1
             $0.layer.cornerRadius = 16
-            $0.layer.borderColor = CustomColor.gray10?.cgColor
+            $0.layer.borderColor = UIColor(named: "gray10")?.cgColor
         }
         
         [englishLabel, numberLabel, symbolLabel, sixLabel].forEach {
             $0.layer.borderWidth = 1
             $0.layer.cornerRadius = 12
-            $0.layer.borderColor = CustomColor.gray10?.cgColor
-            $0.layer.backgroundColor = CustomColor.gray10?.cgColor
+            $0.layer.borderColor = UIColor(named: "gray10")?.cgColor
+            $0.layer.backgroundColor = UIColor(named: "gray10")?.cgColor
         }
     }
     
     func setProgressBar() {
         progressBar.progressViewStyle = .bar
-        progressBar.progressTintColor = CustomColor.gray100
+        progressBar.progressTintColor = UIColor(named: "gray10")
         progressBar.progress = 0.5
     }
     
     func setImageView() {
         checkImageView.image = UIImage(systemName: "checkmark")
         checkImageView.isHidden = true
-        checkImageView.tintColor = CustomColor.green
+        checkImageView.tintColor = UIColor(named: "green")
     }
     
     @objc func textFieldDidChange(_ sender: Any?) {
         if pwTextFieldOne.text == "" {
             cancelButtonOne.isHidden = true
             cancelButtonTwo.isHidden = true
-            pwTextViewOne.layer.borderColor = CustomColor.gray10?.cgColor
+            pwTextViewOne.layer.borderColor = UIColor(named: "gray10")?.cgColor
             
             [englishLabel, numberLabel, symbolLabel].forEach {
-                $0.layer.borderColor = CustomColor.gray10?.cgColor
-                $0.layer.backgroundColor = CustomColor.gray10?.cgColor
-                $0.textColor = CustomColor.text03
+                $0.layer.borderColor = UIColor(named: "gray10")?.cgColor
+                $0.layer.backgroundColor = UIColor(named: "gray10")?.cgColor
+                $0.textColor = UIColor(named: "text03")
             }
         } else {
             cancelButtonOne.isHidden = false
             cancelButtonTwo.isHidden = false
-            pwTextViewOne.layer.borderColor = CustomColor.gray100?.cgColor
+            pwTextViewOne.layer.borderColor = UIColor(named: "gray100")?.cgColor
             
             guard let text = pwTextFieldOne.text else { return }
             checkPassword(text: text)
@@ -322,12 +321,12 @@ public class PasswordViewController: UIViewController {
     @objc func textFieldContentDeleteOne(_ sender: Any?) {
         pwTextFieldOne.text = ""
         labelStackView.isHidden = false
-        pwTextViewOne.layer.borderColor = CustomColor.gray10?.cgColor
+        pwTextViewOne.layer.borderColor = UIColor(named: "gray100")?.cgColor
         
         [englishLabel, numberLabel, symbolLabel, sixLabel].forEach {
-            $0.layer.borderColor = CustomColor.gray10?.cgColor
-            $0.layer.backgroundColor = CustomColor.gray10?.cgColor
-            $0.textColor = CustomColor.text03
+            $0.layer.borderColor = UIColor(named: "gray100")?.cgColor
+            $0.layer.backgroundColor = UIColor(named: "gray100")?.cgColor
+            $0.textColor = UIColor(named: "green")
         }
         
         [cancelButtonOne, possibleUseLabel, checkImageView].forEach {
@@ -337,7 +336,7 @@ public class PasswordViewController: UIViewController {
     
     @objc func textFieldContentDeleteTwo(_ sender: Any?) {
         pwTextFieldTwo.text = ""
-        pwTextViewTwo.layer.borderColor = CustomColor.gray10?.cgColor
+        pwTextViewTwo.layer.borderColor = UIColor(named: "gray10")?.cgColor
         
         
     }
@@ -364,39 +363,39 @@ public class PasswordViewController: UIViewController {
         }()
         
         if isContainsNumber {
-            numberLabel.layer.borderColor = CustomColor.green?.cgColor
-            numberLabel.textColor = CustomColor.green
+            numberLabel.layer.borderColor = UIColor(named: "green")?.cgColor
+            numberLabel.textColor = UIColor(named: "green")
         } else {
-            numberLabel.layer.borderColor = CustomColor.gray10?.cgColor
-            numberLabel.layer.backgroundColor = CustomColor.gray10?.cgColor
-            numberLabel.textColor = CustomColor.text03
+            numberLabel.layer.borderColor = UIColor(named: "gray10")?.cgColor
+            numberLabel.layer.backgroundColor = UIColor(named: "gray10")?.cgColor
+            numberLabel.textColor = UIColor(named: "text03")
         }
         
         if isContainsEnglish {
-            englishLabel.layer.borderColor = CustomColor.green?.cgColor
-            englishLabel.textColor = CustomColor.green
+            englishLabel.layer.borderColor = UIColor(named: "green")?.cgColor
+            englishLabel.textColor = UIColor(named: "green")
         } else {
-            englishLabel.layer.borderColor = CustomColor.gray10?.cgColor
-            englishLabel.layer.backgroundColor = CustomColor.gray10?.cgColor
-            englishLabel.textColor = CustomColor.text03
+            englishLabel.layer.borderColor = UIColor(named: "gray10")?.cgColor
+            englishLabel.layer.backgroundColor = UIColor(named: "gray10")?.cgColor
+            englishLabel.textColor = UIColor(named: "text03")
         }
         
         if isContainsSymbol {
-            symbolLabel.layer.borderColor = CustomColor.green?.cgColor
-            symbolLabel.textColor = CustomColor.green
+            symbolLabel.layer.borderColor = UIColor(named: "green")?.cgColor
+            symbolLabel.textColor = UIColor(named: "green")
         } else {
-            symbolLabel.layer.borderColor = CustomColor.gray10?.cgColor
-            symbolLabel.layer.backgroundColor = CustomColor.gray10?.cgColor
-            symbolLabel.textColor = CustomColor.text03
+            symbolLabel.layer.borderColor = UIColor(named: "gray10")?.cgColor
+            symbolLabel.layer.backgroundColor = UIColor(named: "gray10")?.cgColor
+            symbolLabel.textColor = UIColor(named: "text03")
         }
         
         if isCountMoreSix {
-            sixLabel.layer.borderColor = CustomColor.green?.cgColor
-            sixLabel.textColor = CustomColor.green
+            sixLabel.layer.borderColor = UIColor(named: "green")?.cgColor
+            sixLabel.textColor = UIColor(named: "green")
         } else {
-            sixLabel.layer.borderColor = CustomColor.gray10?.cgColor
-            sixLabel.layer.backgroundColor = CustomColor.gray10?.cgColor
-            sixLabel.textColor = CustomColor.text03
+            sixLabel.layer.borderColor = UIColor(named: "gray10")?.cgColor
+            sixLabel.layer.backgroundColor = UIColor(named: "gray10")?.cgColor
+            sixLabel.textColor = UIColor(named: "text03")
         }
         
         if isContainsEnglish && isContainsNumber && isContainsSymbol && isCountMoreSix {
