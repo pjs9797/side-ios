@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 import Shared
-import FeatureSignInInterface
+import FeatureSignUp
 
 public class PasswordViewController: UIViewController {
     let progressBar = UIProgressView()
@@ -422,4 +422,3 @@ public class PasswordViewController: UIViewController {
         }
     }
 }
-
