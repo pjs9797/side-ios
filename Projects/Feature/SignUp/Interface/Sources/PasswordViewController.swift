@@ -38,84 +38,85 @@ public class PasswordViewController: UIViewController {
     }
     
     @objc func textFieldDidChangeOne(_ sender: Any?) {
-        if pwTextFieldOne.text == "" {
-            cancelButtonOne.isHidden = true
-            pwTextViewOne.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+        if passwordView.pwTextFieldOne.text == "" {
+            passwordView.cancelButtonOne.isHidden = true
+            passwordView.pwTextViewOne.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
             
-            [englishLabel, numberLabel, symbolLabel].forEach {
+            
+            [passwordView.englishLabel, passwordView.numberLabel, passwordView.symbolLabel].forEach {
                 $0.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                 $0.layer.backgroundColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                 $0.textColor = SharedDSKitAsset.Colors.text03.color
             }
         } else {
-            cancelButtonOne.isHidden = false
-            pwTextViewOne.layer.borderColor = SharedDSKitAsset.Colors.gr100.color.cgColor
-            guard let textOne = pwTextFieldOne.text else { return }
+            passwordView.cancelButtonOne.isHidden = false
+            passwordView.pwTextViewOne.layer.borderColor = SharedDSKitAsset.Colors.gr100.color.cgColor
+            guard let textOne = passwordView.pwTextFieldOne.text else { return }
             checkPassword(text: textOne)
             
-            if labelStackView.isHidden == false {
-                progressBar.progress = 0.3
+            if passwordView.labelStackView.isHidden == false {
+                passwordView.progressBar.progress = 0.3
             }
         }
     }
     
     @objc func textFieldDidChangeTwo(_ sender: Any?) {
-        if possibleUseLabel.isHidden == false {
-            [checkImageView, cancelButtonOne, possibleUseLabel].forEach {
+        if passwordView.possibleUseLabel.isHidden == false {
+            [passwordView.checkImageView, passwordView.cancelButtonOne, passwordView.possibleUseLabel].forEach {
                 $0.isHidden = true
             }
-            progressBar.progress = 0.6
+            passwordView.progressBar.progress = 0.6
         }
         
-        if pwTextFieldTwo.text == "" {
-            [cancelButtonTwo, notAccordLabel, warningImageView].forEach {
+        if passwordView.pwTextFieldTwo.text == "" {
+            [passwordView.cancelButtonTwo, passwordView.notAccordLabel, passwordView.warningImageView].forEach {
                 $0.isHidden = true
             }
-            pwTextViewTwo.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+            passwordView.pwTextViewTwo.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         } else {
-            cancelButtonTwo.isHidden = false
-            guard let textOne = pwTextFieldOne.text else { return }
-            guard let textTwo = pwTextFieldTwo.text else { return }
+            passwordView.cancelButtonTwo.isHidden = false
+            guard let textOne = passwordView.pwTextFieldOne.text else { return }
+            guard let textTwo = passwordView.pwTextFieldTwo.text else { return }
             
             if !textOne.isEmpty {
                 if textOne == textTwo {
-                    [pwTextViewOne, pwTextViewTwo].forEach {
+                    [passwordView.pwTextViewOne, passwordView.pwTextViewTwo].forEach {
                         $0.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                     }
                     
-                    [possibleUseLabel, cancelButtonOne, checkImageView, notAccordLabel, cancelButtonTwo, warningImageView].forEach {
+                    [passwordView.possibleUseLabel, passwordView.cancelButtonOne, passwordView.checkImageView, passwordView.notAccordLabel, passwordView.cancelButtonTwo, passwordView.warningImageView].forEach {
                         $0.isHidden = true
                     }
                 } else {
-                    pwTextViewTwo.layer.borderColor = SharedDSKitAsset.Colors.red.color.cgColor
-                    warningImageView.isHidden = false
-                    notAccordLabel.isHidden = false
+                    passwordView.pwTextViewTwo.layer.borderColor = SharedDSKitAsset.Colors.red.color.cgColor
+                    passwordView.warningImageView.isHidden = false
+                    passwordView.notAccordLabel.isHidden = false
                 }
             }
         }
     }
     
     @objc func textFieldContentDeleteOne(_ sender: Any?) {
-        pwTextFieldOne.text = ""
-        labelStackView.isHidden = false
-        pwTextViewOne.layer.borderColor = SharedDSKitAsset.Colors.gr100.color.cgColor
+        passwordView.pwTextFieldOne.text = ""
+        passwordView.labelStackView.isHidden = false
+        passwordView.pwTextViewOne.layer.borderColor = SharedDSKitAsset.Colors.gr100.color.cgColor
         
-        [englishLabel, numberLabel, symbolLabel, sixLabel].forEach {
+        [passwordView.englishLabel, passwordView.numberLabel, passwordView.symbolLabel, passwordView.sixLabel].forEach {
             $0.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
             $0.layer.backgroundColor = SharedDSKitAsset.Colors.gr10.color.cgColor
             $0.textColor = SharedDSKitAsset.Colors.text03.color
         }
         
-        [cancelButtonOne, possibleUseLabel, checkImageView].forEach {
+        [passwordView.cancelButtonOne, passwordView.possibleUseLabel, passwordView.checkImageView].forEach {
             $0.isHidden = true
         }
     }
     
     @objc func textFieldContentDeleteTwo(_ sender: Any?) {
-        pwTextFieldTwo.text = ""
-        pwTextViewTwo.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+        passwordView.pwTextFieldTwo.text = ""
+        passwordView.pwTextViewTwo.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         
-        [cancelButtonTwo, warningImageView, notAccordLabel].forEach {
+        [passwordView.cancelButtonTwo, passwordView.warningImageView, passwordView.notAccordLabel].forEach {
             $0.isHidden = true
         }
     }
@@ -141,60 +142,60 @@ public class PasswordViewController: UIViewController {
         }()
         
         if isContainsNumber {
-            numberLabel.layer.borderColor = SharedDSKitAsset.Colors.green.color.cgColor
-            numberLabel.textColor = SharedDSKitAsset.Colors.green.color
+            passwordView.numberLabel.layer.borderColor = SharedDSKitAsset.Colors.green.color.cgColor
+            passwordView.numberLabel.textColor = SharedDSKitAsset.Colors.green.color
         } else {
-            numberLabel.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-            numberLabel.layer.backgroundColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-            numberLabel.textColor = SharedDSKitAsset.Colors.text03.color
+            passwordView.numberLabel.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+            passwordView.numberLabel.layer.backgroundColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+            passwordView.numberLabel.textColor = SharedDSKitAsset.Colors.text03.color
         }
         
         if isContainsEnglish {
-            englishLabel.layer.borderColor = SharedDSKitAsset.Colors.green.color.cgColor
-            englishLabel.textColor = SharedDSKitAsset.Colors.green.color
+            passwordView.englishLabel.layer.borderColor = SharedDSKitAsset.Colors.green.color.cgColor
+            passwordView.englishLabel.textColor = SharedDSKitAsset.Colors.green.color
         } else {
-            englishLabel.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-            englishLabel.layer.backgroundColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-            englishLabel.textColor = SharedDSKitAsset.Colors.text03.color
+            passwordView.englishLabel.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+            passwordView.englishLabel.layer.backgroundColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+            passwordView.englishLabel.textColor = SharedDSKitAsset.Colors.text03.color
         }
         
         if isContainsSymbol {
-            symbolLabel.layer.borderColor = SharedDSKitAsset.Colors.green.color.cgColor
-            symbolLabel.textColor = SharedDSKitAsset.Colors.green.color
+            passwordView.symbolLabel.layer.borderColor = SharedDSKitAsset.Colors.green.color.cgColor
+            passwordView.symbolLabel.textColor = SharedDSKitAsset.Colors.green.color
         } else {
-            symbolLabel.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-            symbolLabel.layer.backgroundColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-            symbolLabel.textColor = SharedDSKitAsset.Colors.text03.color
+            passwordView.symbolLabel.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+            passwordView.symbolLabel.layer.backgroundColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+            passwordView.symbolLabel.textColor = SharedDSKitAsset.Colors.text03.color
         }
         
         if isCountMoreSix {
-            sixLabel.layer.borderColor = SharedDSKitAsset.Colors.green.color.cgColor
-            sixLabel.textColor = SharedDSKitAsset.Colors.green.color
+            passwordView.sixLabel.layer.borderColor = SharedDSKitAsset.Colors.green.color.cgColor
+            passwordView.sixLabel.textColor = SharedDSKitAsset.Colors.green.color
         } else {
-            sixLabel.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-            sixLabel.layer.backgroundColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-            sixLabel.textColor = SharedDSKitAsset.Colors.text03.color
+            passwordView.sixLabel.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+            passwordView.sixLabel.layer.backgroundColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+            passwordView.sixLabel.textColor = SharedDSKitAsset.Colors.text03.color
         }
         
         if isContainsEnglish && isContainsNumber && isContainsSymbol && isCountMoreSix {
-            labelStackView.isHidden = true
-            possibleUseLabel.isHidden = false
-            checkImageView.isHidden = false
+            passwordView.labelStackView.isHidden = true
+            passwordView.possibleUseLabel.isHidden = false
+            passwordView.checkImageView.isHidden = false
             
-            cancelButtonOne.snp.makeConstraints {
+            passwordView.cancelButtonOne.snp.makeConstraints {
                 $0.width.height.equalTo(24)
                 $0.centerY.equalToSuperview()
-                $0.trailing.equalTo(pwTextViewOne.snp.trailing).inset(48)
+                $0.trailing.equalTo(passwordView.pwTextViewOne.snp.trailing).inset(48)
             }
         } else {
-            labelStackView.isHidden = false
-            possibleUseLabel.isHidden = true
-            checkImageView.isHidden = true
+            passwordView.labelStackView.isHidden = false
+            passwordView.possibleUseLabel.isHidden = true
+            passwordView.checkImageView.isHidden = true
             
-            cancelButtonOne.snp.makeConstraints {
+            passwordView.cancelButtonOne.snp.makeConstraints {
                 $0.width.height.equalTo(24)
                 $0.centerY.equalToSuperview()
-                $0.trailing.equalTo(pwTextViewOne.snp.trailing).inset(19)
+                $0.trailing.equalTo(passwordView.pwTextViewOne.snp.trailing).inset(19)
             }
         }
     }
