@@ -15,6 +15,8 @@ class SignInView: UIView {
     var firstLabel: UILabel = {
        var label = UILabel()
         label.text = "퇴근하고 뭐하지?"
+        label.font = Fonts.Body03.font
+        label.textColor = SharedDSKitAsset.Colors.gr100.color
         label.textAlignment = .center
         return label
     }()
@@ -22,6 +24,8 @@ class SignInView: UIView {
     var secondLabel: UILabel = {
        var label = UILabel()
         label.text = "직장인 갓생"
+        label.font = Fonts.H06.font
+        label.textColor = SharedDSKitAsset.Colors.gr100.color
         label.textAlignment = .center
         return label
     }()
@@ -29,6 +33,8 @@ class SignInView: UIView {
     var thirdLabel: UILabel = {
         var label = UILabel()
         label.text = "가치있는 정보가 모이는 직갓생에서\n당신의 직장인 커뮤니티를 시작해보세요"
+        label.font = Fonts.Body02.font
+        label.textColor = SharedDSKitAsset.Colors.text03.color
         label.textAlignment = .center
         label.numberOfLines = 2
         return label
@@ -36,17 +42,27 @@ class SignInView: UIView {
     
     var signInWithKakaoButton: UIButton = {
        var button = UIButton()
-        button.backgroundColor = .yellow
+        button.backgroundColor = UIColor(red: 0.992, green: 0.898, blue: 0, alpha: 1)
+        button.layer.cornerRadius = 16
+        
         button.setTitle("카카오톡으로 계속하기", for: .normal)
-        button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = Fonts.Body02.font
+        button.setTitleColor(SharedDSKitAsset.Colors.gr100.color, for: .normal)
+        
+        button.setImage(SharedDSKitAsset.Icons.kakao.image, for: .normal)
+        
+        button.titleEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 24)
+        button.imageEdgeInsets = .init(top: 0, left: -24, bottom: 0, right: 120)
         return button
     }()
     
-    let signInWithAppleButton = ASAuthorizationAppleIDButton(type: .signIn, style: .white)
+    let signInWithAppleButton = ASAuthorizationAppleIDButton(type: .signIn, style: .whiteOutline)
     
     var continueWithEmailButton: UIButton = {
         var button = UIButton()
         button.setTitle("이메일로 계속하기", for: .normal)
+        button.titleLabel?.font = Fonts.Body02.font
+        button.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
         button.setUnderline()
         return button
     }()
@@ -62,12 +78,7 @@ class SignInView: UIView {
     }
     
     private func render() {
-        addSubview(firstLabel)
-        addSubview(secondLabel)
-        addSubview(thirdLabel)
-        addSubview(signInWithKakaoButton)
-        addSubview(signInWithAppleButton)
-        addSubview(continueWithEmailButton)
+        addSubViews([firstLabel, secondLabel, thirdLabel, signInWithKakaoButton, signInWithAppleButton, continueWithEmailButton])
         
         firstLabel.snp.makeConstraints { make in
             make.width.equalTo(335)
