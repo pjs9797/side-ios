@@ -35,6 +35,7 @@ public class PhoneNumberViewController: UIViewController {
     func setAddTarget() {
         phoneNumberView.phoneNumberTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         phoneNumberView.certificationButton.addTarget(self, action: #selector(certificationButtonClicked(_:)), for: .touchUpInside)
+        phoneNumberView.certificationTextField.addTarget(self, action: #selector(certificationtextFieldDidChange(_:)), for: .editingChanged)
     }
     
     func startTimer() {
@@ -66,6 +67,23 @@ public class PhoneNumberViewController: UIViewController {
         }
     }
     
+    func setWrongInsert() {
+        phoneNumberView.phoneNumberView.layer.borderColor = SharedDSKitAsset.Colors.red.color.cgColor
+        phoneNumberView.certificationButton.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+        phoneNumberView.notAccordLabel.isHidden = false
+        phoneNumberView.warningImageView.isHidden = false
+        phoneNumberView.phoneNumberLabel.textColor = SharedDSKitAsset.Colors.red.color
+        phoneNumberView.certificationButton.backgroundColor = SharedDSKitAsset.Colors.gr10.color
+        phoneNumberView.certificationButton.setTitleColor(SharedDSKitAsset.Colors.gr30.color, for: .normal)
+        phoneNumberView.certificationButton.setTitle("인증하기", for: .normal)
+        
+        phoneNumberView.passwordViewOne.snp.updateConstraints {
+            $0.top.equalTo(phoneNumberView.phoneNumberView.snp.bottom).offset(49)
+        }
+        
+        phoneNumberView.certificationView.isHidden = true
+    }
+    
     func setCorrectInsert() {
         phoneNumberView.phoneNumberView.layer.borderColor = SharedDSKitAsset.Colors.gr100.color.cgColor
         phoneNumberView.certificationButton.layer.borderColor = SharedDSKitAsset.Colors.gr50.color.cgColor
@@ -79,21 +97,6 @@ public class PhoneNumberViewController: UIViewController {
         phoneNumberView.passwordViewOne.snp.updateConstraints {
             $0.top.equalTo(phoneNumberView.phoneNumberView.snp.bottom).offset(24)
         }
-    }
-    
-    func setWrongInsert() {
-        phoneNumberView.phoneNumberView.layer.borderColor = SharedDSKitAsset.Colors.red.color.cgColor
-        phoneNumberView.certificationButton.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-        phoneNumberView.notAccordLabel.isHidden = false
-        phoneNumberView.warningImageView.isHidden = false
-        phoneNumberView.phoneNumberLabel.textColor = SharedDSKitAsset.Colors.red.color
-        phoneNumberView.certificationButton.backgroundColor = SharedDSKitAsset.Colors.gr10.color
-        phoneNumberView.certificationButton.setTitleColor(SharedDSKitAsset.Colors.gr30.color, for: .normal)
-        phoneNumberView.certificationButton.setTitle("인증하기", for: .normal)
-        phoneNumberView.passwordViewOne.snp.updateConstraints {
-            $0.top.equalTo(phoneNumberView.phoneNumberView.snp.bottom).offset(49)
-        }
-        phoneNumberView.certificationView.isHidden = true
     }
     
     @objc func textFieldDidChange(_ sender: Any?) {
@@ -135,5 +138,26 @@ public class PhoneNumberViewController: UIViewController {
         }
         
         startTimer()
+    }
+    
+    @objc func certificationtextFieldDidChange(_ sender: Any?) {
+        // 예시 인증번호를 입력하면 체크마크와 인증 완료를 알려주는 안내문이 밑에 뜨게끔 설정
+        if phoneNumberView.certificationTextField.text == "321233" {
+            phoneNumberView.timerLabel.isHidden = true
+            phoneNumberView.checkImageView.isHidden = false
+            phoneNumberView.completeLabel.isHidden = false
+            
+            phoneNumberView.passwordViewOne.snp.updateConstraints {
+                $0.top.equalTo(phoneNumberView.phoneNumberView.snp.bottom).offset(129)
+            }
+        } else {
+            phoneNumberView.timerLabel.isHidden = false
+            phoneNumberView.checkImageView.isHidden = true
+            phoneNumberView.completeLabel.isHidden = true
+            
+            phoneNumberView.passwordViewOne.snp.updateConstraints {
+                $0.top.equalTo(phoneNumberView.phoneNumberView.snp.bottom).offset(104)
+            }
+        }
     }
 }

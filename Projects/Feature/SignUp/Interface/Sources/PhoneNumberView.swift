@@ -112,6 +112,16 @@ class PhoneNumberView: UIView {
         return label
     }()
     
+    var completeLabel: UILabel = {
+        let label = UILabel()
+        label.text = "인증이 완료 되었습니다."
+        label.font = Fonts.Caption.font
+        label.textColor = SharedDSKitAsset.Colors.green.color
+        label.isHidden = true
+        
+        return label
+    }()
+    
     var checkImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "checkmark")
@@ -135,6 +145,7 @@ class PhoneNumberView: UIView {
         let textField = UITextField()
         textField.font = Fonts.Body02.font
         textField.textColor = SharedDSKitAsset.Colors.gr100.color
+        textField.isSecureTextEntry = true
         
         return textField
     }()
@@ -153,6 +164,7 @@ class PhoneNumberView: UIView {
         let textField = UITextField()
         textField.textColor = SharedDSKitAsset.Colors.gr100.color
         textField.font = Fonts.Body02.font
+        textField.isSecureTextEntry = true
         
         return textField
     }()
@@ -371,6 +383,14 @@ class PhoneNumberView: UIView {
             $0.trailing.equalTo(safeArea.snp.trailing).inset(197)
             $0.top.equalTo(phoneNumberView.snp.bottom).offset(8)
         }
+        
+        completeLabel.snp.makeConstraints {
+            $0.width.equalTo(113)
+            $0.height.equalTo(17)
+            $0.leading.equalTo(safeArea.snp.leading).inset(20)
+            $0.trailing.equalTo(safeArea.snp.trailing).inset(242)
+            $0.top.equalTo(certificationView.snp.bottom).offset(8)
+        }
     }
     
     func setInsideViews() {
@@ -390,7 +410,7 @@ class PhoneNumberView: UIView {
             emailView.addSubview($0)
         }
         
-        [certificationLabel, certificationTextField, timerLabel, checkImageView].forEach {
+        [certificationLabel, certificationTextField, timerLabel, checkImageView, completeLabel].forEach {
             certificationView.addSubview($0)
         }
     }
