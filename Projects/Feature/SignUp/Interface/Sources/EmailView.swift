@@ -102,9 +102,11 @@ public class EmailView: UIView {
     
     private func render() {
         let safeArea = self.safeAreaLayoutGuide
+        self.backgroundColor = SharedDSKitAsset.Colors.white.color
         
         addSubViews([progressBar, signUpButton, textFieldView, textView, useLabel])
         addViews()
+        setBorderLine()
         
         textView.snp.makeConstraints {
             $0.width.equalTo(335)
@@ -174,17 +176,17 @@ public class EmailView: UIView {
             $0.top.equalTo(safeArea.snp.top)
         }
         
-        cancelButton.snp.makeConstraints {
-            $0.width.height.equalTo(18)
-            $0.centerY.equalToSuperview()
-            $0.trailing.equalTo(textFieldView.snp.trailing).inset(16)
-        }
-        
         checkImageView.snp.makeConstraints {
             $0.width.equalTo(18)
             $0.height.equalTo(13.2)
             $0.centerY.equalToSuperview()
             $0.leading.equalTo(cancelButton.snp.trailing).offset(8)
+        }
+        
+        cancelButton.snp.makeConstraints {
+            $0.width.height.equalTo(18)
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalTo(textFieldView.snp.trailing).inset(16)
         }
     }
     

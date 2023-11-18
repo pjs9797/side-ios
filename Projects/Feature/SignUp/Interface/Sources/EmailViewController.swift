@@ -3,13 +3,13 @@ import Shared
 
 public class EmailViewController: UIViewController {
     var emailView = EmailView()
-    var isCheckedEmail: Bool = false
     
     public override func loadView() {
         super.loadView()
         
         view = emailView
     }
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,7 +25,7 @@ public class EmailViewController: UIViewController {
         ]
         
         let rightButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconSetting24.image, style: .plain, target: self, action: nil)
-        rightButton.tintColor = .black
+        rightButton.tintColor = SharedDSKitAsset.Colors.black.color
         navigationItem.rightBarButtonItem = rightButton
     }
     
@@ -34,41 +34,39 @@ public class EmailViewController: UIViewController {
         emailView.cancelButton.addTarget(self, action: #selector(textFieldContentDelete(_:)), for: .touchUpInside)
     }
     
+    func checkEmail(str: String) -> Bool {
+        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{3}"
+        return NSPredicate(format: "SELF MATCHES %@", emailRegex).evaluate(with: str)
+    }
+    
     @objc func textFieldDidChange(_ sender: Any?) {
         if emailView.emailTextField.text == "" {
             emailView.textFieldView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
             emailView.cancelButton.isHidden = true
+            
+            emailView.cancelButton.snp.updateConstraints {
+                $0.trailing.equalTo(emailView.textFieldView.snp.trailing).inset(16)
+            }
         } else {
             emailView.textFieldView.layer.borderColor = SharedDSKitAsset.Colors.gr100.color.cgColor
             emailView.cancelButton.isHidden = false
             guard let text = emailView.emailTextField.text else { return }
             
-            if text.contains("@") && text.contains(".com")  {
-                emailView.checkImageView.isHidden = false
+            if checkEmail(str: text) {
                 emailView.useLabel.isHidden = false
-                isCheckedEmail = true
-                changeCancelButtonLayout(isCheckedEmail: isCheckedEmail)
+                emailView.checkImageView.isHidden = false
+                emailView.textFieldView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+                
+                emailView.cancelButton.snp.updateConstraints {
+                    $0.trailing.equalTo(emailView.textFieldView.snp.trailing).inset(48)
+                }
             } else {
                 emailView.useLabel.isHidden = true
                 emailView.checkImageView.isHidden = true
-                isCheckedEmail = false
-                changeCancelButtonLayout(isCheckedEmail: isCheckedEmail)
-            }
-        }
-    }
-    
-    func changeCancelButtonLayout(isCheckedEmail: Bool) {
-        if isCheckedEmail {
-            emailView.cancelButton.snp.makeConstraints {
-                $0.width.height.equalTo(18)
-                $0.centerY.equalToSuperview()
-                $0.trailing.equalTo(emailView.textFieldView.snp.trailing).inset(48)
-            }
-        } else {
-            emailView.cancelButton.snp.makeConstraints {
-                $0.width.height.equalTo(18)
-                $0.centerY.equalToSuperview()
-                $0.trailing.equalTo(emailView.textFieldView.snp.trailing).inset(16)
+                
+                emailView.cancelButton.snp.updateConstraints {
+                    $0.trailing.equalTo(emailView.textFieldView.snp.trailing).inset(16)
+                }
             }
         }
     }
@@ -76,5 +74,7 @@ public class EmailViewController: UIViewController {
     @objc func textFieldContentDelete(_ sender: Any?) {
         emailView.emailTextField.text = ""
         emailView.cancelButton.isHidden = true
+        emailView.checkImageView.isHidden = true
+        emailView.useLabel.isHidden = true
     }
 }
