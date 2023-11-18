@@ -54,8 +54,18 @@ class PhoneNumberView: UIView {
         button.setTitle("인증하기", for: .normal)
         button.backgroundColor = SharedDSKitAsset.Colors.gr10.color
         button.titleLabel?.font = Fonts.Caption.font
+        button.setTitleColor(SharedDSKitAsset.Colors.gr30.color, for: .normal)
         
         return button
+    }()
+    
+    var warningImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "exclamationmark.circle.fill")
+        imageView.tintColor = SharedDSKitAsset.Colors.red.color
+        imageView.isHidden = true
+        
+        return imageView
     }()
     
     let certificationView: UIView = {
@@ -63,6 +73,16 @@ class PhoneNumberView: UIView {
         view.isHidden = true
         
         return view
+    }()
+    
+    var notAccordLabel: UILabel = {
+        let label = UILabel()
+        label.text = "올바른 전화번호를 입력해 주세요."
+        label.textColor = SharedDSKitAsset.Colors.red.color
+        label.font = Fonts.Caption.font
+        label.isHidden = true
+        
+        return label
     }()
     
     var certificationLabel: UILabel = {
@@ -101,7 +121,7 @@ class PhoneNumberView: UIView {
         return imageView
     }()
     
-    let passwordViewOne: UIView = UIView()
+    var passwordViewOne: UIView = UIView()
     var passwordLabelOne: UILabel = {
         let label = UILabel()
         label.text = " 비밀번호"
@@ -141,7 +161,7 @@ class PhoneNumberView: UIView {
     var emailLabel: UILabel = {
         let label = UILabel()
         label.text = "이메일"
-        label.textColor = SharedDSKitAsset.Colors.gr10.color
+        label.textColor = SharedDSKitAsset.Colors.gr80.color
         label.font = Fonts.Caption.font
         
         return label
@@ -160,6 +180,7 @@ class PhoneNumberView: UIView {
         button.setTitle("가입하기", for: .normal)
         button.backgroundColor = SharedDSKitAsset.Colors.gr10.color
         button.titleLabel?.font = Fonts.SH02Bold.font
+        button.setTitleColor(SharedDSKitAsset.Colors.gr30.color, for: .normal)
         
         return button
     }()
@@ -177,7 +198,7 @@ class PhoneNumberView: UIView {
         self.backgroundColor = .white
         let safeArea = self.safeAreaLayoutGuide
         
-        addSubViews([progressBar, guideOneLabel, guideTwoLabel, phoneNumberView, passwordViewOne, passwordViewTwo, emailView, signUpButton])
+        addSubViews([progressBar, guideOneLabel, guideTwoLabel, signUpButton, phoneNumberView, passwordViewOne, passwordViewTwo, emailView, certificationView, notAccordLabel])
         setInsideViews()
         setBorderLines()
         
@@ -221,14 +242,20 @@ class PhoneNumberView: UIView {
             $0.height.equalTo(23)
             $0.leading.equalTo(phoneNumberView.snp.leading).inset(16)
             $0.trailing.equalTo(phoneNumberView.snp.trailing).inset(90)
-            $0.bottom.equalTo(phoneNumberView.snp.bottom).offset(8)
+            $0.top.equalTo(phoneNumberLabel.snp.bottom).offset(0.5)
         }
         
-        signUpButton.snp.makeConstraints {
+        warningImageView.snp.makeConstraints {
+            $0.width.height.equalTo(18)
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalTo(phoneNumberView.snp.trailing).inset(85)
+        }
+        
+        certificationButton.snp.makeConstraints {
             $0.width.equalTo(58)
             $0.height.equalTo(32)
-            $0.centerY.equalToSuperview()
             $0.trailing.equalTo(phoneNumberView.snp.trailing).inset(16)
+            $0.centerY.equalToSuperview()
         }
         
         passwordViewOne.snp.makeConstraints {
@@ -249,7 +276,7 @@ class PhoneNumberView: UIView {
             $0.width.equalTo(303)
             $0.height.equalTo(23)
             $0.leading.trailing.equalToSuperview().inset(16)
-            $0.bottom.equalTo(passwordViewOne.snp.bottom).offset(8)
+            $0.top.equalTo(passwordLabelOne.snp.top).offset(17)
         }
         
         passwordViewTwo.snp.makeConstraints {
@@ -270,7 +297,7 @@ class PhoneNumberView: UIView {
             $0.width.equalTo(303)
             $0.height.equalTo(23)
             $0.leading.trailing.equalToSuperview().inset(16)
-            $0.bottom.equalTo(passwordViewTwo.snp.bottom).offset(8)
+            $0.top.equalTo(passwordLabelTwo.snp.top).offset(17)
         }
         
         emailView.snp.makeConstraints {
@@ -291,21 +318,14 @@ class PhoneNumberView: UIView {
             $0.width.equalTo(303)
             $0.height.equalTo(24)
             $0.leading.trailing.equalToSuperview().inset(16)
-            $0.bottom.equalTo(emailView.snp.bottom).offset(7.5)
-        }
-        
-        signUpButton.snp.makeConstraints {
-            $0.width.equalTo(335)
-            $0.height.equalTo(52)
-            $0.leading.trailing.equalToSuperview().inset(19.5)
-            $0.bottom.equalTo(safeArea.snp.bottom).offset(8)
+            $0.top.equalTo(emailLabel.snp.top).offset(17)
         }
         
         certificationView.snp.makeConstraints {
             $0.width.equalTo(335)
             $0.height.equalTo(56)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.top.equalTo(safeArea.snp.top).offset(240)
+            $0.top.equalTo(safeArea.snp.top).offset(242)
         }
         
         certificationLabel.snp.makeConstraints {
@@ -321,7 +341,7 @@ class PhoneNumberView: UIView {
             $0.height.equalTo(24)
             $0.leading.equalTo(certificationView.snp.leading).inset(16)
             $0.trailing.equalTo(certificationView.snp.trailing).inset(56)
-            $0.bottom.equalTo(certificationView.snp.bottom).offset(7.5)
+            $0.top.equalTo(certificationLabel.snp.top).offset(17)
         }
         
         timerLabel.snp.makeConstraints {
@@ -330,10 +350,31 @@ class PhoneNumberView: UIView {
             $0.centerY.equalToSuperview()
             $0.trailing.equalTo(certificationView.snp.trailing).inset(16)
         }
+        
+        checkImageView.snp.makeConstraints {
+            $0.width.height.equalTo(24)
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalTo(certificationView.snp.trailing).inset(16)
+        }
+        
+        signUpButton.snp.makeConstraints {
+            $0.width.equalTo(335)
+            $0.height.equalTo(52)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.bottom.equalTo(safeArea.snp.bottom).offset(8)
+        }
+        
+        notAccordLabel.snp.makeConstraints {
+            $0.width.equalTo(158)
+            $0.height.equalTo(17)
+            $0.leading.equalTo(safeArea.snp.leading).inset(20)
+            $0.trailing.equalTo(safeArea.snp.trailing).inset(197)
+            $0.top.equalTo(phoneNumberView.snp.bottom).offset(8)
+        }
     }
     
     func setInsideViews() {
-        [phoneNumberLabel, phoneNumberTextField, certificationButton].forEach {
+        [phoneNumberLabel, phoneNumberTextField, certificationButton, warningImageView].forEach {
             phoneNumberView.addSubview($0)
         }
         
@@ -349,7 +390,7 @@ class PhoneNumberView: UIView {
             emailView.addSubview($0)
         }
         
-        [certificationLabel, certificationTextField].forEach {
+        [certificationLabel, certificationTextField, timerLabel, checkImageView].forEach {
             certificationView.addSubview($0)
         }
     }

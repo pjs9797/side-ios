@@ -42,7 +42,6 @@ public class PasswordViewController: UIViewController {
             passwordView.cancelButtonOne.isHidden = true
             passwordView.pwTextViewOne.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
             
-            
             [passwordView.englishLabel, passwordView.numberLabel, passwordView.symbolLabel].forEach {
                 $0.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                 $0.layer.backgroundColor = SharedDSKitAsset.Colors.gr10.color.cgColor

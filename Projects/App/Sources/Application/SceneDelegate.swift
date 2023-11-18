@@ -9,6 +9,7 @@ import UIKit
 import Feature
 import FeatureProfile
 import FeatureSignUpInterface
+import FeatureSignUp
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
