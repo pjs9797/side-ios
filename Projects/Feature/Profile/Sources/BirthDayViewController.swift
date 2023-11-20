@@ -54,11 +54,12 @@ class BirthDayViewController: UIViewController, UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let text = (textField.text! as NSString).replacingCharacters(in: range, with: string)
         
-        if text.count == 6  {
+        if text.count == 6 && Int(text) != nil {
             nextButton.isEnabled = true
             nextButton.backgroundColor = UIColor(red: 104/255, green: 190/255, blue: 18/255, alpha: 1)
             nextButton.layer.borderColor = CGColor(red: 104/255, green: 190/255, blue: 18/255, alpha: 1)
             nextButton.setTitleColor(UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1), for: .normal)
+            
             
         } else {
             
@@ -66,6 +67,7 @@ class BirthDayViewController: UIViewController, UITextFieldDelegate {
               nextButton.layer.borderColor = CGColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1)
               nextButton.backgroundColor = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1)
               nextButton.setTitleColor(UIColor(red: 181/255, green: 181/255, blue: 181/255, alpha: 1), for: .normal)
+        
         }
         return true
     

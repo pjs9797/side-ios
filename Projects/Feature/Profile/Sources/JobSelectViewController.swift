@@ -59,15 +59,15 @@ class JobSelectViewController: UIViewController {
         setUpValue()
         render()
         
-//        nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
-//
-//
-//
+        nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+
+
+
     }
-//    @objc func nextButtonTapped(_ button: UIButton){
-//        let selfDevelopmentView = SelfDevelopmentViewController()
-//        self.navigationController?.pushViewController(selfDevelopmentView, animated: false)
-//    }
+    @objc func nextButtonTapped(_ button: UIButton){
+        let selfDevelopmentView = SelfDevelopmentViewController()
+        self.navigationController?.pushViewController(selfDevelopmentView, animated: false)
+    }
     
     @objc func jobButtonTapped(_ button: UIButton){
         if button.isSelected == true {
