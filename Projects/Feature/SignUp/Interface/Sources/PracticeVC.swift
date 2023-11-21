@@ -8,7 +8,13 @@ public class PracticeVC: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .white
-        view.addSubview(TPInputs.Default.emailActiveView)
+        view.addSubview(TPInputs.TextArea.textEnabledView)
+        
+        TPInputs.TextArea.textEnabledView.snp.makeConstraints { make in
+            make.width.equalTo(335)
+            make.height.equalTo(176)
+            make.centerX.centerY.equalToSuperview()
+        }
     }
 }
 

@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-public class TPInputs: UIView {
+public class TPInputs: UIView, UITextViewDelegate {
     public enum Default {
         public static var emailEnabledView: UIView = {
             let emailLabel: UILabel = {
@@ -641,7 +641,7 @@ public class TPInputs: UIView {
             let phoneNumberView: UIView = {
                 let view = UIView()
                 view.layer.borderWidth = 1
-                view.layer.borderColor = SharedDSKitAsset.Colors.red.color.cgColor
+                view.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                 view.layer.cornerRadius = 16
                 view.addSubViews([phoneLabel, textField, certificationButton, helpLabel, checkMarkImageView])
                 
@@ -656,7 +656,7 @@ public class TPInputs: UIView {
                 let label = UILabel()
                 label.text = "전화번호"
                 label.font = Fonts.Caption.font
-                label.textColor = SharedDSKitAsset.Colors.gr80.color
+                label.textColor = SharedDSKitAsset.Colors.gr30.color
                 label.backgroundColor = .none
                 
                 return label
@@ -664,7 +664,7 @@ public class TPInputs: UIView {
             
             let textField: UITextField = {
                 let textField = UITextField()
-                textField.textColor = SharedDSKitAsset.Colors.gr100.color
+                textField.textColor = SharedDSKitAsset.Colors.gr30.color
                 textField.font = Fonts.Body02.font
                 textField.backgroundColor = .none
                 
@@ -675,17 +675,9 @@ public class TPInputs: UIView {
                 let label = UILabel()
                 label.text = "인증이 완료 되었습니다."
                 label.font = Fonts.Caption.font
-                label.textColor = SharedDSKitAsset.Colors.green.color
+                label.textColor = SharedDSKitAsset.Colors.gr30.color
                 
                 return label
-            }()
-            
-            let checkMarkImageView: UIImageView = {
-                let imageView = UIImageView()
-                imageView.image = UIImage(systemName: "checkmark")
-                imageView.tintColor = SharedDSKitAsset.Colors.green.color
-                
-                return imageView
             }()
             
             let certificationButton: UIButton = {
@@ -693,7 +685,7 @@ public class TPInputs: UIView {
                 button.setTitle("인증하기", for: .normal)
                 button.setTitleColor(SharedDSKitAsset.Colors.gr30.color, for: .normal)
                 button.titleLabel?.font = Fonts.Caption.font
-                button.backgroundColor = SharedDSKitAsset.Colors.gr10.color
+                button.backgroundColor = .none
                 button.layer.borderWidth = 1
                 button.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                 button.layer.cornerRadius = 12
@@ -704,14 +696,292 @@ public class TPInputs: UIView {
             let phoneNumberView: UIView = {
                 let view = UIView()
                 view.layer.borderWidth = 1
-                view.layer.borderColor = SharedDSKitAsset.Colors.red.color.cgColor
+                view.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                 view.layer.cornerRadius = 16
-                view.addSubViews([phoneLabel, textField, certificationButton, helpLabel, checkMarkImageView])
+                view.backgroundColor = SharedDSKitAsset.Colors.gr10.color
+                view.addSubViews([phoneLabel, textField, certificationButton, helpLabel])
                 
                 return view
             }()
             
             return phoneNumberView
         }()
+    }
+    
+    public enum TextArea {
+        public static var textEnabledView: UIView = {
+            let label: UILabel = {
+                let label = UILabel()
+                label.text = "Label"
+                label.textColor = SharedDSKitAsset.Colors.text03.color
+                
+                return label
+            }()
+            
+            let textView: UITextView = {
+                let textView = UITextView()
+                
+                return textView
+            }()
+            
+            let helpLabel: UILabel = {
+                let label = UILabel()
+                label.text = "도움말 텍스트"
+                label.font = Fonts.Caption.font
+                label.textColor = SharedDSKitAsset.Colors.text03.color
+                
+                return label
+            }()
+            
+            let view: UIView = {
+                let view = UIView()
+                view.layer.borderWidth = 1
+                view.layer.cornerRadius = 16
+                view.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+                view.addSubViews([label, textView, helpLabel])
+                
+                return view
+            }()
+            
+            return view
+        }()
+        
+        public static var textFocusedView: UIView = {
+            let label: UILabel = {
+                let label = UILabel()
+                label.text = "Label"
+                label.textColor = SharedDSKitAsset.Colors.text03.color
+                
+                return label
+            }()
+            
+            let textView: UITextView = {
+                let textView = UITextView()
+                
+                return textView
+            }()
+            
+            let helpLabel: UILabel = {
+                let label = UILabel()
+                label.text = "도움말 텍스트"
+                label.font = Fonts.Caption.font
+                label.textColor = SharedDSKitAsset.Colors.text03.color
+                
+                return label
+            }()
+            
+            let view: UIView = {
+                let view = UIView()
+                view.layer.borderWidth = 1
+                view.layer.cornerRadius = 16
+                view.layer.borderColor = SharedDSKitAsset.Colors.gr100.color.cgColor
+                view.addSubViews([label, textView, helpLabel])
+                
+                return view
+            }()
+            
+            return view
+        }()
+        
+        public static var textActiveView: UIView = {
+            let label: UILabel = {
+                let label = UILabel()
+                label.text = "Label"
+                label.textColor = SharedDSKitAsset.Colors.text03.color
+                
+                return label
+            }()
+            
+            let textView: UITextView = {
+                let textView = UITextView()
+                
+                return textView
+            }()
+            
+            let helpLabel: UILabel = {
+                let label = UILabel()
+                label.text = "도움말 텍스트"
+                label.font = Fonts.Caption.font
+                label.textColor = SharedDSKitAsset.Colors.text03.color
+                
+                return label
+            }()
+            
+            let view: UIView = {
+                let view = UIView()
+                view.layer.borderWidth = 1
+                view.layer.cornerRadius = 16
+                view.layer.borderColor = SharedDSKitAsset.Colors.gr100.color.cgColor
+                view.addSubViews([label, textView, helpLabel])
+                
+                return view
+            }()
+            
+            return view
+        }()
+        
+        public static var textFilledView: UIView = {
+            let label: UILabel = {
+                let label = UILabel()
+                label.text = "Label"
+                label.textColor = SharedDSKitAsset.Colors.text03.color
+                
+                return label
+            }()
+            
+            let textView: UITextView = {
+                let textView = UITextView()
+                
+                return textView
+            }()
+            
+            let helpLabel: UILabel = {
+                let label = UILabel()
+                label.text = "도움말 텍스트"
+                label.font = Fonts.Caption.font
+                label.textColor = SharedDSKitAsset.Colors.text03.color
+                
+                return label
+            }()
+            
+            let view: UIView = {
+                let view = UIView()
+                view.layer.borderWidth = 1
+                view.layer.cornerRadius = 16
+                view.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+                view.addSubViews([label, textView, helpLabel])
+                
+                return view
+            }()
+            
+            return view
+        }()
+        
+        public static var textErrorView: UIView = {
+            let label: UILabel = {
+                let label = UILabel()
+                label.text = "Label"
+                label.textColor = SharedDSKitAsset.Colors.red.color
+                
+                return label
+            }()
+            
+            let textView: UITextView = {
+                let textView = UITextView()
+                
+                return textView
+            }()
+            
+            let helpLabel: UILabel = {
+                let label = UILabel()
+                label.text = "세 글자 이상 입력해주세요."
+                label.font = Fonts.Caption.font
+                label.textColor = SharedDSKitAsset.Colors.red.color
+                
+                return label
+            }()
+            
+            let view: UIView = {
+                let view = UIView()
+                view.layer.borderWidth = 1
+                view.layer.cornerRadius = 16
+                view.layer.borderColor = SharedDSKitAsset.Colors.red.color.cgColor
+                view.addSubViews([label, textView, helpLabel])
+                
+                return view
+            }()
+            
+            return view
+        }()
+        
+        public static var textDisabledView: UIView = {
+            let label: UILabel = {
+                let label = UILabel()
+                label.text = "Label"
+                label.textColor = SharedDSKitAsset.Colors.text03.color
+                
+                return label
+            }()
+            
+            let textView: UITextView = {
+                let textView = UITextView()
+                
+                return textView
+            }()
+            
+            let helpLabel: UILabel = {
+                let label = UILabel()
+                label.text = "도움말 텍스트"
+                label.font = Fonts.Caption.font
+                label.textColor = SharedDSKitAsset.Colors.text03.color
+                
+                return label
+            }()
+            
+            let view: UIView = {
+                let view = UIView()
+                view.layer.borderWidth = 1
+                view.layer.cornerRadius = 16
+                view.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+                view.addSubViews([label, textView, helpLabel])
+                
+                return view
+            }()
+            
+            return view
+        }()
+        
+        public enum ChatMessage {
+            public static var defaultMessage: UITextField = {
+                let textField = UITextField()
+                textField.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+                textField.layer.borderWidth = 1
+                textField.layer.cornerRadius = 24
+                textField.placeholder = "메세지를 입력해주세요"
+                textField.backgroundColor = SharedDSKitAsset.Colors.gr10.color
+                
+                return textField
+            }()
+            
+            public static var activeMessage: UITextField = {
+                let textField = UITextField()
+                textField.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+                textField.layer.borderWidth = 1
+                textField.layer.cornerRadius = 24
+                textField.backgroundColor = SharedDSKitAsset.Colors.gr10.color
+                
+                let button: UIButton = {
+                    let button = UIButton()
+                    button.setImage(UIImage(named: "icon-send-24"), for: .normal)
+                    button.tintColor = SharedDSKitAsset.Colors.lightGreen.color
+                    
+                    return button
+                }()
+                
+                textField.addSubview(button)
+                
+                return textField
+            }()
+            
+            public static var filledMessage: UITextView = {
+                let textView = UITextView()
+                textView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+                textView.layer.borderWidth = 1
+                textView.layer.cornerRadius = 24
+                textView.backgroundColor = SharedDSKitAsset.Colors.gr10.color
+                
+                let button: UIButton = {
+                    let button = UIButton()
+                    button.setImage(UIImage(named: "icon-send-24"), for: .normal)
+                    button.tintColor = SharedDSKitAsset.Colors.lightGreen.color
+                    
+                    return button
+                }()
+                
+                textView.addSubview(button)
+                
+                return textView
+            }()
+        }
     }
 }
