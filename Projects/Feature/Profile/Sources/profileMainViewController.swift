@@ -25,7 +25,6 @@ public class profileMainViewController: UIViewController, UITextFieldDelegate {
 
     let nickNameLabel = UILabel()
     
-    
     let nickNameView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -98,7 +97,6 @@ public class profileMainViewController: UIViewController, UITextFieldDelegate {
         view.backgroundColor = .white
         nickNameView.addSubview(nickNameLabel)
         view.addSubview(nickNameView)
-       
         
         nickNameInputTextField.frame.size.height = 50
         nickNameView.addSubview(nickNameInputTextField)
