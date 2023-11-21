@@ -16,7 +16,8 @@ let targets: [Target] = [
                 .domain,
                 .feature(implements: .SignIn),
                 .feature(implements: .SignUp),
-                .feature(implements: .Profile)
+                .feature(implements: .Profile),
+                .feature(implements: .Chat)
             ]
         )
     )

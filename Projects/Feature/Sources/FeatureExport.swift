@@ -7,3 +7,9 @@
 
 @_exported import FeatureSignIn
 @_exported import FeatureSignInInterface
+@_exported import FeatureSignUp
+@_exported import FeatureSignUpInterface
+@_exported import FeatureProfile
+@_exported import FeatureProfileInterface
+@_exported import FeatureChat
+@_exported import FeatureChatInterface
