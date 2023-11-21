@@ -10,6 +10,7 @@ import SnapKit
 import RxSwift
 
 
+
 public class ProgressBarView: UIView {
     var profileProgressView: UIProgressView = {
         let view = UIProgressView()
@@ -109,7 +110,6 @@ public class profileMainViewController: UIViewController, UITextFieldDelegate {
     
     // 요소 내용 설정
     func setUpValue() {
-        
         nickNameLabel.text = "갓생사는 당신의 닉네임을 설정해주세요!"
         nickNameLabel.font  = UIFont.boldSystemFont(ofSize: 20)
         
