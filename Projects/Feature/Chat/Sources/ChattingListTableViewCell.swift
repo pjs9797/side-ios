@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Shared
 import SnapKit
 
 class ChattingListTableViewCell: UITableViewCell {
@@ -18,25 +19,31 @@ class ChattingListTableViewCell: UITableViewCell {
     
     var roomTitleLabel: UILabel = {
        var label = UILabel()
-        
+        label.font = Fonts.SH01Bold.font
+        label.textColor = SharedDSKitAsset.Colors.gr100.color
         return label
     }()
     
     var messageCountLabel: UILabel = {
         var label = UILabel()
-        
+        label.font = Fonts.Caption.font
+        label.textColor = .white
+        label.backgroundColor = SharedDSKitAsset.Colors.lightGreen.color
+        label.layer.cornerRadius = 8
         return label
     }()
 
     var latestMessageLabel: UILabel = {
         var label = UILabel()
-        
+        label.font = Fonts.Body01.font
+        label.textColor = SharedDSKitAsset.Colors.gr100.color
         return label
     }()
     
     var timestampLabel: UILabel = {
         var label = UILabel()
-        
+        label.font = Fonts.Caption.font
+        label.textColor = SharedDSKitAsset.Colors.text03.color
         return label
     }()
     
@@ -46,6 +53,7 @@ class ChattingListTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        render()
     }
     
     required init?(coder: NSCoder) {
