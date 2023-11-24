@@ -8,6 +8,8 @@
 import UIKit
 import SnapKit
 import RxSwift
+import Shared
+import RxCocoa
 
 
 
@@ -23,9 +25,9 @@ public class ProgressBarView: UIView {
 }
 
 public class profileMainViewController: UIViewController, UITextFieldDelegate {
-
-    let nickNameLabel = UILabel()
     
+    let nickNameLabel = UILabel()
+
     let nickNameView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -44,6 +46,7 @@ public class profileMainViewController: UIViewController, UITextFieldDelegate {
     
     public override func viewDidLoad() {
         
+      
         
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         self.navigationItem.backBarButtonItem = backBarButtonItem
@@ -63,7 +66,7 @@ public class profileMainViewController: UIViewController, UITextFieldDelegate {
 //                let genderView = GenderViewController()
 //                self.navigationController?.pushViewController(genderView, animated: false)
 //            })
-        
+     
         
     }
     
@@ -98,7 +101,6 @@ public class profileMainViewController: UIViewController, UITextFieldDelegate {
         view.backgroundColor = .white
         nickNameView.addSubview(nickNameLabel)
         view.addSubview(nickNameView)
-        
         nickNameInputTextField.frame.size.height = 50
         nickNameView.addSubview(nickNameInputTextField)
         
