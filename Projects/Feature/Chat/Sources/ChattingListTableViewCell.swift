@@ -12,27 +12,29 @@ import SnapKit
 class ChattingListTableViewCell: UITableViewCell {
     
     var roomImageView: UIImageView = {
-       var imageView = UIImageView()
+        var imageView = UIImageView()
         imageView.layer.cornerRadius = 8
         return imageView
     }()
     
     var roomTitleLabel: UILabel = {
-       var label = UILabel()
+        var label = UILabel()
         label.font = Fonts.SH01Bold.font
         label.textColor = SharedDSKitAsset.Colors.gr100.color
         return label
     }()
     
-    var messageCountLabel: UILabel = {
-        var label = UILabel()
+    var countLabel: PaddingLabel = {
+       var label = PaddingLabel(padding: UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4))
+        label.backgroundColor = SharedDSKitAsset.Colors.lightGreen.color
         label.font = Fonts.Caption.font
         label.textColor = .white
-        label.backgroundColor = SharedDSKitAsset.Colors.lightGreen.color
         label.layer.cornerRadius = 8
+        label.clipsToBounds = true
+        
         return label
     }()
-
+    
     var latestMessageLabel: UILabel = {
         var label = UILabel()
         label.font = Fonts.Body01.font
@@ -65,7 +67,14 @@ class ChattingListTableViewCell: UITableViewCell {
     }
     
     func render() {
-        contentView.addSubViews([roomImageView, roomTitleLabel, messageCountLabel, latestMessageLabel, timestampLabel])
+        
+        contentView.addSubViews([roomImageView, roomTitleLabel, countLabel, latestMessageLabel, timestampLabel])
+        
+        contentView.snp.makeConstraints { make in
+            make.leading.equalTo(safeAreaLayoutGuide.snp.leading)
+            make.trailing.equalTo(safeAreaLayoutGuide.snp.trailing)
+            make.height.equalTo(80)
+        }
         
         roomImageView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
@@ -85,16 +94,15 @@ class ChattingListTableViewCell: UITableViewCell {
             make.height.equalTo(20)
         }
         
-        messageCountLabel.snp.makeConstraints { make in
+        countLabel.snp.makeConstraints { make in
             make.centerY.equalTo(roomTitleLabel.snp.centerY)
             make.leading.equalTo(roomTitleLabel.snp.trailing).offset(8)
-            make.size.equalTo(16)
+            make.height.equalTo(16)
         }
         
         timestampLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(messageCountLabel.snp.centerY)
+            make.centerY.equalTo(countLabel.snp.centerY)
             make.trailing.equalToSuperview().inset(20)
-            
         }
         
     }

@@ -12,11 +12,11 @@ import SnapKit
 import FeatureChatInterface
 
 public struct MockUpChatData {
-    var mockup = [MockUpChatModel(id: 1, image: SharedDSKitAsset.Icons.kakao.image, title: "영화관투어모임 영사모 >_<", latestMessage: "네 알겠습니다!", count: 122, timestamp: "12:01"), MockUpChatModel(id: 2, image: SharedDSKitAsset.Icons.kakao.image, title: "테스트", latestMessage: "테스트입니다", count: 2, timestamp: "12:01")]
+    var mockup = [MockUpChatModel(id: 1, image: SharedDSKitAsset.Icons.kakao.image, title: "영화관투어모임 영사모 >_<", latestMessage: "네 알겠습니다!", count: 122, timestamp: "12:01", isAlarmOn: true), MockUpChatModel(id: 2, image: SharedDSKitAsset.Icons.kakao.image, title: "테스트", latestMessage: "테스트입니다", count: 2, timestamp: "12:01", isAlarmOn: false)]
 }
 
 
-class ChattingListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ChattingListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var chattingListTableView: UITableView = {
         var tableView = UITableView()
@@ -26,20 +26,10 @@ class ChattingListViewController: UIViewController, UITableViewDataSource, UITab
     
     var mockUpData = MockUpChatData()
     
-    
-//    let disposeBag = DisposeBag()
-    
-//    init(mockup: [ChatMockData]) {
-//        self.mockup = mockup
-//        super.init(nibName: nil, bundle: nil)
-//    }
-//    
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setup()
+        render()
     }
     
     func setup() {
@@ -47,6 +37,9 @@ class ChattingListViewController: UIViewController, UITableViewDataSource, UITab
             ChattingListTableViewCell.self,
             forCellReuseIdentifier: ChattingListTableViewCell.className
         )
+        
+        chattingListTableView.delegate = self
+        chattingListTableView.dataSource = self
     }
     
     func render() {
@@ -68,8 +61,24 @@ class ChattingListViewController: UIViewController, UITableViewDataSource, UITab
         cell.roomImageView.image = data.image
         cell.roomTitleLabel.text = data.title
         cell.latestMessageLabel.text = data.latestMessage
-        cell.messageCountLabel.text = String(data.count)
+        cell.countLabel.text = String(data.count)
         cell.timestampLabel.text = data.timestamp
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let mockup = self.mockUpData.mockup[indexPath.row]
+        
+        let alarmToggle = UIContextualAction(style: .normal, title: "") { (_, _, success: @escaping (Bool) -> Void) in
+            print("Alarm toggled")
+            self.mockUpData.mockup[indexPath.row].isAlarmOn.toggle()
+            self.chattingListTableView.reloadRows(at: [indexPath], with: .automatic)
+            success(true)
+        }
+        alarmToggle.image = mockup.isAlarmOn ? SharedDSKitAsset.Icons.bellDefault.image : SharedDSKitAsset.Icons.bellOff.image
+        alarmToggle.backgroundColor = UIColor(red: 0.97, green: 0.97, blue: 0.97, alpha: 1)
+        
+        return UISwipeActionsConfiguration(actions: [alarmToggle])
     }
 }
