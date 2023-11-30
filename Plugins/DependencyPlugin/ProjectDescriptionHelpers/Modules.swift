@@ -33,6 +33,7 @@ public extension ModulePath {
         case SignUp
         case Profile
         case Chat
+        case Home
         
         public static let name: String = "Feature"
     }
