@@ -95,14 +95,21 @@ class ChattingRoomSideMenuViewController: UIViewController {
         return label
     }()
     
-    private let albumCollectionView: UICollectionView
-    private let memberListTableView: UITableView
+    private let albumCollectionView: UICollectionView = {
+        var collectionView = UICollectionView()
+        
+        return collectionView
+    }()
+    private let memberListTableView: UITableView = {
+        var tableView = UITableView()
+        
+        return tableView
+    }()
     
     private var trailingConstraint: NSLayoutConstraint!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         
     }
     
@@ -128,6 +135,7 @@ class ChattingRoomSideMenuViewController: UIViewController {
 
 }
 
+/*
 extension ChattingRoomSideMenuViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         <#code#>
@@ -151,3 +159,4 @@ extension ChattingRoomSideMenuViewController: UICollectionViewDelegate, UICollec
     
     
 }
+*/
