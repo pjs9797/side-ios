@@ -81,4 +81,8 @@ class ChattingListViewController: UIViewController, UITableViewDelegate, UITable
         
         return UISwipeActionsConfiguration(actions: [alarmToggle])
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        <#code#>
+    }
 }
