@@ -10,7 +10,13 @@ import Shared
 
 import SnapKit
 
+protocol ChattingRoomSideMenuDelegate: AnyObject {
+    func menuButtonTapped()
+}
+
 class ChattingRoomSideMenuViewController: UIViewController {
+    
+    weak var delegate: ChattingRoomSideMenuDelegate?
     
     private var scrollView: UIScrollView = {
         var scrollView = UIScrollView()
@@ -135,7 +141,7 @@ class ChattingRoomSideMenuViewController: UIViewController {
 
 }
 
-/*
+
 extension ChattingRoomSideMenuViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         <#code#>
@@ -159,4 +165,4 @@ extension ChattingRoomSideMenuViewController: UICollectionViewDelegate, UICollec
     
     
 }
-*/
+
