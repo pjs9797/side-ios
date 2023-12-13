@@ -7,10 +7,11 @@
 
 import UIKit
 
-public struct SideMenuItem {
-    var roomTitle: String
-    var date: String
-    var albumImage: [UIImage]
-    var members: [String]
-    let viewController: ChattingRoomViewController
-}
+
+//public struct SideMenuItem {
+//    var roomTitle: String
+//    var date: String
+//    var albumImage: [UIImage]
+//    var members: [String]
+//    let viewController: ChattingRoomViewController
+//}
