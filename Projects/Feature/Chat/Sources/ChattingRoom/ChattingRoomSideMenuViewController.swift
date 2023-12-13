@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FeatureChatInterface
 import Shared
 
 import SnapKit
@@ -18,6 +19,11 @@ class ChattingRoomSideMenuViewController: UIViewController {
     
     weak var delegate: ChattingRoomSideMenuDelegate?
     
+    var tableViewDataSource = [MemberListDataModel]()
+    
+    var collectionViewDataSource = [UIImage]()
+    
+    /*
     private var scrollView: UIScrollView = {
         var scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -26,7 +32,7 @@ class ChattingRoomSideMenuViewController: UIViewController {
         scrollView.alwaysBounceVertical = true
         return scrollView
     }()
-    
+    */
     private var roomTitleLabel: UILabel = {
         var label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -106,17 +112,63 @@ class ChattingRoomSideMenuViewController: UIViewController {
         
         return collectionView
     }()
+    
     private let memberListTableView: UITableView = {
         var tableView = UITableView()
         
         return tableView
     }()
     
+    private var buttonsFooterView: ButtonsFooterView!
+    
     private var trailingConstraint: NSLayoutConstraint!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        mocking()
+        mockingCollectionView()
+        setUp()
+        render()
+    }
+    
+    private func render() {
+        view.addSubViews([roomTitleLabel, roomDateLabel, noticeButton, calendarButton, voteButton, albumTitleLabel, albumCollectionView, goToAlbumViewButton, memberListTitleLabel, memberListTableView, buttonsFooterView])
         
+        view.snp.makeConstraints { make in
+            
+        }
+    }
+    
+    private func setUp() {
+        memberListTableView.delegate = self
+        memberListTableView.dataSource = self
+        
+        albumCollectionView.delegate = self
+        albumCollectionView.dataSource = self
+        
+        memberListTableView.register(MemberListTableViewCell.self, forCellReuseIdentifier: MemberListTableViewCell.className)
+        
+        albumCollectionView.register(AlbumCollectionViewCell.self, forCellWithReuseIdentifier: AlbumCollectionViewCell.className)
+    }
+    
+    private func mocking() {
+        self.tableViewDataSource = [
+            .member(data: MemberListCellMockData(image: SharedDSKitAsset.Icons.testPhoto.image, name: "청계산 다람쥐", isAdmin: true, isMe: false)),
+            .member(data: MemberListCellMockData(image: SharedDSKitAsset.Icons.testPhoto.image, name: "김혁", isAdmin: false, isMe: true)),
+            .member(data: MemberListCellMockData(image: SharedDSKitAsset.Icons.testPhoto.image, name: "Hardmedia201821", isAdmin: false, isMe: false)),
+            .member(data: MemberListCellMockData(image: SharedDSKitAsset.Icons.testPhoto.image, name: "몽이건강해", isAdmin: false, isMe: false))
+        ]
+        self.memberListTableView.reloadData()
+    }
+    
+    private func mockingCollectionView() {
+        self.collectionViewDataSource = [
+            SharedDSKitAsset.Icons.testPhoto.image,
+            SharedDSKitAsset.Icons.testPhoto.image,
+            SharedDSKitAsset.Icons.testPhoto.image,
+            SharedDSKitAsset.Icons.testPhoto.image
+        ]
+        self.albumCollectionView.reloadData()
     }
     
     func show() {
@@ -137,30 +189,54 @@ class ChattingRoomSideMenuViewController: UIViewController {
             self.view.frame.origin.x = -self.view.frame.size.width
         }
     }
-    
 
 }
 
 
 extension ChattingRoomSideMenuViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        <#code#>
+        return self.tableViewDataSource.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        <#code#>
+        switch self.tableViewDataSource[indexPath.row] {
+        case let .member(data):
+            let cell = tableView.dequeueReusableCell(withIdentifier: MemberListTableViewCell.className, for: indexPath) as! MemberListTableViewCell
+            cell.profileImageView.image = data.image
+            cell.nameLabel.text = data.name
+            guard !data.isMe else {
+                cell.meLabel.isHidden = false
+            }
+            guard !data.isAdmin else {
+                cell.adminSubImageView.isHidden = false
+            }
+            return cell
+        }
     }
     
     
 }
 
-extension ChattingRoomSideMenuViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension ChattingRoomSideMenuViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        <#code#>
+        return self.collectionViewDataSource.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        <#code#>
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AlbumCollectionViewCell.className, for: indexPath) as! AlbumCollectionViewCell
+        cell.photoImageView.image = collectionViewDataSource[indexPath.row]
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let size = CGSize(width: 65, height: 65)
+        
+        return size
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 4
     }
     
     
