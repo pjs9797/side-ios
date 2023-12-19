@@ -15,26 +15,55 @@ public class ChattingRoomViewController: UIViewController {
     
     var dataSource = [ConversationMockDataModel]()
     
-    private var noticeView: NoticeHeaderView!
+    private var noticeView = NoticeHeaderView()
     
     private var conversationTableView: UITableView = {
         var tableView = UITableView()
-        
+        tableView.backgroundView = nil
+        tableView.backgroundColor = .white
+        tableView.separatorStyle = .none
+        tableView.keyboardDismissMode = .onDrag
         return tableView
     }()
     
-    private var textInputView: ChattingTextInputView!
+    private var textInputView = ChattingTextInputView()
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
         mocking()
         setUp()
         render()
     }
     
+    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+        conversationTableView.endEditing(true)
+    }
+    
     private func mocking() {
         self.dataSource = [
             .firstConversation(data: FirstOthersConversationCellMockData(profileImage: SharedDSKitAsset.Icons.kakao.image, name: "테스트아이디1", message: "테스트내용입니다ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ", time: "12:01")),
+            .myConversation(data: MyConversationCellMockData(message: "테스트입니다", time: "12:01")),
+            .myConversation(data: MyConversationCellMockData(message: "132132테테테테테스스ㅡㅡㅡㅡ트ㅡㅡㅡㅡ", time: "12:02")),
+            .firstConversation(data: FirstOthersConversationCellMockData(profileImage: SharedDSKitAsset.Icons.kakao.image, name: "테스트아이디2222222222222222222ㅇㅇㅇㅇㅇㅇㅇㅇㅇ", message: "어디까지길어지나ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ", time: "12:03")),
+            .othersConversation(data: OthersConversationCellMockData(message: "가나다라ㅏ", time: "12:04")),
+            .othersConversation(data: OthersConversationCellMockData(message: "4444321323151", time: "13:05")),
+            .myConversation(data: MyConversationCellMockData(message: "테스트입니다", time: "12:01")),
+            .myConversation(data: MyConversationCellMockData(message: "132132테테테테테스스ㅡㅡㅡㅡ트ㅡㅡㅡㅡ", time: "12:02")),
+            .firstConversation(data: FirstOthersConversationCellMockData(profileImage: SharedDSKitAsset.Icons.kakao.image, name: "테스트아이디2222222222222222222ㅇㅇㅇㅇㅇㅇㅇㅇㅇ", message: "어디까지길어지나ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ", time: "12:03")),
+            .othersConversation(data: OthersConversationCellMockData(message: "가나다라ㅏ", time: "12:04")),
+            .othersConversation(data: OthersConversationCellMockData(message: "4444321323151", time: "13:05")),
+            .myConversation(data: MyConversationCellMockData(message: "테스트입니다", time: "12:01")),
+            .myConversation(data: MyConversationCellMockData(message: "132132테테테테테스스ㅡㅡㅡㅡ트ㅡㅡㅡㅡ", time: "12:02")),
+            .firstConversation(data: FirstOthersConversationCellMockData(profileImage: SharedDSKitAsset.Icons.kakao.image, name: "테스트아이디2222222222222222222ㅇㅇㅇㅇㅇㅇㅇㅇㅇ", message: "어디까지길어지나ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ", time: "12:03")),
+            .othersConversation(data: OthersConversationCellMockData(message: "가나다라ㅏ", time: "12:04")),
+            .othersConversation(data: OthersConversationCellMockData(message: "4444321323151", time: "13:05")),
+            .myConversation(data: MyConversationCellMockData(message: "테스트입니다", time: "12:01")),
+            .myConversation(data: MyConversationCellMockData(message: "132132테테테테테스스ㅡㅡㅡㅡ트ㅡㅡㅡㅡ", time: "12:02")),
+            .firstConversation(data: FirstOthersConversationCellMockData(profileImage: SharedDSKitAsset.Icons.kakao.image, name: "테스트아이디2222222222222222222ㅇㅇㅇㅇㅇㅇㅇㅇㅇ", message: "어디까지길어지나ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ", time: "12:03")),
+            .othersConversation(data: OthersConversationCellMockData(message: "가나다라ㅏ", time: "12:04")),
+            .othersConversation(data: OthersConversationCellMockData(message: "4444321323151", time: "13:05")),
             .myConversation(data: MyConversationCellMockData(message: "테스트입니다", time: "12:01")),
             .myConversation(data: MyConversationCellMockData(message: "132132테테테테테스스ㅡㅡㅡㅡ트ㅡㅡㅡㅡ", time: "12:02")),
             .firstConversation(data: FirstOthersConversationCellMockData(profileImage: SharedDSKitAsset.Icons.kakao.image, name: "테스트아이디2222222222222222222ㅇㅇㅇㅇㅇㅇㅇㅇㅇ", message: "어디까지길어지나ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ", time: "12:03")),
@@ -60,8 +89,10 @@ public class ChattingRoomViewController: UIViewController {
         
         navigationItem.setRightBarButton(barButtonItem, animated: false)
         
-        let didTapTableViewGesture = UIGestureRecognizer(target: self.conversationTableView, action: #selector(didTapView))
-        view.addGestureRecognizer(didTapTableViewGesture)
+        let tap = UIGestureRecognizer(target: self, action: #selector(endEditing))
+            conversationTableView.addGestureRecognizer(tap)
+        self.view.addGestureRecognizer(tap)
+        view.addGestureRecognizer(tap)
     }
     
     private func render() {
@@ -69,22 +100,21 @@ public class ChattingRoomViewController: UIViewController {
         view.addSubViews([noticeView, conversationTableView, textInputView])
         
         noticeView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.leading.trailing.equalToSuperview()
             make.height.equalTo(37)
         }
-        
-        // textInputView Auto-Layout
-        NSLayoutConstraint.activate([
-            textInputView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor),
-            textInputView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            textInputView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            textInputView.heightAnchor.constraint(greaterThanOrEqualToConstant: 56)
-        ])
         
         conversationTableView.snp.makeConstraints { make in
             make.top.equalTo(noticeView.snp.bottom)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(textInputView.snp.top)
+        }
+        
+        textInputView.snp.makeConstraints { make in
+            make.bottom.equalTo(self.view.keyboardLayoutGuide.snp.top)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(56)
         }
         
     }
@@ -93,13 +123,15 @@ public class ChattingRoomViewController: UIViewController {
         delegate?.menuButtonTapped()
     }
     
-    @objc private func didTapView() {
-        textInputView.resignFirstResponder()
+    @objc private func endEditing() {
+        textInputView.textView.endEditing(true)
+        view.endEditing(true)
     }
     
 }
 
 extension ChattingRoomViewController: UITableViewDelegate, UITableViewDataSource {
+    
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.dataSource.count
     }

@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class ChattingRoomContainerViewController: UIViewController {
+public class ChattingRoomContainerViewController: UIViewController {
 
     private var sideMenuViewController: ChattingRoomSideMenuViewController!
     private var navigator: UINavigationController!
@@ -20,7 +20,14 @@ class ChattingRoomContainerViewController: UIViewController {
         }
     }
     
-    override func viewDidLoad() {
+    convenience init(sideMenuViewController: ChattingRoomSideMenuViewController, chattingRoomViewController: ChattingRoomViewController) {
+        self.init()
+        self.sideMenuViewController = sideMenuViewController
+        self.chattingRoomViewController = chattingRoomViewController
+        self.navigator = UINavigationController(rootViewController: chattingRoomViewController)
+    }
+    
+    public override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
         configureGestures()
@@ -69,5 +76,15 @@ class ChattingRoomContainerViewController: UIViewController {
 extension ChattingRoomContainerViewController: ChattingRoomSideMenuDelegate {
     func menuButtonTapped() {
         sideMenuViewController.show()
+    }
+}
+
+public final class ChattingRoomContainerViewComposer {
+    public static func makeContainer() -> ChattingRoomContainerViewController {
+        let chattingRoomViewController = ChattingRoomViewController()
+        let sideMenuViewController = ChattingRoomSideMenuViewController()
+        let container = ChattingRoomContainerViewController(sideMenuViewController: sideMenuViewController, chattingRoomViewController: chattingRoomViewController)
+        
+        return container
     }
 }

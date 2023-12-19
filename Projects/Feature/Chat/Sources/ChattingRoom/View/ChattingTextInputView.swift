@@ -33,7 +33,7 @@ public class ChattingTextInputView: UIView {
         return textView
     }()
     
-    private var sendMessageButton: UIButton = {
+    public var sendMessageButton: UIButton = {
         var button = UIButton()
         button.setImage(SharedDSKitAsset.Icons.iconSend24.image, for: .normal)
         button.imageView?.tintColor = SharedDSKitAsset.Colors.lightGreen.color
@@ -72,7 +72,4 @@ public class ChattingTextInputView: UIView {
             make.size.equalTo(24)
         }
     }
-    
-    
-    
 }

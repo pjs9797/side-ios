@@ -14,7 +14,7 @@ public class MyConversationTableViewCell: UITableViewCell {
        var textView = UITextView()
         textView.isScrollEnabled = false
         textView.isEditable = false
-        textView.backgroundColor = SharedDSKitAsset.Colors.lightGreen.color
+        textView.backgroundColor = SharedDSKitAsset.Colors.bgLightGreen.color
         textView.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
         textView.layer.cornerRadius = 16
         textView.font = Fonts.Body02.font
@@ -33,7 +33,15 @@ public class MyConversationTableViewCell: UITableViewCell {
     public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
+        backgroundColor = .clear
+        layoutSubviews()
         render()
+    }
+    
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0))
     }
     
     required init?(coder: NSCoder) {
@@ -44,7 +52,7 @@ public class MyConversationTableViewCell: UITableViewCell {
         addSubViews([messageBox, timeLabel])
         
         messageBox.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
             make.top.bottom.equalToSuperview()
             make.height.greaterThanOrEqualTo(48)
             make.width.lessThanOrEqualTo(281)

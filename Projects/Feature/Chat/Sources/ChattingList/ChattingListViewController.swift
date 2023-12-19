@@ -21,6 +21,7 @@ class ChattingListViewController: UIViewController, UITableViewDelegate, UITable
     var chattingListTableView: UITableView = {
         var tableView = UITableView()
         tableView.showsVerticalScrollIndicator = false
+        tableView.backgroundColor = .white
         return tableView
     }()
     
@@ -83,6 +84,8 @@ class ChattingListViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        <#code#>
+        let viewController = ChattingRoomContainerViewComposer.makeContainer()
+        
+        navigationController?.pushViewController(viewController, animated: true)
     }
 }

@@ -19,6 +19,7 @@ public class NoticeHeaderView: UIView {
     
     private var noticeLabel: UILabel = {
         var label = UILabel()
+        label.text = "테스트공지입니다."
         label.font = Fonts.Body01.font
         label.textColor = SharedDSKitAsset.Colors.gr100.color
         return label
@@ -27,6 +28,8 @@ public class NoticeHeaderView: UIView {
     public override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+//        backgroundColor = .red
+        render()
     }
     
     required init?(coder: NSCoder) {

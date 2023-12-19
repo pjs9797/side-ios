@@ -13,8 +13,9 @@ class MemberListTableViewCell: UITableViewCell {
     var profileImageView: UIImageView = {
        var imageView = UIImageView()
         imageView.image = SharedDSKitAsset.Icons.kakao.image
-        imageView.layer.cornerRadius = 24
+        imageView.layer.cornerRadius = imageView.frame.size.width / 2
         imageView.backgroundColor = .clear
+        imageView.contentMode = .scaleToFill
         return imageView
     }()
     
@@ -36,12 +37,13 @@ class MemberListTableViewCell: UITableViewCell {
     
     var meLabel: UILabel = {
         var label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
+//        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "me"
+        label.textAlignment = .center
         label.textColor = .white
         label.font = Fonts.Caption.font
         label.backgroundColor = SharedDSKitAsset.Colors.gr100.color
-        label.layer.cornerRadius = 20
+        label.layer.cornerRadius = 8
         label.isHidden = true
         return label
     }()
@@ -52,17 +54,23 @@ class MemberListTableViewCell: UITableViewCell {
         render()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0))
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     private func render() {
         profileImageView.addSubview(adminSubImageView)
-        addSubViews([profileImageView, nameLabel])
+        addSubViews([profileImageView, nameLabel, meLabel])
         
         profileImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
-            make.top.bottom.equalToSuperview()
+            make.top.equalToSuperview().offset(8)
             make.size.equalTo(40)
         }
         
