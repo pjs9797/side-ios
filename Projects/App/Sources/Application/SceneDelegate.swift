@@ -24,10 +24,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowscene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame:UIScreen.main.bounds)
         window?.windowScene = windowscene
-        //let navigationController = UINavigationController(rootViewController: CreateMeetingViewController(meetingTitle: "원데이 모임", createMeetingViewModel: CreateMeetingViewModel()))
-        //let navigationController = TPTabBarController()
-        let navigationController = UINavigationController(rootViewController: CreateMeetingContentViewController(meetingTitle: "원데이 모임", createMeetingContentViewModel: CreateMeetingContentViewModel()))
-        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
     

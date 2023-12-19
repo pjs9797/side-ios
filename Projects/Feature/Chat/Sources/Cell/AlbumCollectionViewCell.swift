@@ -19,7 +19,7 @@ class AlbumCollectionViewCell: UICollectionViewCell {
     }()
     
     override init(frame: CGRect) {
-        super.frame = frame
+        super.init(frame: frame)
         render()
     }
     

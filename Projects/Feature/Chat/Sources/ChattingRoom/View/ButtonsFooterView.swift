@@ -35,7 +35,7 @@ public class ButtonsFooterView: UIView {
     }()
     
     public override init(frame: CGRect) {
-        super.frame = frame
+        super.init(frame: frame)
         backgroundColor = .white
         render()
     }
