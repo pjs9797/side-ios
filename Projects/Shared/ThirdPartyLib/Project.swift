@@ -16,7 +16,8 @@ let targets: [Target] = [
             dependencies: [
                 .external(name: "RxSwift"),
                 .external(name: "ReactorKit"),
-                .external(name: "Alamofire")
+                .external(name: "Alamofire"),
+                .external(name: "RxCocoa")
             ]
         )
     )
