@@ -85,7 +85,22 @@ class ChattingListViewController: UIViewController, UITableViewDelegate, UITable
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let viewController = ChattingRoomContainerViewComposer.makeContainer()
+        viewController.modalPresentationStyle = .custom
+        viewController.transitioningDelegate = self
         
-        navigationController?.pushViewController(viewController, animated: true)
+        self.present(viewController, animated: true, completion: nil)
+        
+//        navigationController?.pushViewController(viewController, animated: true)
+    }
+}
+
+
+extension ChattingListViewController: UIViewControllerTransitioningDelegate {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return PresentTransition()
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return DismissTransition()
     }
 }

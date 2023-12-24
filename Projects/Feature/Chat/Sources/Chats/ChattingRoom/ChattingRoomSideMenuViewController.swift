@@ -70,7 +70,7 @@ class ChattingRoomSideMenuViewController: UIViewController {
         return button
     }()
     
-    private var calendarButton: UIButton = {
+    private var scheduleButton: UIButton = {
         var button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(SharedDSKitAsset.Icons.iconCalendar24.image, for: .normal)
@@ -164,7 +164,7 @@ class ChattingRoomSideMenuViewController: UIViewController {
         mockingCollectionView()
         setUp()
         configureSubviews()
-        configureTapGesture()
+//        configureTapGesture()
         render()
     }
     
@@ -220,7 +220,7 @@ class ChattingRoomSideMenuViewController: UIViewController {
         
         noticeButton.alignTextBelow(spacing: 4)
         
-        calendarButton.snp.makeConstraints { make in
+        scheduleButton.snp.makeConstraints { make in
             make.width.equalTo(((view.frame.size.width * 0.845 - 2) / 3))
             make.bottom.equalToSuperview()
             make.leading.equalTo(noticeButton.snp.trailing).offset(1)
@@ -228,7 +228,7 @@ class ChattingRoomSideMenuViewController: UIViewController {
             make.top.equalTo(roomDateLabel.snp.bottom).offset(24)
         }
         
-        calendarButton.alignTextBelow(spacing: 4)
+        scheduleButton.alignTextBelow(spacing: 4)
         
         voteButton.snp.makeConstraints { make in
             make.width.equalTo(((view.frame.size.width * 0.845 - 2) / 3))
@@ -294,7 +294,7 @@ class ChattingRoomSideMenuViewController: UIViewController {
     
     private func configureSubviews() {
         
-        titleAndButtonsView.addSubViews([roomTitleLabel, roomDateLabel, noticeButton, calendarButton, voteButton])
+        titleAndButtonsView.addSubViews([roomTitleLabel, roomDateLabel, noticeButton, scheduleButton, voteButton])
         
         albumsStackView.addSubViews([albumTitleLabel, albumCollectionView, goToAlbumViewButton])
         
@@ -316,6 +316,8 @@ class ChattingRoomSideMenuViewController: UIViewController {
         memberListTableView.register(MemberListTableViewCell.self, forCellReuseIdentifier: MemberListTableViewCell.className)
         
         albumCollectionView.register(AlbumCollectionViewCell.self, forCellWithReuseIdentifier: AlbumCollectionViewCell.className)
+        
+        scheduleButton.addTarget(self, action: #selector(didTapScheduleButton), for: .touchUpInside)
     }
     
     private func mocking() {
@@ -363,15 +365,22 @@ class ChattingRoomSideMenuViewController: UIViewController {
         }
     }
     
-    private func configureTapGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapped))
-        tapGesture.delegate = self
-        tapGesture.cancelsTouchesInView = false
-        view.addGestureRecognizer(tapGesture)
-    }
+//    private func configureTapGesture() {
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapped))
+//        tapGesture.delegate = self
+//        tapGesture.cancelsTouchesInView = false
+//        view.addGestureRecognizer(tapGesture)
+//    }
     
     @objc private func tapped() {
         hide()
+    }
+    
+    @objc private func didTapScheduleButton() {
+        print("SAFASGASG")
+        hide()
+        navigationController?.pushViewController(ScheduleListViewController(), animated: true)
+//        self.present(ScheduleListViewController(), animated: true)
     }
 }
 

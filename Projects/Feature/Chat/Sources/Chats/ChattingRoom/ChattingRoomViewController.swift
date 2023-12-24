@@ -87,7 +87,10 @@ public class ChattingRoomViewController: UIViewController {
         
         let barButtonItem = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconSave24.image, style: .plain, target: self, action: #selector(menuButtonTapped))
         
+        let dismissBarButtonItem = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconSave24.image, style: .plain, target: self, action: #selector(tapDismiss))
+        
         navigationItem.setRightBarButton(barButtonItem, animated: false)
+        navigationItem.setLeftBarButton(dismissBarButtonItem, animated: true)
         
         let tap = UIGestureRecognizer(target: self, action: #selector(endEditing))
             conversationTableView.addGestureRecognizer(tap)
@@ -126,6 +129,10 @@ public class ChattingRoomViewController: UIViewController {
     @objc private func endEditing() {
         textInputView.textView.endEditing(true)
         view.endEditing(true)
+    }
+    
+    @objc private func tapDismiss() {
+        self.dismiss(animated: true, completion: nil)
     }
     
 }
