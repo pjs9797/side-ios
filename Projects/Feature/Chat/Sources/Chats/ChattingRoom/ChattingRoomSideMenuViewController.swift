@@ -16,11 +16,7 @@ protocol ChattingRoomSideMenuDelegate: AnyObject {
 }
 
 struct SideMenuItem {
-    var roomTitle: String
-    var date: String
-    var albumImage: [UIImage]
-    var members: [String]
-    let viewController: ChattingRoomViewController
+    let viewController: 
 }
 
 class ChattingRoomSideMenuViewController: UIViewController {
