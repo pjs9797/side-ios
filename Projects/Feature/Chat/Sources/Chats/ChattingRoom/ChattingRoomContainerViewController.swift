@@ -9,8 +9,14 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-public class ChattingRoomContainerViewController: UIViewController {
+enum ContentViewControllerPresentation {
+    case embed(ChattingRoomViewController)
+    case push(UIViewController)
+    case modal(UIViewController)
+}
 
+public class ChattingRoomContainerViewController: UIViewController {
+    
     private var sideMenuViewController: ChattingRoomSideMenuViewController!
     private var navigator: UINavigationController!
     private var chattingRoomViewController: ChattingRoomViewController! {
@@ -77,12 +83,28 @@ extension ChattingRoomContainerViewController: ChattingRoomSideMenuDelegate {
     func menuButtonTapped() {
         sideMenuViewController.show()
     }
+    
+    func itemSelected(item: ContentViewControllerPresentation) {
+        switch item {
+        case let .embed(viewController):
+            updateRootViewController(viewController)
+            sideMenuViewController.hide()
+        case let .push(viewController):
+            sideMenuViewController.hide()
+            navigator.pushViewController(viewController, animated: true)
+        case let .modal(viewController):
+            sideMenuViewController.hide()
+            navigator.present(viewController, animated: true, completion: nil)
+        }
+    }
 }
+
 
 public final class ChattingRoomContainerViewComposer {
     public static func makeContainer() -> ChattingRoomContainerViewController {
         let chattingRoomViewController = ChattingRoomViewController()
         let sideMenuViewController = ChattingRoomSideMenuViewController()
+        let sideMenuItems = [SideMenuItem(roomTitle: <#T##String#>, date: <#T##String#>, albumImage: <#T##[UIImage]#>, members: <#T##[String]#>, viewController: <#T##ChattingRoomViewController#>)]
         let container = ChattingRoomContainerViewController(sideMenuViewController: sideMenuViewController, chattingRoomViewController: chattingRoomViewController)
         
         return container
