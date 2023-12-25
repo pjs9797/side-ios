@@ -47,7 +47,7 @@ public class EmailView: UIView {
         let progressBar = UIProgressView()
         progressBar.progressViewStyle = .bar
         progressBar.progressTintColor = SharedDSKitAsset.Colors.gr100.color
-        progressBar.progress = 0.5
+        progressBar.progress = 0.33
         
         return progressBar
     }()
@@ -91,6 +91,12 @@ public class EmailView: UIView {
         return imageView
     }()
     
+    
+    
+    
+    var passwordView = PasswordView()
+    var phoneView = PhoneNumberView()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         render()
@@ -103,8 +109,18 @@ public class EmailView: UIView {
     private func render() {
         let safeArea = self.safeAreaLayoutGuide
         self.backgroundColor = SharedDSKitAsset.Colors.white.color
+        //passwordView 불러오기(처음엔 hidden 상태)
+        passwordView.pwTextViewOne.isHidden = true
+        passwordView.pwTextViewTwo.isHidden = true
+        passwordView.labelStackView.isHidden = true
+        phoneView.phoneNumberView.isHidden = true
         
-        addSubViews([progressBar, signUpButton, textFieldView, textView, useLabel])
+        addSubViews([progressBar, signUpButton, textFieldView, textView, useLabel, passwordView.pwTextViewOne, passwordView.pwTextViewTwo, passwordView.labelStackView, passwordView.possibleUseLabel, passwordView.notAccordLabel, phoneView.phoneNumberView, phoneView.notAccordLabel, phoneView.certificationView])
+      
+        [passwordView.englishLabel, passwordView.numberLabel, passwordView.symbolLabel, passwordView.sixLabel].forEach {
+            passwordView.labelStackView.addArrangedSubview($0)
+        }
+        
         addViews()
         setBorderLine()
         
@@ -125,7 +141,7 @@ public class EmailView: UIView {
         
         insertEmailLabelTwo.snp.makeConstraints {
             $0.width.equalTo(335)
-            $0.height.equalTo(24)
+            $0.height.equalTo(60)
             $0.leading.trailing.bottom.equalToSuperview()
             $0.top.equalTo(36)
         }
@@ -133,7 +149,7 @@ public class EmailView: UIView {
         textFieldView.snp.makeConstraints {
             $0.width.equalTo(335)
             $0.height.equalTo(56)
-            $0.top.equalTo(progressBar.snp.bottom).offset(160)
+            $0.top.equalToSuperview().offset(230)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
@@ -188,12 +204,54 @@ public class EmailView: UIView {
             $0.centerY.equalToSuperview()
             $0.trailing.equalTo(textFieldView.snp.trailing).inset(16)
         }
+        passwordView.pwTextViewOne.snp.makeConstraints { make in
+            make.top.equalTo(insertEmailLabelTwo.snp.bottom).offset(20)
+            make.leading.equalToSuperview().offset(20)
+            make.width.equalTo(355)
+        }
+        passwordView.pwTextViewTwo.snp.makeConstraints { make in
+            make.top.equalTo(passwordView.pwTextViewOne.snp.bottom).offset(16)
+            make.leading.equalToSuperview().offset(20)
+            make.width.equalTo(355)
+        }
+        passwordView.labelStackView.snp.makeConstraints {
+            $0.leading.equalTo(safeArea.snp.leading).inset(20)
+            $0.trailing.equalTo(safeArea.snp.trailing).inset(143)
+            $0.top.equalTo(passwordView.pwTextViewOne.snp.bottom).offset(8)
+            $0.height.equalTo(24)
+        }
+        passwordView.possibleUseLabel.snp.makeConstraints { make in
+            make.top.equalTo(passwordView.labelStackView.snp.top)
+            make.leading.equalTo(safeArea.snp.leading).inset(20)
+            make.height.equalTo(17)
+        }
+        passwordView.notAccordLabel.snp.makeConstraints { make in
+            make.top.equalTo(passwordView.pwTextViewTwo.snp.bottom).offset(8)
+            make.leading.equalTo(safeArea.snp.leading).inset(20)
+            make.height.equalTo(17)
+        }
+        phoneView.phoneNumberView.snp.makeConstraints { make in
+            make.top.equalTo(insertEmailLabelTwo.snp.bottom).offset(20)
+            make.leading.equalToSuperview().offset(20)
+            make.width.equalTo(355)
+        }
+        phoneView.notAccordLabel.snp.makeConstraints { make in
+            make.top.equalTo(phoneView.phoneNumberView.snp.bottom).offset(8)
+            make.leading.equalToSuperview().offset(20)
+            make.height.equalTo(17)
+        }
+        phoneView.certificationView.snp.makeConstraints { make in
+            make.top.equalTo(phoneView.phoneNumberView.snp.bottom).offset(20)
+            make.leading.equalToSuperview().offset(20)
+            make.width.equalTo(355)
+        }
     }
     
     func addViews() {
         [insertEmailLabelOne, insertEmailLabelTwo].forEach {
             textView.addSubview($0)
         }
+       
         
         [emailLabel, emailTextField, cancelButton, checkImageView].forEach {
             textFieldView.addSubview($0)
@@ -205,6 +263,12 @@ public class EmailView: UIView {
             $0.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
             $0.layer.borderWidth = 1
             $0.layer.cornerRadius = 16
+        }
+        [passwordView.englishLabel, passwordView.numberLabel, passwordView.symbolLabel, passwordView.sixLabel].forEach {
+            $0.layer.borderWidth = 1
+            $0.layer.cornerRadius = 12
+            $0.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+            $0.layer.backgroundColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         }
     }
 }

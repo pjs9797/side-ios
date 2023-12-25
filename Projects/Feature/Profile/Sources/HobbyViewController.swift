@@ -16,15 +16,22 @@ class HobbyViewController: UIViewController {
         super.loadView()
         view = hobbyView
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         ButtonTapped()
-
+        navigationSetup()
+    }
+    
+    func navigationSetup() {
+        self.navigationItem.title = "프로필 설정"
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        self.navigationItem.backBarButtonItem = backBarButtonItem
     }
     
     func ButtonTapped() {
         var buttonCount = 0
-        var buttons = [hobbyView.hobbyButton1, hobbyView.hobbyButton2, hobbyView.hobbyButton3, hobbyView.hobbyButton4, hobbyView.hobbyButton5, hobbyView.hobbyButton6, hobbyView.hobbyButton7, hobbyView.hobbyButton8, hobbyView.hobbyButton9]
+        var buttons = [hobbyView.cafeButton, hobbyView.cultureButton, hobbyView.sportsButton, hobbyView.tripButton, hobbyView.danceButton, hobbyView.craftsButton, hobbyView.firendButton, hobbyView.bookButton, hobbyView.etcButton]
                for button in buttons {
                    button.rx.tap.subscribe(onNext: {
                        if button.isSelected == false {
@@ -47,9 +54,9 @@ class HobbyViewController: UIViewController {
                            self.hobbyView.nextButton.isEnabled = false
                            self.hobbyView.nextButton.backgroundColor = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1)
                            self.hobbyView.nextButton.setTitleColor(SharedDSKitAsset.Colors.gr30.color, for: .normal)
-                       }
-                   })
-               }
+                }
+            })
+        }
     }
 
 }

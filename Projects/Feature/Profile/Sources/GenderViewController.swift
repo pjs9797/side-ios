@@ -23,25 +23,25 @@ class GenderViewController: UIViewController {
     let womanButton = UIButton()
     
     override func viewDidLoad() {
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        self.navigationItem.backBarButtonItem = backBarButtonItem
+        
         nextBtn.isEnabled = false
         super.viewDidLoad()
-        
         progressBar.progress = 2/6
         self.view.backgroundColor = .white
-        self.navigationController?.navigationBar.tintColor = .black
-        self.navigationItem.title = "프로필 설정"
+        navigationSetup()
         configureUI()
         setUpValue()
         render()
         nextBtn.addTarget(self, action: #selector(nextBtnTapped), for: .touchUpInside)
         manButton.addTarget(self, action: #selector(manButtonTapped), for: .touchUpInside)
         womanButton.addTarget(self, action: #selector(womanButtonTapped), for: .touchUpInside)
+    }
     
-
-      
-        // Do any additional setup after loading the view.
+    func navigationSetup() {
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        self.navigationController?.navigationBar.tintColor = .black
+        self.navigationItem.title = "프로필 설정"
+        self.navigationItem.backBarButtonItem = backBarButtonItem
     }
     @objc func nextBtnTapped(_ button: UIButton){
         let birthDayView = BirthDayViewController()

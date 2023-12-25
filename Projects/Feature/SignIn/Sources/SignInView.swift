@@ -78,6 +78,7 @@ class SignInView: UIView {
     }
     
     private func render() {
+        self.backgroundColor = .white
         addSubViews([firstLabel, secondLabel, thirdLabel, signInWithKakaoButton, signInWithAppleButton, continueWithEmailButton])
         
         firstLabel.snp.makeConstraints { make in
