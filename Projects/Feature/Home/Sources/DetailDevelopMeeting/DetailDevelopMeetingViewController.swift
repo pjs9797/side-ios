@@ -4,14 +4,8 @@ import RxCocoa
 import SnapKit
 import Shared
 
-public class CreateMeetingViewController: UIViewController{
+public class DetailDevelopMeetingViewController: UIViewController{
     let disposeBag = DisposeBag()
-<<<<<<< HEAD
-    let meetingTitle: String
-    let createMeetingViewModel: CreateMeetingViewModel
-    let backButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: nil, action: nil)
-    let progressView: UIProgressView = {
-=======
     let createMeetingViewModel: CreateMeetingViewModel
     
     lazy var titleLabel: UILabel = {
@@ -27,54 +21,34 @@ public class CreateMeetingViewController: UIViewController{
     }()
     
     lazy var progressView: UIProgressView = {
->>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
         let progressView = UIProgressView()
         progressView.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
         progressView.tintColor = .black
-        progressView.progress = 1/3
+        progressView.progress = 2/3
         return progressView
     }()
-<<<<<<< HEAD
-    let questionLabel: UILabel = {
-=======
     
     lazy var questionLabel: UILabel = {
->>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
         let label = UILabel()
         label.font = Fonts.H02.font
-        label.text = "어떤 모임을 만들고 싶으신가요?"
+        label.text = "세부항목을 선택해주세요 :)"
         return label
     }()
-<<<<<<< HEAD
-    let developBtView: DevelopBtView = {
-=======
     
-    lazy var developBtView: DevelopBtView = {
->>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
-        let developBtView = DevelopBtView()
-        developBtView.layer.cornerRadius = 16
-        developBtView.layer.borderWidth = 1
-        developBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+    lazy var developBtView: StudyBtView = {
+        let developBtView = StudyBtView()
+        
         return developBtView
     }()
-<<<<<<< HEAD
-    let hobbyBtView: HobbyBtView = {
-=======
     
     lazy var hobbyBtView: HobbyBtView = {
->>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
         let hobbyBtView = HobbyBtView()
-        hobbyBtView.layer.cornerRadius = 16
         hobbyBtView.layer.borderWidth = 1
         hobbyBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         return hobbyBtView
     }()
-<<<<<<< HEAD
-    let nextButton: UIButton = {
-=======
     
     lazy var nextButton: UIButton = {
->>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
         let button = UIButton()
         button.setTitle("다음", for: .normal)
         button.titleLabel?.font = Fonts.SH02Bold.font
@@ -84,15 +58,9 @@ public class CreateMeetingViewController: UIViewController{
     }()
     
     public init(meetingTitle: String, createMeetingViewModel: CreateMeetingViewModel) {
-<<<<<<< HEAD
-        self.meetingTitle = meetingTitle
-        self.createMeetingViewModel = createMeetingViewModel
-        super.init(nibName: nil, bundle: nil)
-=======
         self.createMeetingViewModel = createMeetingViewModel
         super.init(nibName: nil, bundle: nil)
         self.titleLabel.text = meetingTitle
->>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
     }
     
     required init?(coder: NSCoder) {
@@ -101,61 +69,12 @@ public class CreateMeetingViewController: UIViewController{
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-<<<<<<< HEAD
-        
         self.view.backgroundColor = .white
-        setNavigationbar()
-=======
-        self.view.backgroundColor = .white
-        
->>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
         bind()
         layout()
     }
     
-<<<<<<< HEAD
-    private func setNavigationbar() {
-        self.title = self.meetingTitle
-        self.tabBarController?.tabBar.isHidden = true
-        navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.font : Fonts.SH03Bold.font,
-            .foregroundColor: UIColor.black
-        ]
-        self.backButton.tintColor = SharedDSKitAsset.Colors.black.color
-        navigationItem.leftBarButtonItem = backButton
-    }
-    
     private func bind(){
-        backButton.rx.tap
-            .bind(to: createMeetingViewModel.backButtonTapped)
-            .disposed(by: disposeBag)
-        
-        createMeetingViewModel.backButtonTapped
-            .bind(onNext: { [weak self] in
-                self?.navigationController?.popViewController(animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        nextButton.rx.tap
-            .bind(to: createMeetingViewModel.nextButtonTapped)
-            .disposed(by: disposeBag)
-        
-        createMeetingViewModel.nextButtonTapped
-            .bind(onNext: { [weak self] in
-                switch self?.createMeetingViewModel.meetingTypeRelay.value {
-                case .develop:
-                    self?.navigationController?.pushViewController(SelectDevelopDetailsViewController(meetingTitle: self?.meetingTitle ?? "모임 생성", selectDevelopDetailsViewModel: SelectDevelopDetailsViewModel()), animated: true)
-                case .hobby:
-                    self?.navigationController?.pushViewController(SelectHobbyDetailsViewController(meetingTitle: self?.meetingTitle ?? "모임 생성", selectHobbyDetailsViewModel: SelectHobbyDetailsViewModel()), animated: true)
-                default:
-                    break
-                }
-            })
-            .disposed(by: disposeBag)
-        
-=======
-    private func bind(){
->>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
         developBtView.tapGesture.rx.event
             .map { _ in Void() }
             .bind(to: createMeetingViewModel.developBtViewTapped)
@@ -170,55 +89,33 @@ public class CreateMeetingViewController: UIViewController{
             .subscribe(onNext: { [weak self] type in
                 switch type {
                 case .develop:
-<<<<<<< HEAD
-                    self?.nextButton.enableNextButton()
-                    self?.developBtView.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
-                    self?.hobbyBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-                case .hobby:
-                    self?.nextButton.enableNextButton()
-                    self?.developBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-                    self?.hobbyBtView.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
-                case .none:
-                    self?.nextButton.disableNextButton()
-=======
                     self?.nextButton.setTitleColor(.white, for: .normal)
-                    self?.nextButton.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
                     self?.nextButton.isEnabled = true
                     self?.nextButton.backgroundColor = SharedDSKitAsset.Colors.lightGreen.color
                     self?.developBtView.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
                     self?.hobbyBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                 case .hobby:
                     self?.nextButton.setTitleColor(.white, for: .normal)
-                    self?.nextButton.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
                     self?.nextButton.isEnabled = true
                     self?.nextButton.backgroundColor = SharedDSKitAsset.Colors.lightGreen.color
                     self?.developBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                     self?.hobbyBtView.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
                 case .none:
                     self?.nextButton.setTitleColor(SharedDSKitAsset.Colors.gr30.color, for: .normal)
-                    self?.nextButton.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                     self?.nextButton.isEnabled = false
                     self?.nextButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
->>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
                     self?.developBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                     self?.hobbyBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                 }
             })
             .disposed(by: disposeBag)
-<<<<<<< HEAD
-    }
-    
-    private func layout(){
-        [progressView,questionLabel,developBtView,hobbyBtView,nextButton]
-            .forEach{ view.addSubview($0) }
-=======
         
     }
     
     private func layout(){
         [titleLabel,backButton,progressView,questionLabel,developBtView,hobbyBtView,nextButton]
-            .forEach{ view.addSubview($0) }
-                
+            .forEach{ self.view.addSubview($0) }
+        
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(12)
             make.centerX.equalToSuperview()
@@ -229,16 +126,11 @@ public class CreateMeetingViewController: UIViewController{
             make.centerY.equalTo(titleLabel)
             make.leading.equalToSuperview().offset(20)
         }
->>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
         
         progressView.snp.makeConstraints { make in
             make.height.equalTo(2)
             make.leading.trailing.equalToSuperview()
-<<<<<<< HEAD
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-=======
             make.top.equalTo(titleLabel.snp.bottom).offset(12)
->>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
         }
         
         questionLabel.snp.makeConstraints { make in
@@ -264,13 +156,8 @@ public class CreateMeetingViewController: UIViewController{
             make.width.equalTo(335)
             make.height.equalTo(52)
             make.centerX.equalToSuperview()
-<<<<<<< HEAD
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-8)
-        }
-=======
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(8)
         }
         
->>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
     }
 }

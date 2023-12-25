@@ -8,7 +8,10 @@
 
 import UIKit
 import SharedDSKit
+<<<<<<< HEAD
 import RxSwift
+=======
+>>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
 
 public class HomeViewController: UIViewController {
     let disposeBag = DisposeBag()
