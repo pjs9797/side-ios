@@ -1,21 +1,17 @@
 import UIKit
+import SharedDSKit
 
-class TPTabBarController: UITabBarController {
-    
-    override func viewDidLoad() {
+public class TPTabBarController: UITabBarController {
+    public override func viewDidLoad() {
         super.viewDidLoad()
-        
         setTabBar()
     }
-    
     func setTabBar() {
-        tabBar.barTintColor = SharedDSKitAsset.Colors.lightGreen.color
-        tabBar.unselectedItemTintColor = SharedDSKitAsset.Colors.gr100.color
+        //tabBar.barTintColor = SharedDSKitAsset.Colors.lightGreen.color
+        //tabBar.unselectedItemTintColor = SharedDSKitAsset.Colors.gr100.color
         tabBar.backgroundColor = SharedDSKitAsset.Colors.white.color
-        
         if let items = tabBar.items {
             let attribute = [NSAttributedString.Key.font: Fonts.ST01.font]
-            
             items[0].image = SharedDSKitAsset.Icons.iconHome24.image
             items[0].title = "모임"
             items[0].setTitleTextAttributes(attribute, for: .normal)
@@ -32,5 +28,7 @@ class TPTabBarController: UITabBarController {
             items[4].title = "MY"
             items[4].setTitleTextAttributes(attribute, for: .normal)
         }
+        let homeVC = UINavigationController(rootViewController: HomeViewController())
+        self.setViewControllers([homeVC], animated: true)
     }
 }

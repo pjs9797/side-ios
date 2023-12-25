@@ -26,7 +26,7 @@ extension MeetingViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "MeetingCell", for: indexPath) as? MyCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "MeetingCell", for: indexPath) as? MeetingCell else { return UITableViewCell() }
         cell.contentLabel.font = Fonts.SH01Bold.font
         cell.contentLabel.textColor = SharedDSKitAsset.Colors.gr100.color
         

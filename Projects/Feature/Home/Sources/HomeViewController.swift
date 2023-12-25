@@ -7,8 +7,7 @@
 
 
 import UIKit
-import Shared
-
+import SharedDSKit
 
 public class HomeViewController: UIViewController {
 

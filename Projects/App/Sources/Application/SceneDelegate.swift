@@ -12,7 +12,6 @@ import FeatureSignUpInterface
 import FeatureSignUp
 import FeatureHome
 
-
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
