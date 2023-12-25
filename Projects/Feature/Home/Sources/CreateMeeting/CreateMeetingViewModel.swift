@@ -3,6 +3,7 @@ import RxCocoa
 
 public class CreateMeetingViewModel{
 <<<<<<< HEAD
+<<<<<<< HEAD
     let disposeBag = DisposeBag()
     let meetingTypeRelay = BehaviorRelay<MeetingType>(value: .none)
     let backButtonTapped = PublishRelay<Void>()
@@ -18,6 +19,13 @@ public class CreateMeetingViewModel{
     let meetingTypeRelay = BehaviorRelay<MeetingType>(value: .none)
     
 >>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
+=======
+    let disposeBag = DisposeBag()
+    let meetingTypeRelay = BehaviorRelay<MeetingType>(value: .none)
+    
+    let backButtonTapped = PublishRelay<Void>()
+    let nextButtonTapped = PublishRelay<Void>()
+>>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
     let developBtViewTapped = PublishRelay<Void>()
     let hobbyBtViewTapped = PublishRelay<Void>()
     

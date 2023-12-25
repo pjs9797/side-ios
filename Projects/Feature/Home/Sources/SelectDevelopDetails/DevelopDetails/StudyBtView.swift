@@ -3,7 +3,12 @@ import SnapKit
 import Shared
 
 class StudyBtView: UIView{
+<<<<<<< HEAD
     let borderView: UIView = {
+=======
+    
+    lazy var borderView: UIView = {
+>>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
         let view = UIView()
         view.layer.cornerRadius = 40
         view.layer.borderWidth = 1
@@ -11,24 +16,42 @@ class StudyBtView: UIView{
         view.isHidden = true
         return view
     }()
+<<<<<<< HEAD
     let imgBgImageView: UIImageView = {
+=======
+    
+    lazy var imgBgImageView: UIImageView = {
+>>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
         let imageView = UIImageView()
         imageView.backgroundColor = UIColor(red: 0.84, green: 0.81, blue: 1, alpha: 1)
         imageView.layer.cornerRadius = 36
         return imageView
     }()
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
     lazy var targetImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = SharedDSKitAsset.Icons.image357.image
         return imageView
     }()
+<<<<<<< HEAD
     let titleLabel: UILabel = {
+=======
+    
+    lazy var titleLabel: UILabel = {
+>>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
         let label = UILabel()
         label.font = Fonts.SH01Bold.font
         label.textAlignment = .center
         label.text = "스터디 · 자격증"
         return label
     }()
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
     let tapGesture = UITapGestureRecognizer()
     
     override init(frame: CGRect) {
@@ -66,5 +89,11 @@ class StudyBtView: UIView{
             make.bottom.equalToSuperview()
             make.centerX.equalToSuperview()
         }
+<<<<<<< HEAD
     }
+=======
+        
+    }
+    
+>>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
 }
