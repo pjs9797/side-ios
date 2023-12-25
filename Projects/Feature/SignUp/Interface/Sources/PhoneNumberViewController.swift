@@ -1,8 +1,9 @@
 import UIKit
 import SnapKit
 import Shared
+import FeatureProfile
 
-public class PhoneNumberViewController: UIViewController {
+public class PhoneNumberViewController: UIViewController, UITextFieldDelegate {
     var phoneNumberView = PhoneNumberView()
     var timer: Timer?
     var timerNum: Int = 0
@@ -15,8 +16,7 @@ public class PhoneNumberViewController: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setNavigationBar()
+        phoneNumberView.emailTextField.delegate = self
         setAddTarget()
     }
     
@@ -52,6 +52,20 @@ public class PhoneNumberViewController: UIViewController {
         let pred = NSPredicate(format: "SELF MATCHES %@", regex)
         
         return pred.evaluate(with: phoneNumber)
+    }
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let text = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+
+        if text == "Iop0221@naver.com" {
+            print("hello")
+            phoneNumberView.signUpButton.backgroundColor = SharedDSKitAsset.Colors.lightGreen.color
+            phoneNumberView.signUpButton.setTitleColor(SharedDSKitAsset.Colors.white.color, for: .normal)
+         
+        } else {
+            print("no")
+        }
+        return true
+    
     }
     
     func setNothingInsert() {
@@ -150,6 +164,7 @@ public class PhoneNumberViewController: UIViewController {
             phoneNumberView.passwordViewOne.snp.updateConstraints {
                 $0.top.equalTo(phoneNumberView.phoneNumberView.snp.bottom).offset(129)
             }
+        
         } else {
             phoneNumberView.timerLabel.isHidden = false
             phoneNumberView.checkImageView.isHidden = true
@@ -161,3 +176,5 @@ public class PhoneNumberViewController: UIViewController {
         }
     }
 }
+
+

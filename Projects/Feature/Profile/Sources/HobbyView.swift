@@ -34,7 +34,7 @@ class HobbyView: UIView {
 
         }()
 
-        var hobbyButton1: UIButton = {
+        var cafeButton: UIButton = {
             let button = UIButton()
             button.setTitle("맛집·카페", for: .normal)
             button.setTitleColor(SharedDSKitAsset.Colors.gr100.color, for: .normal)
@@ -46,7 +46,7 @@ class HobbyView: UIView {
             return button
         }()
 
-        var hobbyButton2: UIButton = {
+        var cultureButton: UIButton = {
             let button = UIButton()
             button.setTitle("문화·공연", for: .normal)
             button.setTitleColor(SharedDSKitAsset.Colors.gr100.color, for: .normal)
@@ -58,7 +58,7 @@ class HobbyView: UIView {
             return button
         }()
 
-        var hobbyButton3: UIButton = {
+        var sportsButton: UIButton = {
             let button = UIButton()
             button.setTitle("운동·스포츠", for: .normal)
             button.setTitleColor(SharedDSKitAsset.Colors.gr100.color, for: .normal)
@@ -70,7 +70,7 @@ class HobbyView: UIView {
             return button
         }()
 
-        var hobbyButton4: UIButton = {
+        var tripButton: UIButton = {
             let button = UIButton()
             button.setTitle("여행·드라이브", for: .normal)
             button.setTitleColor(SharedDSKitAsset.Colors.gr100.color, for: .normal)
@@ -82,7 +82,7 @@ class HobbyView: UIView {
             return button
         }()
 
-        var hobbyButton5: UIButton = {
+        var danceButton: UIButton = {
             let button = UIButton()
             button.setTitle("댄스·무용", for: .normal)
             button.setTitleColor(SharedDSKitAsset.Colors.gr100.color, for: .normal)
@@ -94,7 +94,7 @@ class HobbyView: UIView {
             return button
         }()
 
-        var hobbyButton6: UIButton = {
+        var craftsButton: UIButton = {
             let button = UIButton()
             button.setTitle("공예", for: .normal)
             button.setTitleColor(SharedDSKitAsset.Colors.gr100.color, for: .normal)
@@ -106,7 +106,7 @@ class HobbyView: UIView {
             button.titleLabel?.font = Fonts.SH01Bold.font
             return button
         }()
-    var hobbyButton7: UIButton = {
+    var friendButton: UIButton = {
         let button = UIButton()
         button.setTitle("친구 만들기", for: .normal)
         button.setTitleColor(SharedDSKitAsset.Colors.gr100.color, for: .normal)
@@ -118,7 +118,7 @@ class HobbyView: UIView {
         button.titleLabel?.font = Fonts.SH01Bold.font
         return button
     }()
-    var hobbyButton8: UIButton = {
+    var bookButton: UIButton = {
         let button = UIButton()
         button.setTitle("독서·인문학", for: .normal)
         button.setTitleColor(SharedDSKitAsset.Colors.gr100.color, for: .normal)
@@ -130,7 +130,7 @@ class HobbyView: UIView {
         button.titleLabel?.font = Fonts.SH01Bold.font
         return button
     }()
-    var hobbyButton9: UIButton = {
+    var etcButton: UIButton = {
         let button = UIButton()
         button.setTitle("기타", for: .normal)
         button.setTitleColor(SharedDSKitAsset.Colors.gr100.color, for: .normal)
@@ -167,7 +167,7 @@ class HobbyView: UIView {
 
         func render(){
             self.backgroundColor = .white
-            addSubViews([progressBar, hobbyButton1, hobbyButton2, hobbyButton3, hobbyButton4, hobbyButton5, hobbyButton6, hobbyButton7, hobbyButton8, hobbyButton9, hobbySubLabel, hobbyMainLabel, nextButton])
+            addSubViews([progressBar, cafeButton, cultureButton, sportsButton, tripButton, danceButton, craftsButton, friendButton, bookButton, etcButton, hobbySubLabel, hobbyMainLabel, nextButton])
 
             progressBar.snp.makeConstraints{ make in
                 make.top.equalToSuperview().offset(100)
@@ -182,58 +182,58 @@ class HobbyView: UIView {
                 make.top.equalTo(hobbyMainLabel.snp.bottom).offset(8)
                 make.leading.equalToSuperview().offset(30)
             }
-            hobbyButton1.snp.makeConstraints{ make in
+            cafeButton.snp.makeConstraints{ make in
                 make.leading.equalToSuperview().offset(28)
                 make.top.equalTo(hobbySubLabel.snp.bottom).offset(60)
                 make.width.equalTo(72)
                 make.height.equalTo(72)
             }
-            hobbyButton2.snp.makeConstraints{ make in
-                make.leading.equalTo(hobbyButton1.snp.trailing).offset(56)
+            cultureButton.snp.makeConstraints{ make in
+                make.leading.equalTo(cafeButton.snp.trailing).offset(56)
                 make.top.equalTo(hobbySubLabel.snp.bottom).offset(60)
                 make.width.equalTo(72)
                 make.height.equalTo(72)
             }
-            hobbyButton3.snp.makeConstraints{ make in
-                make.leading.equalTo(hobbyButton2.snp.trailing).offset(56)
+            sportsButton.snp.makeConstraints{ make in
+                make.leading.equalTo(cultureButton.snp.trailing).offset(56)
                 make.top.equalTo(hobbySubLabel.snp.bottom).offset(60)
                 make.width.equalTo(72)
                 make.height.equalTo(72)
             }
-            hobbyButton4.snp.makeConstraints{ make in
-                make.top.equalTo(hobbyButton1.snp.bottom).offset(60)
-                make.leading.equalTo(hobbyButton1)
+            tripButton.snp.makeConstraints{ make in
+                make.top.equalTo(cafeButton.snp.bottom).offset(60)
+                make.leading.equalTo(cafeButton)
                 make.width.equalTo(72)
                 make.height.equalTo(72)
             }
-            hobbyButton5.snp.makeConstraints{ make in
-                make.top.equalTo(hobbyButton1.snp.bottom).offset(60)
-                make.leading.equalTo(hobbyButton4.snp.trailing).offset(56)
+            danceButton.snp.makeConstraints{ make in
+                make.top.equalTo(cafeButton.snp.bottom).offset(60)
+                make.leading.equalTo(tripButton.snp.trailing).offset(56)
                 make.width.equalTo(72)
                 make.height.equalTo(72)
 
             }
-            hobbyButton6.snp.makeConstraints{ make in
-                make.top.equalTo(hobbyButton1.snp.bottom).offset(60)
-                make.leading.equalTo(hobbyButton5.snp.trailing).offset(56)
+            craftsButton.snp.makeConstraints{ make in
+                make.top.equalTo(cafeButton.snp.bottom).offset(60)
+                make.leading.equalTo(danceButton.snp.trailing).offset(56)
                 make.width.equalTo(72)
                 make.height.equalTo(72)
             }
-            hobbyButton7.snp.makeConstraints{ make in
-                make.top.equalTo(hobbyButton4.snp.bottom).offset(60)
-                make.leading.equalTo(hobbyButton1)
+            friendButton.snp.makeConstraints{ make in
+                make.top.equalTo(tripButton.snp.bottom).offset(60)
+                make.leading.equalTo(cafeButton)
                 make.width.equalTo(72)
                 make.height.equalTo(72)
             }
-            hobbyButton8.snp.makeConstraints{ make in
-                make.top.equalTo(hobbyButton4.snp.bottom).offset(60)
-                make.leading.equalTo(hobbyButton7.snp.trailing).offset(56)
+            bookButton.snp.makeConstraints{ make in
+                make.top.equalTo(tripButton.snp.bottom).offset(60)
+                make.leading.equalTo(friendButton.snp.trailing).offset(56)
                 make.width.equalTo(72)
                 make.height.equalTo(72)
             }
-            hobbyButton9.snp.makeConstraints { make in
-                make.top.equalTo(hobbyButton4.snp.bottom).offset(60)
-                make.leading.equalTo(hobbyButton8.snp.trailing).offset(56)
+            etcButton.snp.makeConstraints { make in
+                make.top.equalTo(tripButton.snp.bottom).offset(60)
+                make.leading.equalTo(bookButton.snp.trailing).offset(56)
                 make.width.equalTo(72)
                 make.height.equalTo(72)
             }
@@ -243,6 +243,5 @@ class HobbyView: UIView {
                 make.centerX.equalToSuperview()
                 make.bottom.equalToSuperview().offset(-40)
             }
-
         }
 }

@@ -45,29 +45,22 @@ public class profileMainViewController: UIViewController, UITextFieldDelegate {
     }
     
     public override func viewDidLoad() {
-        
-      
-        
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        self.navigationItem.backBarButtonItem = backBarButtonItem
-        nextBtn.isEnabled = false
-        nickNameInputTextField.delegate = self
+
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         configureUI()
         setUpValue()
         render()
-        
+        navigationSetup()
+        nextBtn.isEnabled = false
+        nickNameInputTextField.delegate = self
         nextBtn.addTarget(self, action: #selector(nextBtnTapped), for: .touchUpInside)
-//
-//        nextBtn.rx
-//            .tap
-//            .subscribe(onNext: {
-//                let genderView = GenderViewController()
-//                self.navigationController?.pushViewController(genderView, animated: false)
-//            })
-     
-        
+    }
+    
+    func navigationSetup() {
+        self.navigationController?.navigationBar.tintColor = .black
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        self.navigationItem.backBarButtonItem = backBarButtonItem
     }
     
     @objc func nextBtnTapped(_ button: UIButton){

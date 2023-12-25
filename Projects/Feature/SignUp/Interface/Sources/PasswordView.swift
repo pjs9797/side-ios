@@ -278,24 +278,7 @@ class PasswordView: UIView {
             $0.top.equalTo(pwTextViewTwo.snp.top).inset(24.5)
             $0.bottom.equalTo(pwTextViewTwo.snp.bottom).inset(7.5)
         }
-        
-        emailView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.top.equalTo(pwTextViewTwo.snp.bottom).offset(49)
-        }
-        
-        emailLabel.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(16)
-            $0.top.equalTo(emailView.snp.top).inset(8)
-            $0.bottom.equalTo(emailView.snp.bottom).inset(31)
-        }
-        
-        emailTextField.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(16)
-            $0.top.equalTo(emailView.snp.top).inset(24.5)
-            $0.bottom.equalTo(emailView.snp.bottom).inset(7.5)
-        }
-        
+
         signUpButton.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalTo(safeArea.snp.bottom).inset(8)

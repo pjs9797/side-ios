@@ -25,25 +25,25 @@ class BirthDayViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         
         birthDayInputTextField.delegate = self
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
-        self.navigationItem.backBarButtonItem = backBarButtonItem
+        
         super.viewDidLoad()
         nextButton.isEnabled = false
-        // Do any additional setup after loading the view.
         progressBar.progress = 3/6
         self.view.backgroundColor = .white
-        self.navigationController?.navigationBar.tintColor = .black
-        self.navigationItem.title = "프로필 설정"
-        
-        
+       
         configureUI()
         setUpValue()
         render()
-        
+        navigationSetup()
         nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
-        
-        
 
+    }
+
+    func navigationSetup() {
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        self.navigationItem.backBarButtonItem = backBarButtonItem
+        self.navigationController?.navigationBar.tintColor = .black
+        self.navigationItem.title = "프로필 설정"
     }
     
     @objc func nextButtonTapped(_ button:UIButton){
