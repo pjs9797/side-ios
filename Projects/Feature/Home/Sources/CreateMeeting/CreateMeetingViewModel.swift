@@ -2,15 +2,11 @@ import RxSwift
 import RxCocoa
 
 public class CreateMeetingViewModel{
-    
-    enum MeetingType {
-        case none
-        case develop
-        case hobby
-    }
     let disposeBag = DisposeBag()
     let meetingTypeRelay = BehaviorRelay<MeetingType>(value: .none)
     
+    let backButtonTapped = PublishRelay<Void>()
+    let nextButtonTapped = PublishRelay<Void>()
     let developBtViewTapped = PublishRelay<Void>()
     let hobbyBtViewTapped = PublishRelay<Void>()
     

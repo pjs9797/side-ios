@@ -6,17 +6,19 @@ import Shared
 
 public class CreateMeetingViewController: UIViewController{
     let disposeBag = DisposeBag()
+    let meetingTitle: String
     let createMeetingViewModel: CreateMeetingViewModel
     
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = Fonts.SH03Bold.font
+        label.text = self.meetingTitle
         return label
     }()
     
     lazy var backButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "icon-arrow-left-24"), for: .normal)
+        button.setImage(SharedDSKitAsset.Icons.iconArrowLeft24.image, for: .normal)
         return button
     }()
     
@@ -61,9 +63,9 @@ public class CreateMeetingViewController: UIViewController{
     }()
     
     public init(meetingTitle: String, createMeetingViewModel: CreateMeetingViewModel) {
+        self.meetingTitle = meetingTitle
         self.createMeetingViewModel = createMeetingViewModel
         super.init(nibName: nil, bundle: nil)
-        self.titleLabel.text = meetingTitle
     }
     
     required init?(coder: NSCoder) {
@@ -79,6 +81,33 @@ public class CreateMeetingViewController: UIViewController{
     }
     
     private func bind(){
+        backButton.rx.tap
+            .bind(to: createMeetingViewModel.backButtonTapped)
+            .disposed(by: disposeBag)
+        
+        createMeetingViewModel.backButtonTapped
+            .bind(onNext: { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        nextButton.rx.tap
+            .bind(to: createMeetingViewModel.nextButtonTapped)
+            .disposed(by: disposeBag)
+        
+        createMeetingViewModel.nextButtonTapped
+            .bind(onNext: { [weak self] in
+                switch self?.createMeetingViewModel.meetingTypeRelay.value {
+                case .develop:
+                    self?.navigateToSelectDevelopDetailsVC()
+                case .hobby:
+                    break
+                default:
+                    break
+                }
+            })
+            .disposed(by: disposeBag)
+        
         developBtView.tapGesture.rx.event
             .map { _ in Void() }
             .bind(to: createMeetingViewModel.developBtViewTapped)
@@ -93,24 +122,15 @@ public class CreateMeetingViewController: UIViewController{
             .subscribe(onNext: { [weak self] type in
                 switch type {
                 case .develop:
-                    self?.nextButton.setTitleColor(.white, for: .normal)
-                    self?.nextButton.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
-                    self?.nextButton.isEnabled = true
-                    self?.nextButton.backgroundColor = SharedDSKitAsset.Colors.lightGreen.color
+                    self?.enabledNextButton()
                     self?.developBtView.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
                     self?.hobbyBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                 case .hobby:
-                    self?.nextButton.setTitleColor(.white, for: .normal)
-                    self?.nextButton.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
-                    self?.nextButton.isEnabled = true
-                    self?.nextButton.backgroundColor = SharedDSKitAsset.Colors.lightGreen.color
+                    self?.enabledNextButton()
                     self?.developBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                     self?.hobbyBtView.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
                 case .none:
-                    self?.nextButton.setTitleColor(SharedDSKitAsset.Colors.gr30.color, for: .normal)
-                    self?.nextButton.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-                    self?.nextButton.isEnabled = false
-                    self?.nextButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                    self?.disabledNextButton()
                     self?.developBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                     self?.hobbyBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                 }
@@ -167,4 +187,23 @@ public class CreateMeetingViewController: UIViewController{
         }
         
     }
+    
+    private func enabledNextButton(){
+        self.nextButton.setTitleColor(.white, for: .normal)
+        self.nextButton.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
+        self.nextButton.backgroundColor = SharedDSKitAsset.Colors.lightGreen.color
+        self.nextButton.isEnabled = true
+    }
+    
+    private func disabledNextButton(){
+        self.nextButton.setTitleColor(SharedDSKitAsset.Colors.gr30.color, for: .normal)
+        self.nextButton.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+        self.nextButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+        self.nextButton.isEnabled = false
+    }
+    
+    private func navigateToSelectDevelopDetailsVC(){
+        self.navigationController?.pushViewController(SelectDevelopDetailsViewController(meetingTitle: self.meetingTitle, selectDevelopDetailsViewModel: SelectDevelopDetailsViewModel()), animated: true)
+    }
+    
 }
