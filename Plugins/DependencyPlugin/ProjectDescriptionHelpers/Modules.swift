@@ -34,6 +34,7 @@ public extension ModulePath {
         case Profile
         case Chat
         case Home
+        case MyPage
         
         public static let name: String = "Feature"
     }
