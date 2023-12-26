@@ -6,6 +6,7 @@ public class SelectDevelopDetailsViewModel{
     let developDetailTypeRelay = BehaviorRelay<DevelopDetailType>(value: .none)
     
     let backButtonTapped = PublishRelay<Void>()
+    let nextButtonTapped = PublishRelay<Void>()
     let studyBtViewTapped = PublishRelay<Void>()
     let sideProjectBtViewTapped = PublishRelay<Void>()
     let jobChangeBtViewTapped = PublishRelay<Void>()

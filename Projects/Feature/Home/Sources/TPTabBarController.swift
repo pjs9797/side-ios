@@ -6,9 +6,10 @@ public class TPTabBarController: UITabBarController {
         super.viewDidLoad()
         setTabBar()
     }
+    
     func setTabBar() {
-        //tabBar.barTintColor = SharedDSKitAsset.Colors.lightGreen.color
-        //tabBar.unselectedItemTintColor = SharedDSKitAsset.Colors.gr100.color
+        tabBar.barTintColor = SharedDSKitAsset.Colors.lightGreen.color
+        tabBar.unselectedItemTintColor = SharedDSKitAsset.Colors.gr100.color
         tabBar.backgroundColor = SharedDSKitAsset.Colors.white.color
         if let items = tabBar.items {
             let attribute = [NSAttributedString.Key.font: Fonts.ST01.font]

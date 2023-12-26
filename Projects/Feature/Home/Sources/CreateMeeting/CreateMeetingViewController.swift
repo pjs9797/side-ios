@@ -9,18 +9,7 @@ public class CreateMeetingViewController: UIViewController{
     let meetingTitle: String
     let createMeetingViewModel: CreateMeetingViewModel
     
-    lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = Fonts.SH03Bold.font
-        label.text = self.meetingTitle
-        return label
-    }()
-    
-    lazy var backButton: UIButton = {
-        let button = UIButton()
-        button.setImage(SharedDSKitAsset.Icons.iconArrowLeft24.image, for: .normal)
-        return button
-    }()
+    let backButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: nil, action: nil)
     
     lazy var progressView: UIProgressView = {
         let progressView = UIProgressView()
@@ -75,9 +64,20 @@ public class CreateMeetingViewController: UIViewController{
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        
+        setNavigationbar()
         bind()
         layout()
+    }
+    
+    private func setNavigationbar() {
+        self.title = self.meetingTitle
+        navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.font : Fonts.SH03Bold.font,
+            .foregroundColor: UIColor.black
+        ]
+        
+        self.backButton.tintColor = SharedDSKitAsset.Colors.black.color
+        navigationItem.leftBarButtonItem = backButton
     }
     
     private func bind(){
@@ -99,9 +99,9 @@ public class CreateMeetingViewController: UIViewController{
             .bind(onNext: { [weak self] in
                 switch self?.createMeetingViewModel.meetingTypeRelay.value {
                 case .develop:
-                    self?.navigateToSelectDevelopDetailsVC()
+                    self?.navigationController?.pushViewController(SelectDevelopDetailsViewController(meetingTitle: self?.meetingTitle ?? "모임 생성", selectDevelopDetailsViewModel: SelectDevelopDetailsViewModel()), animated: true)
                 case .hobby:
-                    break
+                    self?.navigationController?.pushViewController(SelectHobbyDetailsViewController(meetingTitle: self?.meetingTitle ?? "모임 생성", selectHobbyDetailsViewModel: SelectHobbyDetailsViewModel()), animated: true)
                 default:
                     break
                 }
@@ -140,24 +140,13 @@ public class CreateMeetingViewController: UIViewController{
     }
     
     private func layout(){
-        [titleLabel,backButton,progressView,questionLabel,developBtView,hobbyBtView,nextButton]
+        [progressView,questionLabel,developBtView,hobbyBtView,nextButton]
             .forEach{ view.addSubview($0) }
-                
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(12)
-            make.centerX.equalToSuperview()
-        }
-        
-        backButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.centerY.equalTo(titleLabel)
-            make.leading.equalToSuperview().offset(20)
-        }
         
         progressView.snp.makeConstraints { make in
             make.height.equalTo(2)
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(titleLabel.snp.bottom).offset(12)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
         
         questionLabel.snp.makeConstraints { make in
@@ -183,7 +172,7 @@ public class CreateMeetingViewController: UIViewController{
             make.width.equalTo(335)
             make.height.equalTo(52)
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(8)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-8)
         }
         
     }
@@ -200,10 +189,6 @@ public class CreateMeetingViewController: UIViewController{
         self.nextButton.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         self.nextButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
         self.nextButton.isEnabled = false
-    }
-    
-    private func navigateToSelectDevelopDetailsVC(){
-        self.navigationController?.pushViewController(SelectDevelopDetailsViewController(meetingTitle: self.meetingTitle, selectDevelopDetailsViewModel: SelectDevelopDetailsViewModel()), animated: true)
     }
     
 }
