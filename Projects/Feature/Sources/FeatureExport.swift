@@ -13,3 +13,5 @@
 @_exported import FeatureProfileInterface
 @_exported import FeatureChat
 @_exported import FeatureChatInterface
+@_exported import FeatureMyPage
+@_exported import FeatureMyPageInterface
