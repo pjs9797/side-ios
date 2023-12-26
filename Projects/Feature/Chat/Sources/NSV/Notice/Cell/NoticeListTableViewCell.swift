@@ -15,6 +15,7 @@ class NoticeListTableViewCell: UITableViewCell {
         var label = UILabel()
         label.font = Fonts.Body02.font
         label.textColor = SharedDSKitAsset.Colors.gr100.color
+        label.lineBreakMode = .byTruncatingTail
         return label
     }()
     
@@ -62,13 +63,14 @@ class NoticeListTableViewCell: UITableViewCell {
         
         noticeTitleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview()
             make.top.equalToSuperview().offset(16)
             make.height.equalTo(24)
         }
         
         createdDateAndAdminLabel.snp.makeConstraints { make in
             make.top.equalTo(noticeTitleLabel.snp.bottom).offset(2)
-            make.leading.equalToSuperview().offset(16)
+            make.leading.equalToSuperview().offset(20)
             make.height.equalTo(21)
         }
         

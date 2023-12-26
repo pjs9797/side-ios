@@ -10,22 +10,16 @@ import FeatureChatInterface
 import Shared
 
 import SnapKit
+import SideMenu
 
 protocol ChattingRoomSideMenuDelegate: AnyObject {
     func menuButtonTapped()
-}
-
-struct SideMenuItem {
-    let viewController: 
+    func itemSelected(item: UIViewController)
 }
 
 class ChattingRoomSideMenuViewController: UIViewController {
     
-    weak var delegate: ChattingRoomSideMenuDelegate?
-    
     var tableViewDataSource = [MemberListDataModel]()
-    
-    var collectionViewDataSource = [UIImage]()
     
     private var buttonsFooterView = ButtonsFooterView()
     
@@ -78,38 +72,10 @@ class ChattingRoomSideMenuViewController: UIViewController {
         return button
     }()
     
-    private var voteButton: UIButton = {
-        var button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(SharedDSKitAsset.Icons.iconVote24.image, for: .normal)
-        button.backgroundColor = SharedDSKitAsset.Colors.bgLightGray.color
-        button.setTitle("투표", for: .normal)
-        button.titleLabel?.font = Fonts.Caption.font
-        button.setTitleColor(SharedDSKitAsset.Colors.text02.color, for: .normal)
-        
-        return button
-    }()
-    
     private var titleAndButtonsView: UIView = {
         var view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
-    }()
-    
-    private var albumTitleLabel: UILabel = {
-        var label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "앨범"
-        label.font = Fonts.SH02Bold.font
-        label.textColor = SharedDSKitAsset.Colors.gr100.color
-        return label
-    }()
-    
-    private var goToAlbumViewButton: UIButton = {
-        var button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(SharedDSKitAsset.Icons.iconArrowRight16.image, for: .normal)
-        return button
     }()
     
     private var memberListTitleLabel: UILabel = {
@@ -121,30 +87,16 @@ class ChattingRoomSideMenuViewController: UIViewController {
         return label
     }()
     
-    private let albumCollectionView: UICollectionView = {
-        var layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 1
-        
-        var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        
-        return collectionView
-    }()
-    
     private let memberListTableView: UITableView = {
         var tableView = UITableView()
         tableView.bounces = false
         tableView.separatorStyle = .none
+        tableView.backgroundColor = .white
         return tableView
     }()
     
-    private var albumsStackView: UIView = {
-       var view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     private var membersStackView: UIView = {
-       var view = UIView()
+        var view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -155,12 +107,10 @@ class ChattingRoomSideMenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .clear
+        view.backgroundColor = .white
         mocking()
-        mockingCollectionView()
         setUp()
         configureSubviews()
-//        configureTapGesture()
         render()
     }
     
@@ -168,26 +118,10 @@ class ChattingRoomSideMenuViewController: UIViewController {
         
         configureSubviews()
         
-        // 애니메이션
-        view.frame.origin.x = self.view.frame.size.width
-        
-        topConstraint = sideMenuView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.size.height)
-        topConstraint.isActive = true
-        
-        trailingConstraint = sideMenuView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -view.frame.size.width)
-        trailingConstraint.isActive = true
-        
-        leadingConstraint = sideMenuView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.size.width)
-        leadingConstraint.isActive = true
-        
         sideMenuView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(44)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(-topbarHeight)
+            make.leading.trailing.bottom.equalToSuperview()
         }
-        
-        sideMenuView.heightAnchor.constraint(equalToConstant: view.frame.size.height * 0.845).isActive = true
-        sideMenuView.widthAnchor.constraint(equalToConstant: view.frame.size.width * 0.845).isActive = true
-        sideMenuView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        
         
         // 첫번쨰 스택뷰
         titleAndButtonsView.snp.makeConstraints { make in
@@ -209,7 +143,7 @@ class ChattingRoomSideMenuViewController: UIViewController {
         }
         
         noticeButton.snp.makeConstraints { make in
-            make.width.equalTo(((view.frame.size.width * 0.845 - 2) / 3))
+            make.width.equalTo(((view.frame.size.width * 0.845 - 2) / 2))
             make.leading.bottom.equalToSuperview()
             make.top.equalTo(roomDateLabel.snp.bottom).offset(24)
         }
@@ -217,55 +151,19 @@ class ChattingRoomSideMenuViewController: UIViewController {
         noticeButton.alignTextBelow(spacing: 4)
         
         scheduleButton.snp.makeConstraints { make in
-            make.width.equalTo(((view.frame.size.width * 0.845 - 2) / 3))
+            make.width.equalTo(((view.frame.size.width * 0.845 - 2) / 2))
             make.bottom.equalToSuperview()
             make.leading.equalTo(noticeButton.snp.trailing).offset(1)
-            make.trailing.equalTo(voteButton.snp.leading).offset(-1)
+            make.trailing.equalToSuperview().offset(-1)
             make.top.equalTo(roomDateLabel.snp.bottom).offset(24)
         }
         
         scheduleButton.alignTextBelow(spacing: 4)
         
-        voteButton.snp.makeConstraints { make in
-            make.width.equalTo(((view.frame.size.width * 0.845 - 2) / 3))
-            make.bottom.trailing.equalToSuperview()
-            make.top.equalTo(roomDateLabel.snp.bottom).offset(24)
-        }
-        
-        voteButton.alignTextBelow(spacing: 4)
-        
         // 두번째 스택뷰
-        albumsStackView.snp.makeConstraints { make in
-            make.top.equalTo(titleAndButtonsView.snp.bottom).offset(40)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(103)
-        }
-        
-        albumTitleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-36)
-            make.height.equalTo(22)
-        }
-        
-        goToAlbumViewButton.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.leading.equalTo(albumTitleLabel.snp.trailing)
-            make.trailing.equalToSuperview()
-            make.height.equalTo(22)
-        }
-        
-        albumCollectionView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
-            make.bottom.equalToSuperview()
-            make.top.equalTo(albumTitleLabel.snp.bottom).offset(16)
-        }
-        
-        // 세번째 스택뷰
         membersStackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(albumsStackView.snp.bottom).offset(40)
+            make.top.equalTo(titleAndButtonsView.snp.bottom).offset(40)
             make.bottom.equalTo(buttonsFooterView.snp.top)
         }
         
@@ -290,13 +188,11 @@ class ChattingRoomSideMenuViewController: UIViewController {
     
     private func configureSubviews() {
         
-        titleAndButtonsView.addSubViews([roomTitleLabel, roomDateLabel, noticeButton, scheduleButton, voteButton])
-        
-        albumsStackView.addSubViews([albumTitleLabel, albumCollectionView, goToAlbumViewButton])
+        titleAndButtonsView.addSubViews([roomTitleLabel, roomDateLabel, noticeButton, scheduleButton])
         
         membersStackView.addSubViews([memberListTitleLabel, memberListTableView])
         
-        sideMenuView.addSubViews([titleAndButtonsView, albumsStackView, membersStackView, buttonsFooterView])
+        sideMenuView.addSubViews([titleAndButtonsView, membersStackView, buttonsFooterView])
         
         view.addSubview(sideMenuView)
         
@@ -306,13 +202,9 @@ class ChattingRoomSideMenuViewController: UIViewController {
         memberListTableView.delegate = self
         memberListTableView.dataSource = self
         
-        albumCollectionView.delegate = self
-        albumCollectionView.dataSource = self
-        
         memberListTableView.register(MemberListTableViewCell.self, forCellReuseIdentifier: MemberListTableViewCell.className)
         
-        albumCollectionView.register(AlbumCollectionViewCell.self, forCellWithReuseIdentifier: AlbumCollectionViewCell.className)
-        
+        noticeButton.addTarget(self, action: #selector(didTapNoticeButton), for: .touchUpInside)
         scheduleButton.addTarget(self, action: #selector(didTapScheduleButton), for: .touchUpInside)
     }
     
@@ -321,62 +213,25 @@ class ChattingRoomSideMenuViewController: UIViewController {
             .member(data: MemberListCellMockData(image: SharedDSKitAsset.Icons.testPhoto.image, name: "청계산 다람쥐", isAdmin: true, isMe: false)),
             .member(data: MemberListCellMockData(image: SharedDSKitAsset.Icons.testPhoto.image, name: "김혁", isAdmin: false, isMe: true)),
             .member(data: MemberListCellMockData(image: SharedDSKitAsset.Icons.testPhoto.image, name: "Hardmedia201821", isAdmin: false, isMe: false)),
+            .member(data: MemberListCellMockData(image: SharedDSKitAsset.Icons.testPhoto.image, name: "몽이건강해", isAdmin: false, isMe: false)),
+            .member(data: MemberListCellMockData(image: SharedDSKitAsset.Icons.testPhoto.image, name: "청계산 다람쥐", isAdmin: true, isMe: false)),
+            .member(data: MemberListCellMockData(image: SharedDSKitAsset.Icons.testPhoto.image, name: "김혁", isAdmin: false, isMe: true)),
+            .member(data: MemberListCellMockData(image: SharedDSKitAsset.Icons.testPhoto.image, name: "Hardmedia201821", isAdmin: false, isMe: false)),
+            .member(data: MemberListCellMockData(image: SharedDSKitAsset.Icons.testPhoto.image, name: "몽이건강해", isAdmin: false, isMe: false)),
+            .member(data: MemberListCellMockData(image: SharedDSKitAsset.Icons.testPhoto.image, name: "청계산 다람쥐", isAdmin: true, isMe: false)),
+            .member(data: MemberListCellMockData(image: SharedDSKitAsset.Icons.testPhoto.image, name: "김혁", isAdmin: false, isMe: true)),
+            .member(data: MemberListCellMockData(image: SharedDSKitAsset.Icons.testPhoto.image, name: "Hardmedia201821", isAdmin: false, isMe: false)),
             .member(data: MemberListCellMockData(image: SharedDSKitAsset.Icons.testPhoto.image, name: "몽이건강해", isAdmin: false, isMe: false))
         ]
         self.memberListTableView.reloadData()
     }
     
-    private func mockingCollectionView() {
-        self.collectionViewDataSource = [
-            SharedDSKitAsset.Icons.testPhoto.image,
-            SharedDSKitAsset.Icons.testPhoto.image,
-            SharedDSKitAsset.Icons.testPhoto.image,
-            SharedDSKitAsset.Icons.testPhoto.image
-        ]
-        self.albumCollectionView.reloadData()
-    }
-    
-    func show() {
-        self.view.frame.origin.x = 0
-        self.view.frame.origin.y = 0
-        self.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
-        UIView.animate(withDuration: 0.5) {
-            self.leadingConstraint.constant = 60
-            self.trailingConstraint.constant = 0
-            self.topConstraint.constant = 44
-            self.view.layoutIfNeeded()
-        }
-    }
-    
-    func hide() {
-        self.view.backgroundColor = .clear
-        UIView.animate(withDuration: 0.5) {
-            self.leadingConstraint.constant = self.view.frame.size.width
-            self.topConstraint.constant = self.view.frame.size.height
-            self.trailingConstraint.constant = -self.view.frame.size.width
-            self.view.layoutIfNeeded()
-        } completion: { _ in
-            self.view.frame.origin.x = self.view.frame.size.width
-            self.view.frame.origin.y = self.view.frame.size.height
-        }
-    }
-    
-//    private func configureTapGesture() {
-//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapped))
-//        tapGesture.delegate = self
-//        tapGesture.cancelsTouchesInView = false
-//        view.addGestureRecognizer(tapGesture)
-//    }
-    
-    @objc private func tapped() {
-        hide()
+    @objc private func didTapNoticeButton() {
+        navigationController?.pushViewController(NSVViewController(selectedSegmentIndex: 0), animated: true)
     }
     
     @objc private func didTapScheduleButton() {
-        print("SAFASGASG")
-        hide()
-        navigationController?.pushViewController(ScheduleListViewController(), animated: true)
-//        self.present(ScheduleListViewController(), animated: true)
+        navigationController?.pushViewController(NSVViewController(selectedSegmentIndex: 1), animated: true)
     }
 }
 
@@ -418,49 +273,34 @@ extension ChattingRoomSideMenuViewController: UIGestureRecognizerDelegate {
     }
 }
 
-extension ChattingRoomSideMenuViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.collectionViewDataSource.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AlbumCollectionViewCell.className, for: indexPath) as! AlbumCollectionViewCell
-        cell.photoImageView.image = collectionViewDataSource[indexPath.row]
-        
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = CGSize(width: 65, height: 65)
-        
-        return size
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 4
-    }
-}
-
 extension UIButton {
     
     func alignTextBelow(spacing: CGFloat = 4.0) {
-            guard let image = self.imageView?.image else {
-                return
-            }
-
-            guard let titleLabel = self.titleLabel else {
-                return
-            }
-
-            guard let titleText = titleLabel.text else {
-                return
-            }
-
-            let titleSize = titleText.size(withAttributes: [
-                NSAttributedString.Key.font: titleLabel.font as Any
-            ])
-
-            titleEdgeInsets = UIEdgeInsets(top: spacing, left: -image.size.width, bottom: -image.size.height, right: 0)
-            imageEdgeInsets = UIEdgeInsets(top: -(titleSize.height + spacing), left: 0, bottom: 0, right: -titleSize.width)
+        guard let image = self.imageView?.image else {
+            return
         }
+        
+        guard let titleLabel = self.titleLabel else {
+            return
+        }
+        
+        guard let titleText = titleLabel.text else {
+            return
+        }
+        
+        let titleSize = titleText.size(withAttributes: [
+            NSAttributedString.Key.font: titleLabel.font as Any
+        ])
+        
+        titleEdgeInsets = UIEdgeInsets(top: spacing, left: -image.size.width, bottom: -image.size.height, right: 0)
+        imageEdgeInsets = UIEdgeInsets(top: -(titleSize.height + spacing), left: 0, bottom: 0, right: -titleSize.width)
+    }
+}
+
+extension UIViewController {
+    
+    var topbarHeight: CGFloat {
+        return (view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0.0) +
+        (self.navigationController?.navigationBar.frame.height ?? 0.0)
+    }
 }

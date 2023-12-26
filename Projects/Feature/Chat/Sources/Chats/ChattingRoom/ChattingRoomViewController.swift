@@ -8,10 +8,9 @@
 import UIKit
 import FeatureChatInterface
 import Shared
+import SideMenu
 
 public class ChattingRoomViewController: UIViewController {
-    
-    weak var delegate: ChattingRoomSideMenuDelegate?
     
     var dataSource = [ConversationMockDataModel]()
     
@@ -33,7 +32,13 @@ public class ChattingRoomViewController: UIViewController {
         view.backgroundColor = .white
         mocking()
         setUp()
+        navigationItem.title = "영화관투어모임 영사모 >_<"
+    }
+    
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         render()
+        conversationTableView.reloadData()
     }
     
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -75,7 +80,6 @@ public class ChattingRoomViewController: UIViewController {
     
     
     private func setUp() {
-        
         conversationTableView.delegate = self
         conversationTableView.dataSource = self
         textInputView.textView.delegate = self
@@ -85,15 +89,18 @@ public class ChattingRoomViewController: UIViewController {
         conversationTableView.register(OthersConversationTableViewCell.self, forCellReuseIdentifier: OthersConversationTableViewCell.className)
         
         
-        let barButtonItem = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconSave24.image, style: .plain, target: self, action: #selector(menuButtonTapped))
+        let sideMenuBarButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconList24.image, style: .plain, target: self, action: #selector(menuButtonTapped))
         
-        let dismissBarButtonItem = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconSave24.image, style: .plain, target: self, action: #selector(tapDismiss))
+        let dismissBarButtonItem = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: self, action: #selector(tapDismiss))
         
-        navigationItem.setRightBarButton(barButtonItem, animated: false)
+        sideMenuBarButton.tintColor = SharedDSKitAsset.Colors.gr100.color
+        dismissBarButtonItem.tintColor = SharedDSKitAsset.Colors.gr100.color
+        
+        navigationItem.setRightBarButton(sideMenuBarButton, animated: false)
         navigationItem.setLeftBarButton(dismissBarButtonItem, animated: true)
         
         let tap = UIGestureRecognizer(target: self, action: #selector(endEditing))
-            conversationTableView.addGestureRecognizer(tap)
+        conversationTableView.addGestureRecognizer(tap)
         self.view.addGestureRecognizer(tap)
         view.addGestureRecognizer(tap)
     }
@@ -123,7 +130,17 @@ public class ChattingRoomViewController: UIViewController {
     }
     
     @objc private func menuButtonTapped() {
-        delegate?.menuButtonTapped()
+        let sideMenuVC = ChattingRoomSideMenuViewController()
+        let menu = SideMenuNavigationController(rootViewController: sideMenuVC)
+        
+        SideMenuManager.default.rightMenuNavigationController = menu
+        SideMenuManager.default.addPanGestureToPresent(toView: view)
+        
+        menu.presentationStyle = .menuSlideIn
+        menu.menuWidth = self.view.frame.width * 0.84
+        menu.presentationStyle.presentingEndAlpha = 0.6
+        
+        present(menu, animated: true, completion: nil)
     }
     
     @objc private func endEditing() {
@@ -132,7 +149,7 @@ public class ChattingRoomViewController: UIViewController {
     }
     
     @objc private func tapDismiss() {
-        self.dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
     }
     
 }
@@ -174,6 +191,13 @@ extension ChattingRoomViewController: UITextViewDelegate {
         if textView.text == "메세지를 입력해주세요." {
             textView.text = nil
             textView.textColor = SharedDSKitAsset.Colors.gr100.color
+        }
+    }
+    
+    public func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "메세지를 입력해주세요."
+            textView.textColor = SharedDSKitAsset.Colors.gr30.color
         }
     }
 }

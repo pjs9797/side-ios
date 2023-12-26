@@ -11,7 +11,7 @@ import Shared
 public class ButtonsFooterView: UIView {
     
     var leaveButton: UIButton = {
-       var button = UIButton()
+        var button = UIButton()
         button.setImage(SharedDSKitAsset.Icons.iconOut24.image, for: .normal)
         return button
     }()
@@ -70,5 +70,5 @@ public class ButtonsFooterView: UIView {
             make.size.equalTo(24)
         }
     }
-
+    
 }

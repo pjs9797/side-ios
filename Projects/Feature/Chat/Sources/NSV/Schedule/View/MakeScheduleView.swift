@@ -84,6 +84,9 @@ class MakeScheduleView: UIView {
     var descriptionTextView: UITextView = {
         var textView = UITextView()
         textView.backgroundColor = .clear
+        textView.font = Fonts.Body02.font
+        textView.textColor = SharedDSKitAsset.Colors.gr30.color
+        textView.text = "멤버들에게 필요한 내용으로 작성해주세요"
         return textView
     }()
     
@@ -103,12 +106,9 @@ class MakeScheduleView: UIView {
     }
     
     private func render() {
-        
         timeButton.addSubViews([dateLabel, timeLabel])
         
         addSubViews([titleTextField, separatorLine1, timeImageView, timeButton, separatorLine2, locationView, maximumMemberView, budgetView, descriptionTextView, separatorLine3])
-        
-        
         
         titleTextField.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
@@ -176,7 +176,7 @@ class MakeScheduleView: UIView {
         }
         
         descriptionTextView.snp.makeConstraints { make in
-            make.top.equalTo(budgetView)
+            make.top.equalTo(budgetView.snp.bottom).offset(16)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
             make.bottom.equalTo(keyboardLayoutGuide.snp.top)
@@ -188,6 +188,5 @@ class MakeScheduleView: UIView {
             make.top.equalTo(descriptionTextView.snp.bottom).offset(1)
             make.height.equalTo(1)
         }
-        
     }
 }
