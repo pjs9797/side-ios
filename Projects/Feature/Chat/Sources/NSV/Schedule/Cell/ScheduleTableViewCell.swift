@@ -15,6 +15,7 @@ class ScheduleTableViewCell: UITableViewCell {
         var label = UILabel()
         label.font = Fonts.Body02.font
         label.textColor = SharedDSKitAsset.Colors.gr100.color
+        label.lineBreakMode = .byTruncatingTail
         return label
     }()
     
@@ -29,6 +30,8 @@ class ScheduleTableViewCell: UITableViewCell {
         var label = UILabel()
         label.font = Fonts.Body01.font
         label.textColor = SharedDSKitAsset.Colors.text03.color
+        label.lineBreakMode = .byTruncatingTail
+        label.textAlignment = .left
         return label
     }()
     
@@ -46,6 +49,7 @@ class ScheduleTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = .clear
+        selectionStyle = .none
         render()
     }
     
@@ -58,7 +62,6 @@ class ScheduleTableViewCell: UITableViewCell {
     }
     
     func render() {
-        
         contentView.addSubViews([scheduleTitleLabel, timeLabel, locationLabel, memberCountLabel])
         
         contentView.snp.makeConstraints { make in
@@ -82,11 +85,13 @@ class ScheduleTableViewCell: UITableViewCell {
         locationLabel.snp.makeConstraints { make in
             make.centerY.equalTo(timeLabel)
             make.leading.equalTo(timeLabel.snp.trailing).offset(10)
+            make.trailing.lessThanOrEqualTo(memberCountLabel.snp.leading)
         }
         
         memberCountLabel.snp.makeConstraints { make in
             make.centerY.equalTo(timeLabel)
             make.trailing.equalToSuperview().offset(-16)
+            make.width.equalTo(22)
         }
         
     }

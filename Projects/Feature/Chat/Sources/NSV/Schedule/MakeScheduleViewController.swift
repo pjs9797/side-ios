@@ -15,13 +15,6 @@ public class MakeScheduleViewController: UIViewController {
     public override func loadView() {
         super.loadView()
         view = makeScheduleView
-        
-        let dismissBarButtonItem = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowClose24.image, style: .plain, target: self, action: #selector(didTapDismissButton))
-        let postBarButtonItem = UIBarButtonItem(title: "게시", style: .plain, target: self, action: #selector(didTapPostButton))
-        
-        navigationItem.title = "일정 올리기"
-        navigationItem.setRightBarButton(postBarButtonItem, animated: true)
-        navigationItem.setLeftBarButton(dismissBarButtonItem, animated: true)
     }
     
     public override func viewDidLoad() {
@@ -31,9 +24,16 @@ public class MakeScheduleViewController: UIViewController {
     }
     
     private func setUp() {
+        let dismissBarButtonItem = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowClose24.image, style: .plain, target: self, action: #selector(didTapDismissButton))
+        let postBarButtonItem = UIBarButtonItem(title: "게시", style: .plain, target: self, action: #selector(didTapPostButton))
+        
+        navigationItem.title = "일정 올리기"
+        navigationItem.setRightBarButton(postBarButtonItem, animated: true)
+        navigationItem.setLeftBarButton(dismissBarButtonItem, animated: true)
+        
         makeScheduleView.timeButton.addTarget(self, action: #selector(didTapTimeButton), for: .touchUpInside)
         
-        var tap = UIGestureRecognizer(target: self, action: #selector(didTapView))
+        makeScheduleView.descriptionTextView.delegate = self
     }
     
     @objc private func didTapTimeButton() {
@@ -97,7 +97,7 @@ public class MakeScheduleViewController: UIViewController {
     }
     
     @objc private func didTapPostButton() {
-        self.dismiss(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     @objc private func didTapDismissButton() {
@@ -112,4 +112,20 @@ public class MakeScheduleViewController: UIViewController {
         
     }
 
+}
+
+extension MakeScheduleViewController: UITextViewDelegate {
+    public func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == "멤버들에게 필요한 내용으로 작성해주세요" {
+            textView.text = nil
+            textView.textColor = SharedDSKitAsset.Colors.gr100.color
+        }
+    }
+    
+    public func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "멤버들에게 필요한 내용으로 작성해주세요"
+            textView.textColor = SharedDSKitAsset.Colors.gr30.color
+        }
+    }
 }

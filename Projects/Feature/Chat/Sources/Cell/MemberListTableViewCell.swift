@@ -12,6 +12,7 @@ class MemberListTableViewCell: UITableViewCell {
     
     var profileImageView: UIImageView = {
        var imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = SharedDSKitAsset.Icons.kakao.image
         imageView.layer.cornerRadius = imageView.frame.size.width / 2
         imageView.backgroundColor = .clear
@@ -30,6 +31,7 @@ class MemberListTableViewCell: UITableViewCell {
     
     var nameLabel: UILabel = {
         var label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SH01.font
         label.textColor = SharedDSKitAsset.Colors.gr100.color
         return label
@@ -37,7 +39,7 @@ class MemberListTableViewCell: UITableViewCell {
     
     var meLabel: UILabel = {
         var label = UILabel()
-//        label.translatesAutoresizingMaskIntoConstraints = false
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "me"
         label.textAlignment = .center
         label.textColor = .white
@@ -52,6 +54,7 @@ class MemberListTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         render()
+        backgroundColor = .white
     }
     
     override func layoutSubviews() {

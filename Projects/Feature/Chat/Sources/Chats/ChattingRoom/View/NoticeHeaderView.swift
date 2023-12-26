@@ -28,7 +28,6 @@ public class NoticeHeaderView: UIView {
     public override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = SharedDSKitAsset.Colors.bgGray.color
-//        backgroundColor = .red
         render()
     }
     
