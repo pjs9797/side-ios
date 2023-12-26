@@ -11,7 +11,7 @@ import FeatureProfile
 import FeatureSignUpInterface
 import FeatureSignUp
 import FeatureHome
-
+import Shared
 
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {

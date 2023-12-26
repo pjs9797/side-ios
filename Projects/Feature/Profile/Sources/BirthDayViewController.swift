@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 class BirthDayViewController: UIViewController, UITextFieldDelegate {
     let progressBar = ProgressBarView().profileProgressView
     let birthDayLabel = UILabel()
