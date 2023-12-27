@@ -140,10 +140,13 @@ public class SelectDevelopDetailsViewController: UIViewController{
     private func setNavigationbar() {
         self.title = self.meetingTitle
         self.tabBarController?.tabBar.isHidden = true
+<<<<<<< HEAD
 =======
     private func setNavigationbar() {
         self.title = self.meetingTitle
 >>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
+=======
+>>>>>>> 67ee1ca ([FEAT] 모임 생성 타입 화면 개발)
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font : Fonts.SH03Bold.font,
             .foregroundColor: UIColor.black

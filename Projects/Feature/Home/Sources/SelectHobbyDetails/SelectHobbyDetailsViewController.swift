@@ -99,9 +99,13 @@ public class SelectHobbyDetailsViewController: UIViewController{
     private func setNavigationbar() {
         self.title = self.meetingTitle
 <<<<<<< HEAD
+<<<<<<< HEAD
         self.tabBarController?.tabBar.isHidden = true
 =======
 >>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
+=======
+        self.tabBarController?.tabBar.isHidden = true
+>>>>>>> 67ee1ca ([FEAT] 모임 생성 타입 화면 개발)
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font : Fonts.SH03Bold.font,
             .foregroundColor: UIColor.black
@@ -166,11 +170,14 @@ public class SelectHobbyDetailsViewController: UIViewController{
                     .disposed(by: cell.disposeBag)
                 
 <<<<<<< HEAD
+<<<<<<< HEAD
                 cell.myIndexPath = IndexPath(row: row, section: 0)
                 cell.configure(model: data)
 =======
                 
                 
+=======
+>>>>>>> 67ee1ca ([FEAT] 모임 생성 타입 화면 개발)
                 cell.myIndexPath = IndexPath(row: row, section: 0)
                 cell.configure(model: data)
                 
