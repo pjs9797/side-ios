@@ -84,14 +84,33 @@ public class ChattingRoomViewController: UIViewController {
         conversationTableView.dataSource = self
         textInputView.textView.delegate = self
         
-        conversationTableView.register(MyConversationTableViewCell.self, forCellReuseIdentifier: MyConversationTableViewCell.className)
-        conversationTableView.register(FirstOthersConversationTableViewCell.self, forCellReuseIdentifier: FirstOthersConversationTableViewCell.className)
-        conversationTableView.register(OthersConversationTableViewCell.self, forCellReuseIdentifier: OthersConversationTableViewCell.className)
+        conversationTableView.register(
+            MyConversationTableViewCell.self,
+            forCellReuseIdentifier: MyConversationTableViewCell.className
+        )
+        conversationTableView.register(
+            FirstOthersConversationTableViewCell.self,
+            forCellReuseIdentifier: FirstOthersConversationTableViewCell.className
+        )
+        conversationTableView.register(
+            OthersConversationTableViewCell.self,
+            forCellReuseIdentifier: OthersConversationTableViewCell.className
+        )
         
         
-        let sideMenuBarButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconList24.image, style: .plain, target: self, action: #selector(menuButtonTapped))
+        let sideMenuBarButton = UIBarButtonItem(
+            image: SharedDSKitAsset.Icons.iconList24.image,
+            style: .plain,
+            target: self,
+            action: #selector(menuButtonTapped)
+        )
         
-        let dismissBarButtonItem = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: self, action: #selector(tapDismiss))
+        let dismissBarButtonItem = UIBarButtonItem(
+            image: SharedDSKitAsset.Icons.iconArrowLeft24.image,
+            style: .plain,
+            target: self,
+            action: #selector(tapDismiss)
+        )
         
         sideMenuBarButton.tintColor = SharedDSKitAsset.Colors.gr100.color
         dismissBarButtonItem.tintColor = SharedDSKitAsset.Colors.gr100.color
@@ -106,7 +125,6 @@ public class ChattingRoomViewController: UIViewController {
     }
     
     private func render() {
-        
         view.addSubViews([noticeView, conversationTableView, textInputView])
         
         noticeView.snp.makeConstraints { make in
@@ -151,7 +169,6 @@ public class ChattingRoomViewController: UIViewController {
     @objc private func tapDismiss() {
         self.navigationController?.popViewController(animated: true)
     }
-    
 }
 
 extension ChattingRoomViewController: UITableViewDelegate, UITableViewDataSource {
@@ -164,13 +181,19 @@ extension ChattingRoomViewController: UITableViewDelegate, UITableViewDataSource
         switch self.dataSource[indexPath.row] {
             
         case let .myConversation(data):
-            let cell = tableView.dequeueReusableCell(withIdentifier: MyConversationTableViewCell.className, for: indexPath) as! MyConversationTableViewCell
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: MyConversationTableViewCell.className,
+                for: indexPath
+            ) as! MyConversationTableViewCell
             cell.messageBox.text = data.message
             cell.timeLabel.text = data.time
             return cell
             
         case let .firstConversation(data):
-            let cell = tableView.dequeueReusableCell(withIdentifier: FirstOthersConversationTableViewCell.className, for: indexPath) as! FirstOthersConversationTableViewCell
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: FirstOthersConversationTableViewCell.className,
+                for: indexPath
+            ) as! FirstOthersConversationTableViewCell
             cell.profileImage.image = data.profileImage
             cell.nameLabel.text = data.name
             cell.messageBox.text = data.message
@@ -178,7 +201,10 @@ extension ChattingRoomViewController: UITableViewDelegate, UITableViewDataSource
             return cell
             
         case let .othersConversation(data):
-            let cell = tableView.dequeueReusableCell(withIdentifier: OthersConversationTableViewCell.className, for: indexPath) as! OthersConversationTableViewCell
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: OthersConversationTableViewCell.className,
+                for: indexPath
+            ) as! OthersConversationTableViewCell
             cell.messageBox.text = data.message
             cell.timeLabel.text = data.time
             return cell

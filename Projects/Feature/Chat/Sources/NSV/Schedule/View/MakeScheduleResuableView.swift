@@ -58,6 +58,4 @@ class MakeScheduleResuableView: UIView {
             make.height.equalTo(1)
         }
     }
-    
-
 }

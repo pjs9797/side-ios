@@ -249,7 +249,9 @@ extension ChattingRoomSideMenuViewController: UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch self.tableViewDataSource[indexPath.row] {
         case let .member(data):
-            let cell = tableView.dequeueReusableCell(withIdentifier: MemberListTableViewCell.className, for: indexPath) as! MemberListTableViewCell
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: MemberListTableViewCell.className, for: indexPath
+            ) as! MemberListTableViewCell
             cell.profileImageView.image = data.image
             cell.nameLabel.text = data.name
             if data.isMe {
@@ -292,8 +294,18 @@ extension UIButton {
             NSAttributedString.Key.font: titleLabel.font as Any
         ])
         
-        titleEdgeInsets = UIEdgeInsets(top: spacing, left: -image.size.width, bottom: -image.size.height, right: 0)
-        imageEdgeInsets = UIEdgeInsets(top: -(titleSize.height + spacing), left: 0, bottom: 0, right: -titleSize.width)
+        titleEdgeInsets = UIEdgeInsets(
+            top: spacing,
+            left: -image.size.width,
+            bottom: -image.size.height,
+            right: 0
+        )
+        imageEdgeInsets = UIEdgeInsets(
+            top: -(titleSize.height + spacing),
+            left: 0,
+            bottom: 0,
+            right: -titleSize.width
+        )
     }
 }
 

@@ -30,7 +30,6 @@ class MakeNoticeViewController: UIViewController {
     }
     
     private func render() {
-        
         view.addSubViews([noticeTextView])
         
         noticeTextView.snp.makeConstraints { make in

@@ -93,6 +93,5 @@ class ScheduleTableViewCell: UITableViewCell {
             make.trailing.equalToSuperview().offset(-16)
             make.width.equalTo(22)
         }
-        
     }
 }

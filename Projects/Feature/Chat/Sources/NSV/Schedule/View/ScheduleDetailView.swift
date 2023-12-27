@@ -32,7 +32,7 @@ class ScheduleDetailView: UIView {
     }()
     
     var informationStackView: UIView = {
-       var view = UIView()
+        var view = UIView()
         return view
     }()
     
@@ -106,7 +106,7 @@ class ScheduleDetailView: UIView {
         label.textColor = SharedDSKitAsset.Colors.gr100.color
         return label
     }()
-
+    
     var descriptionStackView: UIView = {
         var view = UIView()
         return view
@@ -174,13 +174,27 @@ class ScheduleDetailView: UIView {
         
         dateAndTimeStackView.addSubViews([dateAndTimeImageView ,dateLabel, timeLabel])
         
-        informationStackView.addSubViews([dateAndTimeStackView, locationImageView ,locationLabel, maximumMemberImageView, maximumMemberLabel, budgetImageView, budgetLabel])
+        informationStackView.addSubViews([
+            dateAndTimeStackView,
+            locationImageView,
+            locationLabel,
+            maximumMemberImageView,
+            maximumMemberLabel,
+            budgetImageView,
+            budgetLabel
+        ])
         
         descriptionStackView.addSubViews([descriptionTitleLabel, descriptionBodyLabel])
         
         memberListStackView.addSubViews([memberListTitleLabel, memberListCountLabel, memberListTableView])
         
-        addSubViews([titleAndMemberCountStackView, informationStackView, separatorLine, descriptionStackView, memberListStackView])
+        addSubViews([
+            titleAndMemberCountStackView,
+            informationStackView,
+            separatorLine,
+            descriptionStackView,
+            memberListStackView
+        ])
         
         titleAndMemberCountStackView.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(16)

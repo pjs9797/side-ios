@@ -17,7 +17,15 @@ public struct MockUpChatModel {
     public var timestamp: String
     public var isAlarmOn: Bool
     
-    public init(id: Int, image: UIImage, title: String, latestMessage: String, count: Int, timestamp: String, isAlarmOn: Bool) {
+    public init(
+        id: Int,
+        image: UIImage,
+        title: String,
+        latestMessage: String,
+        count: Int,
+        timestamp: String,
+        isAlarmOn: Bool)
+    {
         self.id = id
         self.image = image
         self.title = title
@@ -37,7 +45,15 @@ public struct DMMockUpChatModel {
     public var timestamp: String
     public var isAlarmOn: Bool
     
-    public init(id: Int, image: UIImage, title: String, latestMessage: String, count: Int, timestamp: String, isAlarmOn: Bool) {
+    public init(
+        id: Int,
+        image: UIImage,
+        title: String,
+        latestMessage: String,
+        count: Int,
+        timestamp: String,
+        isAlarmOn: Bool)
+    {
         self.id = id
         self.image = image
         self.title = title

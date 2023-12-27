@@ -52,7 +52,6 @@ class NoticeListTableViewCell: UITableViewCell {
     }
     
     func render() {
-        
         contentView.addSubViews([noticeTitleLabel, createdDateAndAdminLabel, pinnedImageView])
         
         contentView.snp.makeConstraints { make in
@@ -79,6 +78,5 @@ class NoticeListTableViewCell: UITableViewCell {
             make.trailing.equalToSuperview().offset(-20)
             make.size.equalTo(16)
         }
-        
     }
 }

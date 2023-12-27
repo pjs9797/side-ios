@@ -41,7 +41,12 @@ public class MyConversationTableViewCell: UITableViewCell {
     public override func layoutSubviews() {
         super.layoutSubviews()
         
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0))
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(
+            top: 12,
+            left: 0,
+            bottom: 12,
+            right: 0)
+        )
     }
     
     required init?(coder: NSCoder) {

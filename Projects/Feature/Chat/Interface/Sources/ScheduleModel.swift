@@ -18,7 +18,17 @@ public struct ScheduleModel {
     var description: String
     var memberList: [MemberListDataModel]
     
-    public init(title: String, currentMember: Int, maximumCount: Int, date: String, time: String, location: String, budget: String, description: String, memberList: [MemberListDataModel]) {
+    public init(
+        title: String,
+        currentMember: Int,
+        maximumCount: Int,
+        date: String,
+        time: String,
+        location: String,
+        budget: String,
+        description: String,
+        memberList: [MemberListDataModel])
+    {
         self.title = title
         self.currentMember = currentMember
         self.maximumCount = maximumCount
