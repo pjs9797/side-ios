@@ -49,6 +49,12 @@ class ChattingListTableViewCell: UITableViewCell {
         return label
     }()
     
+    var alarmImageView: UIImageView = {
+        var imageView = UIImageView()
+        imageView.image = SharedDSKitAsset.Icons.bellOff.image
+        return imageView
+    }()
+    
     override func prepareForReuse() {
         super.prepareForReuse()
     }
@@ -69,8 +75,9 @@ class ChattingListTableViewCell: UITableViewCell {
     }
     
     func render() {
-        
-        contentView.addSubViews([roomImageView, roomTitleLabel, countLabel, latestMessageLabel, timestampLabel])
+        contentView.addSubViews(
+            [roomImageView, roomTitleLabel, countLabel, latestMessageLabel, timestampLabel, alarmImageView]
+        )
         
         contentView.snp.makeConstraints { make in
             make.leading.equalTo(safeAreaLayoutGuide.snp.leading)
@@ -105,6 +112,12 @@ class ChattingListTableViewCell: UITableViewCell {
         timestampLabel.snp.makeConstraints { make in
             make.centerY.equalTo(countLabel.snp.centerY)
             make.trailing.equalToSuperview().inset(20)
+        }
+        
+        alarmImageView.snp.makeConstraints { make in
+            make.centerY.equalTo(countLabel)
+            make.leading.equalTo(countLabel.snp.trailing).offset(8)
+            make.size.equalTo(16)
         }
         
     }

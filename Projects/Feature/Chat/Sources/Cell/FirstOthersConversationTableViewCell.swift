@@ -24,9 +24,9 @@ public class FirstOthersConversationTableViewCell: UITableViewCell {
         label.backgroundColor = .clear
         return label
     }()
-
+    
     var messageBox: UITextView = {
-       var textView = UITextView()
+        var textView = UITextView()
         textView.isScrollEnabled = false
         textView.isEditable = false
         textView.backgroundColor = SharedDSKitAsset.Colors.bgLightGray.color
@@ -55,7 +55,12 @@ public class FirstOthersConversationTableViewCell: UITableViewCell {
     
     public override func layoutSubviews() {
         super.layoutSubviews()
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0))
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(
+            top: 12,
+            left: 0,
+            bottom: 12,
+            right: 0)
+        )
     }
     
     required init?(coder: NSCoder) {
@@ -90,5 +95,5 @@ public class FirstOthersConversationTableViewCell: UITableViewCell {
             make.bottom.equalTo(messageBox.snp.bottom)
         }
     }
-
+    
 }

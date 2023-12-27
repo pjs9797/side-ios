@@ -127,8 +127,16 @@ public class ChattingListViewController: UIViewController, UITableViewDelegate, 
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let chatCell = tableView.dequeueReusableCell(withIdentifier: ChattingListTableViewCell.className) as? ChattingListTableViewCell else { return UITableViewCell() }
-        guard let DMCell = tableView.dequeueReusableCell(withIdentifier: ChattingListTableViewCell.className) as? ChattingListTableViewCell else { return UITableViewCell() }
+        guard let chatCell = tableView.dequeueReusableCell(
+            withIdentifier: ChattingListTableViewCell.className
+        ) as? ChattingListTableViewCell else {
+            return UITableViewCell()
+        }
+        guard let DMCell = tableView.dequeueReusableCell(
+            withIdentifier: ChattingListTableViewCell.className
+        ) as? ChattingListTableViewCell else {
+            return UITableViewCell()
+        }
         
         switch segmentedControl.selectedSegmentIndex {
         case 0:
@@ -138,6 +146,7 @@ public class ChattingListViewController: UIViewController, UITableViewDelegate, 
             chatCell.latestMessageLabel.text = data.latestMessage
             chatCell.countLabel.text = String(data.count)
             chatCell.timestampLabel.text = data.timestamp
+            chatCell.alarmImageView.isHidden = !data.isAlarmOn
             return chatCell
             
         case 1:
@@ -156,18 +165,23 @@ public class ChattingListViewController: UIViewController, UITableViewDelegate, 
         return chatCell
     }
     
-    public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    public func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
         
         switch segmentedControl.selectedSegmentIndex {
         case 0:
             let mockup = self.mockUpData.mockup[indexPath.row]
             
-            let alarmToggle = UIContextualAction(style: .normal, title: "") { (_, _, success: @escaping (Bool) -> Void) in
+            let alarmToggle = UIContextualAction(style: .normal, title: "") {
+                (_, _, success: @escaping (Bool) -> Void) in
                 self.mockUpData.mockup[indexPath.row].isAlarmOn.toggle()
                 self.chattingListTableView.reloadRows(at: [indexPath], with: .automatic)
                 success(true)
             }
-            alarmToggle.image = mockup.isAlarmOn ? SharedDSKitAsset.Icons.bellDefault.image : SharedDSKitAsset.Icons.bellOff.image
+            alarmToggle.image = mockup.isAlarmOn ? 
+            SharedDSKitAsset.Icons.bellDefault.image : SharedDSKitAsset.Icons.bellOff.image
             alarmToggle.backgroundColor = UIColor(red: 0.97, green: 0.97, blue: 0.97, alpha: 1)
             
             return UISwipeActionsConfiguration(actions: [alarmToggle])

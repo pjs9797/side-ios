@@ -57,7 +57,7 @@ class ScheduleDetailViewController: UIViewController, UIScrollViewDelegate {
         
         joinButton.addTarget(self, action: #selector(didTapJoinButton), for: .touchUpInside)
         
-        // 네비
+        // 네비게이션
         navigationItem.title = "상세 일정"
         let dismissBarButtonItem = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowClose24.image, style: .plain, target: self, action: #selector(tapDismiss))
         navigationItem.setLeftBarButton(dismissBarButtonItem, animated: true)
@@ -135,7 +135,4 @@ extension ScheduleDetailViewController: UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 48
     }
-    
-    
-    
 }

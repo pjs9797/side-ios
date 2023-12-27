@@ -9,7 +9,7 @@ import UIKit
 import Shared
 
 class MakeScheduleView: UIView {
-
+    
     var titleTextField: UITextField = {
         var textField = UITextField()
         textField.placeholder = "일정 제목을 적어주세요."
@@ -108,7 +108,18 @@ class MakeScheduleView: UIView {
     private func render() {
         timeButton.addSubViews([dateLabel, timeLabel])
         
-        addSubViews([titleTextField, separatorLine1, timeImageView, timeButton, separatorLine2, locationView, maximumMemberView, budgetView, descriptionTextView, separatorLine3])
+        addSubViews([
+            titleTextField,
+            separatorLine1,
+            timeImageView,
+            timeButton,
+            separatorLine2,
+            locationView,
+            maximumMemberView,
+            budgetView,
+            descriptionTextView,
+            separatorLine3
+        ])
         
         titleTextField.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)

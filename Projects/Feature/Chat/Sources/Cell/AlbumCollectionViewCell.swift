@@ -34,5 +34,4 @@ class AlbumCollectionViewCell: UICollectionViewCell {
             make.size.equalTo(65)
         }
     }
-    
 }

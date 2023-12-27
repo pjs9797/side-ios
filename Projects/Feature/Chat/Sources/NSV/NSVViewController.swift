@@ -66,6 +66,7 @@ public class NSVViewController: UIViewController {
         case 1:
             tableView.reloadData()
             break
+            
         default:
             break
         }
@@ -80,7 +81,6 @@ public class NSVViewController: UIViewController {
     }
     
     private func setUp() {
-        
         tableView.delegate = self
         tableView.dataSource = self
         
