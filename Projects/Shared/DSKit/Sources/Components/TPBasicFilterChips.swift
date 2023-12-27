@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TPBasicFilterChips: UIView {
+public class TPBasicFilterChips: UIView {
     public var smallEnabledChips: UIButton = {
         var chips = UIButton()
 
