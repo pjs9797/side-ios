@@ -31,8 +31,6 @@ class HobbyDetailTableViewCell: UITableViewCell {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.itemSize = CGSize(width: 56, height: 77)
-        //        let screenWidth = UIScreen.main.bounds.width
-        //        let lineSpacing = (screenWidth - 312) / 3
         layout.minimumLineSpacing = 20
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.isHidden = true
@@ -59,6 +57,7 @@ class HobbyDetailTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         disposeBag = DisposeBag()
+        
     }
     
     private func layout(){
@@ -75,20 +74,23 @@ class HobbyDetailTableViewCell: UITableViewCell {
         }
         
         titleLabel.snp.makeConstraints { make in
+            make.height.equalTo(24)
             make.leading.equalToSuperview().offset(24)
             make.top.equalToSuperview().offset(24)
         }
         
         plusButton.snp.makeConstraints { make in
+            make.width.height.equalTo(24)
             make.trailing.equalToSuperview().offset(-24)
             make.top.equalToSuperview().offset(24)
         }
         
         hobbyDetailCollectionView.snp.makeConstraints { make in
+            make.height.equalTo(0)
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
-            make.top.equalToSuperview().offset(62)
-            make.height.equalTo(0)
+            make.top.equalToSuperview().offset(58)
+            //make.bottom.equalToSuperview().offset(-14)
         }
         
     }
@@ -110,22 +112,22 @@ class HobbyDetailTableViewCell: UITableViewCell {
                 let newHeight = isCurrentlyHidden ? collectionViewHeight : 0
                 self.hobbyDetailCollectionView.isHidden = !isCurrentlyHidden
                 
-                self.backView.snp.updateConstraints { make in
-                    make.height.equalTo(72+newHeight)
-                }
-                
-                self.hobbyDetailCollectionView.snp.updateConstraints { make in
-                    make.height.equalTo(newHeight)
-                }
-                
                 let buttonImageName = isCurrentlyHidden ? SharedDSKitAsset.Icons.iconArrowFold24.image : SharedDSKitAsset.Icons.iconArrowPlus24.image
                 self.plusButton.setImage(buttonImageName, for: .normal)
                 
-                self.heightDidChange.onNext(())
+                self.hobbyDetailCollectionView.snp.updateConstraints { make in
+                    make.height.equalTo(newHeight)
+                    //make.bottom.equalToSuperview().offset(-16)
+                }
+                
+                self.backView.snp.updateConstraints{ make in
+                    make.height.equalTo(72 + newHeight)
+                }
                 
                 UIView.animate(withDuration: 0.3) {
                     self.layoutIfNeeded()
                 }
+                self.heightDidChange.onNext(())
                 
             })
             .disposed(by: disposeBag)

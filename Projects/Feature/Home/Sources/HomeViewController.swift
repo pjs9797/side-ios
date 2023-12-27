@@ -8,9 +8,10 @@
 
 import UIKit
 import SharedDSKit
+import RxSwift
 
 public class HomeViewController: UIViewController {
-
+    let disposeBag = DisposeBag()
     var homeView = HomeView()
     
     public override func loadView() {
@@ -19,7 +20,14 @@ public class HomeViewController: UIViewController {
     }
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
+        homeView.plusButton.rx.tap
+            .bind(onNext: { [weak self] in
+                let selectMeetingTypeVC = SelectMeetingTypeViewController(selectMeetingTypeViewModel: SelectMeetingTypeViewModel())
+                selectMeetingTypeVC.homeNavigationController = self?.navigationController
+                self?.present(selectMeetingTypeVC, animated: true)
+                
+            })
+            .disposed(by: disposeBag)
         homeView.segmentedControl.addTarget(self, action: #selector(didChangeValue(segment:)), for: .valueChanged)
         homeView.segmentedControl.selectedSegmentIndex = 0
 
@@ -28,6 +36,12 @@ public class HomeViewController: UIViewController {
         homeView.segmentedControl.setTitleTextAttributes(titleTextAttributes1, for: .selected)
         homeView.segmentedControl.setTitleTextAttributes(titleTextAttributes2, for: .normal)
     }
+    
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
     @objc private func didChangeValue(segment: UISegmentedControl) {
         if segment.selectedSegmentIndex == 0 {
             homeView.recommendView.isHidden = false

@@ -69,6 +69,7 @@ public class SelectHobbyDetailsViewController: UIViewController{
     
     private func setNavigationbar() {
         self.title = self.meetingTitle
+        self.tabBarController?.tabBar.isHidden = true
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font : Fonts.SH03Bold.font,
             .foregroundColor: UIColor.black
@@ -120,8 +121,6 @@ public class SelectHobbyDetailsViewController: UIViewController{
                         }
                     }
                     .disposed(by: cell.disposeBag)
-                
-                
                 
                 cell.myIndexPath = IndexPath(row: row, section: 0)
                 cell.configure(model: data)

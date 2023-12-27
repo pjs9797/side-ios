@@ -11,13 +11,21 @@ import Shared
 import RxCocoa
 
 class HomeView: UIView {
-    
     var itemName: [String] = ["토익 스터디", "드로잉 함께 해요", "운동", "카페", "게임", "요리"]
     var itemImage: [UIImage] = [SharedDSKitAsset.Icons.thumb.image, SharedDSKitAsset.Icons.thumb2.image, SharedDSKitAsset.Icons.thumb3.image, SharedDSKitAsset.Icons.thumb.image, SharedDSKitAsset.Icons.thumb2.image, SharedDSKitAsset.Icons.thumb3.image]
     
     var segmentedControl: UISegmentedControl = {
         let segmentedControl = UnderlineSegmentedControl(items: ["추천", "자기계발", "취미"])
         return segmentedControl
+    }()
+    
+    var plusButton: UIButton = {
+        let button = UIButton()
+        button.setImage(SharedDSKitAsset.Icons.iconArrowExtend24.image.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = SharedDSKitAsset.Colors.lightGreen.color
+        button.layer.cornerRadius = 28
+        return button
     }()
  
     var recommendView: UIView = {
@@ -169,6 +177,8 @@ class HomeView: UIView {
         
         bannerView.addSubViews([bannerMainLabel, bannerSubLabel])
         
+        addSubview(plusButton)
+        
         segmentedControl.snp.makeConstraints { make in
             make.top.equalTo(searchButton.snp.bottom).offset(40)
             make.leading.equalToSuperview().offset(20)
@@ -278,6 +288,11 @@ class HomeView: UIView {
             make.leading.equalToSuperview()
             make.width.equalToSuperview()
             make.height.equalTo(49)
+        }
+        plusButton.snp.makeConstraints { make in
+            make.width.height.equalTo(56)
+            make.trailing.equalToSuperview().offset(-20)
+            make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-20)
         }
         
         addItems()
