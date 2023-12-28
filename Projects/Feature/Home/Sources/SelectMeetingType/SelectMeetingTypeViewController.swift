@@ -15,8 +15,12 @@ public class SelectMeetingTypeViewController: UIViewController {
     var selectMeetingTypeViewModel: SelectMeetingTypeViewModel
     weak var homeNavigationController: UINavigationController?
     
+<<<<<<< HEAD
     lazy var dimmedView: UIView = {
 >>>>>>> 67ee1ca ([FEAT] 모임 생성 타입 화면 개발)
+=======
+    let dimmedView: UIView = {
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         let view = UIView()
         view.backgroundColor = .black
         view.alpha = 0
@@ -26,8 +30,12 @@ public class SelectMeetingTypeViewController: UIViewController {
     let backView: UIView = {
 =======
     
+<<<<<<< HEAD
     lazy var backView: UIView = {
 >>>>>>> 67ee1ca ([FEAT] 모임 생성 타입 화면 개발)
+=======
+    let backView: UIView = {
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 16
@@ -38,8 +46,12 @@ public class SelectMeetingTypeViewController: UIViewController {
     let handleView: UIView = {
 =======
     
+<<<<<<< HEAD
     lazy var handleView: UIView = {
 >>>>>>> 67ee1ca ([FEAT] 모임 생성 타입 화면 개발)
+=======
+    let handleView: UIView = {
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         let view = UIView()
         view.backgroundColor = .gray
         view.layer.cornerRadius = 2.5
@@ -49,8 +61,12 @@ public class SelectMeetingTypeViewController: UIViewController {
     let oneDayButton: UIButton = {
 =======
     
+<<<<<<< HEAD
     lazy var oneDayButton: UIButton = {
 >>>>>>> 67ee1ca ([FEAT] 모임 생성 타입 화면 개발)
+=======
+    let oneDayButton: UIButton = {
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         let button = UIButton()
         button.setTitle("원데이 멤버 모집하기", for: .normal)
         button.setTitleColor(.black, for: .normal)
@@ -60,8 +76,12 @@ public class SelectMeetingTypeViewController: UIViewController {
     let shortTermButton: UIButton = {
 =======
     
+<<<<<<< HEAD
     lazy var shortTermButton: UIButton = {
 >>>>>>> 67ee1ca ([FEAT] 모임 생성 타입 화면 개발)
+=======
+    let shortTermButton: UIButton = {
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         let button = UIButton()
         button.setTitle("단기 멤버 모집하기", for: .normal)
         button.setTitleColor(.black, for: .normal)
@@ -71,8 +91,12 @@ public class SelectMeetingTypeViewController: UIViewController {
     let continuousButton: UIButton = {
 =======
     
+<<<<<<< HEAD
     lazy var continuousButton: UIButton = {
 >>>>>>> 67ee1ca ([FEAT] 모임 생성 타입 화면 개발)
+=======
+    let continuousButton: UIButton = {
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         let button = UIButton()
         button.setTitle("지속형 멤버 모집하기", for: .normal)
         button.setTitleColor(.black, for: .normal)
@@ -82,8 +106,12 @@ public class SelectMeetingTypeViewController: UIViewController {
     let firstSeparateView: UIView = {
 =======
     
+<<<<<<< HEAD
     lazy var firstSeparateView: UIView = {
 >>>>>>> 67ee1ca ([FEAT] 모임 생성 타입 화면 개발)
+=======
+    let firstSeparateView: UIView = {
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         let view = UIView()
         view.backgroundColor = .gray
         return view
@@ -92,8 +120,12 @@ public class SelectMeetingTypeViewController: UIViewController {
     let secondSeparateView: UIView = {
 =======
     
+<<<<<<< HEAD
     lazy var secondSeparateView: UIView = {
 >>>>>>> 67ee1ca ([FEAT] 모임 생성 타입 화면 개발)
+=======
+    let secondSeparateView: UIView = {
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         let view = UIView()
         view.backgroundColor = .gray
         return view
@@ -103,10 +135,14 @@ public class SelectMeetingTypeViewController: UIViewController {
         self.selectMeetingTypeViewModel = selectMeetingTypeViewModel
         super.init(nibName: nil, bundle: nil)
 <<<<<<< HEAD
+<<<<<<< HEAD
         self.modalTransitionStyle = .crossDissolve
 =======
         self.modalTransitionStyle = .coverVertical
 >>>>>>> 67ee1ca ([FEAT] 모임 생성 타입 화면 개발)
+=======
+        self.modalTransitionStyle = .crossDissolve
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         self.modalPresentationStyle = .overFullScreen
     }
     
@@ -116,8 +152,8 @@ public class SelectMeetingTypeViewController: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .clear
+<<<<<<< HEAD
 <<<<<<< HEAD
         tapEvent()
         bind()
@@ -138,10 +174,16 @@ public class SelectMeetingTypeViewController: UIViewController {
             .disposed(by: disposeBag)
         
 >>>>>>> 67ee1ca ([FEAT] 모임 생성 타입 화면 개발)
+=======
+        tapEvent()
+        bind()
+        layout()
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
     }
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+<<<<<<< HEAD
 <<<<<<< HEAD
         
 =======
@@ -151,6 +193,9 @@ public class SelectMeetingTypeViewController: UIViewController {
             $0.edges.equalToSuperview()
         }
 >>>>>>> 67ee1ca ([FEAT] 모임 생성 타입 화면 개발)
+=======
+        
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         UIView.animate(withDuration: 0.3) {
             self.dimmedView.alpha = 0.6
         }
@@ -167,16 +212,27 @@ public class SelectMeetingTypeViewController: UIViewController {
     }
     
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
     func tapEvent(){
         let tapGesture = UITapGestureRecognizer()
         let swipeGesture = UISwipeGestureRecognizer()
         self.dimmedView.addGestureRecognizer(tapGesture)
         self.backView.addGestureRecognizer(swipeGesture)
         swipeGesture.direction = .down
+<<<<<<< HEAD
         tapGesture.rx.event
             .bind { [weak self] gesture in
                 print(2323)
                 self?.dismiss(animated: true)
+=======
+        
+        tapGesture.rx.event
+            .bind { [weak self] gesture in
+                print(2323)
+                self?.backViewDown()
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
             }
             .disposed(by: disposeBag)
         
@@ -187,8 +243,11 @@ public class SelectMeetingTypeViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+<<<<<<< HEAD
 =======
 >>>>>>> 67ee1ca ([FEAT] 모임 생성 타입 화면 개발)
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
     func bind(){
         oneDayButton.rx.tap
             .bind(to: selectMeetingTypeViewModel.oneDayButtonTapped)
@@ -232,21 +291,31 @@ public class SelectMeetingTypeViewController: UIViewController {
     
     func layout(){
 <<<<<<< HEAD
+<<<<<<< HEAD
         self.view.addSubview(dimmedView)
 =======
         
 >>>>>>> 67ee1ca ([FEAT] 모임 생성 타입 화면 개발)
+=======
+        self.view.addSubview(dimmedView)
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         self.view.addSubview(backView)
         [handleView,oneDayButton,firstSeparateView,shortTermButton,secondSeparateView,continuousButton]
             .forEach{ self.backView.addSubview($0) }
         
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         dimmedView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
+<<<<<<< HEAD
 =======
 >>>>>>> 67ee1ca ([FEAT] 모임 생성 타입 화면 개발)
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         backView.snp.makeConstraints { make in
             make.width.equalToSuperview()
             make.height.equalTo(263)
@@ -301,7 +370,7 @@ public class SelectMeetingTypeViewController: UIViewController {
     
     func backViewUp(){
         
-        UIView.animate(withDuration: 3.3) {
+        UIView.animate(withDuration: 0.3) {
             self.backView.snp.remakeConstraints { make in
                 make.width.equalToSuperview()
                 make.height.equalTo(263)

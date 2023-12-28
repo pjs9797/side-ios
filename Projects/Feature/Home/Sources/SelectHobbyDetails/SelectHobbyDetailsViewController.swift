@@ -48,6 +48,7 @@ public class SelectHobbyDetailsViewController: UIViewController{
         tableView.isScrollEnabled = false
         tableView.rowHeight = UITableView.automaticDimension
 <<<<<<< HEAD
+<<<<<<< HEAD
         tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.register(HobbyDetailTableViewCell.self, forCellReuseIdentifier: "HobbyDetailTableViewCell")
         return tableView
@@ -55,6 +56,9 @@ public class SelectHobbyDetailsViewController: UIViewController{
     let nextButton: UIButton = {
 =======
         tableView.estimatedRowHeight = 80
+=======
+        tableView.estimatedRowHeight = UITableView.automaticDimension
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         tableView.register(HobbyDetailTableViewCell.self, forCellReuseIdentifier: "HobbyDetailTableViewCell")
         return tableView
     }()
@@ -90,8 +94,12 @@ public class SelectHobbyDetailsViewController: UIViewController{
 =======
         self.view.backgroundColor = .white
         setNavigationbar()
+<<<<<<< HEAD
         disabledNextButton()
 >>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
+=======
+        self.nextButton.disableNextButton()
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         layout()
         bind()
     }
@@ -136,15 +144,20 @@ public class SelectHobbyDetailsViewController: UIViewController{
         selectHobbyDetailsViewModel.nextButtonTapped
             .bind(onNext: { [weak self] in
 <<<<<<< HEAD
+<<<<<<< HEAD
                 self?.navigationController?.pushViewController(CreateMeetingContentViewController(meetingTitle: self!.meetingTitle, createMeetingContentViewModel: CreateMeetingContentViewModel()), animated: true)
 =======
                 self?.navigationController?.pushViewController(CreatingGatheringViewController(), animated: true)
 >>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
+=======
+                //self?.navigationController?.pushViewController(CreatingGatheringViewController(), animated: true)
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
             })
             .disposed(by: disposeBag)
         
         selectHobbyDetailsViewModel.hobbyDetailTableViewCellData
             .drive(hobbyDetailTableView.rx.items(cellIdentifier: "HobbyDetailTableViewCell", cellType: HobbyDetailTableViewCell.self)){ row, data, cell in
+                
                 cell.heightDidChange
                     .asDriver(onErrorJustReturn: ())
                     .drive(onNext: { [weak self] in
@@ -163,8 +176,12 @@ public class SelectHobbyDetailsViewController: UIViewController{
                             self?.nextButton.enableNextButton()
 =======
                             self?.selectedHobbyDetail = selectedCell.titleLabel.text ?? ""
+<<<<<<< HEAD
                             self?.enabledNextButton()
 >>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
+=======
+                            self?.nextButton.enableNextButton()
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
                         }
                     }
                     .disposed(by: cell.disposeBag)
@@ -248,6 +265,7 @@ public class SelectHobbyDetailsViewController: UIViewController{
 =======
         
     }
+<<<<<<< HEAD
     
     private func enabledNextButton(){
         self.nextButton.setTitleColor(.white, for: .normal)
@@ -264,4 +282,6 @@ public class SelectHobbyDetailsViewController: UIViewController{
     }
     
 >>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
 }

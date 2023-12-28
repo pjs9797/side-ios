@@ -1,7 +1,10 @@
 import Foundation
 import RxSwift
 import RxCocoa
+<<<<<<< HEAD
 import Shared
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
 
 public class CreateMeetingContentViewModel{
     let disposeBag = DisposeBag()
@@ -11,6 +14,7 @@ public class CreateMeetingContentViewModel{
     let introductionTextRelay = BehaviorRelay<String>(value: "")
     let selectedDateRelay = BehaviorRelay<String>(value: "")
     let selectedTimeRelay = BehaviorRelay<String>(value: "")
+<<<<<<< HEAD
     let setDefaultImageButtonTapped = PublishRelay<Void>()
     let imageCancelButtonTapped = PublishRelay<Void>()
     var representativeImagesDriver: Driver<SharedDSKitImages.Image>
@@ -25,6 +29,10 @@ public class CreateMeetingContentViewModel{
             }
             .asDriver(onErrorDriveWith: Driver.empty())
         
+=======
+    
+    public init(){
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         Observable.combineLatest(selectedDateRelay,selectedTimeRelay)
             .map { date, time in
                 return "\(date) \(time)"

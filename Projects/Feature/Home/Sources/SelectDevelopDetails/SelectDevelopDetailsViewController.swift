@@ -87,8 +87,12 @@ public class SelectDevelopDetailsViewController: UIViewController{
         return etcBtView
     }()
     
+<<<<<<< HEAD
     lazy var nextButton: UIButton = {
 >>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
+=======
+    let nextButton: UIButton = {
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         let button = UIButton()
         button.setTitle("다음", for: .normal)
         button.titleLabel?.font = Fonts.SH02Bold.font
@@ -177,6 +181,7 @@ public class SelectDevelopDetailsViewController: UIViewController{
         selectDevelopDetailsViewModel.nextButtonTapped
             .bind(onNext: { [weak self] in
 <<<<<<< HEAD
+<<<<<<< HEAD
                 self?.navigationController?.pushViewController(CreateMeetingContentViewController(meetingTitle: self!.meetingTitle, createMeetingContentViewModel: CreateMeetingContentViewModel()), animated: true)
             })
             .disposed(by: disposeBag)
@@ -186,6 +191,9 @@ public class SelectDevelopDetailsViewController: UIViewController{
 >>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
 =======
                 self?.navigationController?.pushViewController(CreatingGatheringViewController(), animated: true)
+=======
+                //self?.navigationController?.pushViewController(CreatingGatheringViewController(), animated: true)
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
             })
             .disposed(by: disposeBag)
         
@@ -225,6 +233,9 @@ public class SelectDevelopDetailsViewController: UIViewController{
                 switch type {
                 case .study:
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
                     self?.nextButton.enableNextButton()
                     self?.selectedDevelopDetail = "스터디"
 =======
@@ -242,6 +253,9 @@ public class SelectDevelopDetailsViewController: UIViewController{
                     self?.etcBtView.borderView.isHidden = true
                 case .sideProject:
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
                     self?.nextButton.enableNextButton()
                     self?.selectedDevelopDetail = "사이드 프로젝트"
 =======
@@ -259,6 +273,9 @@ public class SelectDevelopDetailsViewController: UIViewController{
                     self?.etcBtView.borderView.isHidden = true
                 case .jobChange:
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
                     self?.nextButton.enableNextButton()
                     self?.selectedDevelopDetail = "이직 준비"
 =======
@@ -276,6 +293,9 @@ public class SelectDevelopDetailsViewController: UIViewController{
                     self?.etcBtView.borderView.isHidden = true
                 case .language:
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
                     self?.nextButton.enableNextButton()
                     self?.selectedDevelopDetail = "어학"
 =======
@@ -293,6 +313,9 @@ public class SelectDevelopDetailsViewController: UIViewController{
                     self?.etcBtView.borderView.isHidden = true
                 case .investment:
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
                     self?.nextButton.enableNextButton()
                     self?.selectedDevelopDetail = "재테크"
 =======
@@ -310,6 +333,9 @@ public class SelectDevelopDetailsViewController: UIViewController{
                     self?.etcBtView.borderView.isHidden = true
                 case .etc:
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
                     self?.nextButton.enableNextButton()
                     self?.selectedDevelopDetail = "기타"
 =======
@@ -327,6 +353,7 @@ public class SelectDevelopDetailsViewController: UIViewController{
                     self?.etcBtView.borderView.isHidden = false
                 case .none:
 <<<<<<< HEAD
+<<<<<<< HEAD
                     self?.nextButton.disableNextButton()
                 }
             })
@@ -343,6 +370,9 @@ public class SelectDevelopDetailsViewController: UIViewController{
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
 =======
                     self?.disabledNextButton()
+=======
+                    self?.nextButton.disableNextButton()
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
                 }
             })
             .disposed(by: disposeBag)
@@ -428,6 +458,7 @@ public class SelectDevelopDetailsViewController: UIViewController{
         }
         
     }
+<<<<<<< HEAD
     
     private func enabledNextButton(){
         self.nextButton.setTitleColor(.white, for: .normal)
@@ -444,4 +475,6 @@ public class SelectDevelopDetailsViewController: UIViewController{
     }
     
 >>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
 }

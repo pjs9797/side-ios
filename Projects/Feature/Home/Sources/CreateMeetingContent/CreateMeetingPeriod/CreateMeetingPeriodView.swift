@@ -26,8 +26,11 @@ class CreateMeetingPeriodView: UIView{
         timeBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         return timeBtView
     }()
+<<<<<<< HEAD
     let calendarView = CalendarView(calendarViewModel: CalendarViewModel())
     //let customTimePickerView = CustomTimePickerView(timePickerViewModel: TimePickerViewModel())
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -41,25 +44,35 @@ class CreateMeetingPeriodView: UIView{
     private func layout(){
         [dateTitleLabel,dateBtView,timeBtView]
             .forEach{ self.addSubview($0) }
+<<<<<<< HEAD
         
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         dateTitleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.top.equalToSuperview()
         }
+<<<<<<< HEAD
         
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         dateBtView.snp.makeConstraints { make in
             make.width.equalTo(163.5)
             make.height.equalTo(56)
             make.leading.equalToSuperview().offset(20)
             make.top.equalTo(dateTitleLabel.snp.bottom).offset(16)
         }
+<<<<<<< HEAD
         
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         timeBtView.snp.makeConstraints { make in
             make.width.equalTo(163.5)
             make.height.equalTo(56)
             make.trailing.equalToSuperview().offset(-20)
             make.top.equalTo(dateTitleLabel.snp.bottom).offset(16)
         }
+<<<<<<< HEAD
 //        calendarView.snp.makeConstraints { make in
 //            make.width.equalToSuperview()
 //            make.height.equalTo(358)
@@ -89,4 +102,7 @@ class CreateMeetingPeriodView: UIView{
 //        customTimePickerView.subviews[1].addSubview(upLine)
 //        customTimePickerView.subviews[1].addSubview(underLine)
 //    }
+=======
+    }
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
 }

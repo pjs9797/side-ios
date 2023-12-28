@@ -102,6 +102,9 @@ public class CreateMeetingViewController: UIViewController{
     public override func viewDidLoad() {
         super.viewDidLoad()
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         
         self.view.backgroundColor = .white
         setNavigationbar()
@@ -203,6 +206,7 @@ public class CreateMeetingViewController: UIViewController{
                 case .develop:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     self?.nextButton.enableNextButton()
                     self?.developBtView.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
                     self?.hobbyBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
@@ -220,13 +224,17 @@ public class CreateMeetingViewController: UIViewController{
 =======
                     self?.enabledNextButton()
 >>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
+=======
+                    self?.nextButton.enableNextButton()
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
                     self?.developBtView.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
                     self?.hobbyBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                 case .hobby:
-                    self?.enabledNextButton()
+                    self?.nextButton.enableNextButton()
                     self?.developBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                     self?.hobbyBtView.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
                 case .none:
+<<<<<<< HEAD
 <<<<<<< HEAD
                     self?.nextButton.setTitleColor(SharedDSKitAsset.Colors.gr30.color, for: .normal)
                     self?.nextButton.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
@@ -236,6 +244,9 @@ public class CreateMeetingViewController: UIViewController{
 =======
                     self?.disabledNextButton()
 >>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
+=======
+                    self?.nextButton.disableNextButton()
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
                     self?.developBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                     self?.hobbyBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                 }
@@ -320,19 +331,4 @@ public class CreateMeetingViewController: UIViewController{
         
 >>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
     }
-    
-    private func enabledNextButton(){
-        self.nextButton.setTitleColor(.white, for: .normal)
-        self.nextButton.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
-        self.nextButton.backgroundColor = SharedDSKitAsset.Colors.lightGreen.color
-        self.nextButton.isEnabled = true
-    }
-    
-    private func disabledNextButton(){
-        self.nextButton.setTitleColor(SharedDSKitAsset.Colors.gr30.color, for: .normal)
-        self.nextButton.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-        self.nextButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
-        self.nextButton.isEnabled = false
-    }
-    
 }

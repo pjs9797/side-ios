@@ -24,7 +24,10 @@ class CreateMeetingImageView: UIView{
         imageView.layer.cornerRadius = 16
         imageView.layer.borderWidth = 1
         imageView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+<<<<<<< HEAD
         imageView.clipsToBounds = true
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         imageView.isHidden = true
         return imageView
     }()
@@ -60,37 +63,55 @@ class CreateMeetingImageView: UIView{
         [imageLabel,addImageBtView,representativeImageView,imageCancelButton,setDefaultImageButton]
             .forEach{ self.addSubview($0) }
         setDefaultImageButton.addSubview(bottomBorder)
+<<<<<<< HEAD
         
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         imageLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.top.equalToSuperview()
         }
+<<<<<<< HEAD
         
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         addImageBtView.snp.makeConstraints { make in
             make.width.height.equalTo(100)
             make.leading.equalToSuperview().offset(20)
             make.top.equalTo(imageLabel.snp.bottom).offset(16)
         }
+<<<<<<< HEAD
         
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         representativeImageView.snp.makeConstraints { make in
             make.width.height.equalTo(100)
             make.leading.equalTo(addImageBtView.snp.trailing).offset(8)
             make.top.equalTo(imageLabel.snp.bottom).offset(16)
         }
+<<<<<<< HEAD
         
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         imageCancelButton.snp.makeConstraints { make in
             make.width.height.equalTo(24)
             make.trailing.equalTo(representativeImageView.snp.trailing).offset(8)
             make.top.equalTo(representativeImageView.snp.top).offset(-8)
         }
+<<<<<<< HEAD
         
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         setDefaultImageButton.snp.makeConstraints { make in
             make.width.equalTo(160)
             make.height.equalTo(24)
             make.centerX.equalToSuperview()
             make.top.equalTo(addImageBtView.snp.bottom).offset(24)
         }
+<<<<<<< HEAD
         
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         bottomBorder.snp.makeConstraints { make in
             make.width.equalTo(setDefaultImageButton.titleLabel!.snp.width)
             make.height.equalTo(1)

@@ -62,9 +62,9 @@ class HobbyDetailTableViewCell: UITableViewCell {
 >>>>>>> 67ee1ca ([FEAT] 모임 생성 타입 화면 개발)
         layout.minimumLineSpacing = 20
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.isHidden = true
         collectionView.register(HobbyDetailCollectionViewCell.self, forCellWithReuseIdentifier: "HobbyDetailCollectionViewCell")
         collectionView.isScrollEnabled = false
+        collectionView.isHidden = true
         return collectionView
     }()
     
@@ -98,10 +98,14 @@ class HobbyDetailTableViewCell: UITableViewCell {
         backView.snp.makeConstraints { make in
             make.height.equalTo(72)
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
             make.leading.equalTo(contentView.snp.leading).offset(20)
             make.trailing.equalTo(contentView.snp.trailing).offset(-20)
             make.top.equalTo(contentView.snp.top).offset(4)
             make.bottom.equalTo(contentView.snp.bottom).offset(-4)
+<<<<<<< HEAD
         }
         
         titleLabel.snp.makeConstraints { make in
@@ -119,6 +123,12 @@ class HobbyDetailTableViewCell: UITableViewCell {
 =======
             make.height.equalTo(24)
 >>>>>>> 67ee1ca ([FEAT] 모임 생성 타입 화면 개발)
+=======
+        }
+        
+        titleLabel.snp.makeConstraints { make in
+            make.height.equalTo(22)
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
             make.leading.equalToSuperview().offset(24)
             make.top.equalToSuperview().offset(24)
         }
@@ -137,9 +147,10 @@ class HobbyDetailTableViewCell: UITableViewCell {
         }
         
         hobbyDetailCollectionView.snp.makeConstraints { make in
-            make.height.equalTo(0)
+            //make.height.equalTo(0)
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
             make.top.equalTo(titleLabel.snp.bottom).offset(20)
@@ -152,6 +163,10 @@ class HobbyDetailTableViewCell: UITableViewCell {
             make.top.equalToSuperview().offset(58)
             //make.bottom.equalToSuperview().offset(-14)
 >>>>>>> 67ee1ca ([FEAT] 모임 생성 타입 화면 개발)
+=======
+            make.top.equalTo(titleLabel.snp.bottom).offset(20)
+            make.bottom.equalToSuperview().offset(-4)
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         }
         
 >>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
@@ -159,6 +174,7 @@ class HobbyDetailTableViewCell: UITableViewCell {
     
     func configure(model: HobbyModel){
         titleLabel.text = model.title
+<<<<<<< HEAD
 <<<<<<< HEAD
         plusButton.rx.tap
             .subscribe(onNext: { [weak self] in
@@ -170,6 +186,11 @@ class HobbyDetailTableViewCell: UITableViewCell {
                 guard let self = self else { return }
                 
 >>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
+=======
+        plusButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+>>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
                 let itemCount = model.hobbyDetailModel.count
                 let rowHeight: CGFloat = 77
                 let spacing: CGFloat = 20
@@ -195,24 +216,25 @@ class HobbyDetailTableViewCell: UITableViewCell {
                 
                 let isCurrentlyHidden = self.hobbyDetailCollectionView.isHidden
                 let newHeight = isCurrentlyHidden ? collectionViewHeight : 0
-                self.hobbyDetailCollectionView.isHidden = !isCurrentlyHidden
                 
                 let buttonImageName = isCurrentlyHidden ? SharedDSKitAsset.Icons.iconArrowFold24.image : SharedDSKitAsset.Icons.iconArrowPlus24.image
                 self.plusButton.setImage(buttonImageName, for: .normal)
+                self.hobbyDetailCollectionView.isHidden = !isCurrentlyHidden
                 
-                self.hobbyDetailCollectionView.snp.updateConstraints { make in
-                    make.height.equalTo(newHeight)
-                    //make.bottom.equalToSuperview().offset(-16)
-                }
+                UIView.animate(withDuration: 0.3, animations: {
+                    
+                    
+                    self.backView.snp.updateConstraints { make in
+                        make.height.equalTo(72 + newHeight)
+                    }
+                    self.hobbyDetailCollectionView.snp.updateConstraints { make in
+                        make.height.equalTo(newHeight)
+                    }
+                    
+                    self.heightDidChange.onNext(())
+                    self.contentView.layoutIfNeeded()
+                })
                 
-                self.backView.snp.updateConstraints{ make in
-                    make.height.equalTo(72 + newHeight)
-                }
-                
-                UIView.animate(withDuration: 0.3) {
-                    self.layoutIfNeeded()
-                }
-                self.heightDidChange.onNext(())
                 
 >>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
             })
