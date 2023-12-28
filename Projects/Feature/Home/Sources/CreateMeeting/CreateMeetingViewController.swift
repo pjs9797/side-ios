@@ -63,6 +63,7 @@ public class CreateMeetingViewController: UIViewController{
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.view.backgroundColor = .white
         setNavigationbar()
         bind()
@@ -123,15 +124,15 @@ public class CreateMeetingViewController: UIViewController{
             .subscribe(onNext: { [weak self] type in
                 switch type {
                 case .develop:
-                    self?.enabledNextButton()
+                    self?.nextButton.enableNextButton()
                     self?.developBtView.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
                     self?.hobbyBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                 case .hobby:
-                    self?.enabledNextButton()
+                    self?.nextButton.enableNextButton()
                     self?.developBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                     self?.hobbyBtView.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
                 case .none:
-                    self?.disabledNextButton()
+                    self?.nextButton.disableNextButton()
                     self?.developBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                     self?.hobbyBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                 }
@@ -177,19 +178,4 @@ public class CreateMeetingViewController: UIViewController{
         }
         
     }
-    
-    private func enabledNextButton(){
-        self.nextButton.setTitleColor(.white, for: .normal)
-        self.nextButton.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
-        self.nextButton.backgroundColor = SharedDSKitAsset.Colors.lightGreen.color
-        self.nextButton.isEnabled = true
-    }
-    
-    private func disabledNextButton(){
-        self.nextButton.setTitleColor(SharedDSKitAsset.Colors.gr30.color, for: .normal)
-        self.nextButton.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-        self.nextButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
-        self.nextButton.isEnabled = false
-    }
-    
 }

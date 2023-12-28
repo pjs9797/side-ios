@@ -24,7 +24,7 @@ public class HomeViewController: UIViewController {
             .bind(onNext: { [weak self] in
                 let selectMeetingTypeVC = SelectMeetingTypeViewController(selectMeetingTypeViewModel: SelectMeetingTypeViewModel())
                 selectMeetingTypeVC.homeNavigationController = self?.navigationController
-                self?.present(selectMeetingTypeVC, animated: true)
+                self?.present(selectMeetingTypeVC, animated: false)
                 
             })
             .disposed(by: disposeBag)

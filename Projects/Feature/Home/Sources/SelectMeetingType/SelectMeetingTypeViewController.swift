@@ -9,14 +9,14 @@ public class SelectMeetingTypeViewController: UIViewController {
     var selectMeetingTypeViewModel: SelectMeetingTypeViewModel
     weak var homeNavigationController: UINavigationController?
     
-    lazy var dimmedView: UIView = {
+    let dimmedView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
         view.alpha = 0
         return view
     }()
     
-    lazy var backView: UIView = {
+    let backView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 16
@@ -24,41 +24,41 @@ public class SelectMeetingTypeViewController: UIViewController {
         return view
     }()
     
-    lazy var handleView: UIView = {
+    let handleView: UIView = {
         let view = UIView()
         view.backgroundColor = .gray
         view.layer.cornerRadius = 2.5
         return view
     }()
     
-    lazy var oneDayButton: UIButton = {
+    let oneDayButton: UIButton = {
         let button = UIButton()
         button.setTitle("원데이 멤버 모집하기", for: .normal)
         button.setTitleColor(.black, for: .normal)
         return button
     }()
     
-    lazy var shortTermButton: UIButton = {
+    let shortTermButton: UIButton = {
         let button = UIButton()
         button.setTitle("단기 멤버 모집하기", for: .normal)
         button.setTitleColor(.black, for: .normal)
         return button
     }()
     
-    lazy var continuousButton: UIButton = {
+    let continuousButton: UIButton = {
         let button = UIButton()
         button.setTitle("지속형 멤버 모집하기", for: .normal)
         button.setTitleColor(.black, for: .normal)
         return button
     }()
     
-    lazy var firstSeparateView: UIView = {
+    let firstSeparateView: UIView = {
         let view = UIView()
         view.backgroundColor = .gray
         return view
     }()
     
-    lazy var secondSeparateView: UIView = {
+    let secondSeparateView: UIView = {
         let view = UIView()
         view.backgroundColor = .gray
         return view
@@ -67,7 +67,7 @@ public class SelectMeetingTypeViewController: UIViewController {
     public init(selectMeetingTypeViewModel: SelectMeetingTypeViewModel) {
         self.selectMeetingTypeViewModel = selectMeetingTypeViewModel
         super.init(nibName: nil, bundle: nil)
-        self.modalTransitionStyle = .coverVertical
+        self.modalTransitionStyle = .crossDissolve
         self.modalPresentationStyle = .overFullScreen
     }
     
@@ -77,31 +77,15 @@ public class SelectMeetingTypeViewController: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .clear
-        
+        tapEvent()
         bind()
         layout()
-        
-        
-        let tapGesture = UITapGestureRecognizer()
-        self.dimmedView.addGestureRecognizer(tapGesture)
-        
-        tapGesture.rx.event
-            .bind { [weak self] gesture in
-                self?.backViewDown()
-            }
-            .disposed(by: disposeBag)
-        
     }
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        guard let presentingViewController else { return }
-        presentingViewController.view.addSubview(dimmedView)
-        dimmedView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
+        
         UIView.animate(withDuration: 0.3) {
             self.dimmedView.alpha = 0.6
         }
@@ -115,6 +99,27 @@ public class SelectMeetingTypeViewController: UIViewController {
         } completion: { _ in
             self.dimmedView.removeFromSuperview()
         }
+    }
+    
+    func tapEvent(){
+        let tapGesture = UITapGestureRecognizer()
+        let swipeGesture = UISwipeGestureRecognizer()
+        self.dimmedView.addGestureRecognizer(tapGesture)
+        self.backView.addGestureRecognizer(swipeGesture)
+        swipeGesture.direction = .down
+        
+        tapGesture.rx.event
+            .bind { [weak self] gesture in
+                print(2323)
+                self?.backViewDown()
+            }
+            .disposed(by: disposeBag)
+        
+        swipeGesture.rx.event
+            .bind { [weak self] gesture in
+                self?.dismiss(animated: true)
+            }
+            .disposed(by: disposeBag)
     }
     
     func bind(){
@@ -159,10 +164,14 @@ public class SelectMeetingTypeViewController: UIViewController {
     }
     
     func layout(){
-        
+        self.view.addSubview(dimmedView)
         self.view.addSubview(backView)
         [handleView,oneDayButton,firstSeparateView,shortTermButton,secondSeparateView,continuousButton]
             .forEach{ self.backView.addSubview($0) }
+        
+        dimmedView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
         
         backView.snp.makeConstraints { make in
             make.width.equalToSuperview()
@@ -216,7 +225,7 @@ public class SelectMeetingTypeViewController: UIViewController {
     
     func backViewUp(){
         
-        UIView.animate(withDuration: 3.3) {
+        UIView.animate(withDuration: 0.3) {
             self.backView.snp.remakeConstraints { make in
                 make.width.equalToSuperview()
                 make.height.equalTo(263)

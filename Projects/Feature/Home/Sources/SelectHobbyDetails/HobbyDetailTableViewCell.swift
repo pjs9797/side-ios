@@ -33,9 +33,9 @@ class HobbyDetailTableViewCell: UITableViewCell {
         layout.itemSize = CGSize(width: 56, height: 77)
         layout.minimumLineSpacing = 20
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.isHidden = true
         collectionView.register(HobbyDetailCollectionViewCell.self, forCellWithReuseIdentifier: "HobbyDetailCollectionViewCell")
         collectionView.isScrollEnabled = false
+        collectionView.isHidden = true
         return collectionView
     }()
     
@@ -67,14 +67,14 @@ class HobbyDetailTableViewCell: UITableViewCell {
         
         backView.snp.makeConstraints { make in
             make.height.equalTo(72)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
-            make.top.equalToSuperview().offset(4)
-            make.bottom.equalToSuperview().offset(-4)
+            make.leading.equalTo(contentView.snp.leading).offset(20)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-20)
+            make.top.equalTo(contentView.snp.top).offset(4)
+            make.bottom.equalTo(contentView.snp.bottom).offset(-4)
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.height.equalTo(24)
+            make.height.equalTo(22)
             make.leading.equalToSuperview().offset(24)
             make.top.equalToSuperview().offset(24)
         }
@@ -86,22 +86,20 @@ class HobbyDetailTableViewCell: UITableViewCell {
         }
         
         hobbyDetailCollectionView.snp.makeConstraints { make in
-            make.height.equalTo(0)
+            //make.height.equalTo(0)
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
-            make.top.equalToSuperview().offset(58)
-            //make.bottom.equalToSuperview().offset(-14)
+            make.top.equalTo(titleLabel.snp.bottom).offset(20)
+            make.bottom.equalToSuperview().offset(-4)
         }
         
     }
     
     func configure(model: HobbyModel){
         titleLabel.text = model.title
-        
         plusButton.rx.tap
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
-                
                 let itemCount = model.hobbyDetailModel.count
                 let rowHeight: CGFloat = 77
                 let spacing: CGFloat = 20
@@ -110,24 +108,25 @@ class HobbyDetailTableViewCell: UITableViewCell {
                 
                 let isCurrentlyHidden = self.hobbyDetailCollectionView.isHidden
                 let newHeight = isCurrentlyHidden ? collectionViewHeight : 0
-                self.hobbyDetailCollectionView.isHidden = !isCurrentlyHidden
                 
                 let buttonImageName = isCurrentlyHidden ? SharedDSKitAsset.Icons.iconArrowFold24.image : SharedDSKitAsset.Icons.iconArrowPlus24.image
                 self.plusButton.setImage(buttonImageName, for: .normal)
+                self.hobbyDetailCollectionView.isHidden = !isCurrentlyHidden
                 
-                self.hobbyDetailCollectionView.snp.updateConstraints { make in
-                    make.height.equalTo(newHeight)
-                    //make.bottom.equalToSuperview().offset(-16)
-                }
+                UIView.animate(withDuration: 0.3, animations: {
+                    
+                    
+                    self.backView.snp.updateConstraints { make in
+                        make.height.equalTo(72 + newHeight)
+                    }
+                    self.hobbyDetailCollectionView.snp.updateConstraints { make in
+                        make.height.equalTo(newHeight)
+                    }
+                    
+                    self.heightDidChange.onNext(())
+                    self.contentView.layoutIfNeeded()
+                })
                 
-                self.backView.snp.updateConstraints{ make in
-                    make.height.equalTo(72 + newHeight)
-                }
-                
-                UIView.animate(withDuration: 0.3) {
-                    self.layoutIfNeeded()
-                }
-                self.heightDidChange.onNext(())
                 
             })
             .disposed(by: disposeBag)

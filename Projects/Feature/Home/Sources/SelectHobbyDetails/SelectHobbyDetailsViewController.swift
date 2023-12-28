@@ -33,7 +33,7 @@ public class SelectHobbyDetailsViewController: UIViewController{
         tableView.separatorStyle = .none
         tableView.isScrollEnabled = false
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 80
+        tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.register(HobbyDetailTableViewCell.self, forCellReuseIdentifier: "HobbyDetailTableViewCell")
         return tableView
     }()
@@ -62,7 +62,7 @@ public class SelectHobbyDetailsViewController: UIViewController{
         super.viewDidLoad()
         self.view.backgroundColor = .white
         setNavigationbar()
-        disabledNextButton()
+        self.nextButton.disableNextButton()
         layout()
         bind()
     }
@@ -96,12 +96,13 @@ public class SelectHobbyDetailsViewController: UIViewController{
         
         selectHobbyDetailsViewModel.nextButtonTapped
             .bind(onNext: { [weak self] in
-                self?.navigationController?.pushViewController(CreatingGatheringViewController(), animated: true)
+                //self?.navigationController?.pushViewController(CreatingGatheringViewController(), animated: true)
             })
             .disposed(by: disposeBag)
         
         selectHobbyDetailsViewModel.hobbyDetailTableViewCellData
             .drive(hobbyDetailTableView.rx.items(cellIdentifier: "HobbyDetailTableViewCell", cellType: HobbyDetailTableViewCell.self)){ row, data, cell in
+                
                 cell.heightDidChange
                     .asDriver(onErrorJustReturn: ())
                     .drive(onNext: { [weak self] in
@@ -117,7 +118,7 @@ public class SelectHobbyDetailsViewController: UIViewController{
                         cell?.updateBorderViews(selectedIndexPath: indexPath)
                         if let selectedCell = cell?.hobbyDetailCollectionView.cellForItem(at: indexPath) as? HobbyDetailCollectionViewCell {
                             self?.selectedHobbyDetail = selectedCell.titleLabel.text ?? ""
-                            self?.enabledNextButton()
+                            self?.nextButton.enableNextButton()
                         }
                     }
                     .disposed(by: cell.disposeBag)
@@ -185,19 +186,4 @@ public class SelectHobbyDetailsViewController: UIViewController{
         }
         
     }
-    
-    private func enabledNextButton(){
-        self.nextButton.setTitleColor(.white, for: .normal)
-        self.nextButton.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
-        self.nextButton.backgroundColor = SharedDSKitAsset.Colors.lightGreen.color
-        self.nextButton.isEnabled = true
-    }
-    
-    private func disabledNextButton(){
-        self.nextButton.setTitleColor(SharedDSKitAsset.Colors.gr30.color, for: .normal)
-        self.nextButton.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-        self.nextButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
-        self.nextButton.isEnabled = false
-    }
-    
 }

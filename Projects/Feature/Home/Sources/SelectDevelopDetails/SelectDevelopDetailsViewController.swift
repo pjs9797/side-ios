@@ -63,7 +63,7 @@ public class SelectDevelopDetailsViewController: UIViewController{
         return etcBtView
     }()
     
-    lazy var nextButton: UIButton = {
+    let nextButton: UIButton = {
         let button = UIButton()
         button.setTitle("다음", for: .normal)
         button.titleLabel?.font = Fonts.SH02Bold.font
@@ -119,7 +119,7 @@ public class SelectDevelopDetailsViewController: UIViewController{
         
         selectDevelopDetailsViewModel.nextButtonTapped
             .bind(onNext: { [weak self] in
-                self?.navigationController?.pushViewController(CreatingGatheringViewController(), animated: true)
+                //self?.navigationController?.pushViewController(CreatingGatheringViewController(), animated: true)
             })
             .disposed(by: disposeBag)
         
@@ -157,7 +157,7 @@ public class SelectDevelopDetailsViewController: UIViewController{
             .subscribe(onNext: { [weak self] type in
                 switch type {
                 case .study:
-                    self?.enabledNextButton()
+                    self?.nextButton.enableNextButton()
                     self?.selectedDevelopDetail = "스터디"
                     self?.studyBtView.borderView.isHidden = false
                     self?.sideProjectBtView.borderView.isHidden = true
@@ -166,7 +166,7 @@ public class SelectDevelopDetailsViewController: UIViewController{
                     self?.investmentBtView.borderView.isHidden = true
                     self?.etcBtView.borderView.isHidden = true
                 case .sideProject:
-                    self?.enabledNextButton()
+                    self?.nextButton.enableNextButton()
                     self?.selectedDevelopDetail = "사이드 프로젝트"
                     self?.studyBtView.borderView.isHidden = true
                     self?.sideProjectBtView.borderView.isHidden = false
@@ -175,7 +175,7 @@ public class SelectDevelopDetailsViewController: UIViewController{
                     self?.investmentBtView.borderView.isHidden = true
                     self?.etcBtView.borderView.isHidden = true
                 case .jobChange:
-                    self?.enabledNextButton()
+                    self?.nextButton.enableNextButton()
                     self?.selectedDevelopDetail = "이직 준비"
                     self?.studyBtView.borderView.isHidden = true
                     self?.sideProjectBtView.borderView.isHidden = true
@@ -184,7 +184,7 @@ public class SelectDevelopDetailsViewController: UIViewController{
                     self?.investmentBtView.borderView.isHidden = true
                     self?.etcBtView.borderView.isHidden = true
                 case .language:
-                    self?.enabledNextButton()
+                    self?.nextButton.enableNextButton()
                     self?.selectedDevelopDetail = "어학"
                     self?.studyBtView.borderView.isHidden = true
                     self?.sideProjectBtView.borderView.isHidden = true
@@ -193,7 +193,7 @@ public class SelectDevelopDetailsViewController: UIViewController{
                     self?.investmentBtView.borderView.isHidden = true
                     self?.etcBtView.borderView.isHidden = true
                 case .investment:
-                    self?.enabledNextButton()
+                    self?.nextButton.enableNextButton()
                     self?.selectedDevelopDetail = "재테크"
                     self?.studyBtView.borderView.isHidden = true
                     self?.sideProjectBtView.borderView.isHidden = true
@@ -202,7 +202,7 @@ public class SelectDevelopDetailsViewController: UIViewController{
                     self?.investmentBtView.borderView.isHidden = false
                     self?.etcBtView.borderView.isHidden = true
                 case .etc:
-                    self?.enabledNextButton()
+                    self?.nextButton.enableNextButton()
                     self?.selectedDevelopDetail = "기타"
                     self?.studyBtView.borderView.isHidden = true
                     self?.sideProjectBtView.borderView.isHidden = true
@@ -211,7 +211,7 @@ public class SelectDevelopDetailsViewController: UIViewController{
                     self?.investmentBtView.borderView.isHidden = true
                     self?.etcBtView.borderView.isHidden = false
                 case .none:
-                    self?.disabledNextButton()
+                    self?.nextButton.disableNextButton()
                 }
             })
             .disposed(by: disposeBag)
@@ -283,19 +283,4 @@ public class SelectDevelopDetailsViewController: UIViewController{
         }
         
     }
-    
-    private func enabledNextButton(){
-        self.nextButton.setTitleColor(.white, for: .normal)
-        self.nextButton.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
-        self.nextButton.backgroundColor = SharedDSKitAsset.Colors.lightGreen.color
-        self.nextButton.isEnabled = true
-    }
-    
-    private func disabledNextButton(){
-        self.nextButton.setTitleColor(SharedDSKitAsset.Colors.gr30.color, for: .normal)
-        self.nextButton.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-        self.nextButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
-        self.nextButton.isEnabled = false
-    }
-    
 }
