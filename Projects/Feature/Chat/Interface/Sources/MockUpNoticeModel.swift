@@ -20,6 +20,5 @@ public struct MockUpNoticeModel {
         self.dateAndAdmin = dateAndAdmin
         self.isPinned = isPinned
     }
-    
 }
 

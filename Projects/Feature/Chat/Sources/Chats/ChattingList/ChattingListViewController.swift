@@ -45,7 +45,6 @@ public class ChattingListViewController: UIViewController, UITableViewDelegate, 
     }
     
     func setup() {
-        
         navigationItem.title = "채팅"
         
         let attributes = [
@@ -65,17 +64,7 @@ public class ChattingListViewController: UIViewController, UITableViewDelegate, 
     }
     
     @objc private func segmentedControlSelected() {
-        switch segmentedControl.selectedSegmentIndex {
-        case 0:
-            chattingListTableView.reloadData()
-            break
-            
-        case 1:
-            chattingListTableView.reloadData()
-            break
-        default:
-            break
-        }
+        chattingListTableView.reloadData()
     }
     
     func render() {
@@ -180,7 +169,7 @@ public class ChattingListViewController: UIViewController, UITableViewDelegate, 
                 self.chattingListTableView.reloadRows(at: [indexPath], with: .automatic)
                 success(true)
             }
-            alarmToggle.image = mockup.isAlarmOn ? 
+            alarmToggle.image = mockup.isAlarmOn ?
             SharedDSKitAsset.Icons.bellDefault.image : SharedDSKitAsset.Icons.bellOff.image
             alarmToggle.backgroundColor = UIColor(red: 0.97, green: 0.97, blue: 0.97, alpha: 1)
             

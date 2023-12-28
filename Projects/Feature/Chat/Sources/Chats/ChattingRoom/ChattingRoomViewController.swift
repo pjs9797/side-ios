@@ -97,7 +97,6 @@ public class ChattingRoomViewController: UIViewController {
             forCellReuseIdentifier: OthersConversationTableViewCell.className
         )
         
-        
         let sideMenuBarButton = UIBarButtonItem(
             image: SharedDSKitAsset.Icons.iconList24.image,
             style: .plain,
@@ -144,7 +143,6 @@ public class ChattingRoomViewController: UIViewController {
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(56)
         }
-        
     }
     
     @objc private func menuButtonTapped() {

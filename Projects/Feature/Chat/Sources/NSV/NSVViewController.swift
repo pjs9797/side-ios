@@ -58,18 +58,7 @@ public class NSVViewController: UIViewController {
     }
     
     @objc private func segmentedControlSelected() {
-        switch segmentedControl.selectedSegmentIndex {
-        case 0:
-            tableView.reloadData()
-            break
-            
-        case 1:
-            tableView.reloadData()
-            break
-            
-        default:
-            break
-        }
+        tableView.reloadData()
     }
     
     private func registerTableView() {
@@ -81,9 +70,6 @@ public class NSVViewController: UIViewController {
     }
     
     private func setUp() {
-        tableView.delegate = self
-        tableView.dataSource = self
-        
         navigationItem.title = "영화관투어모임 영사모 >_<"
         navigationController?.navigationBar.tintColor = SharedDSKitAsset.Colors.gr100.color
         
