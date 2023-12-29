@@ -10,20 +10,20 @@ import Shared
 
 public class ButtonsFooterView: UIView {
     
-    var leaveButton: UIButton = {
-        var button = UIButton()
+    let leaveButton: UIButton = {
+        let button = UIButton()
         button.setImage(SharedDSKitAsset.Icons.iconOut24.image, for: .normal)
         return button
     }()
     
-    var reportButton: UIButton = {
-        var button = UIButton()
+    let reportButton: UIButton = {
+        let button = UIButton()
         button.setImage(SharedDSKitAsset.Icons.iconReport24.image, for: .normal)
         return button
     }()
     
-    var alarmButton: UIButton = {
-        var button = UIButton()
+    let alarmButton: UIButton = {
+        let button = UIButton()
         button.setImage(SharedDSKitAsset.Icons.bellOff.image, for: .normal)
         return button
     }()

@@ -10,8 +10,8 @@ import Shared
 
 public class ChattingTextInputView: UIView {
     
-    private var multiMediaButton: UIButton = {
-        var button = UIButton()
+    private let multiMediaButton: UIButton = {
+        let button = UIButton()
         button.setImage(SharedDSKitAsset.Icons.iconArrowPlus24.image, for: .normal)
         button.backgroundColor = .clear
         return button
@@ -33,8 +33,8 @@ public class ChattingTextInputView: UIView {
         return textView
     }()
     
-    public var sendMessageButton: UIButton = {
-        var button = UIButton()
+    public let sendMessageButton: UIButton = {
+        let button = UIButton()
         button.setImage(SharedDSKitAsset.Icons.iconSend24.image, for: .normal)
         button.imageView?.tintColor = SharedDSKitAsset.Colors.lightGreen.color
         return button

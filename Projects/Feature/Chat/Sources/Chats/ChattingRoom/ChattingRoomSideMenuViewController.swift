@@ -30,8 +30,8 @@ class ChattingRoomSideMenuViewController: UIViewController {
         return view
     }()
     
-    private var roomTitleLabel: UILabel = {
-        var label = UILabel()
+    private let roomTitleLabel: UILabel = {
+        let label = UILabel()
         label.text = "영화관투어모임 영사모 >_<"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SH03Bold.font
@@ -39,8 +39,8 @@ class ChattingRoomSideMenuViewController: UIViewController {
         return label
     }()
     
-    private var roomDateLabel: UILabel = {
-        var label = UILabel()
+    private let roomDateLabel: UILabel = {
+        let label = UILabel()
         label.text = "개설일 2023.11.15"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.Caption.font
@@ -48,8 +48,8 @@ class ChattingRoomSideMenuViewController: UIViewController {
         return label
     }()
     
-    private var noticeButton: UIButton = {
-        var button = UIButton()
+    private let noticeButton: UIButton = {
+        let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(SharedDSKitAsset.Icons.iconNotice24.image, for: .normal)
         button.backgroundColor = SharedDSKitAsset.Colors.bgLightGray.color
@@ -60,8 +60,8 @@ class ChattingRoomSideMenuViewController: UIViewController {
         return button
     }()
     
-    private var scheduleButton: UIButton = {
-        var button = UIButton()
+    private let scheduleButton: UIButton = {
+        let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(SharedDSKitAsset.Icons.iconCalendar24.image, for: .normal)
         button.backgroundColor = SharedDSKitAsset.Colors.bgLightGray.color
@@ -78,8 +78,8 @@ class ChattingRoomSideMenuViewController: UIViewController {
         return view
     }()
     
-    private var memberListTitleLabel: UILabel = {
-        var label = UILabel()
+    private let memberListTitleLabel: UILabel = {
+        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "멤버"
         label.font = Fonts.SH02Bold.font
@@ -115,7 +115,6 @@ class ChattingRoomSideMenuViewController: UIViewController {
     }
     
     private func render() {
-        
         configureSubviews()
         
         sideMenuView.snp.makeConstraints { make in
@@ -267,10 +266,9 @@ extension ChattingRoomSideMenuViewController: UITableViewDelegate, UITableViewDa
 
 extension ChattingRoomSideMenuViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        guard let view = touch.view else { return false }
-        if view === titleAndButtonsView || view.isDescendant(of: memberListTableView) {
-            return false
-        }
+        guard let view = touch.view,
+              view !== titleAndButtonsView,
+              !view.isDescendant(of: memberListTableView) else { return false }
         return true
     }
 }

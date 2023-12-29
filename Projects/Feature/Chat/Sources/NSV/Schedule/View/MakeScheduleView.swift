@@ -30,22 +30,22 @@ class MakeScheduleView: UIView {
         return imageView
     }()
     
-    var timeButton: UIButton = {
-        var button = UIButton()
+    let timeButton: UIButton = {
+        let button = UIButton()
         button.backgroundColor = .clear
         return button
     }()
     
-    var dateLabel: UILabel = {
-        var label = UILabel()
+    let dateLabel: UILabel = {
+        let label = UILabel()
         label.text = "날짜와 시간 선택해주세요"
         label.font = Fonts.Body02.font
         label.textColor = SharedDSKitAsset.Colors.textDisabled.color
         return label
     }()
     
-    var timeLabel: UILabel = {
-        var label = UILabel()
+    let timeLabel: UILabel = {
+        let label = UILabel()
         label.font = Fonts.Body02.font
         label.textColor = SharedDSKitAsset.Colors.textDisabled.color
         return label

@@ -78,7 +78,6 @@ public class ChattingRoomViewController: UIViewController {
         self.conversationTableView.reloadData()
     }
     
-    
     private func setUp() {
         conversationTableView.delegate = self
         conversationTableView.dataSource = self

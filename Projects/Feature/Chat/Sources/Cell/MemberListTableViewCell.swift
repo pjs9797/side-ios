@@ -29,16 +29,16 @@ class MemberListTableViewCell: UITableViewCell {
         return imageView
     }()
     
-    var nameLabel: UILabel = {
-        var label = UILabel()
+    let nameLabel: UILabel = {
+        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.SH01.font
         label.textColor = SharedDSKitAsset.Colors.gr100.color
         return label
     }()
     
-    var meLabel: UILabel = {
-        var label = UILabel()
+    let meLabel: UILabel = {
+        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "me"
         label.textAlignment = .center

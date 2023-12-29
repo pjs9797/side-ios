@@ -22,7 +22,7 @@ public class MyConversationTableViewCell: UITableViewCell {
         return textView
     }()
     
-    var timeLabel: UILabel = {
+    let timeLabel: UILabel = {
         var label = UILabel()
         label.font = Fonts.Caption.font
         label.textColor = SharedDSKitAsset.Colors.text03.color
