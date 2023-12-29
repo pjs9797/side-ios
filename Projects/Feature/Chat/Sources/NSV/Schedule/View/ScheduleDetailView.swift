@@ -15,16 +15,16 @@ class ScheduleDetailView: UIView {
         return view
     }()
     
-    var titleLabel: UILabel = {
-        var label = UILabel()
+    let titleLabel: UILabel = {
+        let label = UILabel()
         label.text = "주말 영어 스터디"
         label.font = Fonts.H02.font
         label.textColor = SharedDSKitAsset.Colors.gr100.color
         return label
     }()
     
-    var memberCountLabel: UILabel = {
-        var label = UILabel()
+    let memberCountLabel: UILabel = {
+        let label = UILabel()
         label.text = "15명 중 3명 참여 중"
         label.font = Fonts.Body02.font
         label.textColor = SharedDSKitAsset.Colors.text03.color
@@ -48,16 +48,16 @@ class ScheduleDetailView: UIView {
         return imageView
     }()
     
-    var dateLabel: UILabel = {
-        var label = UILabel()
+    let dateLabel: UILabel = {
+        let label = UILabel()
         label.text = "20203. 11. 22"
         label.font = Fonts.Body02.font
         label.textColor = SharedDSKitAsset.Colors.gr100.color
         return label
     }()
     
-    var timeLabel: UILabel = {
-        var label = UILabel()
+    let timeLabel: UILabel = {
+        let label = UILabel()
         label.text = "오후 17:00"
         label.font = Fonts.Body01.font
         label.textColor = SharedDSKitAsset.Colors.text03.color
@@ -70,8 +70,8 @@ class ScheduleDetailView: UIView {
         return imageView
     }()
     
-    var locationLabel: UILabel = {
-        var label = UILabel()
+    let locationLabel: UILabel = {
+        let label = UILabel()
         label.text = "서울시 서초구 문화회관"
         label.lineBreakMode = .byTruncatingTail
         label.font = Fonts.Body02.font
@@ -85,8 +85,8 @@ class ScheduleDetailView: UIView {
         return imageView
     }()
     
-    var maximumMemberLabel: UILabel = {
-        var label = UILabel()
+    let maximumMemberLabel: UILabel = {
+        let label = UILabel()
         label.text = "최대 15명"
         label.font = Fonts.Body02.font
         label.textColor = SharedDSKitAsset.Colors.gr100.color
@@ -99,8 +99,8 @@ class ScheduleDetailView: UIView {
         return imageView
     }()
     
-    var budgetLabel: UILabel = {
-        var label = UILabel()
+    let budgetLabel: UILabel = {
+        let label = UILabel()
         label.text = "5,000원"
         label.font = Fonts.Body02.font
         label.textColor = SharedDSKitAsset.Colors.gr100.color
@@ -112,16 +112,16 @@ class ScheduleDetailView: UIView {
         return view
     }()
     
-    var descriptionTitleLabel: UILabel = {
-        var label = UILabel()
+    let descriptionTitleLabel: UILabel = {
+        let label = UILabel()
         label.text = "일정상세"
         label.font = Fonts.SH03Bold.font
         label.textColor = SharedDSKitAsset.Colors.gr100.color
         return label
     }()
     
-    var descriptionBodyLabel: UILabel = {
-        var label = UILabel()
+    let descriptionBodyLabel: UILabel = {
+        let label = UILabel()
         label.text = "극 I라도 괜찮아요!\n지난 번 모임에도 무려 9분이나 참석해주셨는데 너무 알찼답니다~\n이번 스터디에서는 join관련해서 실제 쿼리작성해서\n실무 수행해볼 예정입니다!\n준비해올 것은 노트북뿐!"
         label.numberOfLines = 5
         label.font = Fonts.Body02.font
@@ -140,16 +140,16 @@ class ScheduleDetailView: UIView {
         return view
     }()
     
-    var memberListTitleLabel: UILabel = {
-        var label = UILabel()
+    let memberListTitleLabel: UILabel = {
+        let label = UILabel()
         label.text = "참여멤버"
         label.font = Fonts.SH03Bold.font
         label.textColor = SharedDSKitAsset.Colors.gr100.color
         return label
     }()
     
-    var memberListCountLabel: UILabel = {
-        var label = UILabel()
+    let memberListCountLabel: UILabel = {
+        let label = UILabel()
         label.font = Fonts.Body02.font
         label.textColor = SharedDSKitAsset.Colors.text03.color
         return label

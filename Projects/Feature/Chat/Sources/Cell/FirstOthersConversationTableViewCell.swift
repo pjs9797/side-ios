@@ -17,8 +17,8 @@ public class FirstOthersConversationTableViewCell: UITableViewCell {
         return imageView
     }()
     
-    var nameLabel: UILabel = {
-        var label = UILabel()
+    let nameLabel: UILabel = {
+        let label = UILabel()
         label.font = Fonts.Caption.font
         label.textColor = SharedDSKitAsset.Colors.gr100.color
         label.backgroundColor = .clear
@@ -37,8 +37,8 @@ public class FirstOthersConversationTableViewCell: UITableViewCell {
         return textView
     }()
     
-    var timeLabel: UILabel = {
-        var label = UILabel()
+    let timeLabel: UILabel = {
+        let label = UILabel()
         label.font = Fonts.Caption.font
         label.textColor = SharedDSKitAsset.Colors.text03.color
         label.backgroundColor = .clear

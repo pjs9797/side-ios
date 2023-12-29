@@ -17,15 +17,15 @@ class ChattingListTableViewCell: UITableViewCell {
         return imageView
     }()
     
-    var roomTitleLabel: UILabel = {
-        var label = UILabel()
+    let roomTitleLabel: UILabel = {
+        let label = UILabel()
         label.font = Fonts.SH01Bold.font
         label.textColor = SharedDSKitAsset.Colors.gr100.color
         return label
     }()
     
-    var countLabel: PaddingLabel = {
-       var label = PaddingLabel(padding: UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4))
+    let countLabel: PaddingLabel = {
+       let label = PaddingLabel(padding: UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4))
         label.backgroundColor = SharedDSKitAsset.Colors.lightGreen.color
         label.font = Fonts.Caption.font
         label.textColor = .white
@@ -35,15 +35,15 @@ class ChattingListTableViewCell: UITableViewCell {
         return label
     }()
     
-    var latestMessageLabel: UILabel = {
-        var label = UILabel()
+    let latestMessageLabel: UILabel = {
+        let label = UILabel()
         label.font = Fonts.Body01.font
         label.textColor = SharedDSKitAsset.Colors.gr100.color
         return label
     }()
     
-    var timestampLabel: UILabel = {
-        var label = UILabel()
+    let timestampLabel: UILabel = {
+        let label = UILabel()
         label.font = Fonts.Caption.font
         label.textColor = SharedDSKitAsset.Colors.text03.color
         return label

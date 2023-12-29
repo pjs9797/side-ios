@@ -17,8 +17,8 @@ public class NoticeHeaderView: UIView {
         return imageView
     }()
     
-    private var noticeLabel: UILabel = {
-        var label = UILabel()
+    private let noticeLabel: UILabel = {
+        let label = UILabel()
         label.text = "테스트공지입니다."
         label.font = Fonts.Body01.font
         label.textColor = SharedDSKitAsset.Colors.gr100.color

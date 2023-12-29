@@ -111,7 +111,6 @@ public class MakeScheduleViewController: UIViewController {
     private func render() {
         
     }
-
 }
 
 extension MakeScheduleViewController: UITextViewDelegate {

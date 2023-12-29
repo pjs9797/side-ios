@@ -11,23 +11,23 @@ import SnapKit
 
 class NoticeListTableViewCell: UITableViewCell {
     
-    var noticeTitleLabel: UILabel = {
-        var label = UILabel()
+    let noticeTitleLabel: UILabel = {
+        let label = UILabel()
         label.font = Fonts.Body02.font
         label.textColor = SharedDSKitAsset.Colors.gr100.color
         label.lineBreakMode = .byTruncatingTail
         return label
     }()
     
-    var createdDateAndAdminLabel: UILabel = {
-        var label = UILabel()
+    let createdDateAndAdminLabel: UILabel = {
+        let label = UILabel()
         label.font = Fonts.Body01.font
         label.textColor = SharedDSKitAsset.Colors.text03.color
         return label
     }()
     
-    var pinnedImageView: UIImageView = {
-        var imageView = UIImageView()
+    let pinnedImageView: UIImageView = {
+        let imageView = UIImageView()
         imageView.image = SharedDSKitAsset.Icons.iconPin16.image
         imageView.isHidden = true
         return imageView

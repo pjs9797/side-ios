@@ -11,23 +11,23 @@ import SnapKit
 
 class ScheduleTableViewCell: UITableViewCell {
     
-    var scheduleTitleLabel: UILabel = {
-        var label = UILabel()
+    let scheduleTitleLabel: UILabel = {
+        let label = UILabel()
         label.font = Fonts.Body02.font
         label.textColor = SharedDSKitAsset.Colors.gr100.color
         label.lineBreakMode = .byTruncatingTail
         return label
     }()
     
-    var timeLabel: UILabel = {
-        var label = UILabel()
+    let timeLabel: UILabel = {
+        let label = UILabel()
         label.font = Fonts.Body01.font
         label.textColor = SharedDSKitAsset.Colors.text03.color
         return label
     }()
     
-    var locationLabel: UILabel = {
-        var label = UILabel()
+    let locationLabel: UILabel = {
+        let label = UILabel()
         label.font = Fonts.Body01.font
         label.textColor = SharedDSKitAsset.Colors.text03.color
         label.lineBreakMode = .byTruncatingTail
@@ -35,8 +35,8 @@ class ScheduleTableViewCell: UITableViewCell {
         return label
     }()
     
-    var memberCountLabel: UILabel = {
-        var label = UILabel()
+    let memberCountLabel: UILabel = {
+        let label = UILabel()
         label.textColor = SharedDSKitAsset.Colors.text03.color
         label.font = Fonts.Body01.font
         return label
