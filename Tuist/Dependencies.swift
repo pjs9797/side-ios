@@ -16,6 +16,7 @@ let SPM = SwiftPackageManagerDependencies([
     .remote(url: "https://github.com/WenchaoD/FSCalendar.git", requirement: .upToNextMajor(from: "2.8.3")),
 ], productTypes: [
     "FSCalendar": .framework
+
 ])
 
 let dependencies = Dependencies(

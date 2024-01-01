@@ -27,10 +27,15 @@ class CreateMeetingPeriodView: UIView{
         return timeBtView
     }()
 <<<<<<< HEAD
+<<<<<<< HEAD
     let calendarView = CalendarView(calendarViewModel: CalendarViewModel())
     //let customTimePickerView = CustomTimePickerView(timePickerViewModel: TimePickerViewModel())
 =======
 >>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
+=======
+    let calendarView = CalendarView(calendarViewModel: CalendarViewModel())
+    //let customTimePickerView = CustomTimePickerView(timePickerViewModel: TimePickerViewModel())
+>>>>>>> caef135 ([FEAT] 타임피커뷰 개발)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -73,6 +78,9 @@ class CreateMeetingPeriodView: UIView{
             make.top.equalTo(dateTitleLabel.snp.bottom).offset(16)
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> caef135 ([FEAT] 타임피커뷰 개발)
 //        calendarView.snp.makeConstraints { make in
 //            make.width.equalToSuperview()
 //            make.height.equalTo(358)
