@@ -4,8 +4,15 @@ import Shared
 
 public class SelectHobbyDetailsViewModel{
     let disposeBag = DisposeBag()
+<<<<<<< HEAD
     let backButtonTapped = PublishRelay<Void>()
     let nextButtonTapped = PublishRelay<Void>()
+=======
+    
+    let backButtonTapped = PublishRelay<Void>()
+    let nextButtonTapped = PublishRelay<Void>()
+    
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
     let hobbyDetailTableViewCellData = Driver<[HobbyModel]>.just(
         [
             HobbyModel(title: "음악 · 악기", hobbyDetailModel: [

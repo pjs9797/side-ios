@@ -21,6 +21,7 @@ public class TPTabBarController: UITabBarController {
         setTabBar()
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
     
     func setTabBar() {
         self.tabBar.addSubview(separateView)
@@ -56,9 +57,12 @@ public class TPTabBarController: UITabBarController {
             let dNVC = UINavigationController(rootViewController: dVC)
         self.setViewControllers([homeNVC,aNVC,bNVC,cNVC,dNVC], animated: true)
 =======
+=======
+    
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
     func setTabBar() {
-        //tabBar.barTintColor = SharedDSKitAsset.Colors.lightGreen.color
-        //tabBar.unselectedItemTintColor = SharedDSKitAsset.Colors.gr100.color
+        tabBar.barTintColor = SharedDSKitAsset.Colors.lightGreen.color
+        tabBar.unselectedItemTintColor = SharedDSKitAsset.Colors.gr100.color
         tabBar.backgroundColor = SharedDSKitAsset.Colors.white.color
         if let items = tabBar.items {
             let attribute = [NSAttributedString.Key.font: Fonts.ST01.font]

@@ -8,32 +8,59 @@ public class SelectHobbyDetailsViewController: UIViewController{
     let disposeBag = DisposeBag()
     let meetingTitle: String
     let selectHobbyDetailsViewModel: SelectHobbyDetailsViewModel
+<<<<<<< HEAD
     let backButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: nil, action: nil)
     let scrollView = UIScrollView()
     let contentView = UIView()
     let progressView: UIProgressView = {
+=======
+    var selectedHobbyDetail: String = ""
+    
+    let backButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: nil, action: nil)
+    let scrollView = UIScrollView()
+    let contentView = UIView()
+    lazy var progressView: UIProgressView = {
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
         let progressView = UIProgressView()
         progressView.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
         progressView.tintColor = .black
         progressView.progress = 2/3
         return progressView
     }()
+<<<<<<< HEAD
     let questionLabel: UILabel = {
+=======
+    
+    lazy var questionLabel: UILabel = {
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
         let label = UILabel()
         label.font = Fonts.H02.font
         label.text = "세부항목을 선택해주세요 :)"
         return label
     }()
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
     lazy var hobbyDetailTableView: UITableView = {
         let tableView = UITableView()
         tableView.separatorStyle = .none
         tableView.isScrollEnabled = false
         tableView.rowHeight = UITableView.automaticDimension
+<<<<<<< HEAD
         tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.register(HobbyDetailTableViewCell.self, forCellReuseIdentifier: "HobbyDetailTableViewCell")
         return tableView
     }()
     let nextButton: UIButton = {
+=======
+        tableView.estimatedRowHeight = 80
+        tableView.register(HobbyDetailTableViewCell.self, forCellReuseIdentifier: "HobbyDetailTableViewCell")
+        return tableView
+    }()
+    
+    lazy var nextButton: UIButton = {
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
         let button = UIButton()
         button.setTitle("다음", for: .normal)
         button.setTitleColor(.black, for: .normal)
@@ -55,21 +82,34 @@ public class SelectHobbyDetailsViewController: UIViewController{
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+<<<<<<< HEAD
         
         self.view.backgroundColor = .white
         setNavigationbar()
         self.nextButton.disableNextButton()
+=======
+        self.view.backgroundColor = .white
+        setNavigationbar()
+        disabledNextButton()
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
         layout()
         bind()
     }
     
     private func setNavigationbar() {
         self.title = self.meetingTitle
+<<<<<<< HEAD
         self.tabBarController?.tabBar.isHidden = true
+=======
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font : Fonts.SH03Bold.font,
             .foregroundColor: UIColor.black
         ]
+<<<<<<< HEAD
+=======
+        
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
         self.backButton.tintColor = SharedDSKitAsset.Colors.black.color
         navigationItem.leftBarButtonItem = backButton
     }
@@ -91,7 +131,11 @@ public class SelectHobbyDetailsViewController: UIViewController{
         
         selectHobbyDetailsViewModel.nextButtonTapped
             .bind(onNext: { [weak self] in
+<<<<<<< HEAD
                 self?.navigationController?.pushViewController(CreateMeetingContentViewController(meetingTitle: self!.meetingTitle, createMeetingContentViewModel: CreateMeetingContentViewModel()), animated: true)
+=======
+                self?.navigationController?.pushViewController(CreatingGatheringViewController(), animated: true)
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
             })
             .disposed(by: disposeBag)
         
@@ -111,13 +155,26 @@ public class SelectHobbyDetailsViewController: UIViewController{
                         SharedSelectHobbyState.shared.selectedIndexPath.accept((tableCellIndexPath: tableCellIndexPath, collectionViewIndexPath: indexPath))
                         cell?.updateBorderViews(selectedIndexPath: indexPath)
                         if let selectedCell = cell?.hobbyDetailCollectionView.cellForItem(at: indexPath) as? HobbyDetailCollectionViewCell {
+<<<<<<< HEAD
                             self?.nextButton.enableNextButton()
+=======
+                            self?.selectedHobbyDetail = selectedCell.titleLabel.text ?? ""
+                            self?.enabledNextButton()
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
                         }
                     }
                     .disposed(by: cell.disposeBag)
                 
+<<<<<<< HEAD
                 cell.myIndexPath = IndexPath(row: row, section: 0)
                 cell.configure(model: data)
+=======
+                
+                
+                cell.myIndexPath = IndexPath(row: row, section: 0)
+                cell.configure(model: data)
+                
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
             }
             .disposed(by: disposeBag)
         
@@ -130,6 +187,10 @@ public class SelectHobbyDetailsViewController: UIViewController{
                 }
             })
             .disposed(by: disposeBag)
+<<<<<<< HEAD
+=======
+        
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
     }
     
     private func layout(){
@@ -175,5 +236,25 @@ public class SelectHobbyDetailsViewController: UIViewController{
             make.top.equalTo(questionLabel.snp.bottom).offset(36)
             make.bottom.equalTo(nextButton.snp.top).offset(-36)
         }
+<<<<<<< HEAD
     }
+=======
+        
+    }
+    
+    private func enabledNextButton(){
+        self.nextButton.setTitleColor(.white, for: .normal)
+        self.nextButton.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
+        self.nextButton.backgroundColor = SharedDSKitAsset.Colors.lightGreen.color
+        self.nextButton.isEnabled = true
+    }
+    
+    private func disabledNextButton(){
+        self.nextButton.setTitleColor(SharedDSKitAsset.Colors.gr30.color, for: .normal)
+        self.nextButton.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+        self.nextButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+        self.nextButton.isEnabled = false
+    }
+    
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
 }

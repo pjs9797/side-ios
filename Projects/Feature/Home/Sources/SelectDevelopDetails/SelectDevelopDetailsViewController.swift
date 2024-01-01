@@ -7,25 +7,20 @@ import Shared
 public class SelectDevelopDetailsViewController: UIViewController{
     let disposeBag = DisposeBag()
 <<<<<<< HEAD
+<<<<<<< HEAD
     let meetingTitle: String
     let selectDevelopDetailsViewModel: SelectDevelopDetailsViewModel
     var selectedDevelopDetail: String = ""
     let backButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: nil, action: nil)
     let progressView: UIProgressView = {
 =======
+=======
+    let meetingTitle: String
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
     let selectDevelopDetailsViewModel: SelectDevelopDetailsViewModel
+    var selectedDevelopDetail: String = ""
     
-    lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = Fonts.SH03Bold.font
-        return label
-    }()
-    
-    lazy var backButton: UIButton = {
-        let button = UIButton()
-        button.setImage(SharedDSKitAsset.Icons.iconArrowLeft24.image, for: .normal)
-        return button
-    }()
+    let backButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: nil, action: nil)
     
     lazy var progressView: UIProgressView = {
 >>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
@@ -104,6 +99,7 @@ public class SelectDevelopDetailsViewController: UIViewController{
     
     public init(meetingTitle: String, selectDevelopDetailsViewModel: SelectDevelopDetailsViewModel) {
 <<<<<<< HEAD
+<<<<<<< HEAD
         self.meetingTitle = meetingTitle
         self.selectDevelopDetailsViewModel = selectDevelopDetailsViewModel
         super.init(nibName: nil, bundle: nil)
@@ -112,6 +108,11 @@ public class SelectDevelopDetailsViewController: UIViewController{
         super.init(nibName: nil, bundle: nil)
         self.titleLabel.text = meetingTitle
 >>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
+=======
+        self.meetingTitle = meetingTitle
+        self.selectDevelopDetailsViewModel = selectDevelopDetailsViewModel
+        super.init(nibName: nil, bundle: nil)
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
     }
     
     required init?(coder: NSCoder) {
@@ -124,21 +125,33 @@ public class SelectDevelopDetailsViewController: UIViewController{
         
         self.view.backgroundColor = .white
         setNavigationbar()
+<<<<<<< HEAD
 =======
         self.view.backgroundColor = .white
 >>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
+=======
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
         bind()
         layout()
     }
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     private func setNavigationbar() {
         self.title = self.meetingTitle
         self.tabBarController?.tabBar.isHidden = true
+=======
+    private func setNavigationbar() {
+        self.title = self.meetingTitle
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font : Fonts.SH03Bold.font,
             .foregroundColor: UIColor.black
         ]
+<<<<<<< HEAD
+=======
+        
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
         self.backButton.tintColor = SharedDSKitAsset.Colors.black.color
         navigationItem.leftBarButtonItem = backButton
     }
@@ -160,6 +173,7 @@ public class SelectDevelopDetailsViewController: UIViewController{
         
         selectDevelopDetailsViewModel.nextButtonTapped
             .bind(onNext: { [weak self] in
+<<<<<<< HEAD
                 self?.navigationController?.pushViewController(CreateMeetingContentViewController(meetingTitle: self!.meetingTitle, createMeetingContentViewModel: CreateMeetingContentViewModel()), animated: true)
             })
             .disposed(by: disposeBag)
@@ -167,6 +181,12 @@ public class SelectDevelopDetailsViewController: UIViewController{
 =======
     private func bind(){
 >>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
+=======
+                self?.navigationController?.pushViewController(CreatingGatheringViewController(), animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
         studyBtView.tapGesture.rx.event
             .map { _ in Void() }
             .bind(to: selectDevelopDetailsViewModel.studyBtViewTapped)
@@ -206,7 +226,11 @@ public class SelectDevelopDetailsViewController: UIViewController{
                     self?.selectedDevelopDetail = "스터디"
 =======
                     self?.enabledNextButton()
+<<<<<<< HEAD
 >>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
+=======
+                    self?.selectedDevelopDetail = "스터디"
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
                     self?.studyBtView.borderView.isHidden = false
                     self?.sideProjectBtView.borderView.isHidden = true
                     self?.jobChangeBtView.borderView.isHidden = true
@@ -219,7 +243,11 @@ public class SelectDevelopDetailsViewController: UIViewController{
                     self?.selectedDevelopDetail = "사이드 프로젝트"
 =======
                     self?.enabledNextButton()
+<<<<<<< HEAD
 >>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
+=======
+                    self?.selectedDevelopDetail = "사이드 프로젝트"
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
                     self?.studyBtView.borderView.isHidden = true
                     self?.sideProjectBtView.borderView.isHidden = false
                     self?.jobChangeBtView.borderView.isHidden = true
@@ -232,7 +260,11 @@ public class SelectDevelopDetailsViewController: UIViewController{
                     self?.selectedDevelopDetail = "이직 준비"
 =======
                     self?.enabledNextButton()
+<<<<<<< HEAD
 >>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
+=======
+                    self?.selectedDevelopDetail = "이직 준비"
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
                     self?.studyBtView.borderView.isHidden = true
                     self?.sideProjectBtView.borderView.isHidden = true
                     self?.jobChangeBtView.borderView.isHidden = false
@@ -245,7 +277,11 @@ public class SelectDevelopDetailsViewController: UIViewController{
                     self?.selectedDevelopDetail = "어학"
 =======
                     self?.enabledNextButton()
+<<<<<<< HEAD
 >>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
+=======
+                    self?.selectedDevelopDetail = "어학"
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
                     self?.studyBtView.borderView.isHidden = true
                     self?.sideProjectBtView.borderView.isHidden = true
                     self?.jobChangeBtView.borderView.isHidden = true
@@ -258,7 +294,11 @@ public class SelectDevelopDetailsViewController: UIViewController{
                     self?.selectedDevelopDetail = "재테크"
 =======
                     self?.enabledNextButton()
+<<<<<<< HEAD
 >>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
+=======
+                    self?.selectedDevelopDetail = "재테크"
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
                     self?.studyBtView.borderView.isHidden = true
                     self?.sideProjectBtView.borderView.isHidden = true
                     self?.jobChangeBtView.borderView.isHidden = true
@@ -271,7 +311,11 @@ public class SelectDevelopDetailsViewController: UIViewController{
                     self?.selectedDevelopDetail = "기타"
 =======
                     self?.enabledNextButton()
+<<<<<<< HEAD
 >>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
+=======
+                    self?.selectedDevelopDetail = "기타"
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
                     self?.studyBtView.borderView.isHidden = true
                     self?.sideProjectBtView.borderView.isHidden = true
                     self?.jobChangeBtView.borderView.isHidden = true
@@ -303,25 +347,18 @@ public class SelectDevelopDetailsViewController: UIViewController{
     }
     
     private func layout(){
-        [titleLabel,backButton,progressView,questionLabel,studyBtView,sideProjectBtView,jobChangeBtView,languageBtView,investmentBtView,etcBtView,nextButton]
+        [progressView,questionLabel,studyBtView,sideProjectBtView,jobChangeBtView,languageBtView,investmentBtView,etcBtView,nextButton]
             .forEach{ self.view.addSubview($0) }
-        
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(12)
-            make.centerX.equalToSuperview()
-        }
-        
-        backButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.centerY.equalTo(titleLabel)
-            make.leading.equalToSuperview().offset(20)
-        }
         
         progressView.snp.makeConstraints { make in
             make.height.equalTo(2)
             make.leading.trailing.equalToSuperview()
+<<<<<<< HEAD
             make.top.equalTo(titleLabel.snp.bottom).offset(12)
 >>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
+=======
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
         }
         
         questionLabel.snp.makeConstraints { make in
@@ -376,11 +413,15 @@ public class SelectDevelopDetailsViewController: UIViewController{
             make.height.equalTo(52)
             make.centerX.equalToSuperview()
 <<<<<<< HEAD
+<<<<<<< HEAD
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-8)
         }
     }
 =======
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(8)
+=======
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-8)
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
         }
         
     }

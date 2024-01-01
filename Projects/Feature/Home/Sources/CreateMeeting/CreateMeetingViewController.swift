@@ -18,18 +18,7 @@ public class CreateMeetingViewController: UIViewController{
 >>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
     let createMeetingViewModel: CreateMeetingViewModel
     
-    lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = Fonts.SH03Bold.font
-        label.text = self.meetingTitle
-        return label
-    }()
-    
-    lazy var backButton: UIButton = {
-        let button = UIButton()
-        button.setImage(SharedDSKitAsset.Icons.iconArrowLeft24.image, for: .normal)
-        return button
-    }()
+    let backButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: nil, action: nil)
     
     lazy var progressView: UIProgressView = {
 >>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
@@ -118,20 +107,33 @@ public class CreateMeetingViewController: UIViewController{
         setNavigationbar()
 =======
         self.view.backgroundColor = .white
+<<<<<<< HEAD
         
 >>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
+=======
+        setNavigationbar()
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
         bind()
         layout()
     }
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     private func setNavigationbar() {
         self.title = self.meetingTitle
         self.tabBarController?.tabBar.isHidden = true
+=======
+    private func setNavigationbar() {
+        self.title = self.meetingTitle
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font : Fonts.SH03Bold.font,
             .foregroundColor: UIColor.black
         ]
+<<<<<<< HEAD
+=======
+        
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
         self.backButton.tintColor = SharedDSKitAsset.Colors.black.color
         navigationItem.leftBarButtonItem = backButton
     }
@@ -156,6 +158,7 @@ public class CreateMeetingViewController: UIViewController{
                 switch self?.createMeetingViewModel.meetingTypeRelay.value {
                 case .develop:
 <<<<<<< HEAD
+<<<<<<< HEAD
                     self?.navigationController?.pushViewController(SelectDevelopDetailsViewController(meetingTitle: self?.meetingTitle ?? "모임 생성", selectDevelopDetailsViewModel: SelectDevelopDetailsViewModel()), animated: true)
                 case .hobby:
                     self?.navigationController?.pushViewController(SelectHobbyDetailsViewController(meetingTitle: self?.meetingTitle ?? "모임 생성", selectHobbyDetailsViewModel: SelectHobbyDetailsViewModel()), animated: true)
@@ -164,6 +167,11 @@ public class CreateMeetingViewController: UIViewController{
                 case .hobby:
                     break
 >>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
+=======
+                    self?.navigationController?.pushViewController(SelectDevelopDetailsViewController(meetingTitle: self?.meetingTitle ?? "모임 생성", selectDevelopDetailsViewModel: SelectDevelopDetailsViewModel()), animated: true)
+                case .hobby:
+                    self?.navigationController?.pushViewController(SelectHobbyDetailsViewController(meetingTitle: self?.meetingTitle ?? "모임 생성", selectHobbyDetailsViewModel: SelectHobbyDetailsViewModel()), animated: true)
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
                 default:
                     break
                 }
@@ -241,8 +249,9 @@ public class CreateMeetingViewController: UIViewController{
     }
     
     private func layout(){
-        [titleLabel,backButton,progressView,questionLabel,developBtView,hobbyBtView,nextButton]
+        [progressView,questionLabel,developBtView,hobbyBtView,nextButton]
             .forEach{ view.addSubview($0) }
+<<<<<<< HEAD
                 
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(12)
@@ -255,15 +264,21 @@ public class CreateMeetingViewController: UIViewController{
             make.leading.equalToSuperview().offset(20)
         }
 >>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
+=======
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
         
         progressView.snp.makeConstraints { make in
             make.height.equalTo(2)
             make.leading.trailing.equalToSuperview()
 <<<<<<< HEAD
+<<<<<<< HEAD
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
 =======
             make.top.equalTo(titleLabel.snp.bottom).offset(12)
 >>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
+=======
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
         }
         
         questionLabel.snp.makeConstraints { make in
@@ -290,10 +305,14 @@ public class CreateMeetingViewController: UIViewController{
             make.height.equalTo(52)
             make.centerX.equalToSuperview()
 <<<<<<< HEAD
+<<<<<<< HEAD
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-8)
         }
 =======
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(8)
+=======
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-8)
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
         }
         
 >>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
@@ -311,10 +330,6 @@ public class CreateMeetingViewController: UIViewController{
         self.nextButton.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         self.nextButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
         self.nextButton.isEnabled = false
-    }
-    
-    private func navigateToSelectDevelopDetailsVC(){
-        self.navigationController?.pushViewController(SelectDevelopDetailsViewController(meetingTitle: self.meetingTitle, selectDevelopDetailsViewModel: SelectDevelopDetailsViewModel()), animated: true)
     }
     
 }

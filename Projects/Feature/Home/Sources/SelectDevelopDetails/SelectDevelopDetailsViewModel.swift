@@ -10,7 +10,11 @@ public class SelectDevelopDetailsViewModel{
 =======
     
     let backButtonTapped = PublishRelay<Void>()
+<<<<<<< HEAD
 >>>>>>> 2db78f6 ([FEAT] 모임생성-자기계발 페이지 개발)
+=======
+    let nextButtonTapped = PublishRelay<Void>()
+>>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
     let studyBtViewTapped = PublishRelay<Void>()
     let sideProjectBtViewTapped = PublishRelay<Void>()
     let jobChangeBtViewTapped = PublishRelay<Void>()
