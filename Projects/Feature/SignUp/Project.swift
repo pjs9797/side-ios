@@ -24,7 +24,8 @@ let project = Project.makeModule(
             implements: .SignUp,
             factory: .init(
                 dependencies: [
-                    .feature(interface: .SignUp)
+                    .feature(interface: .SignUp),
+                    .feature(implements: .Profile)
                 ]
             )
         )

@@ -25,6 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame:UIScreen.main.bounds)
         window?.windowScene = windowscene
         window?.backgroundColor = .white
+        window?.rootViewController = UINavigationController(rootViewController: ChattingListViewController())
         window?.makeKeyAndVisible()
     }
     

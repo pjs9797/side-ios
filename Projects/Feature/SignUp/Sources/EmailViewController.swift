@@ -1,5 +1,7 @@
 import UIKit
 import Shared
+import RxSwift
+import RxCocoa
 import FeatureProfile
 
 public class EmailViewController: UIViewController, UITextFieldDelegate {
