@@ -11,7 +11,7 @@ import Shared
 class UnderlineSegmentedControl: UISegmentedControl {
     private lazy var underlineView: UIView = {
         let width = self.bounds.size.width / CGFloat(self.numberOfSegments) - 10
-        let height: Float = 2.0
+        let height: CGFloat = 2.0
         let xPosition = CGFloat(self.selectedSegmentIndex * Int(width))
         let yPosition = self.bounds.size.height - 2.0
         let frame = CGRect(x: xPosition, y: yPosition, width: width, height: height)

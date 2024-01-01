@@ -31,7 +31,7 @@ class HobbyViewController: UIViewController {
     
     func ButtonTapped() {
         var buttonCount = 0
-        var buttons = [hobbyView.cafeButton, hobbyView.cultureButton, hobbyView.sportsButton, hobbyView.tripButton, hobbyView.danceButton, hobbyView.craftsButton, hobbyView.firendButton, hobbyView.bookButton, hobbyView.etcButton]
+        var buttons = [hobbyView.cafeButton, hobbyView.cultureButton, hobbyView.sportsButton, hobbyView.tripButton, hobbyView.danceButton, hobbyView.craftsButton, hobbyView.friendButton, hobbyView.bookButton, hobbyView.etcButton]
                for button in buttons {
                    button.rx.tap.subscribe(onNext: {
                        if button.isSelected == false {

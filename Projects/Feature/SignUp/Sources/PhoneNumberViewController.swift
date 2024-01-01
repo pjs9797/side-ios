@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 import Shared
-import FeatureProfile
+//import FeatureProfile
 
 public class PhoneNumberViewController: UIViewController, UITextFieldDelegate {
     var phoneNumberView = PhoneNumberView()

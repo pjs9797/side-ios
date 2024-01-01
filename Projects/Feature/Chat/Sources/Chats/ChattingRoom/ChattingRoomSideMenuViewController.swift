@@ -205,6 +205,7 @@ class ChattingRoomSideMenuViewController: UIViewController {
         
         noticeButton.addTarget(self, action: #selector(didTapNoticeButton), for: .touchUpInside)
         scheduleButton.addTarget(self, action: #selector(didTapScheduleButton), for: .touchUpInside)
+//        buttonsFooterView.reportButton.addTarget(self, action: #selector(), for: .touchUpInside)
     }
     
     private func mocking() {
@@ -231,6 +232,12 @@ class ChattingRoomSideMenuViewController: UIViewController {
     
     @objc private func didTapScheduleButton() {
         navigationController?.pushViewController(NSVViewController(selectedSegmentIndex: 1), animated: true)
+    }
+    
+    @objc private func didTapReportButton() {
+        let popUpViewController = UIViewController()
+        popUpViewController.modalPresentationStyle = .overFullScreen
+        self.present(popUpViewController, animated: true)
     }
 }
 
