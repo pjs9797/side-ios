@@ -4,7 +4,6 @@ import RxCocoa
 public class SelectDevelopDetailsViewModel{
     let disposeBag = DisposeBag()
     let developDetailTypeRelay = BehaviorRelay<DevelopDetailType>(value: .none)
-    
     let backButtonTapped = PublishRelay<Void>()
     let nextButtonTapped = PublishRelay<Void>()
     let studyBtViewTapped = PublishRelay<Void>()

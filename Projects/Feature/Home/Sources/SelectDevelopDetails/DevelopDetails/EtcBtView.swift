@@ -3,8 +3,7 @@ import SnapKit
 import Shared
 
 class EtcBtView: UIView{
-    
-    lazy var borderView: UIView = {
+    let borderView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 40
         view.layer.borderWidth = 1
@@ -12,28 +11,24 @@ class EtcBtView: UIView{
         view.isHidden = true
         return view
     }()
-    
-    lazy var imgBgImageView: UIImageView = {
+    let imgBgImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
         imageView.layer.cornerRadius = 36
         return imageView
     }()
-    
     lazy var targetImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = SharedDSKitAsset.Icons.frame380.image
         return imageView
     }()
-    
-    lazy var titleLabel: UILabel = {
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.font = Fonts.SH01Bold.font
         label.textAlignment = .center
         label.text = "기타"
         return label
     }()
-    
     let tapGesture = UITapGestureRecognizer()
     
     override init(frame: CGRect) {
@@ -73,7 +68,5 @@ class EtcBtView: UIView{
             make.bottom.equalToSuperview()
             make.centerX.equalToSuperview()
         }
-        
     }
-    
 }

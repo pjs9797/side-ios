@@ -4,7 +4,6 @@ import RxCocoa
 public class CreateMeetingViewModel{
     let disposeBag = DisposeBag()
     let meetingTypeRelay = BehaviorRelay<MeetingType>(value: .none)
-    
     let backButtonTapped = PublishRelay<Void>()
     let nextButtonTapped = PublishRelay<Void>()
     let developBtViewTapped = PublishRelay<Void>()

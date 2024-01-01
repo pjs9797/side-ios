@@ -3,20 +3,17 @@ import SnapKit
 import Shared
 
 class PeriodBtView: UIView{
-    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = Fonts.Caption.font
         return label
     }()
-    
     let subTitleLabel: UILabel = {
         let label = UILabel()
         label.font = Fonts.Body02.font
         label.textColor = SharedDSKitAsset.Colors.textDisabled.color
         return label
     }()
-    
     let tapGesture = UITapGestureRecognizer()
     
     override init(frame: CGRect) {
@@ -48,12 +45,10 @@ class PeriodBtView: UIView{
             make.leading.equalToSuperview().offset(16)
             make.top.equalTo(titleLabel.snp.bottom).offset(6)
         }
-        
     }
     
     func configure(subTitle: String){
         subTitleLabel.text = subTitle
         subTitleLabel.textColor = .black
     }
-    
 }

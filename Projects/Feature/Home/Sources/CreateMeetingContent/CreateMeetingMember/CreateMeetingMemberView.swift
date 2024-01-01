@@ -52,24 +52,29 @@ class CreateMeetingMemberView: UIView{
             .forEach{ self.addSubview($0) }
         [maximumLabel,memberLimitTextField,unitLabel]
             .forEach{ memberView.addSubview($0) }
+        
         memberLimitLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.top.equalToSuperview()
         }
+        
         memberView.snp.makeConstraints { make in
             make.height.equalTo(56)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
             make.top.equalTo(memberLimitLabel.snp.bottom).offset(16)
         }
+        
         maximumLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
             make.centerY.equalToSuperview()
         }
+        
         unitLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-16)
             make.centerY.equalToSuperview()
         }
+        
         memberLimitTextField.snp.makeConstraints { make in
             make.width.equalTo(200)
             make.height.equalTo(24)

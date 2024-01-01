@@ -8,41 +8,35 @@ public class CreateMeetingViewController: UIViewController{
     let disposeBag = DisposeBag()
     let meetingTitle: String
     let createMeetingViewModel: CreateMeetingViewModel
-    
     let backButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: nil, action: nil)
-    
-    lazy var progressView: UIProgressView = {
+    let progressView: UIProgressView = {
         let progressView = UIProgressView()
         progressView.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
         progressView.tintColor = .black
         progressView.progress = 1/3
         return progressView
     }()
-    
-    lazy var questionLabel: UILabel = {
+    let questionLabel: UILabel = {
         let label = UILabel()
         label.font = Fonts.H02.font
         label.text = "어떤 모임을 만들고 싶으신가요?"
         return label
     }()
-    
-    lazy var developBtView: DevelopBtView = {
+    let developBtView: DevelopBtView = {
         let developBtView = DevelopBtView()
         developBtView.layer.cornerRadius = 16
         developBtView.layer.borderWidth = 1
         developBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         return developBtView
     }()
-    
-    lazy var hobbyBtView: HobbyBtView = {
+    let hobbyBtView: HobbyBtView = {
         let hobbyBtView = HobbyBtView()
         hobbyBtView.layer.cornerRadius = 16
         hobbyBtView.layer.borderWidth = 1
         hobbyBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         return hobbyBtView
     }()
-    
-    lazy var nextButton: UIButton = {
+    let nextButton: UIButton = {
         let button = UIButton()
         button.setTitle("다음", for: .normal)
         button.titleLabel?.font = Fonts.SH02Bold.font
@@ -77,7 +71,6 @@ public class CreateMeetingViewController: UIViewController{
             NSAttributedString.Key.font : Fonts.SH03Bold.font,
             .foregroundColor: UIColor.black
         ]
-        
         self.backButton.tintColor = SharedDSKitAsset.Colors.black.color
         navigationItem.leftBarButtonItem = backButton
     }
@@ -138,7 +131,6 @@ public class CreateMeetingViewController: UIViewController{
                 }
             })
             .disposed(by: disposeBag)
-        
     }
     
     private func layout(){
@@ -176,6 +168,5 @@ public class CreateMeetingViewController: UIViewController{
             make.centerX.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-8)
         }
-        
     }
 }

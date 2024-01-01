@@ -24,6 +24,7 @@ class CreateMeetingImageView: UIView{
         imageView.layer.cornerRadius = 16
         imageView.layer.borderWidth = 1
         imageView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+        imageView.clipsToBounds = true
         imageView.isHidden = true
         return imageView
     }()
@@ -59,31 +60,37 @@ class CreateMeetingImageView: UIView{
         [imageLabel,addImageBtView,representativeImageView,imageCancelButton,setDefaultImageButton]
             .forEach{ self.addSubview($0) }
         setDefaultImageButton.addSubview(bottomBorder)
+        
         imageLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.top.equalToSuperview()
         }
+        
         addImageBtView.snp.makeConstraints { make in
             make.width.height.equalTo(100)
             make.leading.equalToSuperview().offset(20)
             make.top.equalTo(imageLabel.snp.bottom).offset(16)
         }
+        
         representativeImageView.snp.makeConstraints { make in
             make.width.height.equalTo(100)
             make.leading.equalTo(addImageBtView.snp.trailing).offset(8)
             make.top.equalTo(imageLabel.snp.bottom).offset(16)
         }
+        
         imageCancelButton.snp.makeConstraints { make in
             make.width.height.equalTo(24)
             make.trailing.equalTo(representativeImageView.snp.trailing).offset(8)
             make.top.equalTo(representativeImageView.snp.top).offset(-8)
         }
+        
         setDefaultImageButton.snp.makeConstraints { make in
             make.width.equalTo(160)
             make.height.equalTo(24)
             make.centerX.equalToSuperview()
             make.top.equalTo(addImageBtView.snp.bottom).offset(24)
         }
+        
         bottomBorder.snp.makeConstraints { make in
             make.width.equalTo(setDefaultImageButton.titleLabel!.snp.width)
             make.height.equalTo(1)

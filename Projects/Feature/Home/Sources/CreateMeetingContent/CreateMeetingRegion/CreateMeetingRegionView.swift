@@ -48,20 +48,24 @@ class CreateMeetingRegionView: UIView{
     private func layout(){
         [regionLabel,onlineLabel,onlineSwitch,regionTextField]
             .forEach{ self.addSubview($0) }
+        
         regionLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.top.equalToSuperview()
         }
+        
         onlineLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.top.equalTo(regionLabel.snp.bottom).offset(19.5)
         }
+        
         onlineSwitch.snp.makeConstraints { make in
             make.width.equalTo(51)
             make.height.equalTo(31)
             make.trailing.equalToSuperview().offset(-20)
             make.centerY.equalTo(onlineLabel)
         }
+        
         regionTextField.snp.makeConstraints { make in
             make.height.equalTo(56)
             make.leading.equalToSuperview().offset(20)

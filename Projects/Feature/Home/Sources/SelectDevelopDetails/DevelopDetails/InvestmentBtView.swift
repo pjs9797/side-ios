@@ -3,8 +3,7 @@ import SnapKit
 import Shared
 
 class InvestmentBtView: UIView{
-    
-    lazy var borderView: UIView = {
+    let borderView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 40
         view.layer.borderWidth = 1
@@ -12,28 +11,24 @@ class InvestmentBtView: UIView{
         view.isHidden = true
         return view
     }()
-    
-    lazy var imgBgImageView: UIImageView = {
+    let imgBgImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = UIColor(red: 0.97, green: 0.82, blue: 0.82, alpha: 1)
         imageView.layer.cornerRadius = 36
         return imageView
     }()
-    
     lazy var targetImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = SharedDSKitAsset.Icons.image356.image
         return imageView
     }()
-    
-    lazy var titleLabel: UILabel = {
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.font = Fonts.SH01Bold.font
         label.textAlignment = .center
         label.text = "재테크"
         return label
     }()
-    
     let tapGesture = UITapGestureRecognizer()
     
     override init(frame: CGRect) {
@@ -73,7 +68,5 @@ class InvestmentBtView: UIView{
             make.bottom.equalToSuperview()
             make.centerX.equalToSuperview()
         }
-        
     }
-    
 }

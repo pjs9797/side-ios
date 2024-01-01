@@ -9,60 +9,26 @@ public class SelectDevelopDetailsViewController: UIViewController{
     let meetingTitle: String
     let selectDevelopDetailsViewModel: SelectDevelopDetailsViewModel
     var selectedDevelopDetail: String = ""
-    
     let backButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: nil, action: nil)
-    
-    lazy var progressView: UIProgressView = {
+    let progressView: UIProgressView = {
         let progressView = UIProgressView()
         progressView.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
         progressView.tintColor = .black
         progressView.progress = 2/3
         return progressView
     }()
-    
-    lazy var questionLabel: UILabel = {
+    let questionLabel: UILabel = {
         let label = UILabel()
         label.font = Fonts.H02.font
         label.text = "세부항목을 선택해주세요 :)"
         return label
     }()
-    
-    lazy var studyBtView: StudyBtView = {
-        let studyBtView = StudyBtView()
-        
-        return studyBtView
-    }()
-    
-    lazy var sideProjectBtView: SideProjectBtView = {
-        let sideProjectBtView = SideProjectBtView()
-        
-        return sideProjectBtView
-    }()
-    
-    lazy var jobChangeBtView: JobChangeBtView = {
-        let jobChangeBtView = JobChangeBtView()
-        
-        return jobChangeBtView
-    }()
-    
-    lazy var languageBtView: LanguageBtView = {
-        let languageBtView = LanguageBtView()
-        
-        return languageBtView
-    }()
-    
-    lazy var investmentBtView: InvestmentBtView = {
-        let investmentBtView = InvestmentBtView()
-        
-        return investmentBtView
-    }()
-    
-    lazy var etcBtView: EtcBtView = {
-        let etcBtView = EtcBtView()
-        
-        return etcBtView
-    }()
-    
+    let studyBtView = StudyBtView()
+    let sideProjectBtView = SideProjectBtView()
+    let jobChangeBtView = JobChangeBtView()
+    let languageBtView = LanguageBtView()
+    let investmentBtView = InvestmentBtView()
+    let etcBtView = EtcBtView()
     let nextButton: UIButton = {
         let button = UIButton()
         button.setTitle("다음", for: .normal)
@@ -84,6 +50,7 @@ public class SelectDevelopDetailsViewController: UIViewController{
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.view.backgroundColor = .white
         setNavigationbar()
         bind()
@@ -97,7 +64,6 @@ public class SelectDevelopDetailsViewController: UIViewController{
             NSAttributedString.Key.font : Fonts.SH03Bold.font,
             .foregroundColor: UIColor.black
         ]
-        
         self.backButton.tintColor = SharedDSKitAsset.Colors.black.color
         navigationItem.leftBarButtonItem = backButton
     }
@@ -119,7 +85,7 @@ public class SelectDevelopDetailsViewController: UIViewController{
         
         selectDevelopDetailsViewModel.nextButtonTapped
             .bind(onNext: { [weak self] in
-                //self?.navigationController?.pushViewController(CreatingGatheringViewController(), animated: true)
+                self?.navigationController?.pushViewController(CreateMeetingContentViewController(meetingTitle: self!.meetingTitle, createMeetingContentViewModel: CreateMeetingContentViewModel()), animated: true)
             })
             .disposed(by: disposeBag)
         
@@ -215,7 +181,6 @@ public class SelectDevelopDetailsViewController: UIViewController{
                 }
             })
             .disposed(by: disposeBag)
-        
     }
     
     private func layout(){
@@ -281,6 +246,5 @@ public class SelectDevelopDetailsViewController: UIViewController{
             make.centerX.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-8)
         }
-        
     }
 }

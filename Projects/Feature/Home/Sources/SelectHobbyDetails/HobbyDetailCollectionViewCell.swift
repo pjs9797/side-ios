@@ -3,8 +3,7 @@ import SnapKit
 import Shared
 
 class HobbyDetailCollectionViewCell: UICollectionViewCell {
-    
-    lazy var borderView: UIView = {
+    let borderView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 28
         view.layer.borderWidth = 1
@@ -12,21 +11,18 @@ class HobbyDetailCollectionViewCell: UICollectionViewCell {
         view.isHidden = true
         return view
     }()
-    
-    lazy var imgBgImageView: UIImageView = {
+    let imgBgImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
         imageView.layer.cornerRadius = 24
         return imageView
     }()
-    
     lazy var targetImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 24
         return imageView
     }()
-    
-    lazy var titleLabel: UILabel = {
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.font = Fonts.ST01.font
         label.textAlignment = .center
@@ -65,13 +61,11 @@ class HobbyDetailCollectionViewCell: UICollectionViewCell {
             make.centerX.equalToSuperview()
             make.top.equalTo(borderView.snp.bottom).offset(4)
         }
-        
     }
     
     func configure(model: HobbyDetailModel){
         self.targetImageView.image = model.img
         self.titleLabel.text = model.title
-        
         if(model.title == "기타"){
             targetImageView.snp.remakeConstraints { make in
                 make.width.equalTo(20)
@@ -90,5 +84,4 @@ class HobbyDetailCollectionViewCell: UICollectionViewCell {
     func setSelectedState(isSelected: Bool) {
         borderView.isHidden = !isSelected
     }
-    
 }

@@ -27,6 +27,8 @@ class CreateMeetingPeriodView: UIView{
         return timeBtView
     }()
     
+    let customTimePickerView = CustomTimePickerView(timePickerViewModel: TimePickerViewModel())
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.layout()
@@ -37,23 +39,47 @@ class CreateMeetingPeriodView: UIView{
     }
     
     private func layout(){
-        [dateTitleLabel,dateBtView,timeBtView]
+        [dateTitleLabel,dateBtView,timeBtView,customTimePickerView]
             .forEach{ self.addSubview($0) }
+        
         dateTitleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.top.equalToSuperview()
         }
+        
         dateBtView.snp.makeConstraints { make in
             make.width.equalTo(163.5)
             make.height.equalTo(56)
             make.leading.equalToSuperview().offset(20)
             make.top.equalTo(dateTitleLabel.snp.bottom).offset(16)
         }
+        
         timeBtView.snp.makeConstraints { make in
             make.width.equalTo(163.5)
             make.height.equalTo(56)
             make.trailing.equalToSuperview().offset(-20)
             make.top.equalTo(dateTitleLabel.snp.bottom).offset(16)
         }
+        customTimePickerView.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.height.equalTo(168)
+            make.leading.equalToSuperview()//.offset(47)
+            make.top.equalTo(timeBtView.snp.bottom).offset(16)
+            make.bottom.equalToSuperview()
+        }
     }
+        
+//    func selectedPickerViewUICustom() {
+//        customTimePickerView.subviews[1].backgroundColor = .clear
+//        
+//        
+//        let upLine = UIView(frame: CGRect(x: 215, y: 0, width: 68, height: 1))
+//        let underLine = UIView(frame: CGRect(x: 215, y: 56, width: 68, height: 1))
+//        
+//        upLine.backgroundColor = .gray
+//        underLine.backgroundColor = .gray
+//        
+//        customTimePickerView.subviews[1].addSubview(upLine)
+//        customTimePickerView.subviews[1].addSubview(underLine)
+//    }
 }

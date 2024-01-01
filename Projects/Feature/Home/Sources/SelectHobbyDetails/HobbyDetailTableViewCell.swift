@@ -6,27 +6,23 @@ import Shared
 
 class HobbyDetailTableViewCell: UITableViewCell {
     var disposeBag = DisposeBag()
-    
-    lazy var backView: UIView = {
+    let backView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 16
         view.layer.borderWidth = 1
         view.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         return view
     }()
-    
-    lazy var titleLabel: UILabel = {
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.font = Fonts.SH02Bold.font
         return label
     }()
-    
-    lazy var plusButton: UIButton = {
+    let plusButton: UIButton = {
         let button = UIButton()
         button.setImage(SharedDSKitAsset.Icons.iconArrowPlus24.image, for: .normal)
         return button
     }()
-    
     lazy var hobbyDetailCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -38,7 +34,6 @@ class HobbyDetailTableViewCell: UITableViewCell {
         collectionView.isHidden = true
         return collectionView
     }()
-    
     var myIndexPath: IndexPath?
     let heightDidChange = PublishSubject<Void>()
     let selectedIndexPath = BehaviorRelay<(tableCellIndexPath: IndexPath, collectionViewIndexPath: IndexPath)?>(value: nil)
@@ -57,7 +52,6 @@ class HobbyDetailTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         disposeBag = DisposeBag()
-        
     }
     
     private func layout(){
@@ -86,13 +80,11 @@ class HobbyDetailTableViewCell: UITableViewCell {
         }
         
         hobbyDetailCollectionView.snp.makeConstraints { make in
-            //make.height.equalTo(0)
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
             make.top.equalTo(titleLabel.snp.bottom).offset(20)
             make.bottom.equalToSuperview().offset(-4)
         }
-        
     }
     
     func configure(model: HobbyModel){
@@ -105,29 +97,21 @@ class HobbyDetailTableViewCell: UITableViewCell {
                 let spacing: CGFloat = 20
                 let rows = CGFloat((itemCount + 3) / 4)
                 let collectionViewHeight = rows * rowHeight + (rows - 1) * spacing
-                
                 let isCurrentlyHidden = self.hobbyDetailCollectionView.isHidden
                 let newHeight = isCurrentlyHidden ? collectionViewHeight : 0
-                
                 let buttonImageName = isCurrentlyHidden ? SharedDSKitAsset.Icons.iconArrowFold24.image : SharedDSKitAsset.Icons.iconArrowPlus24.image
                 self.plusButton.setImage(buttonImageName, for: .normal)
                 self.hobbyDetailCollectionView.isHidden = !isCurrentlyHidden
-                
                 UIView.animate(withDuration: 0.3, animations: {
-                    
-                    
                     self.backView.snp.updateConstraints { make in
                         make.height.equalTo(72 + newHeight)
                     }
                     self.hobbyDetailCollectionView.snp.updateConstraints { make in
                         make.height.equalTo(newHeight)
                     }
-                    
                     self.heightDidChange.onNext(())
                     self.contentView.layoutIfNeeded()
                 })
-                
-                
             })
             .disposed(by: disposeBag)
         
@@ -136,7 +120,6 @@ class HobbyDetailTableViewCell: UITableViewCell {
                 cell.configure(model: detailModel)
             }
             .disposed(by: disposeBag)
-        
     }
     
     func bind(){
@@ -158,6 +141,5 @@ class HobbyDetailTableViewCell: UITableViewCell {
             cell.setSelectedState(isSelected: isSelected)
         }
     }
-    
 }
 

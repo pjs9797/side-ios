@@ -3,8 +3,7 @@ import SnapKit
 import Shared
 
 class StudyBtView: UIView{
-    
-    lazy var borderView: UIView = {
+    let borderView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 40
         view.layer.borderWidth = 1
@@ -12,28 +11,24 @@ class StudyBtView: UIView{
         view.isHidden = true
         return view
     }()
-    
-    lazy var imgBgImageView: UIImageView = {
+    let imgBgImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = UIColor(red: 0.84, green: 0.81, blue: 1, alpha: 1)
         imageView.layer.cornerRadius = 36
         return imageView
     }()
-    
     lazy var targetImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = SharedDSKitAsset.Icons.image357.image
         return imageView
     }()
-    
-    lazy var titleLabel: UILabel = {
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.font = Fonts.SH01Bold.font
         label.textAlignment = .center
         label.text = "스터디 · 자격증"
         return label
     }()
-    
     let tapGesture = UITapGestureRecognizer()
     
     override init(frame: CGRect) {
@@ -71,7 +66,5 @@ class StudyBtView: UIView{
             make.bottom.equalToSuperview()
             make.centerX.equalToSuperview()
         }
-        
     }
-    
 }

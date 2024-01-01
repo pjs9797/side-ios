@@ -4,18 +4,15 @@ import RxCocoa
 import SnapKit
 
 public class SelectMeetingTypeViewController: UIViewController {
-    
     let disposeBag = DisposeBag()
     var selectMeetingTypeViewModel: SelectMeetingTypeViewModel
     weak var homeNavigationController: UINavigationController?
-    
     let dimmedView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
         view.alpha = 0
         return view
     }()
-    
     let backView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -23,41 +20,35 @@ public class SelectMeetingTypeViewController: UIViewController {
         view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         return view
     }()
-    
     let handleView: UIView = {
         let view = UIView()
         view.backgroundColor = .gray
         view.layer.cornerRadius = 2.5
         return view
     }()
-    
     let oneDayButton: UIButton = {
         let button = UIButton()
         button.setTitle("원데이 멤버 모집하기", for: .normal)
         button.setTitleColor(.black, for: .normal)
         return button
     }()
-    
     let shortTermButton: UIButton = {
         let button = UIButton()
         button.setTitle("단기 멤버 모집하기", for: .normal)
         button.setTitleColor(.black, for: .normal)
         return button
     }()
-    
     let continuousButton: UIButton = {
         let button = UIButton()
         button.setTitle("지속형 멤버 모집하기", for: .normal)
         button.setTitleColor(.black, for: .normal)
         return button
     }()
-    
     let firstSeparateView: UIView = {
         let view = UIView()
         view.backgroundColor = .gray
         return view
     }()
-    
     let secondSeparateView: UIView = {
         let view = UIView()
         view.backgroundColor = .gray
@@ -77,6 +68,7 @@ public class SelectMeetingTypeViewController: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = .clear
         tapEvent()
         bind()
@@ -107,11 +99,10 @@ public class SelectMeetingTypeViewController: UIViewController {
         self.dimmedView.addGestureRecognizer(tapGesture)
         self.backView.addGestureRecognizer(swipeGesture)
         swipeGesture.direction = .down
-        
         tapGesture.rx.event
             .bind { [weak self] gesture in
                 print(2323)
-                self?.backViewDown()
+                self?.dismiss(animated: true)
             }
             .disposed(by: disposeBag)
         
@@ -222,24 +213,4 @@ public class SelectMeetingTypeViewController: UIViewController {
             make.centerX.equalToSuperview()
         }
     }
-    
-    func backViewUp(){
-        
-        UIView.animate(withDuration: 0.3) {
-            self.backView.snp.remakeConstraints { make in
-                make.width.equalToSuperview()
-                make.height.equalTo(263)
-                make.leading.equalToSuperview()
-                make.bottom.equalToSuperview()
-            }
-            self.loadViewIfNeeded()
-        }
-    }
-    
-    func backViewDown(){
-        
-        self.dismiss(animated: true)
-        
-    }
-    
 }

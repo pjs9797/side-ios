@@ -8,26 +8,22 @@ public class SelectHobbyDetailsViewController: UIViewController{
     let disposeBag = DisposeBag()
     let meetingTitle: String
     let selectHobbyDetailsViewModel: SelectHobbyDetailsViewModel
-    var selectedHobbyDetail: String = ""
-    
     let backButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: nil, action: nil)
     let scrollView = UIScrollView()
     let contentView = UIView()
-    lazy var progressView: UIProgressView = {
+    let progressView: UIProgressView = {
         let progressView = UIProgressView()
         progressView.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
         progressView.tintColor = .black
         progressView.progress = 2/3
         return progressView
     }()
-    
-    lazy var questionLabel: UILabel = {
+    let questionLabel: UILabel = {
         let label = UILabel()
         label.font = Fonts.H02.font
         label.text = "세부항목을 선택해주세요 :)"
         return label
     }()
-    
     lazy var hobbyDetailTableView: UITableView = {
         let tableView = UITableView()
         tableView.separatorStyle = .none
@@ -37,8 +33,7 @@ public class SelectHobbyDetailsViewController: UIViewController{
         tableView.register(HobbyDetailTableViewCell.self, forCellReuseIdentifier: "HobbyDetailTableViewCell")
         return tableView
     }()
-    
-    lazy var nextButton: UIButton = {
+    let nextButton: UIButton = {
         let button = UIButton()
         button.setTitle("다음", for: .normal)
         button.setTitleColor(.black, for: .normal)
@@ -60,6 +55,7 @@ public class SelectHobbyDetailsViewController: UIViewController{
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.view.backgroundColor = .white
         setNavigationbar()
         self.nextButton.disableNextButton()
@@ -74,7 +70,6 @@ public class SelectHobbyDetailsViewController: UIViewController{
             NSAttributedString.Key.font : Fonts.SH03Bold.font,
             .foregroundColor: UIColor.black
         ]
-        
         self.backButton.tintColor = SharedDSKitAsset.Colors.black.color
         navigationItem.leftBarButtonItem = backButton
     }
@@ -96,13 +91,12 @@ public class SelectHobbyDetailsViewController: UIViewController{
         
         selectHobbyDetailsViewModel.nextButtonTapped
             .bind(onNext: { [weak self] in
-                //self?.navigationController?.pushViewController(CreatingGatheringViewController(), animated: true)
+                self?.navigationController?.pushViewController(CreateMeetingContentViewController(meetingTitle: self!.meetingTitle, createMeetingContentViewModel: CreateMeetingContentViewModel()), animated: true)
             })
             .disposed(by: disposeBag)
         
         selectHobbyDetailsViewModel.hobbyDetailTableViewCellData
             .drive(hobbyDetailTableView.rx.items(cellIdentifier: "HobbyDetailTableViewCell", cellType: HobbyDetailTableViewCell.self)){ row, data, cell in
-                
                 cell.heightDidChange
                     .asDriver(onErrorJustReturn: ())
                     .drive(onNext: { [weak self] in
@@ -117,7 +111,6 @@ public class SelectHobbyDetailsViewController: UIViewController{
                         SharedSelectHobbyState.shared.selectedIndexPath.accept((tableCellIndexPath: tableCellIndexPath, collectionViewIndexPath: indexPath))
                         cell?.updateBorderViews(selectedIndexPath: indexPath)
                         if let selectedCell = cell?.hobbyDetailCollectionView.cellForItem(at: indexPath) as? HobbyDetailCollectionViewCell {
-                            self?.selectedHobbyDetail = selectedCell.titleLabel.text ?? ""
                             self?.nextButton.enableNextButton()
                         }
                     }
@@ -125,7 +118,6 @@ public class SelectHobbyDetailsViewController: UIViewController{
                 
                 cell.myIndexPath = IndexPath(row: row, section: 0)
                 cell.configure(model: data)
-                
             }
             .disposed(by: disposeBag)
         
@@ -138,7 +130,6 @@ public class SelectHobbyDetailsViewController: UIViewController{
                 }
             })
             .disposed(by: disposeBag)
-        
     }
     
     private func layout(){
@@ -184,6 +175,5 @@ public class SelectHobbyDetailsViewController: UIViewController{
             make.top.equalTo(questionLabel.snp.bottom).offset(36)
             make.bottom.equalTo(nextButton.snp.top).offset(-36)
         }
-        
     }
 }

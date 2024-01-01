@@ -43,15 +43,18 @@ class CreateMeetingTitleView: UIView{
     private func layout(){
         [subTitleLabel,descriptionLabel,titleTextField]
             .forEach{ self.addSubview($0) }
+        
         subTitleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.top.equalToSuperview()
         }
+        
         descriptionLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
             make.top.equalTo(subTitleLabel.snp.bottom).offset(8)
         }
+        
         titleTextField.snp.makeConstraints { make in
             make.height.equalTo(56)
             make.leading.equalToSuperview().offset(20)

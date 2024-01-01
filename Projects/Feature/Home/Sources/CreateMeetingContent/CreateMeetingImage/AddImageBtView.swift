@@ -3,13 +3,11 @@ import SnapKit
 import Shared
 
 class AddImageBtView: UIView{
-    
-    lazy var imgBgImageView: UIImageView = {
+    let imgBgImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = SharedDSKitAsset.Icons.vuesaxlinearcamera.image
         return imageView
     }()
-    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = Fonts.Caption.font
@@ -17,7 +15,6 @@ class AddImageBtView: UIView{
         label.text = "이미지 첨부"
         return label
     }()
-    
     let cntLabel: UILabel = {
         let label = UILabel()
         label.font = Fonts.Caption.font
@@ -25,12 +22,12 @@ class AddImageBtView: UIView{
         label.text = "0 / 1"
         return label
     }()
-    
     let tapGesture = UITapGestureRecognizer()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.addGestureRecognizer(tapGesture)
+        self.backgroundColor = SharedDSKitAsset.Colors.bgLightGray.color
         layout()
     }
     
@@ -57,7 +54,5 @@ class AddImageBtView: UIView{
             make.top.equalTo(titleLabel.snp.bottom).offset(4)
             make.centerX.equalToSuperview()
         }
-        
     }
-    
 }
