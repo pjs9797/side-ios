@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import RxCocoa
+//import RxCocoa
 
 public class TPCheckbox: UIView {
     public var enabledUnselectedCheckboxButton: UIButton = {

@@ -209,7 +209,7 @@ public class CreateMeetingContentViewController: UIViewController {
         }
         
         createMeetingPeriodView.snp.makeConstraints { make in
-            //make.height.equalTo(97)
+            make.height.equalTo(97)
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(createMeetingMemberView.snp.bottom).offset(40)
         }

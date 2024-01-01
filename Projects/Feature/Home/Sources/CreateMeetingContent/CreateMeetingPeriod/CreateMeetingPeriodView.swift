@@ -26,8 +26,8 @@ class CreateMeetingPeriodView: UIView{
         timeBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         return timeBtView
     }()
-    
-    let customTimePickerView = CustomTimePickerView(timePickerViewModel: TimePickerViewModel())
+    let calendarView = CalendarView(calendarViewModel: CalendarViewModel())
+    //let customTimePickerView = CustomTimePickerView(timePickerViewModel: TimePickerViewModel())
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,7 +39,7 @@ class CreateMeetingPeriodView: UIView{
     }
     
     private func layout(){
-        [dateTitleLabel,dateBtView,timeBtView,customTimePickerView]
+        [dateTitleLabel,dateBtView,timeBtView]
             .forEach{ self.addSubview($0) }
         
         dateTitleLabel.snp.makeConstraints { make in
@@ -60,13 +60,20 @@ class CreateMeetingPeriodView: UIView{
             make.trailing.equalToSuperview().offset(-20)
             make.top.equalTo(dateTitleLabel.snp.bottom).offset(16)
         }
-        customTimePickerView.snp.makeConstraints { make in
-            make.width.equalToSuperview()
-            make.height.equalTo(168)
-            make.leading.equalToSuperview()//.offset(47)
-            make.top.equalTo(timeBtView.snp.bottom).offset(16)
-            make.bottom.equalToSuperview()
-        }
+//        calendarView.snp.makeConstraints { make in
+//            make.width.equalToSuperview()
+//            make.height.equalTo(358)
+//            make.leading.equalToSuperview()
+//            make.top.equalTo(timeBtView.snp.bottom).offset(16)
+//            make.bottom.equalToSuperview()
+//        }
+//        customTimePickerView.snp.makeConstraints { make in
+//            make.width.equalToSuperview()
+//            make.height.equalTo(168)
+//            make.leading.equalToSuperview()//.offset(47)
+//            make.top.equalTo(timeBtView.snp.bottom).offset(16)
+//            make.bottom.equalToSuperview()
+//        }
     }
         
 //    func selectedPickerViewUICustom() {
