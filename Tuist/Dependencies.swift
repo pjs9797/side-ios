@@ -13,7 +13,9 @@ let SPM = SwiftPackageManagerDependencies([
     .remote(url: "https://github.com/ReactorKit/ReactorKit.git", requirement: .upToNextMajor(from: "3.2.0")),
     .remote(url: "https://github.com/SnapKit/SnapKit.git", requirement: .upToNextMajor(from: "5.6.0")),
     .remote(url: "https://github.com/jonkykong/SideMenu", requirement: .upToNextMajor(from: "6.0.0")),
-    .remote(url: "https://github.com/WenchaoD/FSCalendar.git", requirement: .upToNextMajor(from: "2.8.3"))
+    .remote(url: "https://github.com/WenchaoD/FSCalendar.git", requirement: .upToNextMajor(from: "2.8.3")),
+], productTypes: [
+    "FSCalendar": .framework
 ])
 
 let dependencies = Dependencies(
