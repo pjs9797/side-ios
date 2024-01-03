@@ -9,9 +9,15 @@ public class CreateMeetingContentViewController: UIViewController {
     let meetingTitle: String
     let createMeetingContentViewModel: CreateMeetingContentViewModel
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     
 >>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
+=======
+    let createMeetingPeriodViewModel: CreateMeetingPeriodViewModel
+    var dateBtViewCalendarVisible = false
+    var timeBtViewPickViewVisible = false
+>>>>>>> 10657f1 ([FEAT] 모임 생성 타입 결정 화면 present 애니메이션 개발)
     let backButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: nil, action: nil)
     let progressView: UIProgressView = {
         let progressView = UIProgressView()
@@ -31,7 +37,7 @@ public class CreateMeetingContentViewController: UIViewController {
     let createMeetingTitleView = CreateMeetingTitleView()
     let createMeetingRegionView = CreateMeetingRegionView()
     let createMeetingMemberView = CreateMeetingMemberView()
-    let createMeetingPeriodView = CreateMeetingPeriodView(createMeetingPeriodViewModel: CreateMeetingPeriodViewModel())
+    lazy var createMeetingPeriodView = CreateMeetingPeriodView(createMeetingPeriodViewModel: self.createMeetingPeriodViewModel)
     let createMeetingImageView = CreateMeetingImageView()
     let createMeetingWritingView = CreateMeetingWritingView()
     let createButton: UIButton = {
@@ -43,9 +49,10 @@ public class CreateMeetingContentViewController: UIViewController {
         return button
     }()
     
-    public init(meetingTitle: String, createMeetingContentViewModel: CreateMeetingContentViewModel) {
+    public init(meetingTitle: String, createMeetingContentViewModel: CreateMeetingContentViewModel, createMeetingPeriodViewModel: CreateMeetingPeriodViewModel) {
         self.meetingTitle = meetingTitle
         self.createMeetingContentViewModel = createMeetingContentViewModel
+        self.createMeetingPeriodViewModel = createMeetingPeriodViewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -88,6 +95,12 @@ public class CreateMeetingContentViewController: UIViewController {
     }
     
     func bind(){
+        backButton.rx.tap
+            .bind(onNext: { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
         createMeetingTitleView.titleTextField.rx.text.orEmpty
             .bind(to: createMeetingContentViewModel.titleTextRelay)
             .disposed(by: disposeBag)
@@ -120,6 +133,7 @@ public class CreateMeetingContentViewController: UIViewController {
             .bind(to: createMeetingMemberView.memberLimitTextField.rx.text)
             .disposed(by: disposeBag)
         
+<<<<<<< HEAD
         createMeetingPeriodView.dateBtView.tapGesture.rx.event
             .bind(onNext: { [weak self] _ in
                 self?.presentDatePicker(mode: .date) { date in
@@ -144,6 +158,8 @@ public class CreateMeetingContentViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
+=======
+>>>>>>> 10657f1 ([FEAT] 모임 생성 타입 결정 화면 present 애니메이션 개발)
         
         createMeetingWritingView.introductionTextView.rx.text.orEmpty
             .bind(to: createMeetingContentViewModel.introductionTextRelay)
@@ -175,9 +191,66 @@ public class CreateMeetingContentViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+<<<<<<< HEAD
 =======
             
 >>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
+=======
+       
+        createMeetingPeriodView.dateBtView.tapGesture.rx.event
+               .bind(onNext: { [weak self] _ in
+                   guard let self = self else { return }
+
+                   if self.createMeetingPeriodView.isCalendarViewVisible {
+                       self.createMeetingPeriodView.calendarViewDisappear()
+                   } else {
+                       self.createMeetingPeriodView.calendarViewAppear()
+                       if self.createMeetingPeriodView.isTimePickerViewVisible {
+                           self.createMeetingPeriodView.timePickerViewDisappear()
+                           self.createMeetingPeriodView.isTimePickerViewVisible = false
+                       }
+                   }
+
+                   self.createMeetingPeriodView.isCalendarViewVisible.toggle()
+                   self.updateCreateMeetingPeriodViewHeight()
+               })
+               .disposed(by: disposeBag)
+
+           createMeetingPeriodView.timeBtView.tapGesture.rx.event
+               .bind(onNext: { [weak self] _ in
+                   guard let self = self else { return }
+
+                   if self.createMeetingPeriodView.isTimePickerViewVisible {
+                       self.createMeetingPeriodView.timePickerViewDisappear()
+                   } else {
+                       self.createMeetingPeriodView.timePickerViewAppear()
+                       if self.createMeetingPeriodView.isCalendarViewVisible {
+                           self.createMeetingPeriodView.calendarViewDisappear()
+                           self.createMeetingPeriodView.isCalendarViewVisible = false
+                       }
+                   }
+
+                   self.createMeetingPeriodView.isTimePickerViewVisible.toggle()
+                   self.updateCreateMeetingPeriodViewHeight()
+               })
+               .disposed(by: disposeBag)
+
+        
+        createMeetingPeriodViewModel.timeRelay
+            .bind(onNext: { [weak self] time in
+                self?.createMeetingPeriodView.timeBtView.configure(subTitle: time)
+                self?.createMeetingPeriodView.timeBtView.subTitleLabel.textColor = .black
+            })
+            .disposed(by: disposeBag)
+        
+        createMeetingPeriodViewModel.selectedDate
+            .bind(onNext: { [weak self] date in
+                self?.createMeetingPeriodView.dateBtView.configure(subTitle: date)
+                self?.createMeetingPeriodView.dateBtView.subTitleLabel.textColor = .black
+            })
+            .disposed(by: disposeBag)
+        
+>>>>>>> 10657f1 ([FEAT] 모임 생성 타입 결정 화면 present 애니메이션 개발)
     }
     
     func layout(){
@@ -256,7 +329,7 @@ public class CreateMeetingContentViewController: UIViewController {
 =======
 >>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         createMeetingPeriodView.snp.makeConstraints { make in
-            //make.height.equalTo(97)
+            make.height.equalTo(97)
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(createMeetingMemberView.snp.bottom).offset(40)
         }
@@ -291,30 +364,35 @@ public class CreateMeetingContentViewController: UIViewController {
         }
     }
     
-    private func presentDatePicker(mode: UIDatePicker.Mode, completion: @escaping (Date) -> Void) {
-        let alertController = UIAlertController(title: nil, message: "\n\n\n\n\n\n\n\n\n\n\n", preferredStyle: .actionSheet)
-        let datePicker = UIDatePicker()
-        datePicker.datePickerMode = mode
-        datePicker.preferredDatePickerStyle = .wheels
-        datePicker.locale = Locale(identifier: "ko_KR")
+    func updateCreateMeetingPeriodViewHeight() {
+        let baseHeight = 97
+        let calendarViewHeight = 358 + 16
+        let timePickerViewHeight = 168 + 16
 
-        alertController.view.addSubview(datePicker)
-        datePicker.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(8)
+        let newHeight: Int
+        if createMeetingPeriodView.isCalendarViewVisible {
+            newHeight = baseHeight + calendarViewHeight
+        } else if createMeetingPeriodView.isTimePickerViewVisible {
+            newHeight = baseHeight + timePickerViewHeight
+        } else {
+            newHeight = baseHeight
         }
 
-        let selectAction = UIAlertAction(title: "선택", style: .default) { _ in
-            completion(datePicker.date)
+        self.createMeetingPeriodView.snp.updateConstraints { make in
+            make.height.equalTo(newHeight)
         }
-        alertController.addAction(selectAction)
-        alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
 
-        self.present(alertController, animated: true, completion: nil)
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
     }
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 
     
 >>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
+=======
+
+>>>>>>> 10657f1 ([FEAT] 모임 생성 타입 결정 화면 present 애니메이션 개발)
 }

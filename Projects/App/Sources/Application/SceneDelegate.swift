@@ -24,7 +24,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowscene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame:UIScreen.main.bounds)
         window?.windowScene = windowscene
-        window?.rootViewController = CalendarView()
+        //window?.rootViewController = UINavigationController(rootViewController: CreateMeetingContentViewController(meetingTitle: "원데이 모임 생성", createMeetingContentViewModel: CreateMeetingContentViewModel(), createMeetingPeriodViewModel: CreateMeetingPeriodViewModel()))
+        window?.rootViewController = TPTabBarController()
         window?.makeKeyAndVisible()
     }
     

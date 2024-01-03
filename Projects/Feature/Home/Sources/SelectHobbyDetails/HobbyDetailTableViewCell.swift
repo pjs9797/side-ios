@@ -147,14 +147,17 @@ class HobbyDetailTableViewCell: UITableViewCell {
         }
         
         hobbyDetailCollectionView.snp.makeConstraints { make in
+<<<<<<< HEAD
             //make.height.equalTo(0)
+=======
+            make.height.equalTo(0)
+>>>>>>> 10657f1 ([FEAT] 모임 생성 타입 결정 화면 present 애니메이션 개발)
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
             make.top.equalTo(titleLabel.snp.bottom).offset(20)
-            make.bottom.equalToSuperview().offset(-4)
         }
 =======
             make.top.equalToSuperview().offset(62)
@@ -202,14 +205,14 @@ class HobbyDetailTableViewCell: UITableViewCell {
                 let buttonImageName = isCurrentlyHidden ? SharedDSKitAsset.Icons.iconArrowFold24.image : SharedDSKitAsset.Icons.iconArrowPlus24.image
                 self.plusButton.setImage(buttonImageName, for: .normal)
                 self.hobbyDetailCollectionView.isHidden = !isCurrentlyHidden
+                self.backView.snp.updateConstraints { make in
+                    make.height.equalTo(72 + newHeight)
+                }
+                self.hobbyDetailCollectionView.snp.updateConstraints { make in
+                    make.height.equalTo(newHeight)
+                }
+                self.heightDidChange.accept(())
                 UIView.animate(withDuration: 0.3, animations: {
-                    self.backView.snp.updateConstraints { make in
-                        make.height.equalTo(72 + newHeight)
-                    }
-                    self.hobbyDetailCollectionView.snp.updateConstraints { make in
-                        make.height.equalTo(newHeight)
-                    }
-                    self.heightDidChange.accept(())
                     self.contentView.layoutIfNeeded()
                 })
 =======

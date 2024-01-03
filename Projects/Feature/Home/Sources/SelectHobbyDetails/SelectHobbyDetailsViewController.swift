@@ -145,6 +145,7 @@ public class SelectHobbyDetailsViewController: UIViewController{
             .bind(onNext: { [weak self] in
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 self?.navigationController?.pushViewController(CreateMeetingContentViewController(meetingTitle: self!.meetingTitle, createMeetingContentViewModel: CreateMeetingContentViewModel()), animated: true)
 =======
                 self?.navigationController?.pushViewController(CreatingGatheringViewController(), animated: true)
@@ -152,6 +153,9 @@ public class SelectHobbyDetailsViewController: UIViewController{
 =======
                 //self?.navigationController?.pushViewController(CreatingGatheringViewController(), animated: true)
 >>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
+=======
+                self?.navigationController?.pushViewController(CreateMeetingContentViewController(meetingTitle: "원데이 모임 생성", createMeetingContentViewModel: CreateMeetingContentViewModel(), createMeetingPeriodViewModel: CreateMeetingPeriodViewModel()), animated: true)
+>>>>>>> 10657f1 ([FEAT] 모임 생성 타입 결정 화면 present 애니메이션 개발)
             })
             .disposed(by: disposeBag)
         

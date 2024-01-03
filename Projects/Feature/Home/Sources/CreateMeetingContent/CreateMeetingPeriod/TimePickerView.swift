@@ -5,11 +5,11 @@ import Shared
 
 class TimePickerView: UIView {
     let disposeBag = DisposeBag()
-    var createMeetingPeriodViewModel: CreateMeetingPeriodViewModel!
+    var createMeetingPeriodViewModel: CreateMeetingPeriodViewModel
     let amPm = ["오전", "오후"]
-    let hours = Array(1...12)
-    let minutes = Array(0...59)
-    
+    let hours = (1...12).map { String(format: "%02d", $0) }
+    let minutes = (0...59).map { String(format: "%02d", $0) }
+    var isInitialized = 1
     let timePicker = UIPickerView()
     let periodUpLine: UIView = {
         let view = UIView()
@@ -42,8 +42,9 @@ class TimePickerView: UIView {
         return view
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(createMeetingPeriodViewModel: CreateMeetingPeriodViewModel) {
+        self.createMeetingPeriodViewModel = createMeetingPeriodViewModel
+        super.init(frame: .zero)
         
         timePicker.delegate = self
         timePicker.dataSource = self
@@ -51,28 +52,55 @@ class TimePickerView: UIView {
         layout()
     }
     
-    convenience init(createMeetingPeriodViewModel: CreateMeetingPeriodViewModel) {
-        self.init(frame: .zero)
-        self.createMeetingPeriodViewModel = createMeetingPeriodViewModel
-    }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        if isInitialized > 0 {
+            let now = Date()
+            let calendar = Calendar.current
+            let hour = calendar.component(.hour, from: now)
+            let minute = calendar.component(.minute, from: now)
+            
+            let periodIndex = hour >= 12 ? 1 : 0
+            let formattedHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour)
+            
+            timePicker.selectRow(periodIndex, inComponent: 0, animated: false)
+            timePicker.selectRow(formattedHour - 1, inComponent: 1, animated: false)
+            timePicker.selectRow(minute, inComponent: 2, animated: false)
+            isInitialized -= 1
+        } else {
+            timePicker.selectRow(createMeetingPeriodViewModel.selectedPeriodIndex, inComponent: 0, animated: false)
+            timePicker.selectRow(createMeetingPeriodViewModel.selectedHourIndex, inComponent: 1, animated: false)
+            timePicker.selectRow(createMeetingPeriodViewModel.selectedMinuteIndex, inComponent: 2, animated: false)
+        }
+        
+    }
+    
+    private func selectTimeInViewModel(periodIndex: Int, hourIndex: Int, minuteIndex: Int) {
+        let period = amPm[periodIndex]
+        let hour = hours[hourIndex]
+        let minute = minutes[minuteIndex]
+        createMeetingPeriodViewModel.selectPeriod(period, hour: hour, minute: minute)
+    }
+    
     func bind() {
         timePicker.rx.itemSelected.subscribe(onNext: { [weak self] (row, component) in
+            guard let self = self else { return }
+            let period = self.amPm[self.timePicker.selectedRow(inComponent: 0)]
+            let hour = self.hours[self.timePicker.selectedRow(inComponent: 1)]
+            let minute = self.minutes[self.timePicker.selectedRow(inComponent: 2)]
+            
             switch component {
             case 0:
-                let period = self?.amPm[row]
-                
-                self?.createMeetingPeriodViewModel.selectPeriod(period!)
+                self.createMeetingPeriodViewModel.selectPeriod(period, hour: hour, minute: minute)
             case 1:
-                let hour = self?.hours[row]
-                self?.createMeetingPeriodViewModel.selectHour(hour!)
+                self.createMeetingPeriodViewModel.selectHour(hour, period: period, minute: minute)
             case 2:
-                let minute = self?.minutes[row]
-                self?.createMeetingPeriodViewModel.selectMinute(minute!)
+                self.createMeetingPeriodViewModel.selectMinute(minute, period: period, hour: hour)
             default:
                 break
             }
@@ -146,15 +174,15 @@ extension TimePickerView: UIPickerViewDelegate{
         case 0:
             label.text = amPm[row]
         case 1:
-            label.text = String(format: "%02d",hours[row])
+            label.text = hours[row]
         case 2:
-            label.text = String(format: "%02d",minutes[row])
+            label.text = minutes[row]
         default:
             break
         }
         if pickerView.selectedRow(inComponent: component) == row {
             if pickerView.bounds.midY >= 56 && pickerView.bounds.midY <= 112 {
-                label.textColor = UIColor(red: 0.32, green: 0.64, blue: 0, alpha: 1)
+                label.textColor = SharedDSKitAsset.Colors.green.color
             } else {
                 label.textColor = .black
             }
