@@ -19,7 +19,7 @@ public class CreateMeetingContentViewModel{
     let imageCancelButtonTapped = PublishRelay<Void>()
     var representativeImagesDriver: Driver<SharedDSKitImages.Image>
     
-    public init(){
+    public init(createMeetingPeriodViewModel: CreateMeetingPeriodViewModel){
         let representativeImages = [SharedDSKitAsset.Icons.representativeImage1.image,SharedDSKitAsset.Icons.representativeImage2.image,SharedDSKitAsset.Icons.representativeImage3.image,SharedDSKitAsset.Icons.representativeImage4.image,SharedDSKitAsset.Icons.representativeImage5.image,SharedDSKitAsset.Icons.representativeImage6.image,SharedDSKitAsset.Icons.representativeImage7.image,SharedDSKitAsset.Icons.representativeImage8.image,SharedDSKitAsset.Icons.representativeImage9.image]
         
         representativeImagesDriver = setDefaultImageButtonTapped
@@ -29,6 +29,7 @@ public class CreateMeetingContentViewModel{
             }
             .asDriver(onErrorDriveWith: Driver.empty())
         
+<<<<<<< HEAD:Projects/Feature/Home/Sources/CreateMeetingContent/CreatingGatheringViewModel.swift
 =======
     
     public init(){
@@ -39,26 +40,24 @@ public class CreateMeetingContentViewModel{
             }
             .bind(onNext: { [weak self] dateTimeString in
                 print(dateTimeString)
+=======
+        createMeetingPeriodViewModel.timeRelay
+            .bind(onNext: { aa in
+                print(aa)
+>>>>>>> a38b360 ([FEAT] 모임 생성 타입 present  애니메이션 개발):Projects/Feature/Home/Sources/CreateMeetingContent/CreateMeetingContentViewModel.swift
             })
             .disposed(by: disposeBag)
+        
+        createMeetingPeriodViewModel.timeRelay
+            .bind(to: selectedTimeRelay)
+            .disposed(by: disposeBag)
+        
+        selectedTimeRelay
+            .bind(onNext: { aa in
+                print(aa)
+            })
+            .disposed(by: disposeBag)
+        
     }
     
-    func getDateStandardString(date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter.string(from: date)
-    }
-    
-    func getTimeSubTitleString(time: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "a h:mm"
-        formatter.locale = Locale(identifier: "ko_KR")
-        return formatter.string(from: time)
-    }
-    
-    func getTimeStandardString(time: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm:ss"
-        return formatter.string(from: time)
-    }
 }

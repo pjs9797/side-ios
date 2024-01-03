@@ -43,6 +43,7 @@ class AddImageBtView: UIView{
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         self.addGestureRecognizer(tapGesture)
 <<<<<<< HEAD
         self.backgroundColor = SharedDSKitAsset.Colors.bgLightGray.color

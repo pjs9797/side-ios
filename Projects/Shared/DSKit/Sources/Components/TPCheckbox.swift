@@ -7,6 +7,7 @@
 
 import UIKit
 <<<<<<< HEAD
+<<<<<<< HEAD
 import RxCocoa
 =======
 <<<<<<< HEAD
@@ -14,6 +15,9 @@ import RxCocoa
 //import RxCocoa
 >>>>>>> 3b6e89f ([FEAT] 타임피커뷰 개발)
 >>>>>>> caef135 ([FEAT] 타임피커뷰 개발)
+=======
+import RxCocoa
+>>>>>>> a38b360 ([FEAT] 모임 생성 타입 present  애니메이션 개발)
 
 public class TPCheckbox: UIView {
     public var enabledUnselectedCheckboxButton: UIButton = {

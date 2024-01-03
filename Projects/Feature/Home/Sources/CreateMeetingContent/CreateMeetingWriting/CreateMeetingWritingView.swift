@@ -26,6 +26,7 @@ class CreateMeetingWritingView: UIView{
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         self.introductionTextView.delegate = self
         self.layout()
     }

@@ -70,7 +70,7 @@ class HobbyDetailTableViewCell: UITableViewCell {
     
 >>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
     var myIndexPath: IndexPath?
-    let heightDidChange = PublishSubject<Void>()
+    let heightDidChange = PublishRelay<Void>()
     let selectedIndexPath = BehaviorRelay<(tableCellIndexPath: IndexPath, collectionViewIndexPath: IndexPath)?>(value: nil)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -209,7 +209,7 @@ class HobbyDetailTableViewCell: UITableViewCell {
                     self.hobbyDetailCollectionView.snp.updateConstraints { make in
                         make.height.equalTo(newHeight)
                     }
-                    self.heightDidChange.onNext(())
+                    self.heightDidChange.accept(())
                     self.contentView.layoutIfNeeded()
                 })
 =======

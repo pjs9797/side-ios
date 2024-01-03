@@ -6,6 +6,7 @@ import Shared
 
 class CreateMeetingPeriodView: UIView{
     let disposeBag = DisposeBag()
+    var createMeetingPeriodViewModel: CreateMeetingPeriodViewModel!
     let dateTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "모임 날짜는 언제인가요?"
@@ -28,6 +29,7 @@ class CreateMeetingPeriodView: UIView{
     }()
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     let calendarView = CalendarView(calendarViewModel: CalendarViewModel())
     //let customTimePickerView = CustomTimePickerView(timePickerViewModel: TimePickerViewModel())
 =======
@@ -36,10 +38,19 @@ class CreateMeetingPeriodView: UIView{
     let calendarView = CalendarView(calendarViewModel: CalendarViewModel())
     //let customTimePickerView = CustomTimePickerView(timePickerViewModel: TimePickerViewModel())
 >>>>>>> caef135 ([FEAT] 타임피커뷰 개발)
+=======
+    lazy var timePickerView = TimePickerView(createMeetingPeriodViewModel: createMeetingPeriodViewModel)
+>>>>>>> a38b360 ([FEAT] 모임 생성 타입 present  애니메이션 개발)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         self.layout()
+    }
+    
+    convenience init(createMeetingPeriodViewModel: CreateMeetingPeriodViewModel) {
+        self.init(frame: .zero)
+        self.createMeetingPeriodViewModel = createMeetingPeriodViewModel
     }
     
     required init?(coder: NSCoder) {
@@ -47,7 +58,7 @@ class CreateMeetingPeriodView: UIView{
     }
     
     private func layout(){
-        [dateTitleLabel,dateBtView,timeBtView]
+        [dateTitleLabel,dateBtView,timeBtView,timePickerView]
             .forEach{ self.addSubview($0) }
 <<<<<<< HEAD
         
@@ -79,6 +90,7 @@ class CreateMeetingPeriodView: UIView{
         }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> caef135 ([FEAT] 타임피커뷰 개발)
 //        calendarView.snp.makeConstraints { make in
@@ -95,11 +107,20 @@ class CreateMeetingPeriodView: UIView{
 //            make.top.equalTo(timeBtView.snp.bottom).offset(16)
 //            make.bottom.equalToSuperview()
 //        }
+=======
+
+        timePickerView.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.height.equalTo(168)
+            make.leading.equalToSuperview()
+            make.top.equalTo(timeBtView.snp.bottom).offset(16)
+            make.bottom.equalToSuperview()
+        }
+>>>>>>> a38b360 ([FEAT] 모임 생성 타입 present  애니메이션 개발)
     }
         
 //    func selectedPickerViewUICustom() {
 //        customTimePickerView.subviews[1].backgroundColor = .clear
-//        
 //        
 //        let upLine = UIView(frame: CGRect(x: 215, y: 0, width: 68, height: 1))
 //        let underLine = UIView(frame: CGRect(x: 215, y: 56, width: 68, height: 1))

@@ -40,6 +40,7 @@ public class SelectMeetingTypeViewController: UIViewController {
         view.backgroundColor = .white
         view.layer.cornerRadius = 16
         view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        view.transform = CGAffineTransform(translationX: 0, y: view.frame.height)
         return view
     }()
 <<<<<<< HEAD
@@ -136,6 +137,7 @@ public class SelectMeetingTypeViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         self.modalTransitionStyle = .crossDissolve
 =======
         self.modalTransitionStyle = .coverVertical
@@ -143,6 +145,9 @@ public class SelectMeetingTypeViewController: UIViewController {
 =======
         self.modalTransitionStyle = .crossDissolve
 >>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
+=======
+
+>>>>>>> a38b360 ([FEAT] 모임 생성 타입 present  애니메이션 개발)
         self.modalPresentationStyle = .overFullScreen
     }
     
@@ -181,6 +186,7 @@ public class SelectMeetingTypeViewController: UIViewController {
 >>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
     }
     
+<<<<<<< HEAD
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 <<<<<<< HEAD
@@ -197,18 +203,31 @@ public class SelectMeetingTypeViewController: UIViewController {
         
 >>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         UIView.animate(withDuration: 0.3) {
+=======
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        UIView.animate(withDuration: 0.3, animations: {
+>>>>>>> a38b360 ([FEAT] 모임 생성 타입 present  애니메이션 개발)
             self.dimmedView.alpha = 0.6
-        }
+            self.backView.transform = .identity
+        })
     }
     
-    public override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        UIView.animate(withDuration: 0.3) {
+    func appearAnimation(){
+        UIView.animate(withDuration: 0.3, animations: {
+            self.dimmedView.alpha = 0.6
+            self.backView.transform = .identity
+        })
+    }
+    
+    func dismissAnimation() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.backView.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
             self.dimmedView.alpha = 0
-        } completion: { _ in
-            self.dimmedView.removeFromSuperview()
-        }
+        }, completion: { _ in
+            self.dismiss(animated: false, completion: nil)
+        })
     }
     
 <<<<<<< HEAD
@@ -223,6 +242,7 @@ public class SelectMeetingTypeViewController: UIViewController {
         swipeGesture.direction = .down
 <<<<<<< HEAD
         tapGesture.rx.event
+<<<<<<< HEAD
             .bind { [weak self] gesture in
                 print(2323)
                 self?.dismiss(animated: true)
@@ -233,12 +253,16 @@ public class SelectMeetingTypeViewController: UIViewController {
                 print(2323)
                 self?.backViewDown()
 >>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
+=======
+            .bind { [weak self] _ in
+                self?.dismissAnimation()
+>>>>>>> a38b360 ([FEAT] 모임 생성 타입 present  애니메이션 개발)
             }
             .disposed(by: disposeBag)
         
         swipeGesture.rx.event
-            .bind { [weak self] gesture in
-                self?.dismiss(animated: true)
+            .bind { [weak self] _ in
+                self?.dismissAnimation()
             }
             .disposed(by: disposeBag)
     }
@@ -255,7 +279,7 @@ public class SelectMeetingTypeViewController: UIViewController {
         
         selectMeetingTypeViewModel.oneDayButtonTapped
             .bind(onNext: { [weak self] in
-                self?.dismiss(animated: true, completion: {
+                self?.dismiss(animated: false, completion: {
                     let createMeetingVC = CreateMeetingViewController(meetingTitle: "원데이 멤버 모집하기", createMeetingViewModel: CreateMeetingViewModel())
                     self?.homeNavigationController!.pushViewController(createMeetingVC, animated: true)
                 })
@@ -268,7 +292,7 @@ public class SelectMeetingTypeViewController: UIViewController {
         
         selectMeetingTypeViewModel.shortTermButtonTapped
             .bind(onNext: { [weak self] in
-                self?.dismiss(animated: true, completion: {
+                self?.dismiss(animated: false, completion: {
                     let createMeetingVC = CreateMeetingViewController(meetingTitle: "단기 멤버 모집하기", createMeetingViewModel: CreateMeetingViewModel())
                     self?.homeNavigationController!.pushViewController(createMeetingVC, animated: true)
                 })
@@ -281,7 +305,7 @@ public class SelectMeetingTypeViewController: UIViewController {
         
         selectMeetingTypeViewModel.continuousButtonTapped
             .bind(onNext: { [weak self] in
-                self?.dismiss(animated: true, completion: {
+                self?.dismiss(animated: false, completion: {
                     let createMeetingVC = CreateMeetingViewController(meetingTitle: "지속형 멤버 모집하기", createMeetingViewModel: CreateMeetingViewModel())
                     self?.homeNavigationController!.pushViewController(createMeetingVC, animated: true)
                 })

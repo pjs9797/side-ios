@@ -31,7 +31,7 @@ public class CreateMeetingContentViewController: UIViewController {
     let createMeetingTitleView = CreateMeetingTitleView()
     let createMeetingRegionView = CreateMeetingRegionView()
     let createMeetingMemberView = CreateMeetingMemberView()
-    let createMeetingPeriodView = CreateMeetingPeriodView()
+    let createMeetingPeriodView = CreateMeetingPeriodView(createMeetingPeriodViewModel: CreateMeetingPeriodViewModel())
     let createMeetingImageView = CreateMeetingImageView()
     let createMeetingWritingView = CreateMeetingWritingView()
     let createButton: UIButton = {
@@ -64,9 +64,15 @@ public class CreateMeetingContentViewController: UIViewController {
     }
     
 <<<<<<< HEAD
+<<<<<<< HEAD
 //    public override func viewWillLayoutSubviews() {
 //        createMeetingPeriodView.selectedPickerViewUICustom()
 //    }
+=======
+    public override func viewWillLayoutSubviews() {
+        createMeetingPeriodView.timePickerView.timePicker.subviews[1].backgroundColor = .clear
+    }
+>>>>>>> a38b360 ([FEAT] 모임 생성 타입 present  애니메이션 개발)
     
 =======
 >>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
@@ -250,7 +256,7 @@ public class CreateMeetingContentViewController: UIViewController {
 =======
 >>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         createMeetingPeriodView.snp.makeConstraints { make in
-            make.height.equalTo(97)
+            //make.height.equalTo(97)
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(createMeetingMemberView.snp.bottom).offset(40)
         }

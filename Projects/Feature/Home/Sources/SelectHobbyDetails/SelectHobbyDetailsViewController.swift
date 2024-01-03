@@ -159,8 +159,7 @@ public class SelectHobbyDetailsViewController: UIViewController{
             .drive(hobbyDetailTableView.rx.items(cellIdentifier: "HobbyDetailTableViewCell", cellType: HobbyDetailTableViewCell.self)){ row, data, cell in
                 
                 cell.heightDidChange
-                    .asDriver(onErrorJustReturn: ())
-                    .drive(onNext: { [weak self] in
+                    .bind(onNext: { [weak self] in
                         self?.hobbyDetailTableView.beginUpdates()
                         self?.hobbyDetailTableView.endUpdates()
                     })

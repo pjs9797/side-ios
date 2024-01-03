@@ -30,14 +30,16 @@ class PeriodBtView: UIView{
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-    }
-    
-    init(title: String, subTitle: String) {
-        super.init(frame: .zero)
-        self.titleLabel.text = title
-        self.subTitleLabel.text = subTitle
+        
         self.addGestureRecognizer(tapGesture)
         layout()
+    }
+    
+    convenience init(title: String, subTitle: String) {
+        self.init(frame: .zero)
+        
+        self.titleLabel.text = title
+        self.subTitleLabel.text = subTitle
     }
     
     required init?(coder: NSCoder) {

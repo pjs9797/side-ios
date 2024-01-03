@@ -56,6 +56,7 @@ class SideProjectBtView: UIView{
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         self.addGestureRecognizer(tapGesture)
         layout()
     }
