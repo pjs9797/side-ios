@@ -8,16 +8,9 @@ public class CreateMeetingContentViewController: UIViewController {
     let disposeBag = DisposeBag()
     let meetingTitle: String
     let createMeetingContentViewModel: CreateMeetingContentViewModel
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-    
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
-=======
     let createMeetingPeriodViewModel: CreateMeetingPeriodViewModel
     var dateBtViewCalendarVisible = false
     var timeBtViewPickViewVisible = false
->>>>>>> 10657f1 ([FEAT] 모임 생성 타입 결정 화면 present 애니메이션 개발)
     let backButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: nil, action: nil)
     let progressView: UIProgressView = {
         let progressView = UIProgressView()
@@ -70,19 +63,14 @@ public class CreateMeetingContentViewController: UIViewController {
         self.layout()
     }
     
-<<<<<<< HEAD
-<<<<<<< HEAD
 //    public override func viewWillLayoutSubviews() {
 //        createMeetingPeriodView.selectedPickerViewUICustom()
 //    }
-=======
+
     public override func viewWillLayoutSubviews() {
         createMeetingPeriodView.timePickerView.timePicker.subviews[1].backgroundColor = .clear
     }
->>>>>>> a38b360 ([FEAT] 모임 생성 타입 present  애니메이션 개발)
     
-=======
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
     private func setNavigationbar() {
         self.title = self.meetingTitle
         self.tabBarController?.tabBar.isHidden = true
@@ -133,38 +121,9 @@ public class CreateMeetingContentViewController: UIViewController {
             .bind(to: createMeetingMemberView.memberLimitTextField.rx.text)
             .disposed(by: disposeBag)
         
-<<<<<<< HEAD
-        createMeetingPeriodView.dateBtView.tapGesture.rx.event
-            .bind(onNext: { [weak self] _ in
-                self?.presentDatePicker(mode: .date) { date in
-                    let dateStandardString = self?.createMeetingContentViewModel.getDateStandardString(date: date)
-                    self?.createMeetingContentViewModel.selectedDateRelay.accept(dateStandardString!)
-                    self?.createMeetingPeriodView.dateBtView.configure(subTitle: dateStandardString!)
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        createMeetingPeriodView.timeBtView.tapGesture.rx.event
-            .bind(onNext: { [weak self] _ in
-                self?.presentDatePicker(mode: .time) { date in
-                    let timeStandardString = self?.createMeetingContentViewModel.getTimeStandardString(time: date)
-                    self?.createMeetingContentViewModel.selectedTimeRelay.accept(timeStandardString!)
-                    let timeSubTitleString = self?.createMeetingContentViewModel.getTimeSubTitleString(time: date)
-                    self?.createMeetingPeriodView.timeBtView.configure(subTitle: timeSubTitleString!)
-<<<<<<< HEAD
-=======
-
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
-                }
-            })
-            .disposed(by: disposeBag)
-=======
->>>>>>> 10657f1 ([FEAT] 모임 생성 타입 결정 화면 present 애니메이션 개발)
-        
         createMeetingWritingView.introductionTextView.rx.text.orEmpty
             .bind(to: createMeetingContentViewModel.introductionTextRelay)
             .disposed(by: disposeBag)
-<<<<<<< HEAD
         
         createMeetingImageView.setDefaultImageButton.rx.tap
             .bind(to: createMeetingContentViewModel.setDefaultImageButtonTapped)
@@ -191,12 +150,6 @@ public class CreateMeetingContentViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-<<<<<<< HEAD
-=======
-            
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
-=======
-       
         createMeetingPeriodView.dateBtView.tapGesture.rx.event
                .bind(onNext: { [weak self] _ in
                    guard let self = self else { return }
@@ -250,111 +203,75 @@ public class CreateMeetingContentViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
->>>>>>> 10657f1 ([FEAT] 모임 생성 타입 결정 화면 present 애니메이션 개발)
     }
     
     func layout(){
         [progressView,scrollView]
             .forEach{ self.view.addSubview($0) }
         scrollView.addSubview(contentView)
-<<<<<<< HEAD
         
-=======
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         progressView.snp.makeConstraints { make in
             make.height.equalTo(2)
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
-<<<<<<< HEAD
         
-=======
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         scrollView.snp.makeConstraints {
             $0.width.equalToSuperview()
             $0.leading.equalToSuperview()
             $0.top.equalTo(progressView.snp.bottom)
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
-<<<<<<< HEAD
         
-=======
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         contentView.snp.makeConstraints { make in
             make.width.equalToSuperview()
             make.leading.trailing.top.bottom.equalToSuperview()
         }
-<<<<<<< HEAD
         
         [mainTitleLabel,createMeetingTitleView,createMeetingRegionView,createMeetingMemberView,createMeetingPeriodView,createMeetingImageView,createMeetingWritingView,createButton]
             .forEach{ contentView.addSubview($0) }
         
-=======
-        [mainTitleLabel,createMeetingTitleView,createMeetingRegionView,createMeetingMemberView,createMeetingPeriodView,createMeetingImageView,createMeetingWritingView,createButton]
-            .forEach{ contentView.addSubview($0) }
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         mainTitleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.top.equalToSuperview().offset(60)
         }
-<<<<<<< HEAD
         
-=======
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         createMeetingTitleView.snp.makeConstraints { make in
             make.height.equalTo(153)
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(mainTitleLabel.snp.bottom).offset(40)
         }
-<<<<<<< HEAD
         
-=======
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         createMeetingRegionView.snp.makeConstraints { make in
             make.height.equalTo(144)
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(createMeetingTitleView.snp.bottom).offset(40)
         }
-<<<<<<< HEAD
         
-=======
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         createMeetingMemberView.snp.makeConstraints { make in
             make.height.equalTo(97)
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(createMeetingRegionView.snp.bottom).offset(40)
         }
-<<<<<<< HEAD
         
-=======
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         createMeetingPeriodView.snp.makeConstraints { make in
             make.height.equalTo(97)
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(createMeetingMemberView.snp.bottom).offset(40)
         }
-<<<<<<< HEAD
         
-=======
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         createMeetingImageView.snp.makeConstraints { make in
             make.height.equalTo(189)
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(createMeetingPeriodView.snp.bottom).offset(40)
         }
-<<<<<<< HEAD
         
-=======
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         createMeetingWritingView.snp.makeConstraints { make in
             make.height.equalTo(217)
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(createMeetingImageView.snp.bottom).offset(40)
         }
-<<<<<<< HEAD
         
-=======
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         createButton.snp.makeConstraints { make in
             make.width.equalTo(335)
             make.height.equalTo(52)
@@ -386,13 +303,4 @@ public class CreateMeetingContentViewController: UIViewController {
             self.view.layoutIfNeeded()
         }
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
-    
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
-=======
-
->>>>>>> 10657f1 ([FEAT] 모임 생성 타입 결정 화면 present 애니메이션 개발)
 }

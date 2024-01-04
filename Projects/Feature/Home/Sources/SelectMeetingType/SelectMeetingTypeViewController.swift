@@ -154,7 +154,8 @@ public class SelectMeetingTypeViewController: UIViewController {
     }
     
     func layout(){
-        self.view.addSubview(backView)
+        [dimmedView,backView]
+            .forEach{ self.view.addSubview($0) }
         [handleView,oneDayButton,firstSeparateView,shortTermButton,secondSeparateView,continuousButton]
             .forEach{ self.backView.addSubview($0) }
         

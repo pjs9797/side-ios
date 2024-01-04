@@ -3,20 +3,12 @@ import SnapKit
 import Shared
 
 class AddImageBtView: UIView{
-<<<<<<< HEAD
+    let tapGesture = UITapGestureRecognizer()
     let imgBgImageView: UIImageView = {
-=======
-    
-    lazy var imgBgImageView: UIImageView = {
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         let imageView = UIImageView()
         imageView.image = SharedDSKitAsset.Icons.vuesaxlinearcamera.image
         return imageView
     }()
-<<<<<<< HEAD
-=======
-    
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = Fonts.Caption.font
@@ -24,10 +16,6 @@ class AddImageBtView: UIView{
         label.text = "이미지 첨부"
         return label
     }()
-<<<<<<< HEAD
-=======
-    
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
     let cntLabel: UILabel = {
         let label = UILabel()
         label.font = Fonts.Caption.font
@@ -35,20 +23,12 @@ class AddImageBtView: UIView{
         label.text = "0 / 1"
         return label
     }()
-<<<<<<< HEAD
-=======
-    
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
-    let tapGesture = UITapGestureRecognizer()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         self.addGestureRecognizer(tapGesture)
-<<<<<<< HEAD
         self.backgroundColor = SharedDSKitAsset.Colors.bgLightGray.color
-=======
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         layout()
     }
     
@@ -75,11 +55,5 @@ class AddImageBtView: UIView{
             make.top.equalTo(titleLabel.snp.bottom).offset(4)
             make.centerX.equalToSuperview()
         }
-<<<<<<< HEAD
     }
-=======
-        
-    }
-    
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
 }

@@ -30,24 +30,8 @@ class CreateMeetingPeriodView: UIView{
         timeBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         return timeBtView
     }()
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    let calendarView = CalendarView(calendarViewModel: CalendarViewModel())
-    //let customTimePickerView = CustomTimePickerView(timePickerViewModel: TimePickerViewModel())
-=======
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
-=======
-    let calendarView = CalendarView(calendarViewModel: CalendarViewModel())
-    //let customTimePickerView = CustomTimePickerView(timePickerViewModel: TimePickerViewModel())
->>>>>>> caef135 ([FEAT] 타임피커뷰 개발)
-=======
-=======
     lazy var calendarView = CalendarView(createMeetingPeriodViewModel: createMeetingPeriodViewModel)
->>>>>>> 10657f1 ([FEAT] 모임 생성 타입 결정 화면 present 애니메이션 개발)
     lazy var timePickerView = TimePickerView(createMeetingPeriodViewModel: createMeetingPeriodViewModel)
->>>>>>> a38b360 ([FEAT] 모임 생성 타입 present  애니메이션 개발)
     
     init(createMeetingPeriodViewModel: CreateMeetingPeriodViewModel) {
         self.createMeetingPeriodViewModel = createMeetingPeriodViewModel
@@ -103,57 +87,26 @@ class CreateMeetingPeriodView: UIView{
     func layout(){
         [dateTitleLabel,dateBtView,timeBtView,calendarView,timePickerView]
             .forEach{ self.addSubview($0) }
-<<<<<<< HEAD
         
-=======
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         dateTitleLabel.snp.makeConstraints { make in
             make.height.equalTo(25)
             make.leading.equalToSuperview().offset(20)
             make.top.equalToSuperview()
         }
-<<<<<<< HEAD
         
-=======
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         dateBtView.snp.makeConstraints { make in
             make.width.equalTo(163.5)
             make.height.equalTo(56)
             make.leading.equalToSuperview().offset(20)
             make.top.equalTo(dateTitleLabel.snp.bottom).offset(16)
         }
-<<<<<<< HEAD
         
-=======
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
         timeBtView.snp.makeConstraints { make in
             make.width.equalTo(163.5)
             make.height.equalTo(56)
             make.trailing.equalToSuperview().offset(-20)
             make.top.equalTo(dateTitleLabel.snp.bottom).offset(16)
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> caef135 ([FEAT] 타임피커뷰 개발)
-//        calendarView.snp.makeConstraints { make in
-//            make.width.equalToSuperview()
-//            make.height.equalTo(358)
-//            make.leading.equalToSuperview()
-//            make.top.equalTo(timeBtView.snp.bottom).offset(16)
-//            make.bottom.equalToSuperview()
-//        }
-//        customTimePickerView.snp.makeConstraints { make in
-//            make.width.equalToSuperview()
-//            make.height.equalTo(168)
-//            make.leading.equalToSuperview()//.offset(47)
-//            make.top.equalTo(timeBtView.snp.bottom).offset(16)
-//            make.bottom.equalToSuperview()
-//        }
-=======
-=======
         
         calendarView.snp.makeConstraints { make in
             make.width.equalTo(335)
@@ -161,7 +114,6 @@ class CreateMeetingPeriodView: UIView{
             make.centerX.equalToSuperview()
             make.top.equalTo(timeBtView.snp.bottom).offset(16)
         }
->>>>>>> 10657f1 ([FEAT] 모임 생성 타입 결정 화면 present 애니메이션 개발)
 
         timePickerView.snp.makeConstraints { make in
             make.width.equalToSuperview()
@@ -169,26 +121,7 @@ class CreateMeetingPeriodView: UIView{
             make.leading.equalToSuperview()
             make.top.equalTo(timeBtView.snp.bottom).offset(16)
         }
->>>>>>> a38b360 ([FEAT] 모임 생성 타입 present  애니메이션 개발)
     }
-<<<<<<< HEAD
-        
-//    func selectedPickerViewUICustom() {
-//        customTimePickerView.subviews[1].backgroundColor = .clear
-//        
-//        let upLine = UIView(frame: CGRect(x: 215, y: 0, width: 68, height: 1))
-//        let underLine = UIView(frame: CGRect(x: 215, y: 56, width: 68, height: 1))
-//        
-//        upLine.backgroundColor = .gray
-//        underLine.backgroundColor = .gray
-//        
-//        customTimePickerView.subviews[1].addSubview(upLine)
-//        customTimePickerView.subviews[1].addSubview(underLine)
-//    }
-=======
-    }
->>>>>>> 5e24642 ([FEAT] 모임 생성 마지막 페이지 개발)
-=======
     
     func calendarViewAppear(){
         UIView.animate(withDuration: 0.3){
@@ -229,5 +162,4 @@ class CreateMeetingPeriodView: UIView{
             self.layoutIfNeeded()
         }
     }
->>>>>>> 10657f1 ([FEAT] 모임 생성 타입 결정 화면 present 애니메이션 개발)
 }

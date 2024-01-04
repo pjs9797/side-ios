@@ -3,43 +3,25 @@ import SnapKit
 import Shared
 
 class HobbyBtView: UIView{
-<<<<<<< HEAD
+    let tapGesture = UITapGestureRecognizer()
     let imgBgImageView: UIImageView = {
-=======
-    
-    lazy var imgBgImageView: UIImageView = {
->>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
         let imageView = UIImageView()
         imageView.backgroundColor = UIColor(red: 0.84, green: 0.81, blue: 1, alpha: 1)
         imageView.layer.cornerRadius = 44
         return imageView
     }()
-<<<<<<< HEAD
-=======
-    
->>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
     lazy var targetImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = SharedDSKitAsset.Icons.sportsIcon.image
         return imageView
     }()
-<<<<<<< HEAD
     let titleLabel: UILabel = {
-=======
-    
-    lazy var titleLabel: UILabel = {
->>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
         let label = UILabel()
         label.font = Fonts.SH03Bold.font
         label.textAlignment = .center
         label.text = "취미"
         return label
     }()
-<<<<<<< HEAD
-=======
-    
->>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
-    let tapGesture = UITapGestureRecognizer()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -72,11 +54,5 @@ class HobbyBtView: UIView{
             make.top.equalTo(imgBgImageView.snp.bottom).offset(16)
             make.centerX.equalToSuperview()
         }
-<<<<<<< HEAD
     }
-=======
-        
-    }
-    
->>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
 }

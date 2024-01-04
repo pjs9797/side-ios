@@ -1,41 +1,17 @@
 {
   "images" : [
     {
-<<<<<<< HEAD
-<<<<<<< HEAD
       "filename" : "Ellipse 3 - 2023-12-26T161358.743.png",
-=======
-      "filename" : "Ellipse 3 (9).png",
->>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
-=======
-      "filename" : "Ellipse 3 - 2023-12-26T161358.743.png",
->>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-<<<<<<< HEAD
-<<<<<<< HEAD
       "filename" : "Ellipse 3 - 2023-12-26T161401.819.png",
-=======
-      "filename" : "Ellipse 3 (10).png",
->>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
-=======
-      "filename" : "Ellipse 3 - 2023-12-26T161401.819.png",
->>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-<<<<<<< HEAD
-<<<<<<< HEAD
       "filename" : "Ellipse 3 - 2023-12-26T161404.284.png",
-=======
-      "filename" : "Ellipse 3 (11).png",
->>>>>>> 31ab288 ([FEAT] 모임 생성 첫 화면 개발)
-=======
-      "filename" : "Ellipse 3 - 2023-12-26T161404.284.png",
->>>>>>> 9e05e25 ([FEAT] 모임생성-취미 화면 개발)
       "idiom" : "universal",
       "scale" : "3x"
     }
