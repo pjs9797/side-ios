@@ -124,42 +124,42 @@ class CreateMeetingPeriodView: UIView{
     }
     
     func calendarViewAppear(){
-        UIView.animate(withDuration: 0.3){
+        UIView.animate(withDuration: 0.3, animations: {
             self.calendarView.isHidden = false
             self.calendarView.snp.updateConstraints { make in
                 make.height.equalTo(358)
             }
             self.layoutIfNeeded()
-        }
+        })
     }
     
     func calendarViewDisappear(){
-        UIView.animate(withDuration: 0.3){
+        UIView.animate(withDuration: 0.3, animations: {
             self.calendarView.isHidden = true
             self.calendarView.snp.updateConstraints { make in
                 make.height.equalTo(0)
             }
             self.layoutIfNeeded()
-        }
+        })
     }
     
     func timePickerViewAppear(){
-        UIView.animate(withDuration: 0.3){
+        UIView.animate(withDuration: 0.3, animations: {
             self.timePickerView.isHidden = false
             self.timePickerView.snp.updateConstraints { make in
                 make.height.equalTo(168)
             }
             self.layoutIfNeeded()
-        }
+        })
     }
     
     func timePickerViewDisappear(){
-        UIView.animate(withDuration: 0.3){
+        UIView.animate(withDuration: 0.3, animations: {
             self.timePickerView.isHidden = true
             self.timePickerView.snp.updateConstraints { make in
                 make.height.equalTo(0)
             }
             self.layoutIfNeeded()
-        }
+        })
     }
 }

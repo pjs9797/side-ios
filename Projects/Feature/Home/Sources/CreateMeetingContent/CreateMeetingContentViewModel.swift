@@ -11,6 +11,7 @@ public class CreateMeetingContentViewModel{
     let introductionTextRelay = BehaviorRelay<String>(value: "")
     let selectedDateRelay = BehaviorRelay<String>(value: "")
     let selectedTimeRelay = PublishRelay<String>()
+    let backButtonTapped = PublishRelay<Void>()
     let setDefaultImageButtonTapped = PublishRelay<Void>()
     let imageCancelButtonTapped = PublishRelay<Void>()
     var representativeImagesDriver: Driver<SharedDSKitImages.Image>

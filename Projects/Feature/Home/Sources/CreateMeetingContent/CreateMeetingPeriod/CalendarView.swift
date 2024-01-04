@@ -56,31 +56,20 @@ class CalendarView: UIView{
     }
     
     func bind(){
-        createMeetingPeriodViewModel.currentPage
-            .observeOn(MainScheduler.asyncInstance)
-            .bind(onNext: { [weak self] date in
+        createMeetingPeriodViewModel.currentPageDrvier
+            .drive(onNext: { [weak self] date in
                 self?.calendar.setCurrentPage(date, animated: true)
                 self?.updateTitleLabel(for: date)
             })
             .disposed(by: disposeBag)
         
         previousButton.rx.tap
-            .withLatestFrom(createMeetingPeriodViewModel.currentPage)
-            .map { Calendar.current.date(byAdding: .month, value: -1, to: $0)! }
-            .bind(to: createMeetingPeriodViewModel.currentPage)
+            .bind(to: createMeetingPeriodViewModel.previousButtonTapped)
             .disposed(by: disposeBag)
         
         nextButton.rx.tap
-            .withLatestFrom(createMeetingPeriodViewModel.currentPage)
-            .map { Calendar.current.date(byAdding: .month, value: 1, to: $0)! }
-            .bind(to: createMeetingPeriodViewModel.currentPage)
+            .bind(to: createMeetingPeriodViewModel.nextButtonTapped)
             .disposed(by: disposeBag)
-    }
-    
-    func updateTitleLabel(for date: Date) {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMMM yyyy"
-        titleLabel.text = formatter.string(from: date)
     }
     
     func layout(){
@@ -121,12 +110,18 @@ class CalendarView: UIView{
             make.leading.equalTo(titleLabel.snp.trailing).offset(16)
         }
     }
+    
+    func updateTitleLabel(for date: Date) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM yyyy"
+        titleLabel.text = formatter.string(from: date)
+    }
 }
 
 extension CalendarView: FSCalendarDelegate {
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         let currentPage = calendar.currentPage
-        createMeetingPeriodViewModel.currentPage.accept(currentPage)
+        createMeetingPeriodViewModel.currentPageRelay.accept(currentPage)
         updateTitleLabel(for: currentPage)
     }
     
@@ -134,6 +129,6 @@ extension CalendarView: FSCalendarDelegate {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy.MM.dd"
         let dateString = formatter.string(from: date)
-        createMeetingPeriodViewModel.selectedDate.accept(dateString)
+        createMeetingPeriodViewModel.dateRelay.accept(dateString)
     }
 }

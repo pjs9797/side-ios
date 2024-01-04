@@ -18,7 +18,6 @@ public class SelectMeetingTypeViewController: UIViewController {
         view.backgroundColor = .white
         view.layer.cornerRadius = 16
         view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        view.transform = CGAffineTransform(translationX: 0, y: view.frame.height)
         return view
     }()
     let handleView: UIView = {
@@ -60,7 +59,6 @@ public class SelectMeetingTypeViewController: UIViewController {
         self.selectMeetingTypeViewModel = selectMeetingTypeViewModel
         super.init(nibName: nil, bundle: nil)
 
-        self.modalTransitionStyle = .crossDissolve
         self.modalPresentationStyle = .overFullScreen
     }
     
@@ -75,9 +73,16 @@ public class SelectMeetingTypeViewController: UIViewController {
         tapEvent()
         bind()
         layout()
+    }
+    
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         appearAnimation()
     }
+    
     func appearAnimation(){
+        backView.transform = CGAffineTransform(translationX: 0, y: view.frame.height)
         UIView.animate(withDuration: 0.3, animations: {
             self.dimmedView.alpha = 0.6
             self.backView.transform = .identity

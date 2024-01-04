@@ -9,8 +9,6 @@ public class CreateMeetingContentViewController: UIViewController {
     let meetingTitle: String
     let createMeetingContentViewModel: CreateMeetingContentViewModel
     let createMeetingPeriodViewModel: CreateMeetingPeriodViewModel
-    var dateBtViewCalendarVisible = false
-    var timeBtViewPickViewVisible = false
     let backButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: nil, action: nil)
     let progressView: UIProgressView = {
         let progressView = UIProgressView()
@@ -63,10 +61,6 @@ public class CreateMeetingContentViewController: UIViewController {
         self.layout()
     }
     
-//    public override func viewWillLayoutSubviews() {
-//        createMeetingPeriodView.selectedPickerViewUICustom()
-//    }
-
     public override func viewWillLayoutSubviews() {
         createMeetingPeriodView.timePickerView.timePicker.subviews[1].backgroundColor = .clear
     }
@@ -84,6 +78,10 @@ public class CreateMeetingContentViewController: UIViewController {
     
     func bind(){
         backButton.rx.tap
+            .bind(to: createMeetingContentViewModel.backButtonTapped)
+            .disposed(by: disposeBag)
+        
+        createMeetingContentViewModel.backButtonTapped
             .bind(onNext: { [weak self] in
                 self?.navigationController?.popViewController(animated: true)
             })
@@ -121,8 +119,20 @@ public class CreateMeetingContentViewController: UIViewController {
             .bind(to: createMeetingMemberView.memberLimitTextField.rx.text)
             .disposed(by: disposeBag)
         
-        createMeetingWritingView.introductionTextView.rx.text.orEmpty
-            .bind(to: createMeetingContentViewModel.introductionTextRelay)
+        periodViewBindTapGesture()
+        
+        createMeetingPeriodViewModel.timeRelay
+            .bind(onNext: { [weak self] time in
+                self?.createMeetingPeriodView.timeBtView.configure(subTitle: time)
+                self?.createMeetingPeriodView.timeBtView.subTitleLabel.textColor = .black
+            })
+            .disposed(by: disposeBag)
+        
+        createMeetingPeriodViewModel.dateRelay
+            .bind(onNext: { [weak self] date in
+                self?.createMeetingPeriodView.dateBtView.configure(subTitle: date)
+                self?.createMeetingPeriodView.dateBtView.subTitleLabel.textColor = .black
+            })
             .disposed(by: disposeBag)
         
         createMeetingImageView.setDefaultImageButton.rx.tap
@@ -150,59 +160,9 @@ public class CreateMeetingContentViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        createMeetingPeriodView.dateBtView.tapGesture.rx.event
-               .bind(onNext: { [weak self] _ in
-                   guard let self = self else { return }
-
-                   if self.createMeetingPeriodView.isCalendarViewVisible {
-                       self.createMeetingPeriodView.calendarViewDisappear()
-                   } else {
-                       self.createMeetingPeriodView.calendarViewAppear()
-                       if self.createMeetingPeriodView.isTimePickerViewVisible {
-                           self.createMeetingPeriodView.timePickerViewDisappear()
-                           self.createMeetingPeriodView.isTimePickerViewVisible = false
-                       }
-                   }
-
-                   self.createMeetingPeriodView.isCalendarViewVisible.toggle()
-                   self.updateCreateMeetingPeriodViewHeight()
-               })
-               .disposed(by: disposeBag)
-
-           createMeetingPeriodView.timeBtView.tapGesture.rx.event
-               .bind(onNext: { [weak self] _ in
-                   guard let self = self else { return }
-
-                   if self.createMeetingPeriodView.isTimePickerViewVisible {
-                       self.createMeetingPeriodView.timePickerViewDisappear()
-                   } else {
-                       self.createMeetingPeriodView.timePickerViewAppear()
-                       if self.createMeetingPeriodView.isCalendarViewVisible {
-                           self.createMeetingPeriodView.calendarViewDisappear()
-                           self.createMeetingPeriodView.isCalendarViewVisible = false
-                       }
-                   }
-
-                   self.createMeetingPeriodView.isTimePickerViewVisible.toggle()
-                   self.updateCreateMeetingPeriodViewHeight()
-               })
-               .disposed(by: disposeBag)
-
-        
-        createMeetingPeriodViewModel.timeRelay
-            .bind(onNext: { [weak self] time in
-                self?.createMeetingPeriodView.timeBtView.configure(subTitle: time)
-                self?.createMeetingPeriodView.timeBtView.subTitleLabel.textColor = .black
-            })
+        createMeetingWritingView.introductionTextView.rx.text.orEmpty
+            .bind(to: createMeetingContentViewModel.introductionTextRelay)
             .disposed(by: disposeBag)
-        
-        createMeetingPeriodViewModel.selectedDate
-            .bind(onNext: { [weak self] date in
-                self?.createMeetingPeriodView.dateBtView.configure(subTitle: date)
-                self?.createMeetingPeriodView.dateBtView.subTitleLabel.textColor = .black
-            })
-            .disposed(by: disposeBag)
-        
     }
     
     func layout(){
@@ -281,6 +241,42 @@ public class CreateMeetingContentViewController: UIViewController {
         }
     }
     
+    func periodViewBindTapGesture(){
+        createMeetingPeriodView.dateBtView.tapGesture.rx.event
+               .bind(onNext: { [weak self] _ in
+                   guard let self = self else { return }
+                   if self.createMeetingPeriodView.isCalendarViewVisible {
+                       self.createMeetingPeriodView.calendarViewDisappear()
+                   } else {
+                       self.createMeetingPeriodView.calendarViewAppear()
+                       if self.createMeetingPeriodView.isTimePickerViewVisible {
+                           self.createMeetingPeriodView.timePickerViewDisappear()
+                           self.createMeetingPeriodView.isTimePickerViewVisible = false
+                       }
+                   }
+                   self.createMeetingPeriodView.isCalendarViewVisible.toggle()
+                   self.updateCreateMeetingPeriodViewHeight()
+               })
+               .disposed(by: disposeBag)
+
+           createMeetingPeriodView.timeBtView.tapGesture.rx.event
+               .bind(onNext: { [weak self] _ in
+                   guard let self = self else { return }
+                   if self.createMeetingPeriodView.isTimePickerViewVisible {
+                       self.createMeetingPeriodView.timePickerViewDisappear()
+                   } else {
+                       self.createMeetingPeriodView.timePickerViewAppear()
+                       if self.createMeetingPeriodView.isCalendarViewVisible {
+                           self.createMeetingPeriodView.calendarViewDisappear()
+                           self.createMeetingPeriodView.isCalendarViewVisible = false
+                       }
+                   }
+                   self.createMeetingPeriodView.isTimePickerViewVisible.toggle()
+                   self.updateCreateMeetingPeriodViewHeight()
+               })
+               .disposed(by: disposeBag)
+    }
+    
     func updateCreateMeetingPeriodViewHeight() {
         let baseHeight = 97
         let calendarViewHeight = 358 + 16
@@ -295,12 +291,11 @@ public class CreateMeetingContentViewController: UIViewController {
             newHeight = baseHeight
         }
 
-        self.createMeetingPeriodView.snp.updateConstraints { make in
-            make.height.equalTo(newHeight)
-        }
-
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.3, animations:{
+            self.createMeetingPeriodView.snp.updateConstraints { make in
+                make.height.equalTo(newHeight)
+            }
             self.view.layoutIfNeeded()
-        }
+        })
     }
 }

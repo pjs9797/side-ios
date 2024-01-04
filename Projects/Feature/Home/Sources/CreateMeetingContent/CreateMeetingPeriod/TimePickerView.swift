@@ -6,9 +6,6 @@ import Shared
 class TimePickerView: UIView {
     let disposeBag = DisposeBag()
     var createMeetingPeriodViewModel: CreateMeetingPeriodViewModel
-    let amPm = ["오전", "오후"]
-    let hours = (1...12).map { String(format: "%02d", $0) }
-    let minutes = (0...59).map { String(format: "%02d", $0) }
     var isInitialized = 1
     let timePicker = UIPickerView()
     let periodUpLine: UIView = {
@@ -50,61 +47,37 @@ class TimePickerView: UIView {
         timePicker.dataSource = self
         bind()
         layout()
+        setInitialPickerValues()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        if isInitialized > 0 {
-            let now = Date()
-            let calendar = Calendar.current
-            let hour = calendar.component(.hour, from: now)
-            let minute = calendar.component(.minute, from: now)
-            
-            let periodIndex = hour >= 12 ? 1 : 0
-            let formattedHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour)
-            
-            timePicker.selectRow(periodIndex, inComponent: 0, animated: false)
-            timePicker.selectRow(formattedHour - 1, inComponent: 1, animated: false)
-            timePicker.selectRow(minute, inComponent: 2, animated: false)
-            isInitialized -= 1
-        } else {
-            timePicker.selectRow(createMeetingPeriodViewModel.selectedPeriodIndex, inComponent: 0, animated: false)
-            timePicker.selectRow(createMeetingPeriodViewModel.selectedHourIndex, inComponent: 1, animated: false)
-            timePicker.selectRow(createMeetingPeriodViewModel.selectedMinuteIndex, inComponent: 2, animated: false)
-        }
-        
-    }
-    
-    private func selectTimeInViewModel(periodIndex: Int, hourIndex: Int, minuteIndex: Int) {
-        let period = amPm[periodIndex]
-        let hour = hours[hourIndex]
-        let minute = minutes[minuteIndex]
-        createMeetingPeriodViewModel.selectPeriod(period, hour: hour, minute: minute)
+    func setInitialPickerValues() {
+        // 시간 12시 설정
+        let hourRow = (createMeetingPeriodViewModel.hours.value.count / 2) + (12 - 1) // 12시간 중 12시의 인덱스
+        timePicker.selectRow(hourRow, inComponent: 1, animated: false)
+
+        // 분 00분 설정
+        let minuteRow = (createMeetingPeriodViewModel.minutes.value.count / 2) // 0분의 인덱스
+        timePicker.selectRow(minuteRow, inComponent: 2, animated: false)
     }
     
     func bind() {
-        timePicker.rx.itemSelected.subscribe(onNext: { [weak self] (row, component) in
-            guard let self = self else { return }
-            let period = self.amPm[self.timePicker.selectedRow(inComponent: 0)]
-            let hour = self.hours[self.timePicker.selectedRow(inComponent: 1)]
-            let minute = self.minutes[self.timePicker.selectedRow(inComponent: 2)]
-            
-            switch component {
-            case 0:
-                self.createMeetingPeriodViewModel.selectPeriod(period, hour: hour, minute: minute)
-            case 1:
-                self.createMeetingPeriodViewModel.selectHour(hour, period: period, minute: minute)
-            case 2:
-                self.createMeetingPeriodViewModel.selectMinute(minute, period: period, hour: hour)
-            default:
-                break
-            }
-        }).disposed(by: disposeBag)
+        timePicker.rx.itemSelected
+            .subscribe(onNext: { [weak self] row, component in
+                guard let self = self else { return }
+                let selectedHourIndex = self.timePicker.selectedRow(inComponent: 1) % 12
+                let selectedMinuteIndex = self.timePicker.selectedRow(inComponent: 2) % 60
+                let selectedAmPm = self.createMeetingPeriodViewModel.amPm.value[self.timePicker.selectedRow(inComponent: 0) % 2]
+                let selectedHour = self.createMeetingPeriodViewModel.hours.value[selectedHourIndex]
+                let selectedMinute = self.createMeetingPeriodViewModel.minutes.value[selectedMinuteIndex]
+                let timeString = "\(selectedAmPm) \(selectedHour):\(selectedMinute)"
+                self.timePicker.reloadAllComponents()
+                self.createMeetingPeriodViewModel.timeRelay.accept(timeString)
+            })
+            .disposed(by: disposeBag)
     }
     
     func layout(){
@@ -167,19 +140,7 @@ extension TimePickerView: UIPickerViewDelegate{
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.font = Fonts.SH03.font
-        switch component{
-        case 0:
-            label.text = amPm[row]
-        case 1:
-            label.text = hours[row]
-        case 2:
-            label.text = minutes[row]
-        default:
-            break
-        }
+        let label = (view as? UILabel) ?? UILabel()
         if pickerView.selectedRow(inComponent: component) == row {
             if pickerView.bounds.midY >= 56 && pickerView.bounds.midY <= 112 {
                 label.textColor = SharedDSKitAsset.Colors.green.color
@@ -187,11 +148,19 @@ extension TimePickerView: UIPickerViewDelegate{
                 label.textColor = .black
             }
         }
+        label.font = Fonts.Body03.font
+        label.textAlignment = .center
+        switch component{
+        case 0:
+            label.text = createMeetingPeriodViewModel.amPm.value[row]
+        case 1:
+            label.text = createMeetingPeriodViewModel.hours.value[row % 24]
+        case 2:
+            label.text = createMeetingPeriodViewModel.minutes.value[row % 60]
+        default:
+            break
+        }
         return label
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        pickerView.reloadAllComponents()
     }
 }
 
@@ -202,10 +171,14 @@ extension TimePickerView: UIPickerViewDataSource{
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         switch component {
-        case 0: return amPm.count
-        case 1: return hours.count
-        case 2: return minutes.count
-        default: return 0
+        case 0:
+            return createMeetingPeriodViewModel.amPm.value.count
+        case 1:
+            return createMeetingPeriodViewModel.hours.value.count
+        case 2:
+            return createMeetingPeriodViewModel.minutes.value.count
+        default:
+            return 0
         }
     }
 }

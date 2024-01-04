@@ -4,50 +4,32 @@ import RxCocoa
 
 public class CreateMeetingPeriodViewModel{
     let disposeBag = DisposeBag()
-    let timeRelay = PublishRelay<String>()
     let dateBtViewTapped = PublishRelay<Void>()
     let timeBtViewTapped = PublishRelay<Void>()
-    var selectedPeriodIndex: Int = 0
-    var selectedHourIndex: Int = 0
-    var selectedMinuteIndex: Int = 0
-    let amPm = ["오전", "오후"]
-    let hours = (1...12).map { String(format: "%02d", $0) }
-    let minutes = (0...59).map { String(format: "%02d", $0) }
-    
-    let selectedDate = PublishRelay<String>()
-    let currentPage = BehaviorRelay<Date>(value: Date())
+    let timeRelay = PublishRelay<String>()
+    let amPm = BehaviorRelay<[String]>(value: ["오전", "오후"])
+    let hours = BehaviorRelay<[String]>(value: Array(repeating: (1...12).map { String(format: "%02d", $0) }, count: 1000).flatMap { $0 })
+    let minutes = BehaviorRelay<[String]>(value: Array(repeating: (0...59).map { String(format: "%02d", $0) }, count: 1000).flatMap { $0 })
+    let dateRelay = PublishRelay<String>()
+    let currentPageRelay = BehaviorRelay<Date>(value: Date())
+    let currentPageDrvier: Driver<Date>
+    let previousButtonTapped = PublishRelay<Void>()
+    let nextButtonTapped = PublishRelay<Void>()
     
     public init() {
-        timeRelay.subscribe(onNext: { time in
-            print(time)
-        }).disposed(by: disposeBag)
+        currentPageDrvier = currentPageRelay.asDriver(onErrorJustReturn: Date())
         
-        selectedDate.subscribe(onNext: { date in
-            print(date)
-        }).disposed(by: disposeBag)
-    }
-    
-    func selectPeriod(_ period: String, hour: String, minute: String) {
-        let newTime = "\(period) \(hour):\(minute)"
-        timeRelay.accept(newTime)
-        selectedPeriodIndex = amPm.firstIndex(of: period) ?? 0
-        selectedHourIndex = hours.firstIndex(of: hour) ?? 0
-        selectedMinuteIndex = minutes.firstIndex(of: minute) ?? 0
-    }
-    
-    func selectHour(_ hour: String, period: String, minute: String) {
-        let newTime = "\(period) \(hour):\(minute)"
-        timeRelay.accept(newTime)
-        selectedPeriodIndex = amPm.firstIndex(of: period) ?? 0
-        selectedHourIndex = hours.firstIndex(of: hour) ?? 0
-        selectedMinuteIndex = minutes.firstIndex(of: minute) ?? 0
-    }
-    
-    func selectMinute(_ minute: String, period: String, hour: String) {
-        let newTime = "\(period) \(hour):\(minute)"
-        timeRelay.accept(newTime)
-        selectedPeriodIndex = amPm.firstIndex(of: period) ?? 0
-        selectedHourIndex = hours.firstIndex(of: hour) ?? 0
-        selectedMinuteIndex = minutes.firstIndex(of: minute) ?? 0
+        previousButtonTapped
+            .withLatestFrom(currentPageDrvier)
+            .map { Calendar.current.date(byAdding: .month, value: -1, to: $0) ?? $0 }
+            .bind(to: currentPageRelay)
+            .disposed(by: disposeBag)
+        
+        nextButtonTapped
+            .withLatestFrom(currentPageDrvier)
+            .map { Calendar.current.date(byAdding: .month, value: 1, to: $0) ?? $0 }
+            .bind(to: currentPageRelay)
+            .disposed(by: disposeBag)
+        
     }
 }
