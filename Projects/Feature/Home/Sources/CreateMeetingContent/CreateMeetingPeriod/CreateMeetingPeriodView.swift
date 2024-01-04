@@ -39,49 +39,11 @@ class CreateMeetingPeriodView: UIView{
         
         calendarView.isHidden = true
         timePickerView.isHidden = true
-        //bind()
         layout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func bind(){
-        dateBtView.tapGesture.rx.event
-            .map { _ in Void() }
-            .bind(to: createMeetingPeriodViewModel.dateBtViewTapped)
-            .disposed(by: disposeBag)
-        
-        createMeetingPeriodViewModel.dateBtViewTapped
-            .bind(onNext: { [weak self] in
-                guard let self = self else { return }
-                if self.isCalendarViewVisible {
-                    self.calendarViewDisappear()
-                } else {
-                    self.calendarViewAppear()
-                }
-                self.isCalendarViewVisible.toggle()
-            })
-            .disposed(by: disposeBag)
-        
-        timeBtView.tapGesture.rx.event
-            .map { _ in Void() }
-            .bind(to: createMeetingPeriodViewModel.timeBtViewTapped)
-            .disposed(by: disposeBag)
-        
-        createMeetingPeriodViewModel.timeBtViewTapped
-            .bind(onNext: { [weak self] in
-                guard let self = self else { return }
-                if self.isTimePickerViewVisible {
-                    self.timePickerViewDisappear()
-                } else {
-                    self.timePickerViewAppear()
-                }
-                self.isTimePickerViewVisible.toggle()
-            })
-            .disposed(by: disposeBag)
-        
     }
     
     func layout(){

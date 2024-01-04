@@ -23,23 +23,23 @@ class CreateMeetingRegionView: UIView{
         onlineSwitch.isOn = true
         return onlineSwitch
     }()
-    let regionTextField: UITextField = {
-        let textField = UITextField()
-        textField.isEnabled = false
-        textField.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
-        textField.placeholder = "읍,면,동으로 검색하세요."
-        textField.font = Fonts.Body02.font
-        textField.layer.borderWidth = 1
-        textField.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-        textField.layer.cornerRadius = 16
-        textField.addLeftPadding(width: 16)
-        return textField
+    let regionButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+        button.setTitle("읍,면,동으로 검색하세요.", for: .normal)
+        button.setTitleColor(SharedDSKitAsset.Colors.textDisabled.color, for: .normal)
+        button.titleLabel?.font = Fonts.Body02.font
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 16
+        button.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+        button.isEnabled = false
+        return button
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(){
+        super.init(frame: .zero)
         
-        self.layout()
+        layout()
     }
     
     required init?(coder: NSCoder) {
@@ -47,7 +47,7 @@ class CreateMeetingRegionView: UIView{
     }
     
     private func layout(){
-        [regionLabel,onlineLabel,onlineSwitch,regionTextField]
+        [regionLabel,onlineLabel,onlineSwitch,regionButton]
             .forEach{ self.addSubview($0) }
         
         regionLabel.snp.makeConstraints { make in
@@ -67,11 +67,16 @@ class CreateMeetingRegionView: UIView{
             make.centerY.equalTo(onlineLabel)
         }
         
-        regionTextField.snp.makeConstraints { make in
+        regionButton.snp.makeConstraints { make in
+            make.width.equalTo(335)
             make.height.equalTo(56)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
+            make.centerX.equalToSuperview()
             make.top.equalTo(onlineSwitch.snp.bottom).offset(16)
+        }
+        
+        regionButton.titleLabel?.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.centerY.equalToSuperview()
         }
     }
 }

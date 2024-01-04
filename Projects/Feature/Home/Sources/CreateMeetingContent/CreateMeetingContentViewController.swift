@@ -82,26 +82,36 @@ public class CreateMeetingContentViewController: UIViewController {
                 self?.navigationController?.popViewController(animated: true)
             })
             .disposed(by: disposeBag)
-        
+        //MARK: 모임 제목
         createMeetingTitleView.titleTextField.rx.text.orEmpty
             .bind(to: createMeetingContentViewModel.titleTextRelay)
             .disposed(by: disposeBag)
-        
+        //MARK: 모임 지역
         createMeetingRegionView.onlineSwitch.rx.isOn
             .bind(to: createMeetingContentViewModel.onlineSwitchRelay)
             .disposed(by: disposeBag)
         
         createMeetingContentViewModel.onlineSwitchRelay
             .bind(onNext: { [weak self] value in
-                if(value){
-                    self?.createMeetingRegionView.regionTextField.isEnabled = false
-                    self?.createMeetingRegionView.regionTextField.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                if value {
+                    self?.createMeetingRegionView.regionButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                    self?.createMeetingRegionView.regionButton.isEnabled = false
                 }
                 else{
-                    self?.createMeetingRegionView.regionTextField.isEnabled = true
-                    self?.createMeetingRegionView.regionTextField.backgroundColor = .white
+                    self?.createMeetingRegionView.regionButton.backgroundColor = .white
+                    self?.createMeetingRegionView.regionButton.isEnabled = true
                 }
             })
+            .disposed(by: disposeBag)
+        
+        createMeetingRegionView.regionButton.rx.tap
+            .bind(onNext: { [weak self] in
+                self?.present(SelectMeetingRegionViewController(selectMeetingRegionViewModel: SelectMeetingRegionViewModel()), animated: true)
+            })
+            .disposed(by: disposeBag)
+        //MARK: 모임 가입 수
+        createMeetingContentViewModel.memberTextRelay
+            .bind(to: createMeetingMemberView.memberLimitTextField.rx.text)
             .disposed(by: disposeBag)
         
         createMeetingMemberView.memberLimitTextField.rx.text.orEmpty
@@ -110,11 +120,7 @@ public class CreateMeetingContentViewController: UIViewController {
             }
             .bind(to: createMeetingContentViewModel.memberTextRelay)
             .disposed(by: disposeBag)
-        
-        createMeetingContentViewModel.memberTextRelay
-            .bind(to: createMeetingMemberView.memberLimitTextField.rx.text)
-            .disposed(by: disposeBag)
-        
+        //MARK: 모임 날짜
         periodViewBindTapGesture()
         
         createMeetingPeriodViewModel.timeRelay
@@ -130,7 +136,7 @@ public class CreateMeetingContentViewController: UIViewController {
                 self?.createMeetingPeriodView.dateBtView.subTitleLabel.textColor = .black
             })
             .disposed(by: disposeBag)
-        
+        //MARK: 모임 대표이미지
         createMeetingImageView.setDefaultImageButton.rx.tap
             .bind(to: createMeetingContentViewModel.setDefaultImageButtonTapped)
             .disposed(by: disposeBag)
@@ -155,7 +161,7 @@ public class CreateMeetingContentViewController: UIViewController {
                 self?.createMeetingImageView.addImageBtView.cntLabel.text = "0 / 1"
             })
             .disposed(by: disposeBag)
-        
+        //MARK: 모임 소개글
         createMeetingWritingView.introductionTextView.rx.text.orEmpty
             .bind(to: createMeetingContentViewModel.introductionTextRelay)
             .disposed(by: disposeBag)
