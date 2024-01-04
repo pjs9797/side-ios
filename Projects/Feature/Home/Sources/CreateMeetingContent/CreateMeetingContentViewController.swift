@@ -61,10 +61,6 @@ public class CreateMeetingContentViewController: UIViewController {
         self.layout()
     }
     
-    public override func viewWillLayoutSubviews() {
-        createMeetingPeriodView.timePickerView.timePicker.subviews[1].backgroundColor = .clear
-    }
-    
     private func setNavigationbar() {
         self.title = self.meetingTitle
         self.tabBarController?.tabBar.isHidden = true

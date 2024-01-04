@@ -48,20 +48,11 @@ class TimePickerView: UIView {
         bind()
         layout()
         setInitialPickerValues()
+        timePicker.subviews[1].backgroundColor = .clear
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func setInitialPickerValues() {
-        // 시간 12시 설정
-        let hourRow = (createMeetingPeriodViewModel.hours.value.count / 2) + (12 - 1) // 12시간 중 12시의 인덱스
-        timePicker.selectRow(hourRow, inComponent: 1, animated: false)
-
-        // 분 00분 설정
-        let minuteRow = (createMeetingPeriodViewModel.minutes.value.count / 2) // 0분의 인덱스
-        timePicker.selectRow(minuteRow, inComponent: 2, animated: false)
     }
     
     func bind() {
@@ -122,6 +113,13 @@ class TimePickerView: UIView {
             make.trailing.equalToSuperview().offset(-59)
             make.top.equalToSuperview().offset(112)
         }
+    }
+    
+    func setInitialPickerValues() {
+        let hourRow = (createMeetingPeriodViewModel.hours.value.count / 2) + (12 - 1)
+        timePicker.selectRow(hourRow, inComponent: 1, animated: false)
+        let minuteRow = (createMeetingPeriodViewModel.minutes.value.count / 2)
+        timePicker.selectRow(minuteRow, inComponent: 2, animated: false)
     }
 }
 
