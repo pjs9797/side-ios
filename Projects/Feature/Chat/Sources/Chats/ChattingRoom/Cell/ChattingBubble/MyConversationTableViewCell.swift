@@ -1,5 +1,5 @@
 //
-//  OthersConversationTableViewCell.swift
+//  MyConversationTableViewCell.swift
 //  FeatureChat
 //
 //  Created by 강민성 on 12/5/23.
@@ -8,13 +8,13 @@
 import UIKit
 import Shared
 
-public class OthersConversationTableViewCell: UITableViewCell {
+public class MyConversationTableViewCell: UITableViewCell {
     
     var messageBox: UITextView = {
-        var textView = UITextView()
+       var textView = UITextView()
         textView.isScrollEnabled = false
         textView.isEditable = false
-        textView.backgroundColor = SharedDSKitAsset.Colors.bgLightGray.color
+        textView.backgroundColor = SharedDSKitAsset.Colors.bgLightGreen.color
         textView.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
         textView.layer.cornerRadius = 16
         textView.font = Fonts.Body02.font
@@ -40,13 +40,6 @@ public class OthersConversationTableViewCell: UITableViewCell {
     
     public override func layoutSubviews() {
         super.layoutSubviews()
-        
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(
-            top: 12,
-            left: 0,
-            bottom: 12,
-            right: 0)
-        )
     }
     
     required init?(coder: NSCoder) {
@@ -54,18 +47,24 @@ public class OthersConversationTableViewCell: UITableViewCell {
     }
     
     private func render() {
-        addSubViews([messageBox, timeLabel])
+        contentView.addSubViews([messageBox, timeLabel])
+        
+        contentView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview().inset(4)
+            make.bottom.equalToSuperview().inset(4)
+        }
         
         messageBox.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(68)
+            make.trailing.equalToSuperview().offset(-20)
             make.top.bottom.equalToSuperview()
-            make.height.greaterThanOrEqualTo(48)
-            make.width.lessThanOrEqualTo(251)
-            make.centerY.equalToSuperview()
+//            make.height.greaterThanOrEqualTo(48)
+            make.width.lessThanOrEqualTo(281)
+//            make.centerY.equalTo(contentView)
         }
         
         timeLabel.snp.makeConstraints { make in
-            make.leading.equalTo(messageBox.snp.trailing).offset(8)
+            make.trailing.equalTo(messageBox.snp.leading).offset(-8)
             make.bottom.equalTo(messageBox.snp.bottom)
         }
     }

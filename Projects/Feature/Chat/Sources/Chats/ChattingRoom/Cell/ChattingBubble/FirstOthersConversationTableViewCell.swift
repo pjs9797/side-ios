@@ -30,7 +30,7 @@ public class FirstOthersConversationTableViewCell: UITableViewCell {
         textView.isScrollEnabled = false
         textView.isEditable = false
         textView.backgroundColor = SharedDSKitAsset.Colors.bgLightGray.color
-        textView.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        textView.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 4, right: 12)
         textView.layer.cornerRadius = 16
         textView.font = Fonts.Body02.font
         textView.textColor = SharedDSKitAsset.Colors.gr100.color
@@ -55,12 +55,6 @@ public class FirstOthersConversationTableViewCell: UITableViewCell {
     
     public override func layoutSubviews() {
         super.layoutSubviews()
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(
-            top: 12,
-            left: 0,
-            bottom: 12,
-            right: 0)
-        )
     }
     
     required init?(coder: NSCoder) {
@@ -68,7 +62,13 @@ public class FirstOthersConversationTableViewCell: UITableViewCell {
     }
     
     private func render() {
-        addSubViews([profileImage, nameLabel, messageBox, timeLabel])
+        contentView.addSubViews([profileImage, nameLabel, messageBox, timeLabel])
+        
+        contentView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview().inset(4)
+            make.bottom.equalToSuperview().inset(4)
+        }
         
         profileImage.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
@@ -86,7 +86,7 @@ public class FirstOthersConversationTableViewCell: UITableViewCell {
             make.leading.equalToSuperview().offset(68)
             make.top.equalTo(nameLabel.snp.bottom).offset(8)
             make.bottom.equalToSuperview()
-            make.height.greaterThanOrEqualTo(48)
+//            make.height.greaterThanOrEqualTo(48)
             make.width.lessThanOrEqualTo(251)
         }
         

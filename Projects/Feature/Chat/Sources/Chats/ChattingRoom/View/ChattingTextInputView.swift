@@ -10,7 +10,7 @@ import Shared
 
 public class ChattingTextInputView: UIView {
     
-    private let multiMediaButton: UIButton = {
+    public let multimediaButton: UIButton = {
         let button = UIButton()
         button.setImage(SharedDSKitAsset.Icons.iconArrowPlus24.image, for: .normal)
         button.backgroundColor = .clear
@@ -51,16 +51,16 @@ public class ChattingTextInputView: UIView {
     
     private func render() {
         
-        addSubViews([multiMediaButton, textView, sendMessageButton])
+        addSubViews([multimediaButton, textView, sendMessageButton])
         
-        multiMediaButton.snp.makeConstraints { make in
+        multimediaButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.centerY.equalToSuperview()
             make.size.equalTo(24)
         }
         
         textView.snp.makeConstraints { make in
-            make.leading.equalTo(multiMediaButton.snp.trailing).offset(12)
+            make.leading.equalTo(multimediaButton.snp.trailing).offset(12)
             make.trailing.equalToSuperview().offset(-20)
             make.height.greaterThanOrEqualTo(40)
             make.centerY.equalToSuperview()
