@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
+	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>&quot;사부작&quot;이(가) 사용자의 사진에 접근하려고 합니다.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>&quot;사부작&quot;이(가) 카메라에 접근하려고 합니다.</string>
 	<key>CFBundleLocalizations</key>
 	<array>
 		<string>ko</string>

@@ -29,7 +29,7 @@ public class CreateMeetingContentViewController: UIViewController {
     let createMeetingRegionView = CreateMeetingRegionView()
     let createMeetingMemberView = CreateMeetingMemberView()
     lazy var createMeetingPeriodView = CreateMeetingPeriodView(createMeetingPeriodViewModel: self.createMeetingPeriodViewModel)
-    let createMeetingImageView = CreateMeetingImageView()
+    lazy var createMeetingImageView = CreateMeetingImageView(homeNavigationController: self.navigationController, createMeetingImageViewModel: CreateMeetingImageViewModel())
     let createMeetingWritingView = CreateMeetingWritingView()
     let createButton: UIButton = {
         let button = UIButton()
@@ -137,30 +137,7 @@ public class CreateMeetingContentViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         //MARK: 모임 대표이미지
-        createMeetingImageView.setDefaultImageButton.rx.tap
-            .bind(to: createMeetingContentViewModel.setDefaultImageButtonTapped)
-            .disposed(by: disposeBag)
         
-        createMeetingContentViewModel.representativeImagesDriver
-            .drive(onNext: { [weak self] img in
-                self?.createMeetingImageView.representativeImageView.image = img
-                self?.createMeetingImageView.representativeImageView.isHidden = false
-                self?.createMeetingImageView.imageCancelButton.isHidden = false
-                self?.createMeetingImageView.addImageBtView.cntLabel.text = "1 / 1"
-            })
-            .disposed(by: disposeBag)
-        
-        createMeetingImageView.imageCancelButton.rx.tap
-            .bind(to: createMeetingContentViewModel.imageCancelButtonTapped)
-            .disposed(by: disposeBag)
-        
-        createMeetingContentViewModel.imageCancelButtonTapped
-            .bind(onNext: { [weak self] in
-                self?.createMeetingImageView.representativeImageView.isHidden = true
-                self?.createMeetingImageView.imageCancelButton.isHidden = true
-                self?.createMeetingImageView.addImageBtView.cntLabel.text = "0 / 1"
-            })
-            .disposed(by: disposeBag)
         //MARK: 모임 소개글
         createMeetingWritingView.introductionTextView.rx.text.orEmpty
             .bind(to: createMeetingContentViewModel.introductionTextRelay)

@@ -6,6 +6,8 @@ import Shared
 
 class CreateMeetingImageView: UIView{
     let disposeBag = DisposeBag()
+    weak var homeNavigationController: UINavigationController?
+    let createMeetingImageViewModel: CreateMeetingImageViewModel
     let imageLabel: UILabel = {
         let label = UILabel()
         label.text = "대표 이미지를 골라주세요!"
@@ -47,14 +49,79 @@ class CreateMeetingImageView: UIView{
         return view
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(homeNavigationController: UINavigationController?, createMeetingImageViewModel: CreateMeetingImageViewModel){
+        self.homeNavigationController = homeNavigationController
+        self.createMeetingImageViewModel = createMeetingImageViewModel
+        super.init(frame: .zero)
         
-        self.layout()
+        bind()
+        layout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func bind(){
+        setDefaultImageButton.rx.tap
+            .bind(to: createMeetingImageViewModel.setDefaultImageButtonTapped)
+            .disposed(by: disposeBag)
+        
+        createMeetingImageViewModel.representativeImagesDriver
+            .drive(onNext: { [weak self] img in
+                self?.representativeImageView.image = img
+                self?.representativeImageView.isHidden = false
+                self?.imageCancelButton.isHidden = false
+                self?.addImageBtView.cntLabel.text = "1 / 1"
+            })
+            .disposed(by: disposeBag)
+        
+        imageCancelButton.rx.tap
+            .bind(to: createMeetingImageViewModel.imageCancelButtonTapped)
+            .disposed(by: disposeBag)
+        
+        createMeetingImageViewModel.imageCancelButtonTapped
+            .bind(onNext: { [weak self] in
+                self?.representativeImageView.isHidden = true
+                self?.imageCancelButton.isHidden = true
+                self?.addImageBtView.cntLabel.text = "0 / 1"
+            })
+            .disposed(by: disposeBag)
+        
+        addImageBtView.tapGesture.rx.event
+            .map{ _ in Void() }
+            .bind(to: createMeetingImageViewModel.addImageBtViewTapped)
+            .disposed(by: disposeBag)
+        
+        createMeetingImageViewModel.addImageBtViewTapped
+            .bind(onNext: { [weak self] in
+                self?.presentPhotoCameraActionSheet()
+            })
+            .disposed(by: disposeBag)
+            
+        createMeetingImageViewModel.presentNextViewRelay
+            .bind(onNext: { [weak self] status in
+                switch status {
+                case "authorized":
+                    self?.homeNavigationController!.present(AlbumViewController(photoAuthType: "authorized", albumViewModel: AlbumViewModel()), animated: true)
+                case "limited":
+                    self?.homeNavigationController!.present(AlbumViewController(photoAuthType: "limited", albumViewModel: AlbumViewModel()), animated: true)
+                case "denied":
+                    self?.presentDeniedAlert()
+                default:
+                    break
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        EditPhotoViewModel.shared.imgRelay
+            .bind(onNext: { [weak self] img in
+                self?.representativeImageView.image = img
+                self?.representativeImageView.isHidden = false
+                self?.imageCancelButton.isHidden = false
+                self?.addImageBtView.cntLabel.text = "1 / 1"
+            })
+            .disposed(by: disposeBag)
     }
     
     private func layout(){
@@ -97,5 +164,30 @@ class CreateMeetingImageView: UIView{
             make.height.equalTo(1)
             make.centerX.bottom.equalToSuperview()
         }
+    }
+    
+    func presentPhotoCameraActionSheet() {
+        let alert = UIAlertController(title: "사부작", message: nil, preferredStyle: .actionSheet)
+        let photoLibraryAction = UIAlertAction(title: "앨범에서 사진선택", style: .default) { [weak self] _ in
+            self?.createMeetingImageViewModel.requestPhotoLibraryAuthorization()
+        }
+        let cameraAction = UIAlertAction(title: "카메라 촬영", style: .default) { [weak self] _ in
+            self?.createMeetingImageViewModel.requestCameraAuthorization()
+        }
+        alert.addAction(photoLibraryAction)
+        alert.addAction(cameraAction)
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        self.homeNavigationController!.present(alert, animated: true, completion: nil)
+    }
+    
+    func presentDeniedAlert() {
+        let alert = UIAlertController(title: nil, message: "사진 기능을 사용하려면\n’사진’ 접근권한을 허용해야 합니다.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "설정", style: .default, handler: { _ in
+            if let url = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        self.homeNavigationController!.present(alert, animated: true, completion: nil)
     }
 }
