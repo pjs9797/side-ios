@@ -15,6 +15,7 @@ let targets: [Target] = [
         implements: .iOS,
         factory: .init(
             infoPlist: .file(path: "Support/Info.plist"),
+            entitlements: .file(path: .relativeToRoot("App.entitlements")),
             dependencies: [
                 .feature
             ]
