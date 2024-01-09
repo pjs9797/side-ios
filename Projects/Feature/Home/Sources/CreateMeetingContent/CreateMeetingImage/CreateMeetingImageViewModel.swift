@@ -5,7 +5,6 @@ import Shared
 
 class CreateMeetingImageViewModel{
     let disposeBag = DisposeBag()
-    let authorizationManager = AuthorizationManager()
     let setDefaultImageButtonTapped = PublishRelay<Void>()
     let imageCancelButtonTapped = PublishRelay<Void>()
     let addImageBtViewTapped = PublishRelay<Void>()

@@ -55,6 +55,8 @@ public class CreateMeetingContentViewController: UIViewController {
         super.viewDidLoad()
         
         self.view.backgroundColor = .white
+        addKeyboardObserverInScrollView(scrollView: scrollView, disposeBag: disposeBag)
+        hideKeyboard(disposeBag: disposeBag)
         self.setNavigationbar()
         self.createButton.disableNextButton()
         self.bind()
@@ -135,9 +137,7 @@ public class CreateMeetingContentViewController: UIViewController {
                 self?.createMeetingPeriodView.dateBtView.configure(subTitle: date)
                 self?.createMeetingPeriodView.dateBtView.subTitleLabel.textColor = .black
             })
-            .disposed(by: disposeBag)
-        //MARK: 모임 대표이미지
-        
+            .disposed(by: disposeBag)        
         //MARK: 모임 소개글
         createMeetingWritingView.introductionTextView.rx.text.orEmpty
             .bind(to: createMeetingContentViewModel.introductionTextRelay)
@@ -260,8 +260,8 @@ public class CreateMeetingContentViewController: UIViewController {
         let baseHeight = 97
         let calendarViewHeight = 358 + 16
         let timePickerViewHeight = 168 + 16
-
         let newHeight: Int
+        
         if createMeetingPeriodView.isCalendarViewVisible {
             newHeight = baseHeight + calendarViewHeight
         } else if createMeetingPeriodView.isTimePickerViewVisible {
