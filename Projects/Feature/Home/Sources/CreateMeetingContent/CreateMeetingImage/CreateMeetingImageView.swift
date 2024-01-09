@@ -67,21 +67,13 @@ class CreateMeetingImageView: UIView{
             .bind(to: createMeetingImageViewModel.setDefaultImageButtonTapped)
             .disposed(by: disposeBag)
         
-        createMeetingImageViewModel.representativeImagesDriver
-            .drive(onNext: { [weak self] img in
-                self?.representativeImageView.image = img
-                self?.representativeImageView.isHidden = false
-                self?.imageCancelButton.isHidden = false
-                self?.addImageBtView.cntLabel.text = "1 / 1"
-            })
-            .disposed(by: disposeBag)
-        
         imageCancelButton.rx.tap
             .bind(to: createMeetingImageViewModel.imageCancelButtonTapped)
             .disposed(by: disposeBag)
         
         createMeetingImageViewModel.imageCancelButtonTapped
             .bind(onNext: { [weak self] in
+                EditPhotoViewModel.shared.imgRelay.accept(nil)
                 self?.representativeImageView.isHidden = true
                 self?.imageCancelButton.isHidden = true
                 self?.addImageBtView.cntLabel.text = "0 / 1"
@@ -99,15 +91,28 @@ class CreateMeetingImageView: UIView{
             })
             .disposed(by: disposeBag)
             
-        createMeetingImageViewModel.presentNextViewRelay
-            .bind(onNext: { [weak self] status in
+        createMeetingImageViewModel.presentAlbumDriver
+            .drive(onNext: { [weak self] status in
                 switch status {
                 case "authorized":
                     self?.homeNavigationController!.present(AlbumViewController(photoAuthType: "authorized", albumViewModel: AlbumViewModel()), animated: true)
                 case "limited":
                     self?.homeNavigationController!.present(AlbumViewController(photoAuthType: "limited", albumViewModel: AlbumViewModel()), animated: true)
                 case "denied":
-                    self?.presentDeniedAlert()
+                    self?.presentDeniedAlert(target: "사진")
+                default:
+                    break
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        createMeetingImageViewModel.presentCameraDriver
+            .drive(onNext: { [weak self] status in
+                switch status {
+                case "authorized":
+                    self?.homeNavigationController!.present(CameraViewController(), animated: true)
+                case "denied":
+                    self?.presentDeniedAlert(target: "카메라")
                 default:
                     break
                 }
@@ -180,8 +185,8 @@ class CreateMeetingImageView: UIView{
         self.homeNavigationController!.present(alert, animated: true, completion: nil)
     }
     
-    func presentDeniedAlert() {
-        let alert = UIAlertController(title: nil, message: "사진 기능을 사용하려면\n’사진’ 접근권한을 허용해야 합니다.", preferredStyle: .alert)
+    func presentDeniedAlert(target: String) {
+        let alert = UIAlertController(title: nil, message: "\(target) 기능을 사용하려면\n’\(target)’ 접근권한을 허용해야 합니다.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "설정", style: .default, handler: { _ in
             if let url = URL(string: UIApplication.openSettingsURLString) {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)

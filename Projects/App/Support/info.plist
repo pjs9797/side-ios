@@ -5,9 +5,9 @@
 	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>&quot;사부작&quot;이(가) 사용자의 사진에 접근하려고 합니다.</string>
+	<string>사진 목록에 접근을 허용하시겠습니까?</string>
 	<key>NSCameraUsageDescription</key>
-	<string>&quot;사부작&quot;이(가) 카메라에 접근하려고 합니다.</string>
+	<string>카메라 사용을 허용하시겠습니까?</string>
 	<key>CFBundleLocalizations</key>
 	<array>
 		<string>ko</string>

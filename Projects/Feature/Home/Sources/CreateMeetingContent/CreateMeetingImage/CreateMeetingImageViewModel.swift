@@ -9,58 +9,71 @@ class CreateMeetingImageViewModel{
     let setDefaultImageButtonTapped = PublishRelay<Void>()
     let imageCancelButtonTapped = PublishRelay<Void>()
     let addImageBtViewTapped = PublishRelay<Void>()
-    let presentNextViewRelay = PublishRelay<String>()
-    var representativeImagesDriver: Driver<SharedDSKitImages.Image>
+    let presentAlbumRelay = PublishRelay<String>()
+    let presentAlbumDriver: Driver<String>
+    let presentCameraRelay = PublishRelay<String>()
+    let presentCameraDriver: Driver<String>
     
     init(){
+        presentAlbumDriver = presentAlbumRelay.asDriver(onErrorJustReturn: "")
+        presentCameraDriver = presentCameraRelay.asDriver(onErrorJustReturn: "")
+        
         let representativeImages = [SharedDSKitAsset.Icons.representativeImage1.image,SharedDSKitAsset.Icons.representativeImage2.image,SharedDSKitAsset.Icons.representativeImage3.image,SharedDSKitAsset.Icons.representativeImage4.image,SharedDSKitAsset.Icons.representativeImage5.image,SharedDSKitAsset.Icons.representativeImage6.image,SharedDSKitAsset.Icons.representativeImage7.image,SharedDSKitAsset.Icons.representativeImage8.image,SharedDSKitAsset.Icons.representativeImage9.image]
         
-        representativeImagesDriver = setDefaultImageButtonTapped
-            .map { _ in
+        setDefaultImageButtonTapped
+            .bind(onNext: { _ in
                 let randomIndex = Int.random(in: 0..<representativeImages.count)
-                return representativeImages[randomIndex]
-            }
-            .asDriver(onErrorDriveWith: Driver.empty())
+                EditPhotoViewModel.shared.imgRelay.accept(representativeImages[randomIndex])
+            })
+            .disposed(by: disposeBag)
     }
     
     func requestCameraAuthorization() {
-        authorizationManager.requestCameraAuthorization()
-            .subscribe(onNext: { [weak self] granted in
-                if granted {
-                    // 권한이 허용된 경우, 카메라를 여는 로직을 여기에 작성
-                } else {
-                    // 권한 거부됨을 사용자에게 알리는 로직
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            presentCameraRelay.accept("authorized")
+        case .denied:
+            presentCameraRelay.accept("denied")
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                if granted{
+                    self.presentCameraRelay.accept("authorized")
                 }
-            })
-            .disposed(by: disposeBag)
+                else{
+                    self.presentCameraRelay.accept("denied")
+                }
+            }
+        default:
+            break
+        }
     }
     
     func requestPhotoLibraryAuthorization() {
         let status = PHPhotoLibrary.authorizationStatus(for: .readWrite)
         switch status {
         case .authorized:
-            presentNextViewRelay.accept("authorized")
+            presentAlbumRelay.accept("authorized")
         case .limited:
-            presentNextViewRelay.accept("limited")
+            presentAlbumRelay.accept("limited")
         case .denied:
-            presentNextViewRelay.accept("denied")
+            presentAlbumRelay.accept("denied")
         case .notDetermined:
-            PHPhotoLibrary.requestAuthorization { [weak self] newStatus in
+            PHPhotoLibrary.requestAuthorization { newStatus in
                 if newStatus == .authorized{
-                    self?.presentNextViewRelay.accept("authorized")
+                    self.presentAlbumRelay.accept("authorized")
                 }
                 if newStatus == .limited {
-                    self?.presentNextViewRelay.accept("limited")
+                    self.presentAlbumRelay.accept("limited")
                 }
                 else if newStatus == .denied{
-                    self?.presentNextViewRelay.accept("denied")
+                    self.presentAlbumRelay.accept("denied")
                 }
                 else{
-                    self?.presentNextViewRelay.accept("")
+                    self.presentAlbumRelay.accept("")
                 }
             }
         default:
-            presentNextViewRelay.accept("")
+            presentAlbumRelay.accept("")
         }
     }
 }
