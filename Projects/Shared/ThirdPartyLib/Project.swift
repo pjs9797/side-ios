@@ -22,7 +22,8 @@ let targets: [Target] = [
                 .external(name: "FSCalendar"),
                 .external(name: "FirebaseAuth"),
                 .external(name: "FirebaseMessaging"),
-                .external(name: "FirebaseAnalytics")
+                .external(name: "FirebaseAnalytics"),
+                .external(name: "Mantis")
             ]
         )
     )

@@ -30,7 +30,7 @@ public class ChattingRoomViewController: UIViewController {
     private var textInputView = ChattingTextInputView()
     
     private var multimediaView = MultimediaView()
-    
+
     public override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -43,6 +43,7 @@ public class ChattingRoomViewController: UIViewController {
         super.viewWillAppear(animated)
         render()
         conversationTableView.reloadData()
+
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -122,6 +123,7 @@ public class ChattingRoomViewController: UIViewController {
             target: self,
             action: #selector(tapDismiss)
         )
+        
         multimediaView.isHidden = true
         textInputView.multimediaButton.addTarget(self, action: #selector(didTapMultimediaButton), for: .touchUpInside)
         
