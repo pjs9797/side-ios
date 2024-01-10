@@ -171,14 +171,40 @@ class SelfDevelopView: UIView {
     
     let mockUpView4: UIView = {
         let view = UIView()
-        view.backgroundColor = .blue
         return view
+    }()
+    
+    let mockUpImageView4: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = SharedDSKitAsset.Icons.thumb.image
+        return imageView
+    }()
+    
+    let mockUpTitle4: UILabel = {
+        let label = UILabel()
+        label.text = "[iOS] 사이드 플젝하실 iOS개발자 구해요"
+        label.font = Fonts.SH02Bold.font
+        label.textColor = SharedDSKitAsset.Colors.text01.color
+        return label
     }()
     
     let mockUpView5: UIView = {
         let view = UIView()
-        view.backgroundColor = .blue
         return view
+    }()
+    
+    let mockUpImageView5: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = SharedDSKitAsset.Icons.thumb3.image
+        return imageView
+    }()
+    
+    let mockUpTitle5: UILabel = {
+        let label = UILabel()
+        label.text = "[iOS] 사이드 플젝하실 iOS개발자 구해요"
+        label.font = Fonts.SH02Bold.font
+        label.textColor = SharedDSKitAsset.Colors.text01.color
+        return label
     }()
     
     let shortMeetingTag: UIImageView = {
@@ -204,26 +230,151 @@ class SelfDevelopView: UIView {
         return scrollView
     }()
     
+    let allButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+        button.setTitle("전체", for: .normal)
+        button.titleLabel?.font = Fonts.Caption.font
+        button.setTitleColor(SharedDSKitAsset.Colors.text01.color, for: .normal)
+        button.layer.cornerRadius = 16
+        return button
+    }()
+    
+    let oneDayButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+        button.setTitle("원데이", for: .normal)
+        button.titleLabel?.font = Fonts.Caption.font
+        button.setTitleColor(SharedDSKitAsset.Colors.text01.color, for: .normal)
+        button.layer.cornerRadius = 16
+        return button
+    }()
+    
+    let shortButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+        button.setTitle("단기", for: .normal)
+        button.titleLabel?.font = Fonts.Caption.font
+        button.setTitleColor(SharedDSKitAsset.Colors.text01.color, for: .normal)
+        button.layer.cornerRadius = 16
+        return button
+    }()
+    
+    let longButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+        button.setTitle("지속", for: .normal)
+        button.titleLabel?.font = Fonts.Caption.font
+        button.setTitleColor(SharedDSKitAsset.Colors.text01.color, for: .normal)
+        button.layer.cornerRadius = 16
+        return button
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         render()
+        buttonTapped()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    func buttonTapped() {
+        allButton.rx.tap.subscribe(onNext: {
+            if self.allButton.isSelected == false {
+                self.allButton.isSelected = true
+                self.allButton.backgroundColor = SharedDSKitAsset.Colors.lightGreen.color
+                self.allButton.setTitleColor(SharedDSKitAsset.Colors.white.color, for: .normal)
+                self.oneDayButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                self.oneDayButton.setTitleColor(SharedDSKitAsset.Colors.text01.color, for: .normal)
+                self.oneDayButton.isSelected = false
+                self.shortButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                self.shortButton.setTitleColor(SharedDSKitAsset.Colors.text01.color, for: .normal)
+                self.shortButton.isSelected = false
+                self.longButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                self.longButton.setTitleColor(SharedDSKitAsset.Colors.text01.color, for: .normal)
+                self.longButton.isSelected = false
+            } else {
+                self.allButton.isSelected = false
+                self.allButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                self.allButton.setTitleColor(SharedDSKitAsset.Colors.text01.color, for: .normal)
+            }
+        })
+        oneDayButton.rx.tap.subscribe(onNext: {
+            if self.oneDayButton.isSelected == false {
+                self.oneDayButton.isSelected = true
+                self.oneDayButton.backgroundColor = SharedDSKitAsset.Colors.lightGreen.color
+                self.oneDayButton.setTitleColor(SharedDSKitAsset.Colors.white.color, for: .normal)
+                self.allButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                self.allButton.setTitleColor(SharedDSKitAsset.Colors.text01.color, for: .normal)
+                self.allButton.isSelected = false
+                self.shortButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                self.shortButton.setTitleColor(SharedDSKitAsset.Colors.text01.color, for: .normal)
+                self.shortButton.isSelected = false
+                self.longButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                self.longButton.setTitleColor(SharedDSKitAsset.Colors.text01.color, for: .normal)
+                self.longButton.isSelected = false
+            } else {
+                self.oneDayButton.isSelected = false
+                self.oneDayButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                self.oneDayButton.setTitleColor(SharedDSKitAsset.Colors.text01.color, for: .normal)
+            }
+        })
+        shortButton.rx.tap.subscribe(onNext: {
+            if self.shortButton.isSelected == false {
+                self.shortButton.isSelected = true
+                self.shortButton.backgroundColor = SharedDSKitAsset.Colors.lightGreen.color
+                self.shortButton.setTitleColor(SharedDSKitAsset.Colors.white.color, for: .normal)
+                self.oneDayButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                self.oneDayButton.setTitleColor(SharedDSKitAsset.Colors.text01.color, for: .normal)
+                self.oneDayButton.isSelected = false
+                self.allButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                self.allButton.setTitleColor(SharedDSKitAsset.Colors.text01.color, for: .normal)
+                self.allButton.isSelected = false
+                self.longButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                self.longButton.setTitleColor(SharedDSKitAsset.Colors.text01.color, for: .normal)
+                self.longButton.isSelected = false
+            } else {
+                self.shortButton.isSelected = false
+                self.shortButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                self.shortButton.setTitleColor(SharedDSKitAsset.Colors.text01.color, for: .normal)
+            }
+        })
+        longButton.rx.tap.subscribe(onNext: {
+            if self.longButton.isSelected == false {
+                self.longButton.isSelected = true
+                self.longButton.backgroundColor = SharedDSKitAsset.Colors.lightGreen.color
+                self.longButton.setTitleColor(SharedDSKitAsset.Colors.white.color, for: .normal)
+                self.oneDayButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                self.oneDayButton.setTitleColor(SharedDSKitAsset.Colors.text01.color, for: .normal)
+                self.oneDayButton.isSelected = false
+                self.allButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                self.allButton.setTitleColor(SharedDSKitAsset.Colors.text01.color, for: .normal)
+                self.allButton.isSelected = false
+                self.shortButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                self.shortButton.setTitleColor(SharedDSKitAsset.Colors.text01.color, for: .normal)
+                self.shortButton.isSelected = false
+            } else {
+                self.longButton.isSelected = false
+                self.longButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                self.longButton.setTitleColor(SharedDSKitAsset.Colors.text01.color, for: .normal)
+            }
+        })
+        
+    }
     private func render() {
         self.backgroundColor = .white
         addSubViews([scrollView])
-        
-        scrollView.addSubViews([categoryView, mockUpView, mockUpView2, mockUpView3, mockUpView4, mockUpView5])
+       
+        scrollView.addSubViews([categoryView, mockUpView, mockUpView2, mockUpView3, mockUpView4, mockUpView5, allButton, oneDayButton, shortButton, longButton])
         
         categoryView.addSubViews([studyButton, sideButton, changeJobButton, languageButton, investmentButton, etcButton, studyLabel, sideLabel, changeLabel, languageLabel, investmentLabel, etcLabel])
         
         mockUpView.addSubViews([mockUpImageView, mockUpTitle, shortMeetingTag])
         mockUpView2.addSubViews([mockUpImageView2, mockUpTitle2, onedayTag])
         mockUpView3.addSubViews([mockUpImageView3, mockUpTitle3, longTag])
+        mockUpView4.addSubViews([mockUpImageView4, mockUpTitle4])
+        mockUpView5.addSubViews([mockUpImageView5, mockUpTitle5])
         
         scrollView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(149)
@@ -302,8 +453,34 @@ class SelfDevelopView: UIView {
             make.centerX.equalTo(etcButton.snp.centerX)
         }
         
+        allButton.snp.makeConstraints { make in
+            make.top.equalTo(investmentLabel.snp.bottom).offset(32)
+            make.leading.equalTo(mockUpImageView.snp.leading)
+            make.width.equalTo(45)
+            make.height.equalTo(32)
+        }
+        
+        oneDayButton.snp.makeConstraints { make in
+            make.top.equalTo(allButton.snp.top)
+            make.leading.equalTo(allButton.snp.trailing).offset(8)
+            make.width.equalTo(45)
+            make.height.equalTo(32)
+        }
+        shortButton.snp.makeConstraints { make in
+            make.top.equalTo(allButton.snp.top)
+            make.leading.equalTo(oneDayButton.snp.trailing).offset(8)
+            make.width.equalTo(45)
+            make.height.equalTo(32)
+        }
+        longButton.snp.makeConstraints { make in
+            make.top.equalTo(allButton.snp.top)
+            make.leading.equalTo(shortButton.snp.trailing).offset(8)
+            make.width.equalTo(45)
+            make.height.equalTo(32)
+        }
+        
         mockUpView.snp.makeConstraints { make in
-            make.top.equalTo(categoryView.snp.bottom).offset(32)
+            make.top.equalTo(allButton.snp.bottom).offset(32)
             make.width.equalTo(335)
             make.centerX.equalToSuperview()
             make.height.equalTo(109)
@@ -375,12 +552,34 @@ class SelfDevelopView: UIView {
             make.centerX.equalToSuperview()
             make.height.equalTo(109)
         }
+        mockUpImageView4.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.width.equalTo(100)
+            make.height.equalTo(100)
+        }
+        mockUpTitle4.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(28)
+            make.leading.equalTo(mockUpImageView4.snp.trailing).offset(16)
+            make.trailing.equalToSuperview()
+        }
         mockUpView5.snp.makeConstraints { make in
             make.top.equalTo(mockUpView4.snp.bottom).offset(32)
             make.width.equalTo(335)
             make.centerX.equalToSuperview()
             make.height.equalTo(109)
             make.bottom.equalToSuperview()
+        }
+        mockUpImageView5.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.width.equalTo(100)
+            make.height.equalTo(100)
+        }
+        mockUpTitle5.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(28)
+            make.leading.equalTo(mockUpImageView5.snp.trailing).offset(16)
+            make.trailing.equalToSuperview()
         }
     }
 }

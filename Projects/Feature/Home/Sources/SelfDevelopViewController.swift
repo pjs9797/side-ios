@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import RxCocoa
+import Shared
 
 public class SelfDevelopViewController: UIViewController {
-    var selfDevelopView = SelfDevelopView()
+    let selfDevelopView = SelfDevelopView()
     
     let data = ["[디자이너 급구] 사이드 프로젝트","[백엔드] 사이드 플젝 하실분","three","four","five"]
     
