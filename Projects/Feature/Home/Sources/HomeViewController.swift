@@ -13,7 +13,7 @@ import RxSwift
 public class HomeViewController: UIViewController {
     let disposeBag = DisposeBag()
     var homeView = HomeView()
-    
+
     public override func loadView() {
         super.loadView()
         view = homeView
@@ -35,12 +35,12 @@ public class HomeViewController: UIViewController {
         homeView.segmentedControl.setTitleTextAttributes(titleTextAttributes1, for: .selected)
         homeView.segmentedControl.setTitleTextAttributes(titleTextAttributes2, for: .normal)
     }
-    
+
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
     }
-    
+
     @objc private func didChangeValue(segment: UISegmentedControl) {
         if segment.selectedSegmentIndex == 0 {
             homeView.recommendView.isHidden = false
@@ -58,4 +58,3 @@ public class HomeViewController: UIViewController {
     }
 
 }
-

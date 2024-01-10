@@ -9,7 +9,7 @@ import UIKit
 import UIKit
 import SnapKit
 import RxSwift
-
+import Shared
 class GenderViewController: UIViewController {
     let progressBar = ProgressBarView().profileProgressView //progressBar
     let nextBtn = UIButton()
@@ -47,7 +47,6 @@ class GenderViewController: UIViewController {
         let birthDayView = BirthDayViewController()
         self.navigationController?.pushViewController(birthDayView, animated: false)
     }
-
     
     @objc func manButtonTapped(_ button: UIButton){
         self.manButton.layer.borderColor = CGColor(red: 104/255, green: 190/255, blue: 18/255, alpha: 1)
@@ -99,13 +98,14 @@ class GenderViewController: UIViewController {
         manButton.layer.cornerRadius = 16
         manButton.layer.borderWidth = 1
         manButton.layer.borderColor = CGColor(red: 228/255, green: 228/255, blue: 228/255, alpha: 1)
+        manButton.setImage(SharedDSKitAsset.Icons.iconMan.image, for: .normal)
         
         womanButton.setTitle("여성", for: .normal)
         womanButton.setTitleColor(UIColor(red: 17/255, green: 17/255, blue: 17/255, alpha: 1), for: .normal)
         womanButton.layer.cornerRadius = 16
         womanButton.layer.borderWidth = 1
         womanButton.layer.borderColor = CGColor(red: 228/255, green: 228/255, blue: 228/255, alpha: 1)
-        
+        womanButton.setImage(SharedDSKitAsset.Icons.iconWoman.image, for: .normal)
         
     }
     

@@ -165,10 +165,14 @@ class HomeView: UIView {
     
     private func render(){
         self.backgroundColor = .white
+        let scrollView = SelfDevelopView().scrollView
+
         addSubViews([segmentedControl, selfDevelopmentView, hobbyView, recommendView, searchButton, alarmButton ])
         
         recommendView.addSubViews([verticalScrollView])
 
+        selfDevelopmentView.addSubViews([scrollView])
+        
         verticalScrollView.addSubViews([bannerView, shortMeetingButtonViewMainLabel, shortMeetingButtonViewSubLabel, shortMeetingClearButton, longMeetingButtonViewMainLabel,longMeetingButtonViewSubLabel, longMeetingClearButton,horizontalScrollView,horizontalScrollView2 ])
         
         horizontalScrollView.addSubview(stackView1)
@@ -183,6 +187,12 @@ class HomeView: UIView {
             make.top.equalTo(searchButton.snp.bottom).offset(40)
             make.leading.equalToSuperview().offset(20)
             make.height.equalTo(49)
+        }
+        
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(segmentedControl.snp.bottom)
+            make.width.equalToSuperview()
+            make.bottom.equalToSuperview()
         }
         
         recommendView.snp.makeConstraints { make in
