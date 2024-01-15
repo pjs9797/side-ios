@@ -14,7 +14,7 @@ let SPM = SwiftPackageManagerDependencies([
     .remote(url: "https://github.com/SnapKit/SnapKit.git", requirement: .upToNextMajor(from: "5.6.0")),
     .remote(url: "https://github.com/jonkykong/SideMenu", requirement: .upToNextMajor(from: "6.0.0")),
     .remote(url: "https://github.com/WenchaoD/FSCalendar.git", requirement: .upToNextMajor(from: "2.8.3")),
-    .remote(url: "https://github.com/firebase/firebase-ios-sdk", requirement: .branch("main")),
+    .remote(url: "https://github.com/firebase/firebase-ios-sdk", requirement: .upToNextMajor(from: "10.19.1")),
     .remote(url: "https://github.com/guoyingtao/Mantis.git", requirement: .exact("2.18.0"))
 ], productTypes: [
     "FSCalendar": .framework,
