@@ -39,7 +39,7 @@ extension InquiryViewController: UITextViewDelegate {
         if inquiryView.textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             inquiryView.textView.textColor = SharedDSKitAsset.Colors.textDisabled.color
             inquiryView.textView.text = placeholder
-        } else if inquiryView.textView.text == placeholder{
+        } else if inquiryView.textView.text == placeholder {
             inquiryView.textView.textColor = .black
             inquiryView.textView.text = nil
         }
