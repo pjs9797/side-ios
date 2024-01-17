@@ -311,7 +311,12 @@ public class HobbyViewController: UIViewController {
         })
         hobbyView.nextButton.rx.tap.subscribe(onNext: {
             let homeView = HomeViewController()
-            self.view.window?.rootViewController = homeView
+            let root = UINavigationController(rootViewController: homeView)
+            self.view.window?.rootViewController = root
+            homeView.navigationController?.navigationBar.shadowImage = UIImage()
+
+//            self.navigationController?.pushViewController(homeView, animated: true)
+//            self.view.window?.rootViewController = homeView
             self.view.window?.makeKeyAndVisible()
         })
     }

@@ -12,7 +12,7 @@ import RxSwift
 
 public class HomeViewController: UIViewController {
     let disposeBag = DisposeBag()
-    var homeView = HomeView()
+    let homeView = HomeView()
 
     public override func loadView() {
         super.loadView()
@@ -20,6 +20,37 @@ public class HomeViewController: UIViewController {
     }
     public override func viewDidLoad() {
         super.viewDidLoad()
+        homeView.studyButton.rx.tap.subscribe(onNext: {
+            let nav = CategorySelectedSelfDevelopmentViewController()
+            nav.flag = "study"
+            self.navigationController?.pushViewController(nav, animated: true)
+        })
+        homeView.sideButton.rx.tap.subscribe(onNext: {
+            let nav = CategorySelectedSelfDevelopmentViewController()
+            nav.flag = "side"
+            self.navigationController?.pushViewController(nav, animated: true)
+        })
+        homeView.changeJobButton.rx.tap.subscribe(onNext: {
+            let nav = CategorySelectedSelfDevelopmentViewController()
+            nav.flag = "change"
+            self.navigationController?.pushViewController(nav, animated: true)
+        })
+        homeView.languageButton.rx.tap.subscribe(onNext: {
+            let nav = CategorySelectedSelfDevelopmentViewController()
+            nav.flag = "language"
+            self.navigationController?.pushViewController(nav, animated: true)
+        })
+        homeView.investmentButton.rx.tap.subscribe(onNext: {
+            let nav = CategorySelectedSelfDevelopmentViewController()
+            nav.flag = "investment"
+            self.navigationController?.pushViewController(nav, animated: true)
+        })
+        homeView.etcButton.rx.tap.subscribe(onNext: {
+            let nav = CategorySelectedSelfDevelopmentViewController()
+            nav.flag = "etc"
+            self.navigationController?.pushViewController(nav, animated: true)
+        })
+        navigationSetup()
         homeView.plusButton.rx.tap
             .bind(onNext: { [weak self] in
                 let selectMeetingTypeVC = SelectMeetingTypeViewController(selectMeetingTypeViewModel: SelectMeetingTypeViewModel())
@@ -41,6 +72,12 @@ public class HomeViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = false
     }
 
+    func navigationSetup() {
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        backBarButtonItem.tintColor = .black
+        self.navigationItem.backBarButtonItem = backBarButtonItem
+    }
+
     @objc private func didChangeValue(segment: UISegmentedControl) {
         if segment.selectedSegmentIndex == 0 {
             homeView.recommendView.isHidden = false
@@ -56,5 +93,4 @@ public class HomeViewController: UIViewController {
             homeView.hobbyView.isHidden = false
         }
     }
-
 }

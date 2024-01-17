@@ -21,6 +21,18 @@ public class CategorySelectedSelfDevelopmentView: UIView {
         let tableView = UITableView()
         return tableView
     }()
+    let languageTableView: UITableView = {
+        let tableView = UITableView()
+        return tableView
+    }()
+    let investmentTableView: UITableView = {
+        let tableView = UITableView()
+        return tableView
+    }()
+    let etcTableView: UITableView = {
+        let tableView = UITableView()
+        return tableView
+    }()
     let studyButton: UIButton = {
         let button = UIButton()
         button.setTitle("스터디/자격증", for: .normal)
@@ -66,6 +78,12 @@ public class CategorySelectedSelfDevelopmentView: UIView {
         button.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
         return button
     }()
+    let languageButtonUnderline: UIView = {
+        let view = UIView()
+        view.backgroundColor = SharedDSKitAsset.Colors.green.color
+        view.isHidden = true
+        return view
+    }()
     let investmentButton: UIButton = {
         let button = UIButton()
         button.setTitle("제테크", for: .normal)
@@ -73,12 +91,24 @@ public class CategorySelectedSelfDevelopmentView: UIView {
         button.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
         return button
     }()
+    let investmentButtonUnderline: UIView = {
+        let view = UIView()
+        view.backgroundColor = SharedDSKitAsset.Colors.green.color
+        view.isHidden = true
+        return view
+    }()
     let etcButton: UIButton = {
         let button = UIButton()
         button.setTitle("기타", for: .normal)
         button.titleLabel?.font = Fonts.Body02.font
         button.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
         return button
+    }()
+    let etcButtonUnderline: UIView = {
+        let view = UIView()
+        view.backgroundColor = SharedDSKitAsset.Colors.green.color
+        view.isHidden = true
+        return view
     }()
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -111,6 +141,12 @@ public class CategorySelectedSelfDevelopmentView: UIView {
         return vc
     }()
     let investmentView: UIView = {
+        let vc = UIView()
+        vc.backgroundColor = .yellow
+        vc.isHidden = true
+        return vc
+    }()
+    let etcView: UIView = {
         let vc = UIView()
         vc.backgroundColor = .yellow
         vc.isHidden = true
@@ -164,15 +200,18 @@ public class CategorySelectedSelfDevelopmentView: UIView {
     
     func render() {
         self.backgroundColor = .white
-        scrollView.addSubViews([studyButton, sideProjectButton, changeJobButton, languageButton, investmentButton, etcButton, studyButtonUnderline, sideProjectButtonUnderline, changeJobButtonUnderline])
-        addSubViews([entireButton, oneDayButton, shortTermButton, longTermButton, scrollView, studyView, sideProjectView, changeJobView, languageView])
+        scrollView.addSubViews([studyButton, sideProjectButton, changeJobButton, languageButton, investmentButton, etcButton, studyButtonUnderline, sideProjectButtonUnderline, changeJobButtonUnderline, languageButtonUnderline, investmentButtonUnderline, etcButtonUnderline])
+        addSubViews([entireButton, oneDayButton, shortTermButton, longTermButton, scrollView, studyView, sideProjectView, changeJobView, languageView, investmentView, etcView])
       
         studyTableView.rowHeight = UITableView.automaticDimension
         studyTableView.estimatedRowHeight = UITableView.automaticDimension
-       
+        
         studyView.addSubview(studyTableView)
         sideProjectView.addSubview(sideProjectTableView)
         changeJobView.addSubview(changeJobTableView)
+        languageView.addSubview(languageTableView)
+        investmentView.addSubview(investmentTableView)
+        etcView.addSubview(etcTableView)
         
         scrollView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(100)
@@ -224,7 +263,23 @@ public class CategorySelectedSelfDevelopmentView: UIView {
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
         }
+        investmentView.snp.makeConstraints { make in
+            make.top.equalTo(entireButton.snp.bottom).offset(16)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+        }
+        etcView.snp.makeConstraints { make in
+            make.top.equalTo(entireButton.snp.bottom).offset(16)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+        }
         studyTableView.snp.makeConstraints { make in
+            make.top.equalTo(entireButton.snp.bottom).offset(16)
+            make.bottom.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+        }
+        etcTableView.snp.makeConstraints { make in
             make.top.equalTo(entireButton.snp.bottom).offset(16)
             make.bottom.equalToSuperview()
             make.leading.equalToSuperview()
@@ -237,6 +292,24 @@ public class CategorySelectedSelfDevelopmentView: UIView {
             make.trailing.equalToSuperview()
         }
         changeJobTableView.snp.makeConstraints { make in
+            make.top.equalTo(entireButton.snp.bottom).offset(16)
+            make.bottom.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+        }
+        languageTableView.snp.makeConstraints { make in
+            make.top.equalTo(entireButton.snp.bottom).offset(16)
+            make.bottom.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+        }
+        investmentTableView.snp.makeConstraints { make in
+            make.top.equalTo(entireButton.snp.bottom).offset(16)
+            make.bottom.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+        }
+        etcTableView.snp.makeConstraints { make in
             make.top.equalTo(entireButton.snp.bottom).offset(16)
             make.bottom.equalToSuperview()
             make.leading.equalToSuperview()
@@ -298,5 +371,24 @@ public class CategorySelectedSelfDevelopmentView: UIView {
             make.height.equalTo(2)
             make.leading.equalTo(changeJobButton.snp.leading)
         }
+        languageButtonUnderline.snp.makeConstraints { make in
+            make.top.equalTo(languageButton.snp.bottom)
+            make.width.equalTo(languageButton.snp.width)
+            make.height.equalTo(2)
+            make.leading.equalTo(languageButton.snp.leading)
+        }
+        investmentButtonUnderline.snp.makeConstraints { make in
+            make.top.equalTo(investmentButton.snp.bottom)
+            make.width.equalTo(investmentButton.snp.width)
+            make.height.equalTo(2)
+            make.leading.equalTo(investmentButton.snp.leading)
+        }
+        etcButtonUnderline.snp.makeConstraints { make in
+            make.top.equalTo(etcButton.snp.bottom)
+            make.width.equalTo(etcButton.snp.width)
+            make.height.equalTo(2)
+            make.leading.equalTo(etcButton.snp.leading)
+        }
+        
     }
 }
