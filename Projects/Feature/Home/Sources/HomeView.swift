@@ -28,18 +28,18 @@ class HomeView: UIView {
         return button
     }()
  
-    var recommendView: UIView = {
+    let recommendView: UIView = {
         let view = UIView()
         return view
     }()
     
-    var selfDevelopmentView: UIView = {
+    let selfDevelopmentView: UIView = {
         let view = UIView()
         view.isHidden = true
         return view
     }()
     
-    var hobbyView: UIView = {
+    let hobbyView: UIView = {
         let view = UIView()
         view.isHidden = true
         return view
@@ -63,7 +63,7 @@ class HomeView: UIView {
         return stackView
     }()
     
-    var bannerView: UIView = { // 배너 뷰
+    let bannerView: UIView = {
         let view = UIView()
         view.backgroundColor = SharedDSKitAsset.Colors.gr90.color
         view.layer.cornerRadius = 16
@@ -149,11 +149,47 @@ class HomeView: UIView {
         let scrollView = UIScrollView()
         return scrollView
     }()
+    
     var horizontalScrollView2: UIScrollView = {
         let scrollView = UIScrollView()
         return scrollView
     }()
     
+    var studyButton: UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = 28
+        return button
+    }()
+    
+    var sideButton: UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = 28
+        return button
+    }()
+    
+    var changeJobButton: UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = 28
+        return button
+    }()
+    var languageButton: UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = 28
+        return button
+    }()
+    
+    var investmentButton: UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = 28
+        return button
+    }()
+    
+    var etcButton: UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = 28
+        return button
+    }()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         render()
@@ -165,10 +201,16 @@ class HomeView: UIView {
     
     private func render(){
         self.backgroundColor = .white
+      
+        let scrollView = SelfDevelopView().scrollView
+        
         addSubViews([segmentedControl, selfDevelopmentView, hobbyView, recommendView, searchButton, alarmButton ])
         
         recommendView.addSubViews([verticalScrollView])
 
+        selfDevelopmentView.addSubViews([scrollView])
+        scrollView.addSubViews([studyButton, sideButton, changeJobButton, languageButton, investmentButton, etcButton])
+        
         verticalScrollView.addSubViews([bannerView, shortMeetingButtonViewMainLabel, shortMeetingButtonViewSubLabel, shortMeetingClearButton, longMeetingButtonViewMainLabel,longMeetingButtonViewSubLabel, longMeetingClearButton,horizontalScrollView,horizontalScrollView2 ])
         
         horizontalScrollView.addSubview(stackView1)
@@ -185,6 +227,11 @@ class HomeView: UIView {
             make.height.equalTo(49)
         }
         
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(segmentedControl.snp.bottom)
+            make.width.equalToSuperview()
+            make.bottom.equalToSuperview()
+        }
         recommendView.snp.makeConstraints { make in
             make.top.equalTo(segmentedControl.snp.bottom)
             make.bottom.equalToSuperview()
@@ -200,7 +247,6 @@ class HomeView: UIView {
             make.bottom.equalToSuperview()
             make.width.equalToSuperview()
         }
-        
         searchButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(60)
             make.trailing.equalTo(alarmButton.snp.leading).offset(-20)
@@ -209,37 +255,31 @@ class HomeView: UIView {
             make.top.equalToSuperview().offset(60)
             make.trailing.equalToSuperview().offset(-20)
         }
-        
         bannerView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(20)
             make.leading.equalToSuperview().offset(20)
             make.width.equalTo(335)
             make.height.equalTo(184)
         }
-                
         bannerMainLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(100)
             make.width.equalTo(150)
             make.leading.equalToSuperview().offset(20)
         }
-        
         bannerSubLabel.snp.makeConstraints { make in
             make.bottom.equalTo(bannerMainLabel.snp.top).offset(-8)
             make.leading.equalTo(20)
         }
-        
         verticalScrollView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
             make.top.equalToSuperview()
             make.width.equalToSuperview()
         }
-        
         horizontalScrollView.snp.makeConstraints { make in
             make.top.equalTo(shortMeetingButtonViewSubLabel.snp.bottom).offset(8)
             make.height.equalTo(234)
             make.width.equalToSuperview()
             make.leading.trailing.equalToSuperview()
-            
         }
         horizontalScrollView2.snp.makeConstraints { make in
             make.top.equalTo(longMeetingButtonViewSubLabel.snp.bottom).offset(8)
@@ -248,7 +288,6 @@ class HomeView: UIView {
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
         }
-    
         stackView1.snp.makeConstraints { make in
             make.top.trailing.equalToSuperview()
             make.height.equalTo(113)
@@ -274,7 +313,6 @@ class HomeView: UIView {
             make.width.equalToSuperview()
             make.height.equalTo(49)
         }
-        
         longMeetingButtonViewMainLabel.snp.makeConstraints { make in
             make.top.equalTo(horizontalScrollView.snp.bottom).offset(40)
             make.leading.equalToSuperview().offset(20)
@@ -294,10 +332,45 @@ class HomeView: UIView {
             make.trailing.equalToSuperview().offset(-20)
             make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-20)
         }
+        studyButton.snp.makeConstraints { make in
+            make.width.equalTo(56)
+            make.height.equalTo(56)
+            make.top.equalToSuperview().offset(16)
+            make.leading.equalToSuperview().offset(32)
+        }
+        sideButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(16)
+            make.leading.equalTo(studyButton.snp.trailing).offset(32)
+            make.width.equalTo(56)
+            make.height.equalTo(56)
+        }
+        changeJobButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(16)
+            make.leading.equalTo(sideButton.snp.trailing).offset(32)
+            make.width.equalTo(56)
+            make.height.equalTo(56)
+        }
+        languageButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(16)
+            make.leading.equalTo(changeJobButton.snp.trailing).offset(32)
+            make.width.equalTo(56)
+            make.height.equalTo(56)
+        }
+        investmentButton.snp.makeConstraints { make in
+            make.top.equalTo(studyButton.snp.bottom).offset(40)
+            make.width.equalTo(56)
+            make.height.equalTo(56)
+            make.leading.equalToSuperview().offset(32)
+        }
+        etcButton.snp.makeConstraints { make in
+            make.top.equalTo(sideButton.snp.bottom).offset(40)
+            make.width.equalTo(56)
+            make.height.equalTo(56)
+            make.leading.equalTo(investmentButton.snp.trailing).offset(32)
+        }
         
         addItems()
         addItems2()
-       
     }
     private func addItems() {
            (0..<6).map { idx in
@@ -354,7 +427,6 @@ class HomeView: UIView {
                return itemView
            }
            .forEach(stackView1.addArrangedSubview)
-        
        }
     private func addItems2() {
         (0..<6).map { idx in

@@ -11,6 +11,7 @@ import Shared
 
 public class CategorySelectedSelfDevelopmentViewController: UIViewController {
     let selfDevelopmentView = CategorySelectedSelfDevelopmentView()
+    var flag = ""
     var labelData = [
         "[디자이너 급구] 사이드 프로젝트",
         "[백엔드] 사이드 프로젝트하실 자바 백엔드 구합니다.",
@@ -28,10 +29,158 @@ public class CategorySelectedSelfDevelopmentViewController: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        self.selfDevelopmentView.studyButton.setTitleColor(SharedDSKitAsset.Colors.green.color, for: .normal)
-        self.selfDevelopmentView.studyButton.titleLabel?.font = Fonts.SH02Bold.font
-        self.selfDevelopmentView.studyView.isHidden = false
-        
+        if flag == "study" {
+            self.selfDevelopmentView.studyButton.setTitleColor(SharedDSKitAsset.Colors.green.color, for: .normal)
+            self.selfDevelopmentView.studyButton.titleLabel?.font = Fonts.SH02Bold.font
+            self.selfDevelopmentView.studyView.isHidden = false
+            self.selfDevelopmentView.studyButtonUnderline.isHidden = false
+          
+            self.selfDevelopmentView.sideProjectButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.sideProjectButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.changeJobButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.changeJobButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.languageButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.languageButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.investmentButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.investmentButton.titleLabel?.font = Fonts.Body02.font
+            
+            self.selfDevelopmentView.sideProjectButtonUnderline.isHidden = true
+            self.selfDevelopmentView.changeJobButtonUnderline.isHidden = true
+            self.selfDevelopmentView.languageButtonUnderline.isHidden = true
+            self.selfDevelopmentView.investmentButtonUnderline.isHidden = true
+            
+            self.selfDevelopmentView.sideProjectView.isHidden = true
+            self.selfDevelopmentView.changeJobView.isHidden = true
+            self.selfDevelopmentView.languageView.isHidden = true
+            self.selfDevelopmentView.investmentView.isHidden = true
+        }
+        else if flag == "side" {
+            self.selfDevelopmentView.sideProjectButton.setTitleColor(SharedDSKitAsset.Colors.green.color, for: .normal)
+            self.selfDevelopmentView.sideProjectButton.titleLabel?.font = Fonts.SH02Bold.font
+            self.selfDevelopmentView.sideProjectView.isHidden = false
+            self.selfDevelopmentView.sideProjectButtonUnderline.isHidden = false
+            
+            self.selfDevelopmentView.studyButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.studyButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.changeJobButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.changeJobButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.languageButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.languageButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.investmentButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.investmentButton.titleLabel?.font = Fonts.Body02.font
+            
+            self.selfDevelopmentView.studyButtonUnderline.isHidden = true
+            self.selfDevelopmentView.changeJobButtonUnderline.isHidden = true
+            self.selfDevelopmentView.languageButtonUnderline.isHidden = true
+            self.selfDevelopmentView.investmentButtonUnderline.isHidden = true
+            
+            self.selfDevelopmentView.studyView.isHidden = true
+            self.selfDevelopmentView.changeJobView.isHidden = true
+            self.selfDevelopmentView.languageView.isHidden = true
+            self.selfDevelopmentView.investmentView.isHidden = true
+        }
+        else if flag == "change" {
+            self.selfDevelopmentView.changeJobButton.setTitleColor(SharedDSKitAsset.Colors.green.color, for: .normal)
+            self.selfDevelopmentView.changeJobButton.titleLabel?.font = Fonts.SH02Bold.font
+            self.selfDevelopmentView.changeJobView.isHidden = false
+            self.selfDevelopmentView.changeJobButtonUnderline.isHidden = false
+            
+            self.selfDevelopmentView.studyButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.studyButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.sideProjectButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.sideProjectButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.languageButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.languageButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.investmentButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.investmentButton.titleLabel?.font = Fonts.Body02.font
+            
+            self.selfDevelopmentView.studyButtonUnderline.isHidden = true
+            self.selfDevelopmentView.sideProjectButtonUnderline.isHidden = true
+            self.selfDevelopmentView.languageButtonUnderline.isHidden = true
+            self.selfDevelopmentView.investmentButtonUnderline.isHidden = true
+            
+            self.selfDevelopmentView.studyView.isHidden = true
+            self.selfDevelopmentView.sideProjectView.isHidden = true
+            self.selfDevelopmentView.languageView.isHidden = true
+            self.selfDevelopmentView.investmentView.isHidden = true
+        } else if flag == "language" {
+            self.selfDevelopmentView.languageButton.setTitleColor(SharedDSKitAsset.Colors.green.color, for: .normal)
+            self.selfDevelopmentView.languageButton.titleLabel?.font = Fonts.SH02Bold.font
+            self.selfDevelopmentView.languageView.isHidden = false
+            self.selfDevelopmentView.languageButtonUnderline.isHidden = false
+            
+            self.selfDevelopmentView.studyButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.studyButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.sideProjectButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.sideProjectButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.changeJobButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.changeJobButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.investmentButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.investmentButton.titleLabel?.font = Fonts.Body02.font
+            
+            self.selfDevelopmentView.studyButtonUnderline.isHidden = true
+            self.selfDevelopmentView.sideProjectButtonUnderline.isHidden = true
+            self.selfDevelopmentView.changeJobButtonUnderline.isHidden = true
+            self.selfDevelopmentView.investmentButtonUnderline.isHidden = true
+            
+            self.selfDevelopmentView.studyView.isHidden = true
+            self.selfDevelopmentView.sideProjectView.isHidden = true
+            self.selfDevelopmentView.changeJobView.isHidden = true
+            self.selfDevelopmentView.investmentView.isHidden = true
+        } else if flag == "investment" {
+            self.selfDevelopmentView.investmentButton.setTitleColor(SharedDSKitAsset.Colors.green.color, for: .normal)
+            self.selfDevelopmentView.investmentButton.titleLabel?.font = Fonts.SH02Bold.font
+            self.selfDevelopmentView.investmentView.isHidden = false
+            self.selfDevelopmentView.investmentButtonUnderline.isHidden = false
+            
+            self.selfDevelopmentView.studyButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.studyButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.sideProjectButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.sideProjectButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.changeJobButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.changeJobButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.languageButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.languageButton.titleLabel?.font = Fonts.Body02.font
+            
+            self.selfDevelopmentView.studyButtonUnderline.isHidden = true
+            self.selfDevelopmentView.sideProjectButtonUnderline.isHidden = true
+            self.selfDevelopmentView.changeJobButtonUnderline.isHidden = true
+            self.selfDevelopmentView.languageButtonUnderline.isHidden = true
+            
+            self.selfDevelopmentView.studyView.isHidden = true
+            self.selfDevelopmentView.sideProjectView.isHidden = true
+            self.selfDevelopmentView.changeJobView.isHidden = true
+            self.selfDevelopmentView.languageView.isHidden = true
+        } else {
+            self.selfDevelopmentView.etcButton.setTitleColor(SharedDSKitAsset.Colors.green.color, for: .normal)
+            self.selfDevelopmentView.etcButton.titleLabel?.font = Fonts.SH02Bold.font
+            self.selfDevelopmentView.etcView.isHidden = false
+            self.selfDevelopmentView.etcButtonUnderline.isHidden = false
+            
+            self.selfDevelopmentView.studyButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.studyButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.sideProjectButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.sideProjectButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.changeJobButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.changeJobButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.languageButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.languageButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.investmentButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.investmentButton.titleLabel?.font = Fonts.Body02.font
+            
+            self.selfDevelopmentView.studyButtonUnderline.isHidden = true
+            self.selfDevelopmentView.sideProjectButtonUnderline.isHidden = true
+            self.selfDevelopmentView.changeJobButtonUnderline.isHidden = true
+            self.selfDevelopmentView.languageButtonUnderline.isHidden = true
+            self.selfDevelopmentView.investmentButtonUnderline.isHidden = true
+            
+            self.selfDevelopmentView.studyView.isHidden = true
+            self.selfDevelopmentView.sideProjectView.isHidden = true
+            self.selfDevelopmentView.changeJobView.isHidden = true
+            self.selfDevelopmentView.languageView.isHidden = true
+            self.selfDevelopmentView.investmentView.isHidden = true
+        }
+  
         selfDevelopmentView.studyTableView.delegate = self
         selfDevelopmentView.studyTableView.dataSource = self
         selfDevelopmentView.studyTableView.register(ItemTableViewCell.self, forCellReuseIdentifier: "ItemCell")
@@ -43,6 +192,18 @@ public class CategorySelectedSelfDevelopmentViewController: UIViewController {
         selfDevelopmentView.changeJobTableView.delegate = self
         selfDevelopmentView.changeJobTableView.dataSource = self
         selfDevelopmentView.changeJobTableView.register(ItemTableViewCell.self, forCellReuseIdentifier: "ItemCell")
+        
+        selfDevelopmentView.languageTableView.delegate = self
+        selfDevelopmentView.languageTableView.dataSource = self
+        selfDevelopmentView.languageTableView.register(ItemTableViewCell.self, forCellReuseIdentifier: "ItemCell")
+        
+        selfDevelopmentView.investmentTableView.delegate = self
+        selfDevelopmentView.investmentTableView.dataSource = self
+        selfDevelopmentView.investmentTableView.register(ItemTableViewCell.self, forCellReuseIdentifier: "ItemCell")
+        
+        selfDevelopmentView.etcTableView.delegate = self
+        selfDevelopmentView.etcTableView.dataSource = self
+        selfDevelopmentView.etcTableView.register(ItemTableViewCell.self, forCellReuseIdentifier: "ItemCell")
         
         itemClicked()
     }
@@ -60,14 +221,22 @@ public class CategorySelectedSelfDevelopmentViewController: UIViewController {
             self.selfDevelopmentView.changeJobButton.titleLabel?.font = Fonts.Body02.font
             self.selfDevelopmentView.languageButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
             self.selfDevelopmentView.languageButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.investmentButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.investmentButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.etcButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.etcButton.titleLabel?.font = Fonts.Body02.font
             
             self.selfDevelopmentView.sideProjectButtonUnderline.isHidden = true
             self.selfDevelopmentView.changeJobButtonUnderline.isHidden = true
+            self.selfDevelopmentView.languageButtonUnderline.isHidden = true
+            self.selfDevelopmentView.investmentButtonUnderline.isHidden = true
+            self.selfDevelopmentView.etcButtonUnderline.isHidden = true
             
             self.selfDevelopmentView.sideProjectView.isHidden = true
             self.selfDevelopmentView.changeJobView.isHidden = true
             self.selfDevelopmentView.languageView.isHidden = true
-            
+            self.selfDevelopmentView.investmentView.isHidden = true
+            self.selfDevelopmentView.etcView.isHidden = true
         })
         selfDevelopmentView.sideProjectButton.rx.tap.subscribe(onNext: {
             self.selfDevelopmentView.sideProjectButton.setTitleColor(SharedDSKitAsset.Colors.green.color, for: .normal)
@@ -81,13 +250,22 @@ public class CategorySelectedSelfDevelopmentViewController: UIViewController {
             self.selfDevelopmentView.changeJobButton.titleLabel?.font = Fonts.Body02.font
             self.selfDevelopmentView.languageButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
             self.selfDevelopmentView.languageButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.investmentButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.investmentButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.etcButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.etcButton.titleLabel?.font = Fonts.Body02.font
             
             self.selfDevelopmentView.studyButtonUnderline.isHidden = true
             self.selfDevelopmentView.changeJobButtonUnderline.isHidden = true
+            self.selfDevelopmentView.languageButtonUnderline.isHidden = true
+            self.selfDevelopmentView.investmentButtonUnderline.isHidden = true
+            self.selfDevelopmentView.etcButtonUnderline.isHidden = true
             
             self.selfDevelopmentView.studyView.isHidden = true
             self.selfDevelopmentView.changeJobView.isHidden = true
             self.selfDevelopmentView.languageView.isHidden = true
+            self.selfDevelopmentView.investmentView.isHidden = true
+            self.selfDevelopmentView.etcView.isHidden = true
         })
         selfDevelopmentView.changeJobButton.rx.tap.subscribe(onNext: {
             self.selfDevelopmentView.changeJobButton.setTitleColor(SharedDSKitAsset.Colors.green.color, for: .normal)
@@ -101,18 +279,28 @@ public class CategorySelectedSelfDevelopmentViewController: UIViewController {
             self.selfDevelopmentView.sideProjectButton.titleLabel?.font = Fonts.Body02.font
             self.selfDevelopmentView.languageButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
             self.selfDevelopmentView.languageButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.investmentButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.investmentButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.etcButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.etcButton.titleLabel?.font = Fonts.Body02.font
             
             self.selfDevelopmentView.studyButtonUnderline.isHidden = true
             self.selfDevelopmentView.sideProjectButtonUnderline.isHidden = true
+            self.selfDevelopmentView.languageButtonUnderline.isHidden = true
+            self.selfDevelopmentView.investmentButtonUnderline.isHidden = true
+            self.selfDevelopmentView.etcButtonUnderline.isHidden = true
             
             self.selfDevelopmentView.studyView.isHidden = true
             self.selfDevelopmentView.sideProjectView.isHidden = true
             self.selfDevelopmentView.languageView.isHidden = true
+            self.selfDevelopmentView.investmentView.isHidden = true
+            self.selfDevelopmentView.etcView.isHidden = true
         })
         selfDevelopmentView.languageButton.rx.tap.subscribe(onNext: {
             self.selfDevelopmentView.languageButton.setTitleColor(SharedDSKitAsset.Colors.green.color, for: .normal)
             self.selfDevelopmentView.languageButton.titleLabel?.font = Fonts.SH02Bold.font
             self.selfDevelopmentView.languageView.isHidden = false
+            self.selfDevelopmentView.languageButtonUnderline.isHidden = false
             
             self.selfDevelopmentView.studyButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
             self.selfDevelopmentView.studyButton.titleLabel?.font = Fonts.Body02.font
@@ -120,10 +308,80 @@ public class CategorySelectedSelfDevelopmentViewController: UIViewController {
             self.selfDevelopmentView.sideProjectButton.titleLabel?.font = Fonts.Body02.font
             self.selfDevelopmentView.changeJobButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
             self.selfDevelopmentView.changeJobButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.investmentButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.investmentButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.etcButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.etcButton.titleLabel?.font = Fonts.Body02.font
+            
+            self.selfDevelopmentView.studyButtonUnderline.isHidden = true
+            self.selfDevelopmentView.sideProjectButtonUnderline.isHidden = true
+            self.selfDevelopmentView.changeJobButtonUnderline.isHidden = true
+            self.selfDevelopmentView.investmentButtonUnderline.isHidden = true
+            self.selfDevelopmentView.etcButtonUnderline.isHidden = true
             
             self.selfDevelopmentView.studyView.isHidden = true
             self.selfDevelopmentView.sideProjectView.isHidden = true
             self.selfDevelopmentView.changeJobView.isHidden = true
+            self.selfDevelopmentView.investmentView.isHidden = true
+            self.selfDevelopmentView.etcView.isHidden = true
+        })
+        selfDevelopmentView.investmentButton.rx.tap.subscribe(onNext: {
+            self.selfDevelopmentView.investmentButton.setTitleColor(SharedDSKitAsset.Colors.green.color, for: .normal)
+            self.selfDevelopmentView.investmentButton.titleLabel?.font = Fonts.SH02Bold.font
+            self.selfDevelopmentView.investmentView.isHidden = false
+            self.selfDevelopmentView.investmentButtonUnderline.isHidden = false
+            
+            self.selfDevelopmentView.studyButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.studyButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.sideProjectButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.sideProjectButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.changeJobButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.changeJobButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.languageButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.languageButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.etcButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.etcButton.titleLabel?.font = Fonts.Body02.font
+            
+            self.selfDevelopmentView.studyButtonUnderline.isHidden = true
+            self.selfDevelopmentView.sideProjectButtonUnderline.isHidden = true
+            self.selfDevelopmentView.changeJobButtonUnderline.isHidden = true
+            self.selfDevelopmentView.languageButtonUnderline.isHidden = true
+            self.selfDevelopmentView.etcButtonUnderline.isHidden = true
+            
+            self.selfDevelopmentView.studyView.isHidden = true
+            self.selfDevelopmentView.sideProjectView.isHidden = true
+            self.selfDevelopmentView.changeJobView.isHidden = true
+            self.selfDevelopmentView.languageView.isHidden = true
+            self.selfDevelopmentView.etcView.isHidden = true
+        })
+        selfDevelopmentView.etcButton.rx.tap.subscribe(onNext: {
+            self.selfDevelopmentView.etcButton.setTitleColor(SharedDSKitAsset.Colors.green.color, for: .normal)
+            self.selfDevelopmentView.etcButton.titleLabel?.font = Fonts.SH02Bold.font
+            self.selfDevelopmentView.etcView.isHidden = false
+            self.selfDevelopmentView.etcButtonUnderline.isHidden = false
+            
+            self.selfDevelopmentView.studyButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.studyButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.sideProjectButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.sideProjectButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.changeJobButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.changeJobButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.languageButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.languageButton.titleLabel?.font = Fonts.Body02.font
+            self.selfDevelopmentView.investmentButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            self.selfDevelopmentView.investmentButton.titleLabel?.font = Fonts.Body02.font
+            
+            self.selfDevelopmentView.studyButtonUnderline.isHidden = true
+            self.selfDevelopmentView.sideProjectButtonUnderline.isHidden = true
+            self.selfDevelopmentView.changeJobButtonUnderline.isHidden = true
+            self.selfDevelopmentView.languageButtonUnderline.isHidden = true
+            self.selfDevelopmentView.investmentButtonUnderline.isHidden = true
+            
+            self.selfDevelopmentView.studyView.isHidden = true
+            self.selfDevelopmentView.sideProjectView.isHidden = true
+            self.selfDevelopmentView.changeJobView.isHidden = true
+            self.selfDevelopmentView.languageView.isHidden = true
+            self.selfDevelopmentView.investmentView.isHidden = true
         })
     }
 }
