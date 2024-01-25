@@ -37,7 +37,7 @@ class HobbyDetailTableViewCell: UITableViewCell {
         collectionView.isHidden = true
         return collectionView
     }()
-    
+    private var backViewHeightConstraint: Constraint?
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -62,11 +62,11 @@ class HobbyDetailTableViewCell: UITableViewCell {
             .forEach { backView.addSubview($0) }
         
         backView.snp.makeConstraints { make in
-            make.height.equalTo(72)
-            make.leading.equalTo(contentView.snp.leading).offset(20)
-            make.trailing.equalTo(contentView.snp.trailing).offset(-20)
-            make.top.equalTo(contentView.snp.top).offset(4)
-            make.bottom.equalTo(contentView.snp.bottom).offset(-4)
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
+            make.top.equalToSuperview().offset(4)
+            make.bottom.equalToSuperview().offset(-4)
+            self.backViewHeightConstraint = make.height.greaterThanOrEqualTo(72).constraint
         }
         
         titleLabel.snp.makeConstraints { make in
@@ -105,9 +105,7 @@ class HobbyDetailTableViewCell: UITableViewCell {
                 self.plusButton.setImage(buttonImageName, for: .normal)
                 self.hobbyDetailCollectionView.isHidden = !isCurrentlyHidden
                 UIView.animate(withDuration: 0.3, animations: {
-                    self.backView.snp.updateConstraints { make in
-                        make.height.equalTo(72 + newHeight)
-                    }
+                    self.backViewHeightConstraint?.update(offset: 72 + newHeight)
                     self.hobbyDetailCollectionView.snp.updateConstraints { make in
                         make.height.equalTo(newHeight)
                     }

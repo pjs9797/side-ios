@@ -29,7 +29,6 @@ public class SelectHobbyDetailsViewController: UIViewController{
         tableView.separatorStyle = .none
         tableView.isScrollEnabled = false
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.register(HobbyDetailTableViewCell.self, forCellReuseIdentifier: "HobbyDetailTableViewCell")
         return tableView
     }()
