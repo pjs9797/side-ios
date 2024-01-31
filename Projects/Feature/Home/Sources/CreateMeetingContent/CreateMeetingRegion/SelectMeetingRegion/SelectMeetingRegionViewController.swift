@@ -6,7 +6,7 @@ import Shared
 
 class SelectMeetingRegionViewController: UIViewController {
     let disposeBag = DisposeBag()
-    var selectMeetingRegionViewModel: SelectMeetingRegionViewModel
+    var meetingRegionViewModel: MeetingRegionViewModel
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = Fonts.SH03Bold.font
@@ -56,8 +56,8 @@ class SelectMeetingRegionViewController: UIViewController {
         return button
     }()
     
-    init(selectMeetingRegionViewModel: SelectMeetingRegionViewModel) {
-        self.selectMeetingRegionViewModel = selectMeetingRegionViewModel
+    init(meetingRegionViewModel: MeetingRegionViewModel) {
+        self.meetingRegionViewModel = meetingRegionViewModel
         super.init(nibName: nil, bundle: nil)
         
         self.modalPresentationStyle = .overFullScreen
@@ -77,20 +77,20 @@ class SelectMeetingRegionViewController: UIViewController {
     
     func bind(){
         backButton.rx.tap
-            .bind(to: selectMeetingRegionViewModel.backButtonTapped)
+            .bind(to: meetingRegionViewModel.backButtonTapped)
             .disposed(by: disposeBag)
         
-        selectMeetingRegionViewModel.backButtonTapped
+        meetingRegionViewModel.backButtonTapped
             .bind(onNext: { [weak self] in
                 self?.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
         
         searchTextField.rx.text.orEmpty
-            .bind(to: selectMeetingRegionViewModel.textFieldRelay)
+            .bind(to: meetingRegionViewModel.textFieldRelay)
             .disposed(by: disposeBag)
         
-        selectMeetingRegionViewModel.isTextExistDriver
+        meetingRegionViewModel.isTextExistDriver
             .drive(onNext: { [weak self] value in
                 self?.clearButton.isHidden = !value
                 self?.searchTextField.layer.borderColor = value ? UIColor.black.cgColor : SharedDSKitAsset.Colors.gr10.color.cgColor
@@ -98,14 +98,30 @@ class SelectMeetingRegionViewController: UIViewController {
             .disposed(by: disposeBag)
         
         clearButton.rx.tap
-            .bind(to: selectMeetingRegionViewModel.clearButtonTapped)
+            .bind(to: meetingRegionViewModel.clearButtonTapped)
             .disposed(by: disposeBag)
         
-        selectMeetingRegionViewModel.clearButtonTapped
+        meetingRegionViewModel.clearButtonTapped
             .bind(onNext: { [weak self] in
                 self?.searchTextField.text = ""
                 self?.clearButton.isHidden = true
                 self?.searchTextField.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+            })
+            .disposed(by: disposeBag)
+        
+        currentLocationButton.rx.tap
+            .bind(to: meetingRegionViewModel.currentLocationButtonTapped)
+            .disposed(by: disposeBag)
+        
+        meetingRegionViewModel.locationAuthDeniedRelay
+            .bind(onNext: { [weak self] in
+                self?.presentDeniedAlert()
+            })
+            .disposed(by: disposeBag)
+        
+        meetingRegionViewModel.popViewControllerRelay
+            .bind(onNext: { [weak self] in
+                self?.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
     }
@@ -162,5 +178,16 @@ class SelectMeetingRegionViewController: UIViewController {
             make.trailing.equalToSuperview().offset(-20)
             make.centerY.equalTo(currentLocationSettingLabel)
         }
+    }
+    
+    func presentDeniedAlert() {
+        let alert = UIAlertController(title: nil, message: "위치 기능을 사용하려면\n’위치’ 접근권한을 허용해야 합니다.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "설정", style: .default, handler: { _ in
+            if let url = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
 }
