@@ -1,5 +1,5 @@
 //
-//  AgreementsViewController.swift
+//  BottomSheetViewController.swift
 //  FeatureSignIn
 //
 //  Created by 강민성 on 1/10/24.
@@ -8,7 +8,7 @@
 import UIKit
 import Shared
 
-class AgreementsViewBottomSheetController: UIViewController {
+public class BottomSheetViewController: UIViewController {
     
     private let dimmedView: UIView = {
         let view = UIView()
@@ -31,6 +31,7 @@ class AgreementsViewBottomSheetController: UIViewController {
     
     private let dragIndicator: UIView = {
         let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = SharedDSKitAsset.Colors.gr10.color
         view.layer.cornerRadius = 3
         return view
@@ -42,7 +43,7 @@ class AgreementsViewBottomSheetController: UIViewController {
     
     private lazy var bottomSheetPanStartingTopConstant: CGFloat = 40
     
-    init(contentViewController: UIViewController, bottomSheetViewTopConstraint: NSLayoutConstraint!) {
+    public init(contentViewController: UIViewController) {
         self.contentViewController = contentViewController
         
         super.init(nibName: nil, bundle: nil)
@@ -53,19 +54,20 @@ class AgreementsViewBottomSheetController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
+        render()
+        configureGestures()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-     
+        
         self.showBottomSheet()
     }
     
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         
         coordinator.animate { [weak self] _ in
@@ -75,13 +77,47 @@ class AgreementsViewBottomSheetController: UIViewController {
     
     private func render() {
         view.addSubViews([dimmedView, bottomSheetView, dragIndicator])
-        
         addChild(contentViewController)
+        
         bottomSheetView.addSubViews([contentViewController.view])
+        
         contentViewController.didMove(toParent: self)
         bottomSheetView.clipsToBounds = true
         
+        dimmedView.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalToSuperview()
+        }
         
+        bottomSheetViewTopConstraint =
+        bottomSheetView
+            .topAnchor
+            .constraint(
+                equalTo: view.safeAreaLayoutGuide.topAnchor,
+                constant: view.safeAreaLayoutGuide.layoutFrame.height
+            )
+        
+        NSLayoutConstraint.activate([
+                    bottomSheetView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+                    bottomSheetView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+                    bottomSheetView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                    bottomSheetViewTopConstraint,
+                ]
+        )
+        
+        contentViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        contentViewController.view.snp.makeConstraints { make in
+            make.leading.equalTo(bottomSheetView.snp.leading)
+            make.top.equalTo(bottomSheetView.snp.top)
+            make.trailing.equalTo(bottomSheetView.snp.trailing)
+            make.bottom.equalTo(bottomSheetView.snp.bottom)
+        }
+        
+        dragIndicator.snp.makeConstraints { make in
+            make.centerX.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(bottomSheetView.snp.top).offset(8)
+            make.width.equalTo(60)
+            make.height.equalTo(dragIndicator.layer.cornerRadius * 2)
+        }
     }
     
     private func configureGestures() {
@@ -100,7 +136,7 @@ class AgreementsViewBottomSheetController: UIViewController {
     private func popBottomSheet() {
         let safeAreaHeight = view.safeAreaLayoutGuide.layoutFrame.height
         let bottomPadding = view.safeAreaInsets.bottom
-        let constraintValue = (safeAreaHeight - bottomPadding) - 442
+        let constraintValue = (safeAreaHeight - bottomPadding) - 600
         
         if constraintValue > 0 {
             self.bottomSheetViewTopConstraint.constant = constraintValue
@@ -123,7 +159,7 @@ class AgreementsViewBottomSheetController: UIViewController {
         let safeAreaHeight = view.safeAreaLayoutGuide.layoutFrame.height
         let bottomPadding = view.safeAreaInsets.bottom
         
-        let fullDimPosition = (safeAreaHeight + bottomPadding - 422) / 2
+        let fullDimPosition = (safeAreaHeight + bottomPadding - 600) / 2
         
         let noDimPosition = safeAreaHeight + bottomPadding
         
@@ -142,7 +178,7 @@ class AgreementsViewBottomSheetController: UIViewController {
         let safeAreaHeight: CGFloat = view.safeAreaLayoutGuide.layoutFrame.height
         let bottomPadding: CGFloat = view.safeAreaInsets.bottom
         
-        let constraintValue = (safeAreaHeight + bottomPadding) - 422
+        let constraintValue = (safeAreaHeight + bottomPadding) - 600
         
         if constraintValue > 0 {
             self.bottomSheetViewTopConstraint.constant = constraintValue
@@ -157,7 +193,7 @@ class AgreementsViewBottomSheetController: UIViewController {
     }
 }
 
-extension AgreementsViewBottomSheetController {
+extension BottomSheetViewController {
     @objc private func didDimmedViewTapped() {
         self.hideBottomSheetAndGoBack()
     }
@@ -187,7 +223,7 @@ extension AgreementsViewBottomSheetController {
             let safeAreaHeight = view.safeAreaLayoutGuide.layoutFrame.height
             let bottomPadding = view.safeAreaInsets.bottom
             
-            let defaultPadding = safeAreaHeight + bottomPadding - 422
+            let defaultPadding = safeAreaHeight + bottomPadding - 600
             
             let nearestValue = nearest(to: bottomSheetViewTopConstraint.constant, inVlaues: [40, defaultPadding, safeAreaHeight + bottomPadding])
             
@@ -203,7 +239,7 @@ extension AgreementsViewBottomSheetController {
     }
 }
 
-extension AgreementsViewBottomSheetController {
+extension BottomSheetViewController {
     private func hideBottomSheetAndGoBack() {
         let safeAreaHeight = view.safeAreaLayoutGuide.layoutFrame.height
         let bottomPadding = view.safeAreaInsets.bottom
@@ -226,7 +262,7 @@ extension AgreementsViewBottomSheetController {
         let safeAreaHeight = view.safeAreaLayoutGuide.layoutFrame.height
         let bottomPadding = view.safeAreaInsets.bottom
         
-        let fullDimPosition = (safeAreaHeight + bottomPadding - 422) / 2
+        let fullDimPosition = (safeAreaHeight + bottomPadding - 600) / 2
         
         let noDimPosotion = safeAreaHeight + bottomPadding
         

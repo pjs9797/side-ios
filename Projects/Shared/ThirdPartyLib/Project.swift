@@ -23,7 +23,11 @@ let targets: [Target] = [
                 .external(name: "FirebaseAuth"),
                 .external(name: "FirebaseMessaging"),
                 .external(name: "FirebaseAnalytics"),
-                .external(name: "Mantis")
+                .external(name: "Mantis"),
+                .external(name: "RxFlow"),
+                .external(name: "RxAlamofire"),
+                .external(name: "Lottie"),
+                .external(name: "RxKeyboard")
             ]
         )
     )
