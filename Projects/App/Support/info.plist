@@ -12,6 +12,14 @@
 이 앱은 백그라운드에서도 사용자의 위치를 추적하여 지속적인 위치 기반 서비스를 제공합니다.</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>이 앱은 사용자의 현재 위치를 사용하여 근처의 관심 장소를 찾기 위해 위치 정보가 필요합니다.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>이 앱은 백그라운드에서도 사용자의 위치를 추적하여 지속적인 위치 기반 서비스를 제공합니다.
+&quot;이 앱은 백그라운드에서도 사용자의 위치를 추적하여 지속적인 위치 기반 서비스를 제공합니다.&quot;
+&quot;이 앱은 백그라운드에서도 사용자의 위치를 추적하여 지속적인 위치 기반 서비스를 제공합니다.&quot;
+&quot;이 앱은 백그라운드에서도 사용자의 위치를 추적하여 지속적인 위치 기반 서비스를 제공합니다.&quot;
+이 앱은 백그라운드에서도 사용자의 위치를 추적하여 지속적인 위치 기반 서비스를 제공합니다.</string>
 	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
