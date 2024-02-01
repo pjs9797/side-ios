@@ -136,8 +136,6 @@ final public class SignInFlow: Flow {
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
     }
     
-    /*
-    
     private func coordinateToIdVerificateWithPhoneNumberViewController() -> FlowContributors {
         let reactor = IdVerificateWithPhoneNumberReactor(provider: provider)
         let viewController = IdVerificateWithPhoneNumberViewController(with: reactor)
@@ -146,6 +144,7 @@ final public class SignInFlow: Flow {
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
     }
     
+    /*
     private func coordinateToForgotPasswordViewController() -> FlowContributors {
         let reactor = ForgotPasswordReactor(provider: provider)
         let viewController = ForgotPasswordViewController(with: reactor)
