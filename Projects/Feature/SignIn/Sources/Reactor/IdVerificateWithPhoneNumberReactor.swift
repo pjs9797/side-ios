@@ -1,8 +1,8 @@
 //
-//  IdVerificateWithEmailReactor.swift
+//  IdVerificateWithPhoneNumberReactor.swift
 //  FeatureSignIn
 //
-//  Created by 강민성 on 1/29/24.
+//  Created by 강민성 on 2/1/24.
 //
 
 import Foundation
@@ -14,7 +14,7 @@ import RxCocoa
 import RxFlow
 import ReactorKit
 
-public class IdVerificateWithEmailReactor: ReactorKit.Reactor, Stepper {
+public class IdVerificateWithPhoneNumberReactor: ReactorKit.Reactor, Stepper {
     
     public var initialState: State = State()
     public var steps = PublishRelay<Step>()
@@ -31,14 +31,14 @@ public class IdVerificateWithEmailReactor: ReactorKit.Reactor, Stepper {
     
     public enum Action {
         case didBackButtonTapped
-        case writeEmail(String)
+        case writePhoneNumber(String)
         case writeVerificationNumber(String)
         case didTapRequestVerificationNumberButton
         case didTapVerificateNumberButton
     }
     
     public enum Mutation {
-        case setEmail(String)
+        case setPhoneNumber(String)
         case setVerificateNumber(String)
         
         case updateTime(Int)
@@ -49,10 +49,10 @@ public class IdVerificateWithEmailReactor: ReactorKit.Reactor, Stepper {
     }
     
     public struct State {
-        var isIncorrectFormedEmail: Bool = false
+        var isIncorrectFormedPhoneNumber: Bool = false
         var isIncorrectVerificationNumber: Bool = false
         
-        var email: String? = nil
+        var phoneNumber: String? = nil
         var verificationNumber: String? = nil
         
         var isStartTimer: Bool = false
@@ -78,8 +78,8 @@ public class IdVerificateWithEmailReactor: ReactorKit.Reactor, Stepper {
             steps.accept(SignInStep.popViewController(animated: true))
             return .empty()
             
-        case .writeEmail(let email):
-            return .just(.setEmail(email))
+        case .writePhoneNumber(let phoneNumber):
+            return .just(.setPhoneNumber(phoneNumber))
             
         case .writeVerificationNumber(let verificationNumber):
             return .just(.setVerificateNumber(verificationNumber))
@@ -115,8 +115,9 @@ public class IdVerificateWithEmailReactor: ReactorKit.Reactor, Stepper {
         var state = state
         
         switch mutation {
-        case .setEmail(let email):
-            state.email = email
+            
+        case .setPhoneNumber(let phoneNumber):
+            state.phoneNumber = phoneNumber
             
         case .setVerificateNumber(let verificationNumber):
             state.verificationNumber = verificationNumber
@@ -141,12 +142,12 @@ public class IdVerificateWithEmailReactor: ReactorKit.Reactor, Stepper {
             break
         }
         
-        if let email = state.email {
-            if !checkEmail(str: email) {
-                state.isIncorrectFormedEmail = true
+        if let phoneNumber = state.phoneNumber {
+            if !checkPhoneNumber(phoneNumber: phoneNumber) {
+                state.isIncorrectFormedPhoneNumber = true
             }
             else {
-                state.isIncorrectFormedEmail = false
+                state.isIncorrectFormedPhoneNumber = false
             }
         }
         else {
@@ -159,10 +160,12 @@ public class IdVerificateWithEmailReactor: ReactorKit.Reactor, Stepper {
     }
 }
 
-extension IdVerificateWithEmailReactor {
-    func checkEmail(str: String) -> Bool {
-        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{3}"
-        return NSPredicate(format: "SELF MATCHES %@", emailRegex).evaluate(with: str)
+extension IdVerificateWithPhoneNumberReactor {
+    func checkPhoneNumber(phoneNumber: String) -> Bool {
+        let regex = "^010-?([0-9]{4})-?([0-9]{4})$"
+        let pred = NSPredicate(format: "SELF MATCHES %@", regex)
+        
+        return pred.evaluate(with: phoneNumber)
     }
     
     func formattedTimerString(time: Int) -> String {

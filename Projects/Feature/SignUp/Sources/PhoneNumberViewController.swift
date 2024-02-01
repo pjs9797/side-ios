@@ -53,6 +53,7 @@ public class PhoneNumberViewController: UIViewController, UITextFieldDelegate {
         
         return pred.evaluate(with: phoneNumber)
     }
+    
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let text = (textField.text! as NSString).replacingCharacters(in: range, with: string)
 
