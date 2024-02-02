@@ -6,7 +6,7 @@ import Shared
 
 class CreateMeetingImageView: UIView{
     let disposeBag = DisposeBag()
-    weak var homeNavigationController: UINavigationController?
+    weak var homeNavigationController: UINavigationController!
     let createMeetingImageViewModel: CreateMeetingImageViewModel
     let imageLabel: UILabel = {
         let label = UILabel()
@@ -95,9 +95,9 @@ class CreateMeetingImageView: UIView{
             .drive(onNext: { [weak self] status in
                 switch status {
                 case "authorized":
-                    self?.homeNavigationController!.present(AlbumViewController(photoAuthType: "authorized", albumViewModel: AlbumViewModel()), animated: true)
+                    self?.homeNavigationController.present(AlbumViewController(photoAuthType: "authorized", albumViewModel: AlbumViewModel()), animated: true)
                 case "limited":
-                    self?.homeNavigationController!.present(AlbumViewController(photoAuthType: "limited", albumViewModel: AlbumViewModel()), animated: true)
+                    self?.homeNavigationController.present(AlbumViewController(photoAuthType: "limited", albumViewModel: AlbumViewModel()), animated: true)
                 case "denied":
                     self?.presentDeniedAlert(target: "사진")
                 default:
@@ -115,7 +115,7 @@ class CreateMeetingImageView: UIView{
                     cameraViewController.allowsEditing = true
                     cameraViewController.cameraDevice = .rear
                     cameraViewController.cameraCaptureMode = .photo
-                    self?.homeNavigationController!.present(cameraViewController, animated: true)
+                    self?.homeNavigationController.present(cameraViewController, animated: true)
                 case "denied":
                     self?.presentDeniedAlert(target: "카메라")
                 default:
@@ -187,7 +187,7 @@ class CreateMeetingImageView: UIView{
         alert.addAction(photoLibraryAction)
         alert.addAction(cameraAction)
         alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
-        self.homeNavigationController?.present(alert, animated: true, completion: nil)
+        self.homeNavigationController.present(alert, animated: true, completion: nil)
     }
     
     func presentDeniedAlert(target: String) {
@@ -198,6 +198,6 @@ class CreateMeetingImageView: UIView{
             }
         }))
         alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
-        self.homeNavigationController?.present(alert, animated: true, completion: nil)
+        self.homeNavigationController.present(alert, animated: true, completion: nil)
     }
 }

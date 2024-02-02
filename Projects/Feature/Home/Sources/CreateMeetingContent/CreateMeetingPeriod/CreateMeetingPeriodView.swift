@@ -39,11 +39,28 @@ class CreateMeetingPeriodView: UIView{
         
         calendarView.isHidden = true
         timePickerView.isHidden = true
+        bind()
         layout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func bind(){
+        createMeetingPeriodViewModel.timeRelay
+            .bind(onNext: { [weak self] time in
+                self?.timeBtView.configure(subTitle: time)
+                self?.timeBtView.subTitleLabel.textColor = .black
+            })
+            .disposed(by: disposeBag)
+        
+        createMeetingPeriodViewModel.dateRelay
+            .bind(onNext: { [weak self] date in
+                self?.dateBtView.configure(subTitle: date)
+                self?.dateBtView.subTitleLabel.textColor = .black
+            })
+            .disposed(by: disposeBag)
     }
     
     func layout(){

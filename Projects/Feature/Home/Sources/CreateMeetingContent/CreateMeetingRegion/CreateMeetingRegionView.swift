@@ -6,6 +6,8 @@ import Shared
 
 class CreateMeetingRegionView: UIView{
     let disposeBag = DisposeBag()
+    weak var homeNavigationController: UINavigationController!
+    let meetingRegionViewModel: MeetingRegionViewModel!
     let regionLabel: UILabel = {
         let label = UILabel()
         label.text = "모임 지역을 선택해주세요."
@@ -36,14 +38,52 @@ class CreateMeetingRegionView: UIView{
         return button
     }()
     
-    init(){
+    init(homeNavigationController: UINavigationController?, meetingRegionViewModel: MeetingRegionViewModel){
+        self.homeNavigationController = homeNavigationController
+        self.meetingRegionViewModel = meetingRegionViewModel
         super.init(frame: .zero)
         
+        bind()
         layout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func bind(){
+        onlineSwitch.rx.isOn
+            .bind(to: meetingRegionViewModel.onlineSwitchRelay)
+            .disposed(by: disposeBag)
+        
+        meetingRegionViewModel.onlineSwitchRelay
+            .bind(onNext: { [weak self] value in
+                if value {
+                    self?.regionButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                    self?.regionButton.isEnabled = false
+                    self?.regionButton.setTitle("읍,면,동으로 검색하세요.", for: .normal)
+                    self?.regionButton.setTitleColor(SharedDSKitAsset.Colors.textDisabled.color, for: .normal)
+                }
+                else{
+                    self?.regionButton.backgroundColor = .white
+                    self?.regionButton.isEnabled = true
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        regionButton.rx.tap
+            .bind(onNext: { [weak self] in
+                let meetingRegionViewModel = self?.meetingRegionViewModel
+                self?.homeNavigationController.present(SelectMeetingRegionViewController(meetingRegionViewModel: meetingRegionViewModel!), animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        meetingRegionViewModel.regionButtonTitleRelay
+            .bind(onNext: { [weak self] location in
+                self?.regionButton.setTitle(location, for: .normal)
+                self?.regionButton.setTitleColor(.black, for: .normal)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func layout(){

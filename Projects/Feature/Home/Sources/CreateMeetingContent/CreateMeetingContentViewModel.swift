@@ -5,15 +5,26 @@ import Shared
 
 public class CreateMeetingContentViewModel{
     let disposeBag = DisposeBag()
-    let titleTextRelay = BehaviorRelay<String>(value: "")
-    let onlineSwitchRelay = PublishRelay<Bool>()
-    let memberTextRelay = BehaviorRelay<String>(value: "")
-    let introductionTextRelay = BehaviorRelay<String>(value: "")
-    let selectedDateRelay = BehaviorRelay<String>(value: "")
-    let selectedTimeRelay = PublishRelay<String>()
+    let titleTextRelay = PublishRelay<String>()
+    let memberTextRelay = PublishRelay<String>()
+    let introductionTextRelay = PublishRelay<String>()
     let backButtonTapped = PublishRelay<Void>()
+    let createButtonTapped = PublishRelay<Void>()
+    let isCreateButtonEnabled: Driver<Bool>
     
-    public init(){
-        
+    public init(meetingRegionViewModel: MeetingRegionViewModel, createMeetingPeriodViewModel: CreateMeetingPeriodViewModel){
+        isCreateButtonEnabled = Observable.combineLatest(
+            titleTextRelay.asObservable(),
+            memberTextRelay.asObservable(),
+            introductionTextRelay.asObservable(),
+            meetingRegionViewModel.currentLocationRelay.asObservable(),
+            createMeetingPeriodViewModel.dateRelay.asObservable(),
+            createMeetingPeriodViewModel.timeRelay.asObservable(),
+            EditPhotoViewModel.shared.imgRelay.asObservable()
+        ) { title, member, introduction, location, date, time, img in
+            return !title.isEmpty && !member.isEmpty && !introduction.isEmpty &&
+            !location.isEmpty && !date.isEmpty && !time.isEmpty && img != nil
+        }
+        .asDriver(onErrorJustReturn: false)
     }
 }

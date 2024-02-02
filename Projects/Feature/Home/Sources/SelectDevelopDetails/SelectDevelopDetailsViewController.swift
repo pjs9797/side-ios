@@ -84,7 +84,9 @@ public class SelectDevelopDetailsViewController: UIViewController{
         
         selectDevelopDetailsViewModel.nextButtonTapped
             .bind(onNext: { [weak self] in
-                self?.navigationController?.pushViewController(CreateMeetingContentViewController(meetingTitle: "원데이 모임 생성", createMeetingContentViewModel: CreateMeetingContentViewModel(), createMeetingPeriodViewModel: CreateMeetingPeriodViewModel()), animated: true)
+                let meetingRegionViewModel = MeetingRegionViewModel()
+                let createMeetingPeriodViewModel = CreateMeetingPeriodViewModel()
+                self?.navigationController?.pushViewController(CreateMeetingContentViewController(meetingTitle: self!.meetingTitle, meetingRegionViewModel: meetingRegionViewModel, createMeetingContentViewModel: CreateMeetingContentViewModel(meetingRegionViewModel: meetingRegionViewModel, createMeetingPeriodViewModel: createMeetingPeriodViewModel), createMeetingPeriodViewModel: createMeetingPeriodViewModel), animated: true)
             })
             .disposed(by: disposeBag)
 
