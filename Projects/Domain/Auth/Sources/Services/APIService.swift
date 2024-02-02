@@ -11,6 +11,7 @@ import CoreNetwork
 import Alamofire
 import RxSwift
 import RxAlamofire
+import UIKit
 
 public class APIService {
     
@@ -38,8 +39,50 @@ public class APIService {
             for (key, value) in headers {
                 httpHeaders.update(name: key, value: value)
             }
+            if useAuthHeader {
+                httpHeaders.update(name: "Authorization", value: "Bearer \(SettingService.shared.accessToken)")
+            }
         }
         
         return self.session.rx.request(method, baseURL + url, parameters: parameters, encoding: encoding, headers: httpHeaders)
+    }
+    
+    func upload(_ method: HTTPMethod, _ url: String, useAuthHeader: Bool = true, images: [UIImage?], headers: [String: String]? = nil) -> Observable<UploadRequest> {
+        
+        var httpHeaders = HTTPHeaders()
+        httpHeaders.add(name: "Content-Type", value: "multipart/form-data")
+        httpHeaders.add(name: "accept", value: "*/*")
+        
+        if let headers = headers {
+            for (key, value) in headers {
+                httpHeaders.update(name: key, value: value)
+            }
+            if useAuthHeader {
+                httpHeaders.update(name: "Authorization", value: "Bearer \(SettingService.shared.accessToken)")
+            }
+        }
+        return Observable.create { [weak self] observer in
+            guard let self = self else { return Disposables.create() }
+            self.session.rx.upload(multipartFormData: { multipartFormData in
+                for (index, image) in images.enumerated() {
+                    if let image = image, let imageData = image.jpegData(compressionQuality: 0.5) {
+                        multipartFormData.append(imageData, withName: "files", fileName: "image\(index).jpg", mimeType: "image/jpeg")
+                    }
+                }
+            }, to: self.baseURL + url, method: method, headers: httpHeaders)
+            .subscribe(
+                onNext: { request in
+                    observer.onNext(request)
+                },
+                onError: { error in
+                    observer.onError(error)
+                },
+                onCompleted: {
+                    observer.onCompleted()
+                }
+            ).disposed(by: self.disposeBag)
+            
+            return Disposables.create()
+        }
     }
 }

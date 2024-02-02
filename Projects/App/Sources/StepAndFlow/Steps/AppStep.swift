@@ -33,6 +33,8 @@ public enum AppStep: Step {
     case agreementsIsRequried
     // Profile
     
+    //TabBar
+    case goToTabBar
     // Home
     
     // Chat

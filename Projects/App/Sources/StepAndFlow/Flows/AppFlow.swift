@@ -49,6 +49,9 @@ final class AppFlow: Flow {
 //        case .userIsSignedIn:
 //            return coordinateToHomeViewController()
             
+        case .goToTabBar:
+            return 
+            
         default:
             return .none
         }

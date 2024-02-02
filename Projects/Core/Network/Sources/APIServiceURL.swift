@@ -8,5 +8,5 @@
 import Foundation
 
 public class APIServiceURL {
-    public static let baseURL = "https://?"
+    public static let baseURL = "http://ec2-3-34-51-149.ap-northeast-2.compute.amazonaws.com"
 }
