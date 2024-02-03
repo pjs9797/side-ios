@@ -7,6 +7,7 @@ import Shared
 public class CreateMeetingContentViewController: UIViewController {
     let disposeBag = DisposeBag()
     let meetingTitle: String
+    let meetingRegionViewModel: MeetingRegionViewModel
     let createMeetingContentViewModel: CreateMeetingContentViewModel
     let createMeetingPeriodViewModel: CreateMeetingPeriodViewModel
     let backButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: nil, action: nil)
@@ -26,7 +27,7 @@ public class CreateMeetingContentViewController: UIViewController {
         return label
     }()
     let createMeetingTitleView = CreateMeetingTitleView()
-    let createMeetingRegionView = CreateMeetingRegionView()
+    lazy var createMeetingRegionView = CreateMeetingRegionView(homeNavigationController: self.navigationController, meetingRegionViewModel: self.meetingRegionViewModel)
     let createMeetingMemberView = CreateMeetingMemberView()
     lazy var createMeetingPeriodView = CreateMeetingPeriodView(createMeetingPeriodViewModel: self.createMeetingPeriodViewModel)
     lazy var createMeetingImageView = CreateMeetingImageView(homeNavigationController: self.navigationController, createMeetingImageViewModel: CreateMeetingImageViewModel())
@@ -40,8 +41,9 @@ public class CreateMeetingContentViewController: UIViewController {
         return button
     }()
     
-    public init(meetingTitle: String, createMeetingContentViewModel: CreateMeetingContentViewModel, createMeetingPeriodViewModel: CreateMeetingPeriodViewModel) {
+    public init(meetingTitle: String, meetingRegionViewModel: MeetingRegionViewModel, createMeetingContentViewModel: CreateMeetingContentViewModel, createMeetingPeriodViewModel: CreateMeetingPeriodViewModel) {
         self.meetingTitle = meetingTitle
+        self.meetingRegionViewModel = meetingRegionViewModel
         self.createMeetingContentViewModel = createMeetingContentViewModel
         self.createMeetingPeriodViewModel = createMeetingPeriodViewModel
         super.init(nibName: nil, bundle: nil)
@@ -56,7 +58,7 @@ public class CreateMeetingContentViewController: UIViewController {
         
         self.view.backgroundColor = .white
         addKeyboardObserverInScrollView(scrollView: scrollView, disposeBag: disposeBag)
-        hideKeyboard(disposeBag: disposeBag)
+        hideKeyboard(delegate: self, disposeBag: disposeBag)
         self.setNavigationbar()
         self.createButton.disableNextButton()
         self.bind()
@@ -88,29 +90,6 @@ public class CreateMeetingContentViewController: UIViewController {
         createMeetingTitleView.titleTextField.rx.text.orEmpty
             .bind(to: createMeetingContentViewModel.titleTextRelay)
             .disposed(by: disposeBag)
-        //MARK: 모임 지역
-        createMeetingRegionView.onlineSwitch.rx.isOn
-            .bind(to: createMeetingContentViewModel.onlineSwitchRelay)
-            .disposed(by: disposeBag)
-        
-        createMeetingContentViewModel.onlineSwitchRelay
-            .bind(onNext: { [weak self] value in
-                if value {
-                    self?.createMeetingRegionView.regionButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
-                    self?.createMeetingRegionView.regionButton.isEnabled = false
-                }
-                else{
-                    self?.createMeetingRegionView.regionButton.backgroundColor = .white
-                    self?.createMeetingRegionView.regionButton.isEnabled = true
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        createMeetingRegionView.regionButton.rx.tap
-            .bind(onNext: { [weak self] in
-                self?.present(SelectMeetingRegionViewController(selectMeetingRegionViewModel: SelectMeetingRegionViewModel()), animated: true)
-            })
-            .disposed(by: disposeBag)
         //MARK: 모임 가입 수
         createMeetingContentViewModel.memberTextRelay
             .bind(to: createMeetingMemberView.memberLimitTextField.rx.text)
@@ -125,22 +104,32 @@ public class CreateMeetingContentViewController: UIViewController {
         //MARK: 모임 날짜
         periodViewBindTapGesture()
         
-        createMeetingPeriodViewModel.timeRelay
-            .bind(onNext: { [weak self] time in
-                self?.createMeetingPeriodView.timeBtView.configure(subTitle: time)
-                self?.createMeetingPeriodView.timeBtView.subTitleLabel.textColor = .black
-            })
-            .disposed(by: disposeBag)
-        
-        createMeetingPeriodViewModel.dateRelay
-            .bind(onNext: { [weak self] date in
-                self?.createMeetingPeriodView.dateBtView.configure(subTitle: date)
-                self?.createMeetingPeriodView.dateBtView.subTitleLabel.textColor = .black
-            })
-            .disposed(by: disposeBag)        
         //MARK: 모임 소개글
         createMeetingWritingView.introductionTextView.rx.text.orEmpty
             .bind(to: createMeetingContentViewModel.introductionTextRelay)
+            .disposed(by: disposeBag)
+        
+        createButton.rx.tap
+            .bind(to: createMeetingContentViewModel.createButtonTapped)
+            .disposed(by: disposeBag)
+        
+        createMeetingContentViewModel.isCreateButtonEnabled
+            .drive(onNext: { [weak self] isEnable in
+                if isEnable {
+                    self?.createButton.isEnabled = isEnable
+                    self?.createButton.enableNextButton()
+                }
+                else{
+                    self?.createButton.isEnabled = isEnable
+                    self?.createButton.disableNextButton()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        createMeetingContentViewModel.createButtonTapped
+            .bind(onNext: { [weak self] in
+                self?.navigationController?.popToRootViewController(animated: true)
+            })
             .disposed(by: disposeBag)
     }
     
@@ -276,5 +265,11 @@ public class CreateMeetingContentViewController: UIViewController {
             }
             self.view.layoutIfNeeded()
         })
+    }
+}
+
+extension CreateMeetingContentViewController: UIGestureRecognizerDelegate {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        return touch.view?.isDescendant(of: self.createMeetingPeriodView.calendarView.calendar) == nil
     }
 }

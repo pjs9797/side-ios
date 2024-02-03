@@ -12,9 +12,15 @@ import FeatureSignUpInterface
 import FeatureSignUp
 import FeatureHome
 
+import RxSwift
+import RxFlow
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
+    
+    private let coordinator: FlowCoordinator = FlowCoordinator()
+    private let disposeBag: DisposeBag = DisposeBag()
     
     func scene(
         _ scene: UIScene,
@@ -22,10 +28,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         options connectionOptions: UIScene.ConnectionOptions
     ) {
         guard let windowscene = (scene as? UIWindowScene) else { return }
-        window = UIWindow(frame:UIScreen.main.bounds)
-        window?.windowScene = windowscene
-        window?.backgroundColor = .white
-        window?.makeKeyAndVisible()
+        let window = UIWindow(windowScene: windowscene)
+        self.window = window
+        
+//        self.window?.backgroundColor = .white
+        self.window?.rootViewController = LaunchScreenViewController(window: window, coordinator: coordinator)
+        self.window?.makeKeyAndVisible()
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {}

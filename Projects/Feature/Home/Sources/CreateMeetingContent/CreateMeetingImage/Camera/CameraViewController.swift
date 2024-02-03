@@ -5,10 +5,7 @@ class CameraViewController: UIImagePickerController, UIImagePickerControllerDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.sourceType = .camera
-        self.allowsEditing = false
-        self.cameraDevice = .rear
-        self.cameraCaptureMode = .photo
+        
         self.delegate = self
     }
     

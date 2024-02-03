@@ -35,10 +35,10 @@ extension UITextView {
 }
 
 extension UIViewController {
-    func hideKeyboard(disposeBag: DisposeBag) {
+    func hideKeyboard(delegate: UIGestureRecognizerDelegate, disposeBag: DisposeBag) {
         let tapGesture = UITapGestureRecognizer()
         view.addGestureRecognizer(tapGesture)
-        
+        tapGesture.delegate = delegate
         tapGesture.rx.event.bind { [unowned self] _ in
             self.view.endEditing(true)
         }.disposed(by: disposeBag)
