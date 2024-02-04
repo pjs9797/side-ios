@@ -1,8 +1,8 @@
 //
-//  IdVerificateWithPhoneNumberReactor.swift
+//  PasswordVerificateWithPhoneNumberReactor.swift
 //  FeatureSignIn
 //
-//  Created by 강민성 on 2/1/24.
+//  Created by 강민성 on 2/4/24.
 //
 
 import Foundation
@@ -14,7 +14,7 @@ import RxCocoa
 import RxFlow
 import ReactorKit
 
-public class IdVerificateWithPhoneNumberReactor: ReactorKit.Reactor, Stepper {
+public class PasswordVerificateWithPhoneNumberReactor: ReactorKit.Reactor, Stepper {
     
     public var initialState: State = State()
     public var steps = PublishRelay<Step>()
@@ -160,7 +160,8 @@ public class IdVerificateWithPhoneNumberReactor: ReactorKit.Reactor, Stepper {
     }
 }
 
-extension IdVerificateWithPhoneNumberReactor {
+extension PasswordVerificateWithPhoneNumberReactor {
+    
     func checkPhoneNumber(phoneNumber: String) -> Bool {
         let regex = "^010-?([0-9]{4})-?([0-9]{4})$"
         let pred = NSPredicate(format: "SELF MATCHES %@", regex)

@@ -162,7 +162,7 @@ public final class SignUpService: APIService {
         return request(.get, "ASDAS", useAuthHeader: false, parameters: parameters, encoding: URLEncoding.default)
     }
     
-    func setUserPassword(phoneNumber: String, password: String) -> Observable<DataRequest> {
+    public func setUserPassword(phoneNumber: String, password: String) -> Observable<DataRequest> {
         var parameters = Parameters()
         parameters.updateValue(phoneNumber, forKey: "phoneNumber")
         parameters.updateValue(password, forKey: "password")

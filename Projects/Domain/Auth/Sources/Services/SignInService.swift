@@ -34,4 +34,20 @@ public final class SignInService: APIService {
         
         return request(.post, "ASFASGA", useAuthHeader: false, parameters: parameters)
     }
+    
+    public func setPasswordWithEmail(email: String, password: String) -> Observable<DataRequest> {
+        var parameters = Parameters()
+        parameters.updateValue(email, forKey: "email")
+        parameters.updateValue(password, forKey: "password")
+        
+        return request(.post, "ㅁㄴㅇㄴㅁ", useAuthHeader: false, parameters: parameters)
+    }
+    
+    public func setPasswordWithPhoneNumber(phoneNumber: String, password: String) -> Observable<DataRequest> {
+        var parameters = Parameters()
+        parameters.updateValue(phoneNumber, forKey: "phoneNumber")
+        parameters.updateValue(password, forKey: "password")
+        
+        return request(.post, "afssaf", useAuthHeader: false, parameters: parameters)
+    }
 }

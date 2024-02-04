@@ -13,8 +13,10 @@ import RxSwift
 import RxCocoa
 import RxFlow
 import ReactorKit
+import RxKeyboard
+import AnyFormatKit
 
-public class IdVerificateWithPhoneNumberViewController: BaseViewController, ReactorKit.View {
+public class IdVerificateWithPhoneNumberViewController: BaseViewController, ReactorKit.View, UITextFieldDelegate {
     
     public typealias Reactor = IdVerificateWithPhoneNumberReactor
     
@@ -67,8 +69,10 @@ public class IdVerificateWithPhoneNumberViewController: BaseViewController, Reac
     }
     
     private func setUp() {
-        idVerificateWithPhoneNumberView.emailVerificateInputView.inputViewErrorLabel.isHidden = true
+        idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.inputViewErrorLabel.isHidden = true
         idVerificateWithPhoneNumberView.verificationNumberInputView.isHidden = true
+        
+        idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificationInputViewTextField.delegate = self
     }
     
     private func render() {
@@ -91,18 +95,16 @@ public class IdVerificateWithPhoneNumberViewController: BaseViewController, Reac
 
         }
         
-        idVerificateWithPhoneNumberView.emailVerificateInputView.snp.makeConstraints { make in
+        idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.snp.makeConstraints { make in
             make.top.equalTo(idVerificateWithPhoneNumberView.descriptionLabel.snp.bottom).offset(40)
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(20)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-20)
-//            make.height.equalTo(56)
         }
         
         idVerificateWithPhoneNumberView.verificationNumberInputView.snp.makeConstraints { make in
-            make.top.equalTo(idVerificateWithPhoneNumberView.emailVerificateInputView.snp.bottom).offset(24)
+            make.top.equalTo(idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.snp.bottom).offset(20)
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(20)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-20)
-//            make.height.equalTo(56)
         }
         
         idVerificateWithPhoneNumberView.verificationCompletedButton.snp.makeConstraints { make in
@@ -113,6 +115,45 @@ public class IdVerificateWithPhoneNumberViewController: BaseViewController, Reac
         }
     }
     
+    func formatPhoneNumber(_ text: String?) -> String {
+        guard let text = text else { return "" }
+        
+        // 숫자만 추출
+        let numbersOnly = text.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+        
+        var formattedText = ""
+        
+        // 첫 번째 그룹 (000)
+        if numbersOnly.count > 0 {
+            formattedText.append(contentsOf: numbersOnly.prefix(3))
+        }
+        
+        // 자동으로 "-" 추가
+        if numbersOnly.count > 3 {
+            formattedText.append("-")
+        }
+        
+        // 두 번째 그룹 (0000)
+        if numbersOnly.count > 3 {
+            let startIndex = numbersOnly.index(numbersOnly.startIndex, offsetBy: 3)
+            if numbersOnly.count > 7 {
+                formattedText.append(contentsOf: numbersOnly[startIndex..<numbersOnly.index(startIndex, offsetBy: 4)])
+                formattedText.append("-")
+            } else {
+                formattedText.append(contentsOf: numbersOnly[startIndex...])
+                return formattedText
+            }
+        }
+        
+        // 세 번째 그룹 (0000)
+        if numbersOnly.count > 7 {
+                let startIndex = numbersOnly.index(numbersOnly.startIndex, offsetBy: 7)
+                let endIndex = numbersOnly.index(startIndex, offsetBy: min(6, numbersOnly.count - 7))
+                formattedText.append(contentsOf: numbersOnly[startIndex..<endIndex])
+            }
+        
+        return formattedText
+    }
 }
 
 extension IdVerificateWithPhoneNumberViewController {
@@ -127,13 +168,20 @@ extension IdVerificateWithPhoneNumberViewController {
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
-        idVerificateWithPhoneNumberView.emailVerificateInputView.verificationInputViewTextField.rx.text
+        idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificationInputViewTextField.rx.text
             .orEmpty
             .map { Reactor.Action.writePhoneNumber($0) }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
-        idVerificateWithPhoneNumberView.emailVerificateInputView.verificateButton.rx
+        idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificationInputViewTextField.rx.text
+            .subscribe(onNext: { [weak self] text in
+                guard let self = self else { return }
+                self.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificationInputViewTextField.text = self.formatPhoneNumber(text)
+            })
+            .disposed(by: disposeBag)
+        
+        idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificateButton.rx
             .tap
             .map { Reactor.Action.didTapRequestVerificationNumberButton }
             .bind(to: reactor.action)
@@ -156,12 +204,16 @@ extension IdVerificateWithPhoneNumberViewController {
             })
             .disposed(by: disposeBag)
         
+        reactor.state.map { $0.phoneNumber }
+            .bind(to: idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificationInputViewTextField.rx.text)
+            .disposed(by: disposeBag)
+        
         reactor.state.map { $0.isVerificationComplete }
             .bind(to: idVerificateWithPhoneNumberView.verificationCompletedButton.rx.isEnabled)
             .disposed(by: disposeBag)
         
         reactor.state.map { $0.timerTime == 0 }
-            .bind(to: idVerificateWithPhoneNumberView.emailVerificateInputView.verificateButton.rx.isEnabled)
+            .bind(to: idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificateButton.rx.isEnabled)
             .disposed(by: disposeBag)
         
         reactor.state.map { $0.timerString }
@@ -171,18 +223,18 @@ extension IdVerificateWithPhoneNumberViewController {
         reactor.state.map { $0.isIncorrectFormedPhoneNumber }
             .subscribe(onNext: { [weak self] error in
                 if !error {
-                    self?.idVerificateWithPhoneNumberView.emailVerificateInputView.verificationInputViewTextField.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-                    self?.idVerificateWithPhoneNumberView.emailVerificateInputView.verificateButton.layer.borderColor = SharedDSKitAsset.Colors.gr50.color.cgColor
-                    self?.idVerificateWithPhoneNumberView.emailVerificateInputView.verificationInputViewTextField.leftView?.isHidden = true
+                    self?.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificationInputViewTextField.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+                    self?.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificateButton.layer.borderColor = SharedDSKitAsset.Colors.gr50.color.cgColor
+                    self?.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificationInputViewTextField.leftView?.isHidden = true
                 } else {
-                    self?.idVerificateWithPhoneNumberView.emailVerificateInputView.verificationInputViewTextField.layer.borderColor = SharedDSKitAsset.Colors.red.color.cgColor
-                    self?.idVerificateWithPhoneNumberView.emailVerificateInputView.inputViewErrorLabel.text = "올바른 전화번호를 입력해 주세요."
-                    self?.idVerificateWithPhoneNumberView.emailVerificateInputView.verificationInputViewTextField.leftView?.isHidden = false
-                    self?.idVerificateWithPhoneNumberView.emailVerificateInputView.verificateButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
-                    self?.idVerificateWithPhoneNumberView.emailVerificateInputView.verificateButton.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+                    self?.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificationInputViewTextField.layer.borderColor = SharedDSKitAsset.Colors.red.color.cgColor
+                    self?.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.inputViewErrorLabel.text = "올바른 전화번호를 입력해 주세요."
+                    self?.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificationInputViewTextField.leftView?.isHidden = false
+                    self?.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificateButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                    self?.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificateButton.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                 }
-                self?.idVerificateWithPhoneNumberView.emailVerificateInputView.verificateButton.isEnabled = !error
-                self?.idVerificateWithPhoneNumberView.emailVerificateInputView.inputViewErrorLabel.isHidden = !error
+                self?.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificateButton.isEnabled = !error
+                self?.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.inputViewErrorLabel.isHidden = !error
             })
             .disposed(by: disposeBag)
         

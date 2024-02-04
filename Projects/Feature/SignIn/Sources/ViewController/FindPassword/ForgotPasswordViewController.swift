@@ -1,8 +1,8 @@
 //
-//  ForgotIdViewController.swift
+//  ForgotPasswordViewController.swift
 //  FeatureSignIn
 //
-//  Created by 강민성 on 1/29/24.
+//  Created by 강민성 on 2/4/24.
 //
 
 import UIKit
@@ -14,15 +14,15 @@ import RxCocoa
 import RxFlow
 import ReactorKit
 
-public class ForgotIdViewController: BaseViewController, ReactorKit.View {
+public class ForgotPasswordViewController: BaseViewController, ReactorKit.View {
     
-    public typealias Reactor = ForgotIdReactor
+    public typealias Reactor = ForgotPasswordReactor
     
-    let forgotIdView = ForgotIdView()
+    let forgotPasswordView = ForgotPasswordView()
     
     public override func loadView() {
         super.loadView()
-        view = forgotIdView
+        view = forgotPasswordView
     }
 
     public override func viewDidLoad() {
@@ -33,7 +33,7 @@ public class ForgotIdViewController: BaseViewController, ReactorKit.View {
     public override func configureUI() {
         super.configureUI()
         addBackButton()
-        addNavigationTitleLabel("아이디 찾기")
+        addNavigationTitleLabel("비밀번호 찾기")
         render()
     }
     
@@ -47,22 +47,22 @@ public class ForgotIdViewController: BaseViewController, ReactorKit.View {
     }
     
     private func render() {
-        forgotIdView.titleLabel.snp.makeConstraints { make in
+        forgotPasswordView.titleLabel.snp.makeConstraints { make in
             make.top.equalTo(navigationBarArea.snp.bottom).offset(60)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
-            make.bottom.equalTo(forgotIdView.findWithPhoneNumberButton.snp.top).offset(-40)
+            make.bottom.equalTo(forgotPasswordView.findWithPhoneNumberButton.snp.top).offset(-40)
         }
         
-        forgotIdView.findWithPhoneNumberButton.snp.makeConstraints { make in
-            make.top.equalTo(forgotIdView.titleLabel.snp.bottom).offset(40)
+        forgotPasswordView.findWithPhoneNumberButton.snp.makeConstraints { make in
+            make.top.equalTo(forgotPasswordView.titleLabel.snp.bottom).offset(40)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
             make.height.equalTo(105)
         }
         
-        forgotIdView.findWithEmailButton.snp.makeConstraints { make in
-            make.top.equalTo(forgotIdView.findWithPhoneNumberButton.snp.bottom).offset(16)
+        forgotPasswordView.findWithEmailButton.snp.makeConstraints { make in
+            make.top.equalTo(forgotPasswordView.findWithPhoneNumberButton.snp.bottom).offset(16)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
             make.height.equalTo(105)
@@ -70,15 +70,20 @@ public class ForgotIdViewController: BaseViewController, ReactorKit.View {
     }
 }
 
-extension ForgotIdViewController {
-    public func bind(reactor: ForgotIdReactor) {
+extension ForgotPasswordViewController {
+    public func bind(reactor: ForgotPasswordReactor) {
         backButton.rx.tap
             .map { Reactor.Action.didbackButtonTapped }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
-        forgotIdView.findWithEmailButton.rx.tap
+        forgotPasswordView.findWithEmailButton.rx.tap
             .map { Reactor.Action.didFindWithEmailButtonTapped }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        forgotPasswordView.findWithPhoneNumberButton.rx.tap
+            .map { Reactor.Action.didFindWithPhoneNumberTapped }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
     }
