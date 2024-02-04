@@ -1,14 +1,13 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import ReactorKit
 import SnapKit
 import Shared
 
-public class SelectDevelopDetailsViewController: UIViewController{
-    let disposeBag = DisposeBag()
-    let meetingTitle: String
-    let selectDevelopDetailsViewModel: SelectDevelopDetailsViewModel
-    var selectedDevelopDetail: String = ""
+public class SelectDevelopDetailsViewController: UIViewController, ReactorKit.View{
+    public var disposeBag = DisposeBag()
+    var meetingTitle: String
     let backButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: nil, action: nil)
     let progressView: UIProgressView = {
         let progressView = UIProgressView()
@@ -38,10 +37,10 @@ public class SelectDevelopDetailsViewController: UIViewController{
         return button
     }()
     
-    public init(meetingTitle: String, selectDevelopDetailsViewModel: SelectDevelopDetailsViewModel) {
+    public init(meetingTitle: String, with reactor: SelectDevelopDetailsReactor) {
         self.meetingTitle = meetingTitle
-        self.selectDevelopDetailsViewModel = selectDevelopDetailsViewModel
         super.init(nibName: nil, bundle: nil)
+        self.reactor = reactor
     }
     
     required init?(coder: NSCoder) {
@@ -53,7 +52,6 @@ public class SelectDevelopDetailsViewController: UIViewController{
         
         self.view.backgroundColor = .white
         setNavigationbar()
-        bind()
         layout()
     }
     
@@ -65,123 +63,6 @@ public class SelectDevelopDetailsViewController: UIViewController{
         ]
         self.backButton.tintColor = SharedDSKitAsset.Colors.black.color
         navigationItem.leftBarButtonItem = backButton
-    }
-    
-    private func bind(){
-        backButton.rx.tap
-            .bind(to: selectDevelopDetailsViewModel.backButtonTapped)
-            .disposed(by: disposeBag)
-        
-        selectDevelopDetailsViewModel.backButtonTapped
-            .bind(onNext: { [weak self] in
-                self?.navigationController?.popViewController(animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        nextButton.rx.tap
-            .bind(to: selectDevelopDetailsViewModel.nextButtonTapped)
-            .disposed(by: disposeBag)
-        
-        selectDevelopDetailsViewModel.nextButtonTapped
-            .bind(onNext: { [weak self] in
-                let meetingRegionViewModel = MeetingRegionViewModel()
-                let createMeetingPeriodViewModel = CreateMeetingPeriodViewModel()
-                self?.navigationController?.pushViewController(CreateMeetingContentViewController(meetingTitle: self!.meetingTitle, meetingRegionViewModel: meetingRegionViewModel, createMeetingContentViewModel: CreateMeetingContentViewModel(meetingRegionViewModel: meetingRegionViewModel, createMeetingPeriodViewModel: createMeetingPeriodViewModel), createMeetingPeriodViewModel: createMeetingPeriodViewModel), animated: true)
-            })
-            .disposed(by: disposeBag)
-
-        studyBtView.tapGesture.rx.event
-            .map { _ in Void() }
-            .bind(to: selectDevelopDetailsViewModel.studyBtViewTapped)
-            .disposed(by: disposeBag)
-        
-        sideProjectBtView.tapGesture.rx.event
-            .map { _ in Void() }
-            .bind(to: selectDevelopDetailsViewModel.sideProjectBtViewTapped)
-            .disposed(by: disposeBag)
-        
-        jobChangeBtView.tapGesture.rx.event
-            .map { _ in Void() }
-            .bind(to: selectDevelopDetailsViewModel.jobChangeBtViewTapped)
-            .disposed(by: disposeBag)
-        
-        languageBtView.tapGesture.rx.event
-            .map { _ in Void() }
-            .bind(to: selectDevelopDetailsViewModel.languageBtViewTapped)
-            .disposed(by: disposeBag)
-        
-        investmentBtView.tapGesture.rx.event
-            .map { _ in Void() }
-            .bind(to: selectDevelopDetailsViewModel.investmentBtViewTapped)
-            .disposed(by: disposeBag)
-        
-        etcBtView.tapGesture.rx.event
-            .map { _ in Void() }
-            .bind(to: selectDevelopDetailsViewModel.etcBtViewTapped)
-            .disposed(by: disposeBag)
-        
-        selectDevelopDetailsViewModel.developDetailTypeRelay
-            .subscribe(onNext: { [weak self] type in
-                switch type {
-                case .study:
-                    self?.nextButton.enableNextButton()
-                    self?.selectedDevelopDetail = "스터디"
-                    self?.studyBtView.borderView.isHidden = false
-                    self?.sideProjectBtView.borderView.isHidden = true
-                    self?.jobChangeBtView.borderView.isHidden = true
-                    self?.languageBtView.borderView.isHidden = true
-                    self?.investmentBtView.borderView.isHidden = true
-                    self?.etcBtView.borderView.isHidden = true
-                case .sideProject:
-                    self?.nextButton.enableNextButton()
-                    self?.selectedDevelopDetail = "사이드 프로젝트"
-                    self?.studyBtView.borderView.isHidden = true
-                    self?.sideProjectBtView.borderView.isHidden = false
-                    self?.jobChangeBtView.borderView.isHidden = true
-                    self?.languageBtView.borderView.isHidden = true
-                    self?.investmentBtView.borderView.isHidden = true
-                    self?.etcBtView.borderView.isHidden = true
-                case .jobChange:
-                    self?.nextButton.enableNextButton()
-                    self?.selectedDevelopDetail = "이직 준비"
-                    self?.studyBtView.borderView.isHidden = true
-                    self?.sideProjectBtView.borderView.isHidden = true
-                    self?.jobChangeBtView.borderView.isHidden = false
-                    self?.languageBtView.borderView.isHidden = true
-                    self?.investmentBtView.borderView.isHidden = true
-                    self?.etcBtView.borderView.isHidden = true
-                case .language:
-                    self?.nextButton.enableNextButton()
-                    self?.selectedDevelopDetail = "어학"
-                    self?.studyBtView.borderView.isHidden = true
-                    self?.sideProjectBtView.borderView.isHidden = true
-                    self?.jobChangeBtView.borderView.isHidden = true
-                    self?.languageBtView.borderView.isHidden = false
-                    self?.investmentBtView.borderView.isHidden = true
-                    self?.etcBtView.borderView.isHidden = true
-                case .investment:
-                    self?.nextButton.enableNextButton()
-                    self?.selectedDevelopDetail = "재테크"
-                    self?.studyBtView.borderView.isHidden = true
-                    self?.sideProjectBtView.borderView.isHidden = true
-                    self?.jobChangeBtView.borderView.isHidden = true
-                    self?.languageBtView.borderView.isHidden = true
-                    self?.investmentBtView.borderView.isHidden = false
-                    self?.etcBtView.borderView.isHidden = true
-                case .etc:
-                    self?.nextButton.enableNextButton()
-                    self?.selectedDevelopDetail = "기타"
-                    self?.studyBtView.borderView.isHidden = true
-                    self?.sideProjectBtView.borderView.isHidden = true
-                    self?.jobChangeBtView.borderView.isHidden = true
-                    self?.languageBtView.borderView.isHidden = true
-                    self?.investmentBtView.borderView.isHidden = true
-                    self?.etcBtView.borderView.isHidden = false
-                case .none:
-                    self?.nextButton.disableNextButton()
-                }
-            })
-            .disposed(by: disposeBag)
     }
     
     private func layout(){
@@ -246,6 +127,97 @@ public class SelectDevelopDetailsViewController: UIViewController{
             make.height.equalTo(52)
             make.centerX.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-8)
+        }
+    }
+}
+
+extension SelectDevelopDetailsViewController{
+    public func bind(reactor: SelectDevelopDetailsReactor) {
+        bindAction(reactor: reactor)
+        bindState(reactor: reactor)
+    }
+    
+    private func bindAction(reactor: SelectDevelopDetailsReactor) {
+        backButton.rx.tap
+            .map { Reactor.Action.backButtonTapped }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        nextButton.rx.tap
+            .map { Reactor.Action.nextButtonTapped }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        studyBtView.tapGesture.rx.event
+            .map { _ in Reactor.Action.detailTypeSelected(.study) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        sideProjectBtView.tapGesture.rx.event
+            .map { _ in Reactor.Action.detailTypeSelected(.sideProject) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        jobChangeBtView.tapGesture.rx.event
+            .map { _ in Reactor.Action.detailTypeSelected(.jobChange) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        languageBtView.tapGesture.rx.event
+            .map { _ in Reactor.Action.detailTypeSelected(.language) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        investmentBtView.tapGesture.rx.event
+            .map { _ in Reactor.Action.detailTypeSelected(.investment) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        etcBtView.tapGesture.rx.event
+            .map { _ in Reactor.Action.detailTypeSelected(.etc) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindState(reactor: SelectDevelopDetailsReactor) {
+        reactor.state
+            .map { $0.selectedDetailType }
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] type in
+                self?.updateUI(for: type)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func updateUI(for type: DevelopDetailType) {
+        studyBtView.borderView.isHidden = true
+        sideProjectBtView.borderView.isHidden = true
+        jobChangeBtView.borderView.isHidden = true
+        languageBtView.borderView.isHidden = true
+        investmentBtView.borderView.isHidden = true
+        etcBtView.borderView.isHidden = true
+
+        switch type {
+        case .study:
+            self.nextButton.enableNextButton()
+            studyBtView.borderView.isHidden = false
+        case .sideProject:
+            self.nextButton.enableNextButton()
+            sideProjectBtView.borderView.isHidden = false
+        case .jobChange:
+            self.nextButton.enableNextButton()
+            jobChangeBtView.borderView.isHidden = false
+        case .language:
+            self.nextButton.enableNextButton()
+            languageBtView.borderView.isHidden = false
+        case .investment:
+            self.nextButton.enableNextButton()
+            investmentBtView.borderView.isHidden = false
+        case .etc:
+            self.nextButton.enableNextButton()
+            etcBtView.borderView.isHidden = false
+        case .none:
+            self.nextButton.disableNextButton()
         }
     }
 }

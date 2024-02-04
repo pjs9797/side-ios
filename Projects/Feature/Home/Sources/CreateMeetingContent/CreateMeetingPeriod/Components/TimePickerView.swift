@@ -1,11 +1,11 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import ReactorKit
 import Shared
 
-class TimePickerView: UIView {
-    let disposeBag = DisposeBag()
-    var createMeetingPeriodViewModel: CreateMeetingPeriodViewModel
+class TimePickerView: UIView, ReactorKit.View {
+    var disposeBag = DisposeBag()
     var isInitialized = 1
     let timePicker = UIPickerView()
     let periodUpLine: UIView = {
@@ -39,37 +39,38 @@ class TimePickerView: UIView {
         return view
     }()
     
-    init(createMeetingPeriodViewModel: CreateMeetingPeriodViewModel) {
-        self.createMeetingPeriodViewModel = createMeetingPeriodViewModel
-        super.init(frame: .zero)
+    init(with reactor: CreateMeetingPeriodReactor) {
         
+        super.init(frame: .zero)
+        self.reactor = reactor
         timePicker.delegate = self
         timePicker.dataSource = self
-        bind()
         layout()
         setInitialPickerValues()
         timePicker.subviews[1].backgroundColor = .clear
+        //bind(reactor: reactor)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func bind() {
-        timePicker.rx.itemSelected
-            .subscribe(onNext: { [weak self] row, component in
-                guard let self = self else { return }
-                let selectedHourIndex = self.timePicker.selectedRow(inComponent: 1) % 12
-                let selectedMinuteIndex = self.timePicker.selectedRow(inComponent: 2) % 60
-                let selectedAmPm = self.createMeetingPeriodViewModel.amPm.value[self.timePicker.selectedRow(inComponent: 0) % 2]
-                let selectedHour = self.createMeetingPeriodViewModel.hours.value[selectedHourIndex]
-                let selectedMinute = self.createMeetingPeriodViewModel.minutes.value[selectedMinuteIndex]
-                let timeString = "\(selectedAmPm) \(selectedHour):\(selectedMinute)"
-                self.timePicker.reloadAllComponents()
-                self.createMeetingPeriodViewModel.timeRelay.accept(timeString)
-            })
-            .disposed(by: disposeBag)
-    }
+//    func bind() {
+//        timePicker.rx.itemSelected
+//            .subscribe(onNext: { [weak self] row, component in
+//                guard let self = self else { return }
+//                let selectedAmPm = self.timePicker.selectedRow(inComponent: 0) % 2
+//                let selectedHourIndex = self.timePicker.selectedRow(inComponent: 1) % 12
+//                let selectedMinuteIndex = self.timePicker.selectedRow(inComponent: 2) % 60
+//                let selectedAmPm = self.createMeetingPeriodViewModel.amPm.value[self.timePicker.selectedRow(inComponent: 0) % 2]
+//                let selectedHour = self.createMeetingPeriodViewModel.hours.value[selectedHourIndex]
+//                let selectedMinute = self.createMeetingPeriodViewModel.minutes.value[selectedMinuteIndex]
+//                let timeString = "\(selectedAmPm) \(selectedHour):\(selectedMinute)"
+//                self.timePicker.reloadAllComponents()
+//                self.createMeetingPeriodViewModel.timeRelay.accept(timeString)
+//            })
+//            .disposed(by: disposeBag)
+//    }
     
     func layout(){
         [timePicker,periodUpLine,periodUnderLine,hourUpLine,hourUnderLine,minuteUpLine,minuteUnderLine]
@@ -116,9 +117,10 @@ class TimePickerView: UIView {
     }
     
     func setInitialPickerValues() {
-        let hourRow = (createMeetingPeriodViewModel.hours.value.count / 2) + (12 - 1)
+        guard let reactor = self.reactor else { return }
+        let hourRow = (reactor.currentState.hours.count / 2) + (12 - 1)
         timePicker.selectRow(hourRow, inComponent: 1, animated: false)
-        let minuteRow = (createMeetingPeriodViewModel.minutes.value.count / 2)
+        let minuteRow = (reactor.currentState.minutes.count / 2)
         timePicker.selectRow(minuteRow, inComponent: 2, animated: false)
     }
 }
@@ -138,6 +140,7 @@ extension TimePickerView: UIPickerViewDelegate{
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        guard let reactor = self.reactor else { return UIView()}
         let label = (view as? UILabel) ?? UILabel()
         if pickerView.selectedRow(inComponent: component) == row {
             if pickerView.bounds.midY >= 56 && pickerView.bounds.midY <= 112 {
@@ -150,11 +153,11 @@ extension TimePickerView: UIPickerViewDelegate{
         label.textAlignment = .center
         switch component{
         case 0:
-            label.text = createMeetingPeriodViewModel.amPm.value[row]
+            label.text = reactor.currentState.amPm[row]
         case 1:
-            label.text = createMeetingPeriodViewModel.hours.value[row % 24]
+            label.text = reactor.currentState.hours[row % 24]
         case 2:
-            label.text = createMeetingPeriodViewModel.minutes.value[row % 60]
+            label.text = reactor.currentState.minutes[row % 60]
         default:
             break
         }
@@ -168,15 +171,41 @@ extension TimePickerView: UIPickerViewDataSource{
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        guard let reactor = self.reactor else { return 0 }
         switch component {
         case 0:
-            return createMeetingPeriodViewModel.amPm.value.count
+            return reactor.currentState.amPm.count
         case 1:
-            return createMeetingPeriodViewModel.hours.value.count
+            return reactor.currentState.hours.count
         case 2:
-            return createMeetingPeriodViewModel.minutes.value.count
+            return reactor.currentState.minutes.count
         default:
             return 0
         }
+    }
+}
+
+extension TimePickerView{
+    func bind(reactor: CreateMeetingPeriodReactor) {
+        bindAction(reactor: reactor)
+        bindState(reactor: reactor)
+    }
+    
+    func bindAction(reactor: CreateMeetingPeriodReactor){
+        timePicker.rx.itemSelected
+            .map { [unowned self] _ in
+                return Reactor.Action.selectTime(amPmIndex: self.timePicker.selectedRow(inComponent: 0), hourIndex: self.timePicker.selectedRow(inComponent: 1), minuteIndex: self.timePicker.selectedRow(inComponent: 2))
+            }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    }
+    
+    func bindState(reactor: CreateMeetingPeriodReactor){
+        reactor.state.map { $0.selectedTime }
+            .distinctUntilChanged()
+            .bind(onNext: { [weak self] _ in
+                self?.timePicker.reloadAllComponents()
+            })
+            .disposed(by: disposeBag)
     }
 }

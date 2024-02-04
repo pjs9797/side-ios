@@ -1,13 +1,13 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import ReactorKit
 import SnapKit
 import Shared
 
-public class CreateMeetingViewController: UIViewController{
-    let disposeBag = DisposeBag()
-    let meetingTitle: String
-    let createMeetingViewModel: CreateMeetingViewModel
+public class InitializeCreateMeetingViewController: UIViewController, ReactorKit.View{
+    public var disposeBag = DisposeBag()
+    var meetingTitle: String
     let backButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: nil, action: nil)
     let progressView: UIProgressView = {
         let progressView = UIProgressView()
@@ -45,10 +45,10 @@ public class CreateMeetingViewController: UIViewController{
         return button
     }()
     
-    public init(meetingTitle: String, createMeetingViewModel: CreateMeetingViewModel) {
+    public init(meetingTitle: String, with reactor: InitializeCreateMeetingReactor) {
         self.meetingTitle = meetingTitle
-        self.createMeetingViewModel = createMeetingViewModel
         super.init(nibName: nil, bundle: nil)
+        self.reactor = reactor
     }
     
     required init?(coder: NSCoder) {
@@ -60,7 +60,6 @@ public class CreateMeetingViewController: UIViewController{
 
         self.view.backgroundColor = .white
         setNavigationbar()
-        bind()
         layout()
     }
     
@@ -73,62 +72,6 @@ public class CreateMeetingViewController: UIViewController{
         ]
         self.backButton.tintColor = SharedDSKitAsset.Colors.black.color
         navigationItem.leftBarButtonItem = backButton
-    }
-    
-    private func bind(){
-        backButton.rx.tap
-            .bind(to: createMeetingViewModel.backButtonTapped)
-            .disposed(by: disposeBag)
-        
-        createMeetingViewModel.backButtonTapped
-            .bind(onNext: { [weak self] in
-                self?.navigationController?.popViewController(animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        nextButton.rx.tap
-            .bind(to: createMeetingViewModel.nextButtonTapped)
-            .disposed(by: disposeBag)
-        
-        createMeetingViewModel.nextButtonTapped
-            .bind(onNext: { [weak self] in
-                switch self?.createMeetingViewModel.meetingTypeRelay.value {
-                case .develop:
-                    self?.navigationController?.pushViewController(SelectDevelopDetailsViewController(meetingTitle: self?.meetingTitle ?? "모임 생성", selectDevelopDetailsViewModel: SelectDevelopDetailsViewModel()), animated: true)
-                case .hobby:
-                    self?.navigationController?.pushViewController(SelectHobbyDetailsViewController(meetingTitle: self?.meetingTitle ?? "모임 생성", selectHobbyDetailsViewModel: SelectHobbyDetailsViewModel()), animated: true)
-                default:
-                    break
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        developBtView.tapGesture.rx.event
-            .map { _ in Void() }
-            .bind(to: createMeetingViewModel.developBtViewTapped)
-            .disposed(by: disposeBag)
-        
-        hobbyBtView.tapGesture.rx.event
-            .map { _ in Void() }
-            .bind(to: createMeetingViewModel.hobbyBtViewTapped)
-            .disposed(by: disposeBag)
-        
-        createMeetingViewModel.meetingTypeRelay
-            .subscribe(onNext: { [weak self] type in
-                switch type {
-                case .develop:
-                    self?.nextButton.enableNextButton()
-                    self?.developBtView.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
-                    self?.hobbyBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-                case .hobby:
-                    self?.nextButton.enableNextButton()
-                    self?.developBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-                    self?.hobbyBtView.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
-                case .none:
-                    self?.nextButton.disableNextButton()
-                }
-            })
-            .disposed(by: disposeBag)
     }
     
     private func layout(){
@@ -166,5 +109,55 @@ public class CreateMeetingViewController: UIViewController{
             make.centerX.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-8)
         }
+    }
+}
+
+extension InitializeCreateMeetingViewController{
+    public func bind(reactor: InitializeCreateMeetingReactor) {
+        bindAction(reactor: reactor)
+        bindState(reactor: reactor)
+    }
+    
+    private func bindAction(reactor: InitializeCreateMeetingReactor) {
+        backButton.rx.tap
+            .map { Reactor.Action.backButtonTapped }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        nextButton.rx.tap
+            .map { Reactor.Action.nextButtonTapped }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        developBtView.tapGesture.rx.event
+            .map { _ in Reactor.Action.developButtonTapped }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        hobbyBtView.tapGesture.rx.event
+            .map { _ in Reactor.Action.hobbyButtonTapped }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindState(reactor: InitializeCreateMeetingReactor) {
+        reactor.state
+            .map { $0.meetingType }
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] type in
+                switch type {
+                case .develop:
+                    self?.nextButton.enableNextButton()
+                    self?.developBtView.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
+                    self?.hobbyBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+                case .hobby:
+                    self?.nextButton.enableNextButton()
+                    self?.developBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+                    self?.hobbyBtView.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
+                case .none:
+                    self?.nextButton.disableNextButton()
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }

@@ -1,6 +1,5 @@
 import UIKit
 import Domain
-
 import RxFlow
 
 final public class HomeFlow: Flow {
@@ -24,10 +23,10 @@ final public class HomeFlow: Flow {
         switch step {
         case .popViewController:
             return popViewController()
-        case .dismissViewController:
-            return dismissViewController()
-        default:
-            return .none
+        case .presentSelectMeetingTypeViewController:
+            return coordinateToSelectMeetingTypeViewController()
+        case .goToCreateMeetingFlow(let meetingTitle):
+            return coordinateToCreateMeetingFlow(meetingTitle: meetingTitle)
         }
     }
     
@@ -37,17 +36,16 @@ final public class HomeFlow: Flow {
         return .none
     }
     
-    private func dismissViewController() -> FlowContributors {
-        self.rootViewController.popViewController(animated: true)
-        
-        return .none
-    }
-    
-    private func coordinateToMainSignInViewController() -> FlowContributors {
-        let reactor = SignInReactor(provider: provider)
-        let viewController = SignInViewController(with: reactor)
-        self.rootViewController.setViewControllers([viewController], animated: false)
+    private func coordinateToSelectMeetingTypeViewController() -> FlowContributors {
+        let reactor = SelectMeetingTypeReactor()
+        let viewController = SelectMeetingTypeViewController(with: reactor)
+        self.rootViewController.present(viewController, animated: false)
         
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
+    }
+    
+    private func coordinateToCreateMeetingFlow(meetingTitle: String) -> FlowContributors {
+        let createMeetingFlow = CreateMeetingFlow(with: self.provider, with: self.rootViewController, with: meetingTitle)
+        return .one(flowContributor: .contribute(withNextPresentable: createMeetingFlow, withNextStepper: OneStepper(withSingleStep: CreateMeetingStep.goToInitializeCreateMeetingViewController)))
     }
 }

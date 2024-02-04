@@ -90,9 +90,9 @@ public class SelectHobbyDetailsViewController: UIViewController{
         
         selectHobbyDetailsViewModel.nextButtonTapped
             .bind(onNext: { [weak self] in
-                let meetingRegionViewModel = MeetingRegionViewModel()
-                let createMeetingPeriodViewModel = CreateMeetingPeriodViewModel()
-                self?.navigationController?.pushViewController(CreateMeetingContentViewController(meetingTitle: self!.meetingTitle, meetingRegionViewModel: meetingRegionViewModel, createMeetingContentViewModel: CreateMeetingContentViewModel(meetingRegionViewModel: meetingRegionViewModel, createMeetingPeriodViewModel: createMeetingPeriodViewModel), createMeetingPeriodViewModel: createMeetingPeriodViewModel), animated: true)
+//                let meetingRegionViewModel = MeetingRegionViewModel()
+//                let createMeetingPeriodViewModel = CreateMeetingPeriodViewModel()
+//                self?.navigationController?.pushViewController(CreateMeetingContentViewController(meetingTitle: self!.meetingTitle, meetingRegionViewModel: meetingRegionViewModel, createMeetingContentViewModel: CreateMeetingContentViewModel(meetingRegionViewModel: meetingRegionViewModel, createMeetingPeriodViewModel: createMeetingPeriodViewModel), createMeetingPeriodViewModel: createMeetingPeriodViewModel), animated: true)
             })
             .disposed(by: disposeBag)
         

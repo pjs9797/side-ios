@@ -22,9 +22,9 @@ public class HomeViewController: UIViewController {
         super.viewDidLoad()
         homeView.plusButton.rx.tap
             .bind(onNext: { [weak self] in
-                let selectMeetingTypeVC = SelectMeetingTypeViewController(selectMeetingTypeViewModel: SelectMeetingTypeViewModel())
-                selectMeetingTypeVC.homeNavigationController = self?.navigationController
-                self?.present(selectMeetingTypeVC, animated: false)
+//                let selectMeetingTypeVC = SelectMeetingTypeViewController(selectMeetingTypeViewModel: SelectMeetingTypeReactor())
+//                selectMeetingTypeVC.homeNavigationController = self?.navigationController
+//                self?.present(selectMeetingTypeVC, animated: false)
             })
             .disposed(by: disposeBag)
         homeView.segmentedControl.addTarget(self, action: #selector(didChangeValue(segment:)), for: .valueChanged)

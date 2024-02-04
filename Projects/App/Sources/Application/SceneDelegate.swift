@@ -32,7 +32,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         
 //        self.window?.backgroundColor = .white
-        self.window?.rootViewController = LaunchScreenViewController(window: window, coordinator: coordinator)
+        //self.window?.rootViewController = LaunchScreenViewController(window: window, coordinator: coordinator)
+        self.window?.rootViewController = CreateMeetingContentViewController(meetingTitle: "모임 생성", meetingRegionViewModel: MeetingRegionViewModel(), createMeetingContentViewModel: CreateMeetingContentViewModel(), createMeetingPeriodReactor: CreateMeetingPeriodReactor())
         self.window?.makeKeyAndVisible()
     }
     

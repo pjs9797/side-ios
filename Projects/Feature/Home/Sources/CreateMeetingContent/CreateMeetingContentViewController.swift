@@ -9,7 +9,7 @@ public class CreateMeetingContentViewController: UIViewController {
     let meetingTitle: String
     let meetingRegionViewModel: MeetingRegionViewModel
     let createMeetingContentViewModel: CreateMeetingContentViewModel
-    let createMeetingPeriodViewModel: CreateMeetingPeriodViewModel
+    let createMeetingPeriodReactor: CreateMeetingPeriodReactor
     let backButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: nil, action: nil)
     let progressView: UIProgressView = {
         let progressView = UIProgressView()
@@ -29,7 +29,7 @@ public class CreateMeetingContentViewController: UIViewController {
     let createMeetingTitleView = CreateMeetingTitleView()
     lazy var createMeetingRegionView = CreateMeetingRegionView(homeNavigationController: self.navigationController, meetingRegionViewModel: self.meetingRegionViewModel)
     let createMeetingMemberView = CreateMeetingMemberView()
-    lazy var createMeetingPeriodView = CreateMeetingPeriodView(createMeetingPeriodViewModel: self.createMeetingPeriodViewModel)
+    lazy var createMeetingPeriodView = CreateMeetingPeriodView(with: self.createMeetingPeriodReactor)
     lazy var createMeetingImageView = CreateMeetingImageView(homeNavigationController: self.navigationController, createMeetingImageViewModel: CreateMeetingImageViewModel())
     let createMeetingWritingView = CreateMeetingWritingView()
     let createButton: UIButton = {
@@ -41,11 +41,11 @@ public class CreateMeetingContentViewController: UIViewController {
         return button
     }()
     
-    public init(meetingTitle: String, meetingRegionViewModel: MeetingRegionViewModel, createMeetingContentViewModel: CreateMeetingContentViewModel, createMeetingPeriodViewModel: CreateMeetingPeriodViewModel) {
+    public init(meetingTitle: String, meetingRegionViewModel: MeetingRegionViewModel, createMeetingContentViewModel: CreateMeetingContentViewModel, createMeetingPeriodReactor: CreateMeetingPeriodReactor) {
         self.meetingTitle = meetingTitle
         self.meetingRegionViewModel = meetingRegionViewModel
         self.createMeetingContentViewModel = createMeetingContentViewModel
-        self.createMeetingPeriodViewModel = createMeetingPeriodViewModel
+        self.createMeetingPeriodReactor = createMeetingPeriodReactor
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -113,18 +113,18 @@ public class CreateMeetingContentViewController: UIViewController {
             .bind(to: createMeetingContentViewModel.createButtonTapped)
             .disposed(by: disposeBag)
         
-        createMeetingContentViewModel.isCreateButtonEnabled
-            .drive(onNext: { [weak self] isEnable in
-                if isEnable {
-                    self?.createButton.isEnabled = isEnable
-                    self?.createButton.enableNextButton()
-                }
-                else{
-                    self?.createButton.isEnabled = isEnable
-                    self?.createButton.disableNextButton()
-                }
-            })
-            .disposed(by: disposeBag)
+//        createMeetingContentViewModel.isCreateButtonEnabled
+//            .drive(onNext: { [weak self] isEnable in
+//                if isEnable {
+//                    self?.createButton.isEnabled = isEnable
+//                    self?.createButton.enableNextButton()
+//                }
+//                else{
+//                    self?.createButton.isEnabled = isEnable
+//                    self?.createButton.disableNextButton()
+//                }
+//            })
+//            .disposed(by: disposeBag)
         
         createMeetingContentViewModel.createButtonTapped
             .bind(onNext: { [weak self] in
@@ -228,7 +228,7 @@ public class CreateMeetingContentViewController: UIViewController {
                .disposed(by: disposeBag)
 
            createMeetingPeriodView.timeBtView.tapGesture.rx.event
-               .bind(onNext: { [weak self] _ in
+            .bind(onNext: { [weak self] _ in
                    guard let self = self else { return }
                    if self.createMeetingPeriodView.isTimePickerViewVisible {
                        self.createMeetingPeriodView.timePickerViewDisappear()

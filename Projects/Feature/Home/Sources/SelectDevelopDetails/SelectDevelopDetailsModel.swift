@@ -1,4 +1,4 @@
-enum DevelopDetailType {
+public enum DevelopDetailType {
     case none
     case study
     case sideProject

@@ -50,7 +50,7 @@ final class AppFlow: Flow {
 //            return coordinateToHomeViewController()
             
         case .goToTabBar:
-            return 
+            return .none
             
         default:
             return .none

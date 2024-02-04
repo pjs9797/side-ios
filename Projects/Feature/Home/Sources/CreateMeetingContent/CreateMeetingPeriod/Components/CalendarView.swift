@@ -2,12 +2,12 @@ import UIKit
 import FSCalendar
 import RxSwift
 import RxCocoa
+import ReactorKit
 import SnapKit
 import Shared
 
-class CalendarView: UIView{
-    let disposeBag = DisposeBag()
-    let createMeetingPeriodViewModel: CreateMeetingPeriodViewModel
+class CalendarView: UIView, ReactorKit.View{
+    var disposeBag = DisposeBag()
     let headerView = UIView()
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -42,34 +42,16 @@ class CalendarView: UIView{
         return calendar
     }()
     
-    init(createMeetingPeriodViewModel: CreateMeetingPeriodViewModel) {
-        self.createMeetingPeriodViewModel = createMeetingPeriodViewModel
+    init(with reactor: CreateMeetingPeriodReactor) {
         super.init(frame: .zero)
         
+        self.reactor = reactor
         calendar.delegate = self
-        bind()
         layout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func bind(){
-        createMeetingPeriodViewModel.currentPageDrvier
-            .drive(onNext: { [weak self] date in
-                self?.calendar.setCurrentPage(date, animated: true)
-                self?.updateTitleLabel(for: date)
-            })
-            .disposed(by: disposeBag)
-        
-        previousButton.rx.tap
-            .bind(to: createMeetingPeriodViewModel.previousButtonTapped)
-            .disposed(by: disposeBag)
-        
-        nextButton.rx.tap
-            .bind(to: createMeetingPeriodViewModel.nextButtonTapped)
-            .disposed(by: disposeBag)
     }
     
     func layout(){
@@ -120,15 +102,46 @@ class CalendarView: UIView{
 
 extension CalendarView: FSCalendarDelegate {
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
+        guard let reactor = self.reactor else { return }
         let currentPage = calendar.currentPage
-        createMeetingPeriodViewModel.currentPageRelay.accept(currentPage)
+        reactor.action.onNext(.setCurrentPage(currentPage))
         updateTitleLabel(for: currentPage)
     }
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        guard let reactor = self.reactor else { return }
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy.MM.dd"
         let dateString = formatter.string(from: date)
-        createMeetingPeriodViewModel.dateRelay.accept(dateString)
+        reactor.action.onNext(.selectDate(dateString))
+    }
+}
+
+extension CalendarView{
+    func bind(reactor: CreateMeetingPeriodReactor) {
+        bindAction(reactor: reactor)
+        bindState(reactor: reactor)
+    }
+    
+    func bindAction(reactor: CreateMeetingPeriodReactor){
+        previousButton.rx.tap
+            .map { Reactor.Action.previousButtonTapped }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        nextButton.rx.tap
+            .map { Reactor.Action.nextButtonTapped }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    }
+    
+    func bindState(reactor: CreateMeetingPeriodReactor){
+        reactor.state.map { $0.currentPage }
+            .distinctUntilChanged()
+            .bind(onNext: { [weak self] date in
+                self?.calendar.setCurrentPage(date, animated: true)
+                self?.updateTitleLabel(for: date)
+            })
+            .disposed(by: disposeBag)
     }
 }

@@ -1,12 +1,13 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import ReactorKit
 import SnapKit
 
-public class SelectMeetingTypeViewController: UIViewController {
-    let disposeBag = DisposeBag()
-    var selectMeetingTypeViewModel: SelectMeetingTypeViewModel
-    weak var homeNavigationController: UINavigationController?
+public class SelectMeetingTypeViewController: UIViewController, ReactorKit.View {
+    public var disposeBag = DisposeBag()
+    let tapGesture = UITapGestureRecognizer()
+    let swipeGesture = UISwipeGestureRecognizer()
     let dimmedView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
@@ -55,10 +56,10 @@ public class SelectMeetingTypeViewController: UIViewController {
         return view
     }()
     
-    public init(selectMeetingTypeViewModel: SelectMeetingTypeViewModel) {
-        self.selectMeetingTypeViewModel = selectMeetingTypeViewModel
+    public init(with reactor: SelectMeetingTypeReactor) {
         super.init(nibName: nil, bundle: nil)
 
+        self.reactor = reactor
         self.modalPresentationStyle = .overFullScreen
     }
     
@@ -71,7 +72,6 @@ public class SelectMeetingTypeViewController: UIViewController {
         
         view.backgroundColor = .clear
         tapEvent()
-        bind()
         layout()
     }
     
@@ -99,63 +99,9 @@ public class SelectMeetingTypeViewController: UIViewController {
     }
     
     func tapEvent(){
-        let tapGesture = UITapGestureRecognizer()
-        let swipeGesture = UISwipeGestureRecognizer()
         self.dimmedView.addGestureRecognizer(tapGesture)
         self.backView.addGestureRecognizer(swipeGesture)
         swipeGesture.direction = .down
-        tapGesture.rx.event
-            .bind { [weak self] _ in
-                self?.dismissAnimation()
-            }
-            .disposed(by: disposeBag)
-        
-        swipeGesture.rx.event
-            .bind { [weak self] _ in
-                self?.dismissAnimation()
-            }
-            .disposed(by: disposeBag)
-    }
-    
-    func bind(){
-        oneDayButton.rx.tap
-            .bind(to: selectMeetingTypeViewModel.oneDayButtonTapped)
-            .disposed(by: disposeBag)
-        
-        selectMeetingTypeViewModel.oneDayButtonTapped
-            .bind(onNext: { [weak self] in
-                self?.dismiss(animated: false, completion: {
-                    let createMeetingVC = CreateMeetingViewController(meetingTitle: "원데이 멤버 모집하기", createMeetingViewModel: CreateMeetingViewModel())
-                    self?.homeNavigationController!.pushViewController(createMeetingVC, animated: true)
-                })
-            })
-            .disposed(by: disposeBag)
-        
-        shortTermButton.rx.tap
-            .bind(to: selectMeetingTypeViewModel.shortTermButtonTapped)
-            .disposed(by: disposeBag)
-        
-        selectMeetingTypeViewModel.shortTermButtonTapped
-            .bind(onNext: { [weak self] in
-                self?.dismiss(animated: false, completion: {
-                    let createMeetingVC = CreateMeetingViewController(meetingTitle: "단기 멤버 모집하기", createMeetingViewModel: CreateMeetingViewModel())
-                    self?.homeNavigationController!.pushViewController(createMeetingVC, animated: true)
-                })
-            })
-            .disposed(by: disposeBag)
-        
-        continuousButton.rx.tap
-            .bind(to: selectMeetingTypeViewModel.continuousButtonTapped)
-            .disposed(by: disposeBag)
-        
-        selectMeetingTypeViewModel.continuousButtonTapped
-            .bind(onNext: { [weak self] in
-                self?.dismiss(animated: false, completion: {
-                    let createMeetingVC = CreateMeetingViewController(meetingTitle: "지속형 멤버 모집하기", createMeetingViewModel: CreateMeetingViewModel())
-                    self?.homeNavigationController!.pushViewController(createMeetingVC, animated: true)
-                })
-            })
-            .disposed(by: disposeBag)
     }
     
     func layout(){
@@ -216,5 +162,48 @@ public class SelectMeetingTypeViewController: UIViewController {
             make.top.equalTo(secondSeparateView.snp.bottom)
             make.centerX.equalToSuperview()
         }
+    }
+}
+
+extension SelectMeetingTypeViewController {
+    public func bind(reactor: SelectMeetingTypeReactor) {
+        bindAction(reactor: reactor)
+        bindState(reactor: reactor)
+    }
+    
+    private func bindAction(reactor: SelectMeetingTypeReactor) {
+        oneDayButton.rx.tap
+            .map { Reactor.Action.oneDayButtonTapped }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        shortTermButton.rx.tap
+            .map { Reactor.Action.shortTermButtonTapped }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        continuousButton.rx.tap
+            .map { Reactor.Action.continuousButtonTapped }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        tapGesture.rx.event
+            .map { _ in Reactor.Action.dimmedViewTapped}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        swipeGesture.rx.event
+            .map { _ in Reactor.Action.swipeGesturePerformed }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindState(reactor: SelectMeetingTypeReactor) {
+        reactor.state
+            .map { $0.isDismissed }
+            .subscribe(onNext: { [weak self] _ in
+                self?.dismissAnimation()
+            })
+            .disposed(by: disposeBag)
     }
 }
