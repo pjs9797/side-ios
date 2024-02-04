@@ -1,8 +1,8 @@
 //
-//  IdVerificateWithPhoneNumberView.swift
+//  PasswordVerificateWithPhoneNumberView.swift
 //  FeatureSignIn
 //
-//  Created by 강민성 on 2/1/24.
+//  Created by 강민성 on 2/4/24.
 //
 
 import UIKit
@@ -10,7 +10,7 @@ import Shared
 
 import SnapKit
 
-class IdVerificateWithPhoneNumberView: UIView {
+class PasswordVerificateWithPhoneNumberView: UIView {
     
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -32,7 +32,7 @@ class IdVerificateWithPhoneNumberView: UIView {
         return label
     }()
 
-    let emailVerificateInputView = VerificationInputView(inputViewLabelText: "전화번호", textFieldPlaceholder: "010-0000-0000")
+    let phoneNumberVerificateInputView = VerificationInputView(inputViewLabelText: "전화번호", textFieldPlaceholder: "010-0000-0000")
     
     let verificationNumberInputView = VerificationNumberInputView(inputViewLabelText: "인증번호", textFieldPlaceholder: "인증번호 6자리를 입력해 주세요.")
     
@@ -64,6 +64,6 @@ class IdVerificateWithPhoneNumberView: UIView {
     }
     
     private func render() {
-        addSubViews([titleLabel, descriptionLabel,emailVerificateInputView, verificationNumberInputView, verificationCompletedButton])
+        addSubViews([titleLabel, descriptionLabel,phoneNumberVerificateInputView, verificationNumberInputView, verificationCompletedButton])
     }
 }

@@ -69,7 +69,7 @@ final public class SignInFlow: Flow {
             
         case .forgotIdEmailisRequired:
             return coordinateToIdVerificateWithEmailViewController()
-            /*
+        
         case .forgotIdPhoneNumberIsRequired:
             return coordinateToIdVerificateWithPhoneNumberViewController()
             
@@ -82,6 +82,7 @@ final public class SignInFlow: Flow {
         case .forgotPasswordPhoneNumberIsRequired:
             return coordinateToPasswordVerificateWithPhoneNumberViewController()
             
+            /*
         case .newPasswordIsRequired(let email):
             return coordinateToNewPasswordInputViewController(email: email)
          */
@@ -144,7 +145,6 @@ final public class SignInFlow: Flow {
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
     }
     
-    /*
     private func coordinateToForgotPasswordViewController() -> FlowContributors {
         let reactor = ForgotPasswordReactor(provider: provider)
         let viewController = ForgotPasswordViewController(with: reactor)
@@ -152,6 +152,7 @@ final public class SignInFlow: Flow {
         
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
     }
+    
     
     private func coordinateToPasswordVerificateWithEmailViewController() -> FlowContributors {
         let reactor = PasswordVerificateWithEmailReactor(provider: provider)
@@ -171,12 +172,10 @@ final public class SignInFlow: Flow {
     
     private func coordinateToNewPasswordInputViewController(email: String?) -> FlowContributors {
         guard let email = email else { return .none }
-        let reactor = NewPasswordInputReactor(provider: provider, email: email)
+        let reactor = NewPasswordInputViewReactor(provider: provider, email: email)
         let viewController = NewPasswordInputViewController(with: reactor)
         self.rootViewController.pushViewController(viewController, animated: true)
         
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
     }
-    
-    */
 }
