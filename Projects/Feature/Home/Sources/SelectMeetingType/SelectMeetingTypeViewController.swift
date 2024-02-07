@@ -201,6 +201,8 @@ extension SelectMeetingTypeViewController {
     private func bindState(reactor: SelectMeetingTypeReactor) {
         reactor.state
             .map { $0.isDismissed }
+            .filter{ $0 }
+            .distinctUntilChanged()
             .subscribe(onNext: { [weak self] _ in
                 self?.dismissAnimation()
             })

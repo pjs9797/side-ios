@@ -1,14 +1,15 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import ReactorKit
 import SnapKit
 import Shared
 
-public class CreateMeetingContentViewController: UIViewController {
-    let disposeBag = DisposeBag()
+public class CreateMeetingContentViewController: UIViewController, ReactorKit.View {
+    public var disposeBag = DisposeBag()
     let meetingTitle: String
-    let meetingRegionViewModel: MeetingRegionViewModel
-    let createMeetingContentViewModel: CreateMeetingContentViewModel
+    let meetingRegionReactor: MeetingRegionReactor
+    let createMeetingContentReactor: CreateMeetingContentReactor
     let createMeetingPeriodReactor: CreateMeetingPeriodReactor
     let backButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: nil, action: nil)
     let progressView: UIProgressView = {
@@ -27,7 +28,7 @@ public class CreateMeetingContentViewController: UIViewController {
         return label
     }()
     let createMeetingTitleView = CreateMeetingTitleView()
-    lazy var createMeetingRegionView = CreateMeetingRegionView(homeNavigationController: self.navigationController, meetingRegionViewModel: self.meetingRegionViewModel)
+    lazy var createMeetingRegionView = CreateMeetingRegionView(with: self.meetingRegionReactor)
     let createMeetingMemberView = CreateMeetingMemberView()
     lazy var createMeetingPeriodView = CreateMeetingPeriodView(with: self.createMeetingPeriodReactor)
     lazy var createMeetingImageView = CreateMeetingImageView(homeNavigationController: self.navigationController, createMeetingImageViewModel: CreateMeetingImageViewModel())
@@ -41,10 +42,10 @@ public class CreateMeetingContentViewController: UIViewController {
         return button
     }()
     
-    public init(meetingTitle: String, meetingRegionViewModel: MeetingRegionViewModel, createMeetingContentViewModel: CreateMeetingContentViewModel, createMeetingPeriodReactor: CreateMeetingPeriodReactor) {
+    public init(meetingTitle: String, createMeetingContentReactor: CreateMeetingContentReactor, meetingRegionReactor: MeetingRegionReactor, createMeetingPeriodReactor: CreateMeetingPeriodReactor) {
         self.meetingTitle = meetingTitle
-        self.meetingRegionViewModel = meetingRegionViewModel
-        self.createMeetingContentViewModel = createMeetingContentViewModel
+        self.createMeetingContentReactor = createMeetingContentReactor
+        self.meetingRegionReactor = meetingRegionReactor
         self.createMeetingPeriodReactor = createMeetingPeriodReactor
         super.init(nibName: nil, bundle: nil)
     }
@@ -61,7 +62,6 @@ public class CreateMeetingContentViewController: UIViewController {
         hideKeyboard(delegate: self, disposeBag: disposeBag)
         self.setNavigationbar()
         self.createButton.disableNextButton()
-        self.bind()
         self.layout()
     }
     
@@ -76,43 +76,43 @@ public class CreateMeetingContentViewController: UIViewController {
         navigationItem.leftBarButtonItem = backButton
     }
     
-    func bind(){
-        backButton.rx.tap
-            .bind(to: createMeetingContentViewModel.backButtonTapped)
-            .disposed(by: disposeBag)
-        
-        createMeetingContentViewModel.backButtonTapped
-            .bind(onNext: { [weak self] in
-                self?.navigationController?.popViewController(animated: true)
-            })
-            .disposed(by: disposeBag)
-        //MARK: 모임 제목
-        createMeetingTitleView.titleTextField.rx.text.orEmpty
-            .bind(to: createMeetingContentViewModel.titleTextRelay)
-            .disposed(by: disposeBag)
-        //MARK: 모임 가입 수
-        createMeetingContentViewModel.memberTextRelay
-            .bind(to: createMeetingMemberView.memberLimitTextField.rx.text)
-            .disposed(by: disposeBag)
-        
-        createMeetingMemberView.memberLimitTextField.rx.text.orEmpty
-            .map { text in
-                return String(text.filter { "0123456789".contains($0) })
-            }
-            .bind(to: createMeetingContentViewModel.memberTextRelay)
-            .disposed(by: disposeBag)
-        //MARK: 모임 날짜
-        periodViewBindTapGesture()
-        
-        //MARK: 모임 소개글
-        createMeetingWritingView.introductionTextView.rx.text.orEmpty
-            .bind(to: createMeetingContentViewModel.introductionTextRelay)
-            .disposed(by: disposeBag)
-        
-        createButton.rx.tap
-            .bind(to: createMeetingContentViewModel.createButtonTapped)
-            .disposed(by: disposeBag)
-        
+//    func bind(){
+//        backButton.rx.tap
+//            .bind(to: createMeetingContentViewModel.backButtonTapped)
+//            .disposed(by: disposeBag)
+//        
+//        createMeetingContentViewModel.backButtonTapped
+//            .bind(onNext: { [weak self] in
+//                self?.navigationController?.popViewController(animated: true)
+//            })
+//            .disposed(by: disposeBag)
+//        //MARK: 모임 제목
+//        createMeetingTitleView.titleTextField.rx.text.orEmpty
+//            .bind(to: createMeetingContentViewModel.titleTextRelay)
+//            .disposed(by: disposeBag)
+//        //MARK: 모임 가입 수
+//        createMeetingContentViewModel.memberTextRelay
+//            .bind(to: createMeetingMemberView.memberLimitTextField.rx.text)
+//            .disposed(by: disposeBag)
+//        
+//        createMeetingMemberView.memberLimitTextField.rx.text.orEmpty
+//            .map { text in
+//                return String(text.filter { "0123456789".contains($0) })
+//            }
+//            .bind(to: createMeetingContentViewModel.memberTextRelay)
+//            .disposed(by: disposeBag)
+//        //MARK: 모임 날짜
+//        periodViewBindTapGesture()
+//        
+//        //MARK: 모임 소개글
+//        createMeetingWritingView.introductionTextView.rx.text.orEmpty
+//            .bind(to: createMeetingContentViewModel.introductionTextRelay)
+//            .disposed(by: disposeBag)
+//        
+//        createButton.rx.tap
+//            .bind(to: createMeetingContentViewModel.createButtonTapped)
+//            .disposed(by: disposeBag)
+//        
 //        createMeetingContentViewModel.isCreateButtonEnabled
 //            .drive(onNext: { [weak self] isEnable in
 //                if isEnable {
@@ -125,13 +125,13 @@ public class CreateMeetingContentViewController: UIViewController {
 //                }
 //            })
 //            .disposed(by: disposeBag)
-        
-        createMeetingContentViewModel.createButtonTapped
-            .bind(onNext: { [weak self] in
-                self?.navigationController?.popToRootViewController(animated: true)
-            })
-            .disposed(by: disposeBag)
-    }
+//        
+//        createMeetingContentViewModel.createButtonTapped
+//            .bind(onNext: { [weak self] in
+//                self?.navigationController?.popToRootViewController(animated: true)
+//            })
+//            .disposed(by: disposeBag)
+//    }
     
     func layout(){
         [progressView,scrollView]
@@ -271,5 +271,11 @@ public class CreateMeetingContentViewController: UIViewController {
 extension CreateMeetingContentViewController: UIGestureRecognizerDelegate {
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         return touch.view?.isDescendant(of: self.createMeetingPeriodView.calendarView.calendar) == nil
+    }
+}
+
+extension CreateMeetingContentViewController{
+    public func bind(reactor: CreateMeetingContentReactor) {
+        //
     }
 }

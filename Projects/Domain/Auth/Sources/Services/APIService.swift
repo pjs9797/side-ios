@@ -34,13 +34,13 @@ public class APIService {
         var httpHeaders = HTTPHeaders()
         httpHeaders.add(name: "Content-Type", value: "application/json")
         httpHeaders.add(name: "accept", value: "*/*")
+        if useAuthHeader {
+            httpHeaders.add(name: "Authorization", value: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDE4NDY1NTMsInN1YiI6IjMifQ.BPeiwNAmTQeWfO36LlgKVFEE9BNcIfL62Nawmm-dKDs")
+        }
         
         if let headers = headers {
             for (key, value) in headers {
                 httpHeaders.update(name: key, value: value)
-            }
-            if useAuthHeader {
-                httpHeaders.update(name: "Authorization", value: "Bearer \(SettingService.shared.accessToken)")
             }
         }
         
@@ -52,6 +52,9 @@ public class APIService {
         var httpHeaders = HTTPHeaders()
         httpHeaders.add(name: "Content-Type", value: "multipart/form-data")
         httpHeaders.add(name: "accept", value: "*/*")
+        if useAuthHeader {
+            httpHeaders.add(name: "Authorization", value: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDE4NDY1NTMsInN1YiI6IjMifQ.BPeiwNAmTQeWfO36LlgKVFEE9BNcIfL62Nawmm-dKDs")
+        }
         
         if let headers = headers {
             for (key, value) in headers {

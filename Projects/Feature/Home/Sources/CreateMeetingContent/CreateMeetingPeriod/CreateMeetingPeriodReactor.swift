@@ -75,12 +75,10 @@ public class CreateMeetingPeriodReactor: ReactorKit.Reactor, Stepper{
         switch action {
             //CalendarView
         case .previousButtonTapped:
-            let currentCalendar = Calendar.current
             let currentDate = self.currentState.currentPage
             let newDate = Calendar.current.date(byAdding: .month, value: -1, to: currentDate) ?? currentDate
             return .just(.changeCurrentPage(newDate))
         case .nextButtonTapped:
-            let currentCalendar = Calendar.current
             let currentDate = self.currentState.currentPage
             let newDate = Calendar.current.date(byAdding: .month, value: 1, to: currentDate) ?? currentDate
             return .just(.changeCurrentPage(newDate))
@@ -94,7 +92,6 @@ public class CreateMeetingPeriodReactor: ReactorKit.Reactor, Stepper{
             let hour = self.currentState.hours[hourIndex % 12]
             let minute = self.currentState.minutes[minuteIndex % 60]
             let timeString = "\(amPm) \(hour):\(minute)"
-            print(timeString)
             return .just(.setSelectedTime(timeString))
         }
     }

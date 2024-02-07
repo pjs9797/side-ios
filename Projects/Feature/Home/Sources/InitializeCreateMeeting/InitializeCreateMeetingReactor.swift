@@ -37,7 +37,7 @@ public class InitializeCreateMeetingReactor: ReactorKit.Reactor, Stepper{
             case .develop:
                 self.steps.accept(CreateMeetingStep.goToSelectDevelopDetailsViewController)
             case .hobby:
-                //self.steps.accept(CreateMeetingStep)
+                self.steps.accept(CreateMeetingStep.goToSelectHobbyDetailsViewController)
                 break
             case .none:
                 break

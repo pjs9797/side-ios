@@ -1,12 +1,12 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import ReactorKit
 import SnapKit
 import Shared
 
-class SelectMeetingRegionViewController: UIViewController {
-    let disposeBag = DisposeBag()
-    var meetingRegionViewModel: MeetingRegionViewModel
+class SelectMeetingRegionViewController: UIViewController, ReactorKit.View {
+    public var disposeBag = DisposeBag()
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = Fonts.SH03Bold.font
@@ -55,11 +55,15 @@ class SelectMeetingRegionViewController: UIViewController {
         button.setImage(SharedDSKitAsset.Icons.iconArrowRight16.image, for: .normal)
         return button
     }()
+    let locationTableView: UITableView = {
+        let tableView = UITableView()
+        return tableView
+    }()
     
-    init(meetingRegionViewModel: MeetingRegionViewModel) {
-        self.meetingRegionViewModel = meetingRegionViewModel
+    init(with reactor: MeetingRegionReactor) {
         super.init(nibName: nil, bundle: nil)
         
+        self.reactor = reactor
         self.modalPresentationStyle = .overFullScreen
     }
     
@@ -71,59 +75,7 @@ class SelectMeetingRegionViewController: UIViewController {
         super.viewDidLoad()
         
         self.view.backgroundColor = .white
-        self.bind()
         self.layout()
-    }
-    
-    func bind(){
-        backButton.rx.tap
-            .bind(to: meetingRegionViewModel.backButtonTapped)
-            .disposed(by: disposeBag)
-        
-        meetingRegionViewModel.backButtonTapped
-            .bind(onNext: { [weak self] in
-                self?.dismiss(animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        searchTextField.rx.text.orEmpty
-            .bind(to: meetingRegionViewModel.textFieldRelay)
-            .disposed(by: disposeBag)
-        
-        meetingRegionViewModel.isTextExistDriver
-            .drive(onNext: { [weak self] value in
-                self?.clearButton.isHidden = !value
-                self?.searchTextField.layer.borderColor = value ? UIColor.black.cgColor : SharedDSKitAsset.Colors.gr10.color.cgColor
-            })
-            .disposed(by: disposeBag)
-        
-        clearButton.rx.tap
-            .bind(to: meetingRegionViewModel.clearButtonTapped)
-            .disposed(by: disposeBag)
-        
-        meetingRegionViewModel.clearButtonTapped
-            .bind(onNext: { [weak self] in
-                self?.searchTextField.text = ""
-                self?.clearButton.isHidden = true
-                self?.searchTextField.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-            })
-            .disposed(by: disposeBag)
-        
-        currentLocationButton.rx.tap
-            .bind(to: meetingRegionViewModel.currentLocationButtonTapped)
-            .disposed(by: disposeBag)
-        
-        meetingRegionViewModel.locationAuthDeniedRelay
-            .bind(onNext: { [weak self] in
-                self?.presentDeniedAlert()
-            })
-            .disposed(by: disposeBag)
-        
-        meetingRegionViewModel.popViewControllerRelay
-            .bind(onNext: { [weak self] in
-                self?.dismiss(animated: true)
-            })
-            .disposed(by: disposeBag)
     }
     
     func layout(){
@@ -191,3 +143,59 @@ class SelectMeetingRegionViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
 }
+
+extension SelectMeetingRegionViewController{
+    func bind(reactor: MeetingRegionReactor) {
+        bindAction(reactor: reactor)
+        bindState(reactor: reactor)
+    }
+    
+    private func bindAction(reactor: MeetingRegionReactor){
+        backButton.rx.tap
+            .map{ Reactor.Action.backButtonTapped}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        clearButton.rx.tap
+            .map{ Reactor.Action.clearButtonTapped}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        searchButton.rx.tap
+            .map{ Reactor.Action.searchButtonTapped}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        currentLocationButton.rx.tap
+            .map{ Reactor.Action.currentLocationButtonTapped}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        searchTextField.rx.text.orEmpty
+            .map{ Reactor.Action.writeText($0)}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindState(reactor: MeetingRegionReactor){
+        reactor.state.map{ $0.isTextExist }
+            .distinctUntilChanged()
+            .bind(onNext: { [weak self] value in
+                if !value {
+                    self?.searchTextField.text = ""
+                }
+                self?.clearButton.isHidden = !value
+                self?.searchTextField.layer.borderColor = value ? UIColor.black.cgColor : SharedDSKitAsset.Colors.gr10.color.cgColor
+            })
+            .disposed(by: disposeBag)
+        
+        reactor.state.map{ $0.deniedLocationAuth }
+            .filter{ $0 }
+            .distinctUntilChanged()
+            .bind(onNext: { [weak self] _ in
+                self?.presentDeniedAlert()
+            })
+            .disposed(by: disposeBag)
+    }
+}
+

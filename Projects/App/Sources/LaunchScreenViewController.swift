@@ -105,7 +105,7 @@ class LaunchScreenViewController: UIViewController {
             appStepper.steps.accept(AppStep.signInRequired)
 //            signInStepper.steps.accept(SignInStep.signInRequired)
         }
-        
+        appStepper.steps.accept(AppStep.goToTabBar)
         window.makeKeyAndVisible()
     }
 

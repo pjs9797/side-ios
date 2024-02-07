@@ -5,4 +5,7 @@ public enum CreateMeetingStep: Step {
     case dismissViewController
     case goToInitializeCreateMeetingViewController
     case goToSelectDevelopDetailsViewController
+    case goToSelectHobbyDetailsViewController
+    case goToCreateMeetingContentViewController
+    case presentSelectMeetingRegionViewController
 }

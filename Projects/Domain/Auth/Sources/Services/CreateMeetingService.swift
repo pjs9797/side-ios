@@ -35,6 +35,6 @@ public final class CreateMeetingService: APIService {
     
     public func getLocation(longitude: String, latitude: String) -> Observable<DataRequest> {
         
-        return request(.get, "/api/v1/locations/search?longitude=\(longitude)&latitude=\(latitude)", useAuthHeader: true, encoding: URLEncoding.default)
+        return request(.get, "/api/v1/locations/coordinate?longitude=\(longitude)&latitude=\(latitude)", useAuthHeader: true, encoding: URLEncoding.default)
     }
 }

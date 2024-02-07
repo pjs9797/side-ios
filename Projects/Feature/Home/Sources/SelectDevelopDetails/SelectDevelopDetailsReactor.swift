@@ -31,7 +31,7 @@ public class SelectDevelopDetailsReactor: ReactorKit.Reactor, Stepper{
             self.steps.accept(CreateMeetingStep.popViewController)
             return .empty()
         case .nextButtonTapped:
-            //self.steps.accept(CreateMeetingStep.nextScreen)
+            self.steps.accept(CreateMeetingStep.goToCreateMeetingContentViewController)
             return .empty()
         case .detailTypeSelected(let type):
             return .just(.setDetailType(type))

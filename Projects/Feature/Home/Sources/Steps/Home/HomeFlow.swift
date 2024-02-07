@@ -12,7 +12,7 @@ final public class HomeFlow: Flow {
     
     private let rootViewController: UINavigationController
     
-    init(with provider: ServiceProviderType, with rootViewController: UINavigationController) {
+    public init(with provider: ServiceProviderType, with rootViewController: UINavigationController) {
         self.provider = provider
         self.rootViewController = rootViewController
     }
@@ -23,6 +23,8 @@ final public class HomeFlow: Flow {
         switch step {
         case .popViewController:
             return popViewController()
+        case .goToHomeViewController:
+            return coordinateToHomeViewController()
         case .presentSelectMeetingTypeViewController:
             return coordinateToSelectMeetingTypeViewController()
         case .goToCreateMeetingFlow(let meetingTitle):
@@ -36,9 +38,17 @@ final public class HomeFlow: Flow {
         return .none
     }
     
+    private func coordinateToHomeViewController() -> FlowContributors {
+        let homeViewController = HomeViewController()
+        self.rootViewController.pushViewController(homeViewController, animated: false)
+        
+        return .one(flowContributor: .contribute(withNextPresentable: homeViewController, withNextStepper: homeViewController))
+    }
+    
     private func coordinateToSelectMeetingTypeViewController() -> FlowContributors {
         let reactor = SelectMeetingTypeReactor()
         let viewController = SelectMeetingTypeViewController(with: reactor)
+        viewController.modalPresentationStyle = .overFullScreen
         self.rootViewController.present(viewController, animated: false)
         
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))

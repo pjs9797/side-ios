@@ -45,8 +45,8 @@ class CalendarView: UIView, ReactorKit.View{
     init(with reactor: CreateMeetingPeriodReactor) {
         super.init(frame: .zero)
         
-        self.reactor = reactor
         calendar.delegate = self
+        self.reactor = reactor
         layout()
     }
     

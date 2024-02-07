@@ -12,7 +12,7 @@ import RxCocoa
 import RxFlow
 import FeatureSignIn
 import FeatureHome
-
+import SharedDSKit
 import Domain
 
 struct AppStepper: Stepper {
@@ -50,7 +50,7 @@ final class AppFlow: Flow {
 //            return coordinateToHomeViewController()
             
         case .goToTabBar:
-            return .none
+            return coordinateToTPTabBarContoller()
             
         default:
             return .none
@@ -82,5 +82,28 @@ final class AppFlow: Flow {
         return .one(flowContributor: .contribute(withNextPresentable: homeFlow, withNextStepper: nextStep))
     }
     */
+    
+    private func coordinateToTPTabBarContoller() -> FlowContributors {
+        let TPTabBarController = TPTabBarController()
+        let homeNavigationController = UINavigationController()
+        let chatNavigationController = UINavigationController()
+        let myPageNavigationController = UINavigationController()
+        
+        let homeFlow = HomeFlow(with: provider, with: homeNavigationController)
+        //let chatFlow =
+        //let myPageFlow =
+        
+        Flows.use(homeFlow, when: .created) { [weak self] (homeRoot) in
+            
+            homeRoot.tabBarItem = UITabBarItem(title: "모임", image: SharedDSKitAsset.Icons.iconHome24.image, tag: 0)
+            
+            TPTabBarController.viewControllers = [homeRoot]
+            self?.rootWindow.rootViewController = TPTabBarController
+        }
+
+        return .multiple(flowContributors: [
+            .contribute(withNextPresentable: homeFlow, withNextStepper: OneStepper(withSingleStep: HomeStep.goToHomeViewController))
+        ])
+    }
 }
 

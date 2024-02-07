@@ -6,7 +6,6 @@ import Shared
 
 class TimePickerView: UIView, ReactorKit.View {
     var disposeBag = DisposeBag()
-    var isInitialized = 1
     let timePicker = UIPickerView()
     let periodUpLine: UIView = {
         let view = UIView()
@@ -40,37 +39,19 @@ class TimePickerView: UIView, ReactorKit.View {
     }()
     
     init(with reactor: CreateMeetingPeriodReactor) {
-        
         super.init(frame: .zero)
-        self.reactor = reactor
         timePicker.delegate = self
         timePicker.dataSource = self
+        self.reactor = reactor
         layout()
         setInitialPickerValues()
         timePicker.subviews[1].backgroundColor = .clear
-        //bind(reactor: reactor)
+        
     }
-    
+        
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-//    func bind() {
-//        timePicker.rx.itemSelected
-//            .subscribe(onNext: { [weak self] row, component in
-//                guard let self = self else { return }
-//                let selectedAmPm = self.timePicker.selectedRow(inComponent: 0) % 2
-//                let selectedHourIndex = self.timePicker.selectedRow(inComponent: 1) % 12
-//                let selectedMinuteIndex = self.timePicker.selectedRow(inComponent: 2) % 60
-//                let selectedAmPm = self.createMeetingPeriodViewModel.amPm.value[self.timePicker.selectedRow(inComponent: 0) % 2]
-//                let selectedHour = self.createMeetingPeriodViewModel.hours.value[selectedHourIndex]
-//                let selectedMinute = self.createMeetingPeriodViewModel.minutes.value[selectedMinuteIndex]
-//                let timeString = "\(selectedAmPm) \(selectedHour):\(selectedMinute)"
-//                self.timePicker.reloadAllComponents()
-//                self.createMeetingPeriodViewModel.timeRelay.accept(timeString)
-//            })
-//            .disposed(by: disposeBag)
-//    }
     
     func layout(){
         [timePicker,periodUpLine,periodUnderLine,hourUpLine,hourUnderLine,minuteUpLine,minuteUnderLine]
@@ -153,7 +134,7 @@ extension TimePickerView: UIPickerViewDelegate{
         label.textAlignment = .center
         switch component{
         case 0:
-            label.text = reactor.currentState.amPm[row]
+            label.text = reactor.currentState.amPm[row % 2]
         case 1:
             label.text = reactor.currentState.hours[row % 24]
         case 2:
@@ -193,8 +174,8 @@ extension TimePickerView{
     
     func bindAction(reactor: CreateMeetingPeriodReactor){
         timePicker.rx.itemSelected
-            .map { [unowned self] _ in
-                return Reactor.Action.selectTime(amPmIndex: self.timePicker.selectedRow(inComponent: 0), hourIndex: self.timePicker.selectedRow(inComponent: 1), minuteIndex: self.timePicker.selectedRow(inComponent: 2))
+            .map { [weak self] _ in
+                return Reactor.Action.selectTime(amPmIndex: self?.timePicker.selectedRow(inComponent: 0) ?? 0, hourIndex: self?.timePicker.selectedRow(inComponent: 1) ?? 0, minuteIndex: self?.timePicker.selectedRow(inComponent: 2) ?? 0)
             }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)

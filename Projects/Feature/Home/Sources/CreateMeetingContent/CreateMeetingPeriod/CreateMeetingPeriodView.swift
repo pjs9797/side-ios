@@ -7,7 +7,6 @@ import Shared
 
 class CreateMeetingPeriodView: UIView, ReactorKit.View{
     var disposeBag = DisposeBag()
-    var createMeetingPeriodReactor: CreateMeetingPeriodReactor
     var isCalendarViewVisible = false
     var isTimePickerViewVisible = false
     
@@ -31,16 +30,16 @@ class CreateMeetingPeriodView: UIView, ReactorKit.View{
         timeBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         return timeBtView
     }()
-    lazy var calendarView = CalendarView(with: self.createMeetingPeriodReactor)
-    lazy var timePickerView = TimePickerView(with: self.createMeetingPeriodReactor)
+    let calendarView: CalendarView
+    let timePickerView: TimePickerView
     
-    init(with createMeetingPeriodReactor: CreateMeetingPeriodReactor) {
-        self.createMeetingPeriodReactor = createMeetingPeriodReactor
+    init(with reactor: CreateMeetingPeriodReactor) {
+        calendarView = CalendarView(with: reactor)
+        timePickerView = TimePickerView(with: reactor)
         super.init(frame: .zero)
-        
+        self.reactor = reactor
         calendarView.isHidden = true
         timePickerView.isHidden = true
-        bind(reactor: createMeetingPeriodReactor)
         layout()
     }
     
@@ -64,10 +63,10 @@ class CreateMeetingPeriodView: UIView, ReactorKit.View{
         reactor.state.map{ $0.selectedTime }
             .distinctUntilChanged()
             .bind{ [weak self] time in
-                print(time)
                 self?.timeBtView.configure(subTitle: time ?? "시간 선택")
                 self?.timeBtView.subTitleLabel.textColor = .black
-            }.disposed(by: disposeBag)
+            }
+            .disposed(by: disposeBag)
     }
     
     func layout(){

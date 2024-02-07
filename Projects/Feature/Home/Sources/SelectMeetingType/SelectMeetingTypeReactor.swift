@@ -6,10 +6,6 @@ public class SelectMeetingTypeReactor: ReactorKit.Reactor, Stepper{
     public var initialState: State
     public var steps = PublishRelay<Step>()
     
-    let oneDayButtonTapped = PublishRelay<Void>()
-    let shortTermButtonTapped = PublishRelay<Void>()
-    let continuousButtonTapped = PublishRelay<Void>()
-    
     public init(){
         self.initialState = State()
     }
@@ -34,13 +30,13 @@ public class SelectMeetingTypeReactor: ReactorKit.Reactor, Stepper{
         switch action {
         case .oneDayButtonTapped:
             self.steps.accept(HomeStep.goToCreateMeetingFlow(meetingTitle: "원데이 멤버 모집하기"))
-            return .empty()
+            return .just(.dismissView)
         case .shortTermButtonTapped:
             self.steps.accept(HomeStep.goToCreateMeetingFlow(meetingTitle: "단기 멤버 모집하기"))
-            return .empty()
+            return .just(.dismissView)
         case .continuousButtonTapped:
             self.steps.accept(HomeStep.goToCreateMeetingFlow(meetingTitle: "지속형 멤버 모집하기"))
-            return .empty()
+            return .just(.dismissView)
         case .dimmedViewTapped, .swipeGesturePerformed:
             return .just(.dismissView)
         }

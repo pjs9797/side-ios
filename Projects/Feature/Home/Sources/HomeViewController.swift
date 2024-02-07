@@ -9,11 +9,13 @@
 import UIKit
 import SharedDSKit
 import RxSwift
+import RxCocoa
+import RxFlow
 
-public class HomeViewController: UIViewController {
+public class HomeViewController: UIViewController, Stepper {
     let disposeBag = DisposeBag()
     var homeView = HomeView()
-    
+    public var steps = PublishRelay<Step>()
     public override func loadView() {
         super.loadView()
         view = homeView
@@ -22,9 +24,7 @@ public class HomeViewController: UIViewController {
         super.viewDidLoad()
         homeView.plusButton.rx.tap
             .bind(onNext: { [weak self] in
-//                let selectMeetingTypeVC = SelectMeetingTypeViewController(selectMeetingTypeViewModel: SelectMeetingTypeReactor())
-//                selectMeetingTypeVC.homeNavigationController = self?.navigationController
-//                self?.present(selectMeetingTypeVC, animated: false)
+                self?.steps.accept(HomeStep.presentSelectMeetingTypeViewController)
             })
             .disposed(by: disposeBag)
         homeView.segmentedControl.addTarget(self, action: #selector(didChangeValue(segment:)), for: .valueChanged)

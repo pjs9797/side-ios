@@ -16,6 +16,7 @@ public protocol ServiceProviderType {
     var signInService: SignInService { get }
     var signUpService: SignUpService { get }
     var userService: UserService { get }
+    var createMeetingService: CreateMeetingService { get }
 }
 
 final public class DataRepository: ServiceProviderType {

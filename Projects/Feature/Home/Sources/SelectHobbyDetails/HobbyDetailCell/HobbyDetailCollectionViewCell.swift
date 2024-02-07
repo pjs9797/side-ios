@@ -1,8 +1,10 @@
 import UIKit
 import SnapKit
 import Shared
+import RxSwift
 
 class HobbyDetailCollectionViewCell: UICollectionViewCell {
+    var disposeBag = DisposeBag()
     let borderView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 28
@@ -37,6 +39,12 @@ class HobbyDetailCollectionViewCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        disposeBag = DisposeBag()
     }
     
     private func layout(){

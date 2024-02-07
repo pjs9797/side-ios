@@ -1,13 +1,14 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import ReactorKit
 import SnapKit
 import Shared
 
-public class SelectHobbyDetailsViewController: UIViewController{
-    let disposeBag = DisposeBag()
+public class SelectHobbyDetailsViewController: UIViewController, ReactorKit.View{
+    public var disposeBag = DisposeBag()
     let meetingTitle: String
-    let selectHobbyDetailsViewModel: SelectHobbyDetailsViewModel
+    var selectHobbyDetailsReactor: SelectHobbyDetailsReactor
     let backButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: nil, action: nil)
     let scrollView = UIScrollView()
     let contentView = UIView()
@@ -42,10 +43,11 @@ public class SelectHobbyDetailsViewController: UIViewController{
         return button
     }()
     
-    public init(meetingTitle: String, selectHobbyDetailsViewModel: SelectHobbyDetailsViewModel) {
+    public init(meetingTitle: String, with reactor: SelectHobbyDetailsReactor) {
         self.meetingTitle = meetingTitle
-        self.selectHobbyDetailsViewModel = selectHobbyDetailsViewModel
+        self.selectHobbyDetailsReactor = reactor
         super.init(nibName: nil, bundle: nil)
+        self.reactor = reactor
     }
     
     required init?(coder: NSCoder) {
@@ -59,7 +61,14 @@ public class SelectHobbyDetailsViewController: UIViewController{
         setNavigationbar()
         self.nextButton.disableNextButton()
         layout()
-        bind()
+        self.selectHobbyDetailsReactor.state.map { $0.contentSize }
+            .distinctUntilChanged()
+            .bind(onNext: { [weak self] size in
+                self?.hobbyDetailTableView.snp.updateConstraints { make in
+                    make.height.equalTo(size.height)
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     private func setNavigationbar() {
@@ -71,67 +80,6 @@ public class SelectHobbyDetailsViewController: UIViewController{
         ]
         self.backButton.tintColor = SharedDSKitAsset.Colors.black.color
         navigationItem.leftBarButtonItem = backButton
-    }
-    
-    private func bind(){
-        backButton.rx.tap
-            .bind(to: selectHobbyDetailsViewModel.backButtonTapped)
-            .disposed(by: disposeBag)
-        
-        selectHobbyDetailsViewModel.backButtonTapped
-            .bind(onNext: { [weak self] in
-                self?.navigationController?.popViewController(animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        nextButton.rx.tap
-            .bind(to: selectHobbyDetailsViewModel.nextButtonTapped)
-            .disposed(by: disposeBag)
-        
-        selectHobbyDetailsViewModel.nextButtonTapped
-            .bind(onNext: { [weak self] in
-//                let meetingRegionViewModel = MeetingRegionViewModel()
-//                let createMeetingPeriodViewModel = CreateMeetingPeriodViewModel()
-//                self?.navigationController?.pushViewController(CreateMeetingContentViewController(meetingTitle: self!.meetingTitle, meetingRegionViewModel: meetingRegionViewModel, createMeetingContentViewModel: CreateMeetingContentViewModel(meetingRegionViewModel: meetingRegionViewModel, createMeetingPeriodViewModel: createMeetingPeriodViewModel), createMeetingPeriodViewModel: createMeetingPeriodViewModel), animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        selectHobbyDetailsViewModel.hobbyDetailTableViewCellData
-            .drive(hobbyDetailTableView.rx.items(cellIdentifier: "HobbyDetailTableViewCell", cellType: HobbyDetailTableViewCell.self)){ row, data, cell in
-                
-                cell.heightDidChange
-                    .bind(onNext: { [weak self] in
-                        self?.hobbyDetailTableView.beginUpdates()
-                        self?.hobbyDetailTableView.endUpdates()
-                    })
-                    .disposed(by: cell.disposeBag)
-                
-                cell.hobbyDetailCollectionView.rx.itemSelected
-                    .bind { [weak self, weak cell] indexPath in
-                        guard let tableCellIndexPath = self?.hobbyDetailTableView.indexPath(for: cell!) else { return }
-                        SharedSelectHobbyState.shared.selectedIndexPath.accept((tableCellIndexPath: tableCellIndexPath, collectionViewIndexPath: indexPath))
-                        cell?.updateBorderViews(selectedIndexPath: indexPath)
-                        if let selectedCell = cell?.hobbyDetailCollectionView.cellForItem(at: indexPath) as? HobbyDetailCollectionViewCell {
-                            self?.nextButton.enableNextButton()
-                        }
-                    }
-                    .disposed(by: cell.disposeBag)
-
-                cell.myIndexPath = IndexPath(row: row, section: 0)
-                cell.configure(model: data)
-                
-            }
-            .disposed(by: disposeBag)
-        
-        hobbyDetailTableView.rx.observe(CGSize.self, "contentSize")
-            .subscribe(onNext: { [weak self] size in
-                if let size = size {
-                    self?.hobbyDetailTableView.snp.updateConstraints { make in
-                        make.height.equalTo(size.height)
-                    }
-                }
-            })
-            .disposed(by: disposeBag)
     }
     
     private func layout(){
@@ -172,10 +120,85 @@ public class SelectHobbyDetailsViewController: UIViewController{
         }
         
         hobbyDetailTableView.snp.makeConstraints { make in
-            make.height.equalTo(1000)
+            make.height.equalTo(2500)
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(questionLabel.snp.bottom).offset(36)
             make.bottom.equalTo(nextButton.snp.top).offset(-36)
         }
+    }
+}
+
+extension SelectHobbyDetailsViewController{
+    public func bind(reactor: SelectHobbyDetailsReactor) {
+        bindAction(reactor: reactor)
+        bindState(reactor: reactor)
+    }
+    
+    private func bindAction(reactor: SelectHobbyDetailsReactor){
+        backButton.rx.tap
+            .map{ Reactor.Action.backButtonTapped}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        nextButton.rx.tap
+            .map{ Reactor.Action.nextButtonTapped}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        hobbyDetailTableView.rx.observe(CGSize.self, "contentSize")
+            .compactMap { $0 }
+            .map(Reactor.Action.updateContentSize)
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        hobbyDetailTableView.rx.itemSelected
+            .bind(onNext: { aa in
+                print(aa)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindState(reactor: SelectHobbyDetailsReactor){
+        reactor.state.map { $0.hobbyCellData }
+            .take(1)
+            .bind(to: hobbyDetailTableView.rx.items(cellIdentifier: "HobbyDetailTableViewCell", cellType: HobbyDetailTableViewCell.self)){[weak self] row, data, cell in
+                let indexPath = IndexPath(row: row, section: 0)
+                let cellReactor = HobbyDetailTableViewCellReactor(hobbyModel: data)
+                cell.reactor = cellReactor
+                cell.myIndexPath = indexPath
+
+                cell.hobbyDetailCollectionView.rx.itemSelected
+                    .distinctUntilChanged()
+                    .map { indexPath in
+                        guard let tableCellIndexPath = self?.hobbyDetailTableView.indexPath(for: cell) else { return HobbyDetailTableViewCellReactor.Action.none }
+                        
+                        return HobbyDetailTableViewCellReactor.Action.selectCollectionViewItem(tableViewIndexPath: tableCellIndexPath, collectionViewIndexPath: indexPath)
+                    }
+                    .bind(to: cellReactor.action)
+                    .disposed(by: cell.disposeBag)
+                
+                cellReactor.state.map { $0.collectionViewHeight}
+                    .distinctUntilChanged()
+                    .bind(onNext: { _ in
+                        self?.hobbyDetailTableView.beginUpdates()
+                        self?.hobbyDetailTableView.endUpdates()
+                    })
+                    .disposed(by: cell.disposeBag)
+                
+                cellReactor.state.map { $0.selectedIndexPaths }
+                    .bind { [weak self] selectedIndexPaths in
+                        guard let self = self else { return }
+                        print("selectedIndexPaths",selectedIndexPaths)
+                        for case let cell as HobbyDetailTableViewCell in self.hobbyDetailTableView.visibleCells {
+                            let tableViewIndexPath = self.hobbyDetailTableView.indexPath(for: cell)
+                            let isSelected = tableViewIndexPath == selectedIndexPaths.tableViewIndexPath
+                            print(tableViewIndexPath,isSelected)
+                            
+                        }
+                    }
+                    .disposed(by: cell.disposeBag)
+            }
+            .disposed(by: disposeBag)
+        
     }
 }
