@@ -8,7 +8,8 @@ import Shared
 public class CreateMeetingContentViewController: UIViewController, ReactorKit.View {
     public var disposeBag = DisposeBag()
     let meetingTitle: String
-    let meetingRegionReactor: MeetingRegionReactor
+    let selectMeetingRegionReactor: SelectMeetingRegionReactor
+    let createMeetingRegionReactor: CreateMeetingRegionReactor
     let createMeetingContentReactor: CreateMeetingContentReactor
     let createMeetingPeriodReactor: CreateMeetingPeriodReactor
     let backButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: nil, action: nil)
@@ -28,7 +29,7 @@ public class CreateMeetingContentViewController: UIViewController, ReactorKit.Vi
         return label
     }()
     let createMeetingTitleView = CreateMeetingTitleView()
-    lazy var createMeetingRegionView = CreateMeetingRegionView(with: self.meetingRegionReactor)
+    lazy var createMeetingRegionView = CreateMeetingRegionView(with: self.createMeetingRegionReactor, selectMeetingRegionReactor: self.selectMeetingRegionReactor)
     let createMeetingMemberView = CreateMeetingMemberView()
     lazy var createMeetingPeriodView = CreateMeetingPeriodView(with: self.createMeetingPeriodReactor)
     lazy var createMeetingImageView = CreateMeetingImageView(homeNavigationController: self.navigationController, createMeetingImageViewModel: CreateMeetingImageViewModel())
@@ -42,10 +43,11 @@ public class CreateMeetingContentViewController: UIViewController, ReactorKit.Vi
         return button
     }()
     
-    public init(meetingTitle: String, createMeetingContentReactor: CreateMeetingContentReactor, meetingRegionReactor: MeetingRegionReactor, createMeetingPeriodReactor: CreateMeetingPeriodReactor) {
+    public init(meetingTitle: String, createMeetingContentReactor: CreateMeetingContentReactor, createMeetingRegionReactor: CreateMeetingRegionReactor, selectMeetingRegionReactor: SelectMeetingRegionReactor, createMeetingPeriodReactor: CreateMeetingPeriodReactor) {
         self.meetingTitle = meetingTitle
         self.createMeetingContentReactor = createMeetingContentReactor
-        self.meetingRegionReactor = meetingRegionReactor
+        self.createMeetingRegionReactor = createMeetingRegionReactor
+        self.selectMeetingRegionReactor = selectMeetingRegionReactor
         self.createMeetingPeriodReactor = createMeetingPeriodReactor
         super.init(nibName: nil, bundle: nil)
     }

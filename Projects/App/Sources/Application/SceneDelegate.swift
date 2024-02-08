@@ -32,8 +32,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         
 //        self.window?.backgroundColor = .white
-        self.window?.rootViewController = SelectHobbyDetailsViewController(meetingTitle: "asdasd", with: SelectHobbyDetailsReactor())
-        //self.window?.rootViewController = LaunchScreenViewController(window: window, coordinator: coordinator)
+        self.window?.rootViewController = LaunchScreenViewController(window: window, coordinator: coordinator)
         self.window?.makeKeyAndVisible()
     }
     

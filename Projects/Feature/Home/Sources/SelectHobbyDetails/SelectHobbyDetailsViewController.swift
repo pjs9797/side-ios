@@ -201,7 +201,6 @@ extension SelectHobbyDetailsViewController{
             .disposed(by: disposeBag)
         
         reactor.state.map{ $0.enableNextButton }
-            .debug("enableNextButton")
             .filter{ $0 }
             .distinctUntilChanged()
             .bind(onNext: { [weak self] _ in

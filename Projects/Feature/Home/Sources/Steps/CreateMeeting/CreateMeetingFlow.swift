@@ -18,13 +18,13 @@ final public class CreateMeetingFlow: Flow {
     var provider: ServiceProviderType
     private let rootViewController: UINavigationController
     let meetingTitle: String
-    let meetingRegionReactor: MeetingRegionReactor
+    let selectMeetingRegionReactor: SelectMeetingRegionReactor
     
     init(with provider: ServiceProviderType, with rootViewController: UINavigationController, with meetingTitle: String) {
         self.provider = provider
         self.rootViewController = rootViewController
         self.meetingTitle = meetingTitle
-        self.meetingRegionReactor = MeetingRegionReactor(provider: self.provider)
+        self.selectMeetingRegionReactor = SelectMeetingRegionReactor(provider: self.provider)
     }
     
     public func navigate(to step: Step) -> FlowContributors {
@@ -85,17 +85,18 @@ final public class CreateMeetingFlow: Flow {
     
     private func coordinateToCreateMeetingContentViewController() -> FlowContributors {
         let createMeetingContentReactor = CreateMeetingContentReactor()
+        let createMeetingRegionReactor = CreateMeetingRegionReactor()
         let createMeetingPeriodReactor = CreateMeetingPeriodReactor()
-        let viewController = CreateMeetingContentViewController(meetingTitle: "모임 생성", createMeetingContentReactor: createMeetingContentReactor, meetingRegionReactor: self.meetingRegionReactor, createMeetingPeriodReactor: createMeetingPeriodReactor)
+        let viewController = CreateMeetingContentViewController(meetingTitle: "모임 생성", createMeetingContentReactor: createMeetingContentReactor, createMeetingRegionReactor: createMeetingRegionReactor, selectMeetingRegionReactor: self.selectMeetingRegionReactor, createMeetingPeriodReactor: createMeetingPeriodReactor)
         self.rootViewController.pushViewController(viewController, animated: true)
-        let compositeStepper = CompositeStepper(steppers: [createMeetingContentReactor, self.meetingRegionReactor, createMeetingPeriodReactor])
+        let compositeStepper = CompositeStepper(steppers: [createMeetingContentReactor, createMeetingRegionReactor, createMeetingPeriodReactor])
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: compositeStepper))
     }
     
     private func coordinateToSelectMeetingRegionViewController() -> FlowContributors {
-        let viewController = SelectMeetingRegionViewController(with: self.meetingRegionReactor)
+        let viewController = SelectMeetingRegionViewController(with: self.selectMeetingRegionReactor)
         self.rootViewController.present(viewController, animated: true)
         
-        return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: self.meetingRegionReactor))
+        return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: self.selectMeetingRegionReactor))
     }
 }

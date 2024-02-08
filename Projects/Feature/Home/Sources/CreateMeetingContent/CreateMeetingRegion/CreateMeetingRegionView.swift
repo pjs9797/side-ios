@@ -7,6 +7,7 @@ import Shared
 
 class CreateMeetingRegionView: UIView, ReactorKit.View{
     public var disposeBag = DisposeBag()
+    var selectMeetingRegionReactor: SelectMeetingRegionReactor
     let regionLabel: UILabel = {
         let label = UILabel()
         label.text = "모임 지역을 선택해주세요."
@@ -37,7 +38,8 @@ class CreateMeetingRegionView: UIView, ReactorKit.View{
         return button
     }()
     
-    init(with reactor: MeetingRegionReactor){
+    init(with reactor: CreateMeetingRegionReactor, selectMeetingRegionReactor: SelectMeetingRegionReactor){
+        self.selectMeetingRegionReactor = selectMeetingRegionReactor
         super.init(frame: .zero)
         
         self.reactor = reactor
@@ -84,12 +86,12 @@ class CreateMeetingRegionView: UIView, ReactorKit.View{
 }
 
 extension CreateMeetingRegionView{
-    func bind(reactor: MeetingRegionReactor) {
+    func bind(reactor: CreateMeetingRegionReactor) {
         bindAction(reactor: reactor)
         bindState(reactor: reactor)
     }
     
-    private func bindAction(reactor: MeetingRegionReactor){
+    private func bindAction(reactor: CreateMeetingRegionReactor){
         onlineSwitch.rx.isOn
             .map{ Reactor.Action.updateOnlineSwitch($0)}
             .bind(to: reactor.action)
@@ -101,7 +103,7 @@ extension CreateMeetingRegionView{
             .disposed(by: disposeBag)
     }
     
-    private func bindState(reactor: MeetingRegionReactor){
+    private func bindState(reactor: CreateMeetingRegionReactor){
         reactor.state.map{ $0.isOnline }
             .distinctUntilChanged()
             .bind(onNext: { [weak self] value in
@@ -118,7 +120,8 @@ extension CreateMeetingRegionView{
             })
             .disposed(by: disposeBag)
         
-        reactor.state.map{ $0.regionButtonTitle }
+        selectMeetingRegionReactor.state.map{ $0.regionButtonTitle }
+            .observe(on: MainScheduler.asyncInstance)
             .distinctUntilChanged()
             .bind(onNext: { [weak self] location in
                 if location != "읍,면,동으로 검색하세요."{

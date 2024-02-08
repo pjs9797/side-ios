@@ -4,7 +4,7 @@ import Alamofire
 import RxAlamofire
 
 public final class CreateMeetingService: APIService {
-    func createMeeting(name: String, description: String, memberMaxNumber: Int, startAt: String, mainImage: String, categoryMajor: String, categorySub: String, type: String, activityType: String, locationInfo: String, locationDetail: String?) -> Observable<DataRequest> {
+    public func createMeeting(name: String, description: String, memberMaxNumber: Int, startAt: String, mainImage: String, categoryMajor: String, categorySub: String, type: String, activityType: String, locationInfo: String, locationDetail: String?) -> Observable<DataRequest> {
         var parameters: Parameters = [
             "name": name,
             "description": description,
@@ -24,13 +24,16 @@ public final class CreateMeetingService: APIService {
         return request(.post, "/api/v1/clubs", useAuthHeader: true, parameters: parameters)
     }
     
-    func transformImageToURL(image: [UIImage?]) -> Observable<UploadRequest> {
+    public func transformImageToURL(image: [UIImage?]) -> Observable<UploadRequest> {
         return upload(.post, "/api/v1/files", useAuthHeader: true, images: image)
     }
     
-    func searchLocation(address: String) -> Observable<DataRequest> {
+    public func searchLocation(address: String) -> Observable<DataRequest> {
+        guard let encodedAddress = address.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            return Observable.error(AFError.invalidURL(url: address))
+        }
         
-        return request(.get, "/api/v1/locations/search?address=\(address)", useAuthHeader: true, encoding: URLEncoding.default)
+        return request(.get, "/api/v1/locations/search?address=\(encodedAddress)", useAuthHeader: true, encoding: URLEncoding.default)
     }
     
     public func getLocation(longitude: String, latitude: String) -> Observable<DataRequest> {

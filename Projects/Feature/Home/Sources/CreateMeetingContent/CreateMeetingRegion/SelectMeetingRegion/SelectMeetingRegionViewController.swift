@@ -57,10 +57,13 @@ class SelectMeetingRegionViewController: UIViewController, ReactorKit.View {
     }()
     let locationTableView: UITableView = {
         let tableView = UITableView()
+        tableView.separatorStyle = .none
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.register(LocationTableViewCell.self, forCellReuseIdentifier: "LocationTableViewCell")
         return tableView
     }()
     
-    init(with reactor: MeetingRegionReactor) {
+    init(with reactor: SelectMeetingRegionReactor) {
         super.init(nibName: nil, bundle: nil)
         
         self.reactor = reactor
@@ -78,8 +81,14 @@ class SelectMeetingRegionViewController: UIViewController, ReactorKit.View {
         self.layout()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        self.reactor?.action.onNext(.clearSearchedLocations)
+    }
+    
     func layout(){
-        [titleLabel,backButton,searchTextField,searchButton,clearButton,currentLocationSettingLabel,locationImageView,currentLocationButton]
+        [titleLabel,backButton,searchTextField,searchButton,clearButton,currentLocationSettingLabel,locationImageView,currentLocationButton,locationTableView]
             .forEach { self.view.addSubview($0) }
         
         titleLabel.snp.makeConstraints { make in
@@ -130,6 +139,13 @@ class SelectMeetingRegionViewController: UIViewController, ReactorKit.View {
             make.trailing.equalToSuperview().offset(-20)
             make.centerY.equalTo(currentLocationSettingLabel)
         }
+        
+        locationTableView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
+            make.top.equalTo(currentLocationSettingLabel.snp.bottom).offset(12)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+        }
     }
     
     func presentDeniedAlert() {
@@ -145,12 +161,12 @@ class SelectMeetingRegionViewController: UIViewController, ReactorKit.View {
 }
 
 extension SelectMeetingRegionViewController{
-    func bind(reactor: MeetingRegionReactor) {
+    func bind(reactor: SelectMeetingRegionReactor) {
         bindAction(reactor: reactor)
         bindState(reactor: reactor)
     }
     
-    private func bindAction(reactor: MeetingRegionReactor){
+    private func bindAction(reactor: SelectMeetingRegionReactor){
         backButton.rx.tap
             .map{ Reactor.Action.backButtonTapped}
             .bind(to: reactor.action)
@@ -175,9 +191,18 @@ extension SelectMeetingRegionViewController{
             .map{ Reactor.Action.writeText($0)}
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
+        
+        locationTableView.rx.itemSelected
+            .observe(on: MainScheduler.asyncInstance)
+            .map { indexPath in
+                let locationName = reactor.currentState.searchedLocationNames[indexPath.row]
+                return Reactor.Action.selectSearchedLocation(locationName)
+            }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
     }
     
-    private func bindState(reactor: MeetingRegionReactor){
+    private func bindState(reactor: SelectMeetingRegionReactor){
         reactor.state.map{ $0.isTextExist }
             .distinctUntilChanged()
             .bind(onNext: { [weak self] value in
@@ -196,6 +221,14 @@ extension SelectMeetingRegionViewController{
                 self?.presentDeniedAlert()
             })
             .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.searchedLocationNames }
+            .bind(to: locationTableView.rx.items(cellIdentifier: "LocationTableViewCell", cellType: LocationTableViewCell.self)){ row, data, cell in
+                let locationTableViewCellReactor = LocationTableViewCellReactor(locationName: data)
+                cell.reactor = locationTableViewCellReactor
+            }
+            .disposed(by: disposeBag)
+        
     }
 }
 
