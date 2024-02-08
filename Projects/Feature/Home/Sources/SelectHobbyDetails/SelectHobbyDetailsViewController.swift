@@ -150,55 +150,63 @@ extension SelectHobbyDetailsViewController{
             .map(Reactor.Action.updateContentSize)
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
-        
-        hobbyDetailTableView.rx.itemSelected
-            .bind(onNext: { aa in
-                print(aa)
-            })
-            .disposed(by: disposeBag)
     }
     
     private func bindState(reactor: SelectHobbyDetailsReactor){
         reactor.state.map { $0.hobbyCellData }
             .take(1)
-            .bind(to: hobbyDetailTableView.rx.items(cellIdentifier: "HobbyDetailTableViewCell", cellType: HobbyDetailTableViewCell.self)){[weak self] row, data, cell in
+            .bind(to: hobbyDetailTableView.rx.items(cellIdentifier: "HobbyDetailTableViewCell", cellType: HobbyDetailTableViewCell.self)){ [weak self] row, data, cell in
+                guard let self = self else { return }
                 let indexPath = IndexPath(row: row, section: 0)
-                let cellReactor = HobbyDetailTableViewCellReactor(hobbyModel: data)
+                let cellReactor = HobbyDetailTableViewCellReactor(hobbyModel: data, tableViewIndexPath: indexPath)
                 cell.reactor = cellReactor
-                cell.myIndexPath = indexPath
 
                 cell.hobbyDetailCollectionView.rx.itemSelected
-                    .distinctUntilChanged()
                     .map { indexPath in
-                        guard let tableCellIndexPath = self?.hobbyDetailTableView.indexPath(for: cell) else { return HobbyDetailTableViewCellReactor.Action.none }
+                        guard let tableCellIndexPath = self.hobbyDetailTableView.indexPath(for: cell) else { return HobbyDetailTableViewCellReactor.Action.none }
                         
                         return HobbyDetailTableViewCellReactor.Action.selectCollectionViewItem(tableViewIndexPath: tableCellIndexPath, collectionViewIndexPath: indexPath)
                     }
                     .bind(to: cellReactor.action)
                     .disposed(by: cell.disposeBag)
                 
-                cellReactor.state.map { $0.collectionViewHeight}
-                    .distinctUntilChanged()
-                    .bind(onNext: { _ in
-                        self?.hobbyDetailTableView.beginUpdates()
-                        self?.hobbyDetailTableView.endUpdates()
+                cell.hobbyDetailCollectionView.rx.itemSelected
+                    .take(1)
+                    .map { _ in Reactor.Action.selectItem }
+                    .bind(to: reactor.action)
+                    .disposed(by: self.disposeBag)
+                
+                cellReactor.state.map{ $0.currentCollectionViewIndexPath }
+                    .bind(onNext: { selectionInfo in
+                        if let selectionInfo = selectionInfo {
+                            for cell in self.hobbyDetailTableView.visibleCells as? [HobbyDetailTableViewCell] ?? [] {
+                                if selectionInfo.tableViewIndexPath != self.hobbyDetailTableView.indexPath(for: cell){
+                                    for collectionViewCell in cell.hobbyDetailCollectionView.visibleCells as? [HobbyDetailCollectionViewCell] ?? [] {
+                                        collectionViewCell.setSelectedState(isSelected: false)
+                                    }
+                                }
+                            }
+                        }
                     })
                     .disposed(by: cell.disposeBag)
                 
-                cellReactor.state.map { $0.selectedIndexPaths }
-                    .bind { [weak self] selectedIndexPaths in
-                        guard let self = self else { return }
-                        print("selectedIndexPaths",selectedIndexPaths)
-                        for case let cell as HobbyDetailTableViewCell in self.hobbyDetailTableView.visibleCells {
-                            let tableViewIndexPath = self.hobbyDetailTableView.indexPath(for: cell)
-                            let isSelected = tableViewIndexPath == selectedIndexPaths.tableViewIndexPath
-                            print(tableViewIndexPath,isSelected)
-                            
-                        }
-                    }
+                cellReactor.state.map { $0.collectionViewHeight}
+                    .distinctUntilChanged()
+                    .bind(onNext: { _ in
+                        self.hobbyDetailTableView.beginUpdates()
+                        self.hobbyDetailTableView.endUpdates()
+                    })
                     .disposed(by: cell.disposeBag)
             }
             .disposed(by: disposeBag)
         
+        reactor.state.map{ $0.enableNextButton }
+            .debug("enableNextButton")
+            .filter{ $0 }
+            .distinctUntilChanged()
+            .bind(onNext: { [weak self] _ in
+                self?.nextButton.enableNextButton()
+            })
+            .disposed(by: disposeBag)
     }
 }

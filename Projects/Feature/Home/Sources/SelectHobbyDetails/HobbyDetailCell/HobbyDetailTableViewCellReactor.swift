@@ -7,8 +7,8 @@ class HobbyDetailTableViewCellReactor: ReactorKit.Reactor, Stepper{
     public var initialState: State
     public var steps = PublishRelay<Step>()
     
-    init(hobbyModel: HobbyModel) {
-        self.initialState = State(hobbyModel: hobbyModel, hobbyDetailModels: hobbyModel.hobbyDetailModel)
+    init(hobbyModel: HobbyModel, tableViewIndexPath: IndexPath) {
+        self.initialState = State(tableViewIndexPath: tableViewIndexPath, hobbyModel: hobbyModel, hobbyDetailModels: hobbyModel.hobbyDetailModel)
     }
     
     enum Action {
@@ -25,6 +25,7 @@ class HobbyDetailTableViewCellReactor: ReactorKit.Reactor, Stepper{
     
     struct State {
         var currentCollectionViewIndexPath: (tableViewIndexPath: IndexPath, collectionViewIndexPath: IndexPath)? = nil
+        var tableViewIndexPath: IndexPath
         var hobbyModel: HobbyModel
         var hobbyDetailModels: [HobbyDetailModel]
         var isCollectionViewHidden: Bool = true

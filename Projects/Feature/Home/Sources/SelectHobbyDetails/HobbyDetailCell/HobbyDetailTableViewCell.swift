@@ -7,7 +7,6 @@ import Shared
 
 class HobbyDetailTableViewCell: UITableViewCell, ReactorKit.View{
     public var disposeBag = DisposeBag()
-    var myIndexPath: IndexPath?
     let backView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 16
@@ -86,28 +85,12 @@ class HobbyDetailTableViewCell: UITableViewCell, ReactorKit.View{
         }
     }
     
-//    func updateBorderViews(selectedIndexPath: IndexPath) {
-//        for cell in self.hobbyDetailCollectionView.visibleCells as? [HobbyDetailCollectionViewCell] ?? [] {
-//            print(cell,self.hobbyDetailCollectionView.indexPath(for: cell))
-//            if let cellIndexPath = self.hobbyDetailCollectionView.indexPath(for: cell) {
-//                let isSelected = selectedIndexPath == cellIndexPath
-//                print(cellIndexPath,isSelected)
-//                cell.setSelectedState(isSelected: isSelected)
-//                self.hobbyDetailCollectionView.reloadItems(at: [selectedIndexPath])
-//            }
-    //        }
-    //    }
     func updateBorderViews(selectedIndexPath: IndexPath) {
-        print(selectedIndexPath)
-        print("Visible Cells Count: \(self.hobbyDetailCollectionView.visibleCells.count)")
-        print("Number of Items: \(self.hobbyDetailCollectionView.numberOfItems(inSection: 0))")
-
         for cell in self.hobbyDetailCollectionView.visibleCells as? [HobbyDetailCollectionViewCell] ?? [] {
             let isSelected = selectedIndexPath == self.hobbyDetailCollectionView.indexPath(for: cell)
             cell.setSelectedState(isSelected: isSelected)
         }
     }
-
 }
 
 extension HobbyDetailTableViewCell{
@@ -123,11 +106,6 @@ extension HobbyDetailTableViewCell{
             .map { Reactor.Action.toggleCollectionView }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
-        
-//        hobbyDetailCollectionView.rx.itemSelected
-//            .map{ Reactor.Action.selectCollectionViewItem($0) }
-//            .bind(to: reactor.action)
-//            .disposed(by: disposeBag)
     }
     
     private func bindState(reactor: HobbyDetailTableViewCellReactor){
@@ -138,7 +116,6 @@ extension HobbyDetailTableViewCell{
         reactor.state.map { $0.collectionViewHeight }
             .distinctUntilChanged()
             .bind(onNext: { [weak self] height in
-                
                 if height == 0 {
                     self?.plusButton.setImage(SharedDSKitAsset.Icons.iconArrowPlus24.image, for: .normal)
                 } else {
@@ -162,11 +139,8 @@ extension HobbyDetailTableViewCell{
         
         reactor.state.map{ $0.currentCollectionViewIndexPath }
             .bind(onNext: { [weak self] selectionInfo in
-                guard let self = self else { return }
-                if let selectionInfo = selectionInfo, selectionInfo.tableViewIndexPath == self.myIndexPath {
-                    self.updateBorderViews(selectedIndexPath: selectionInfo.collectionViewIndexPath)
-                } else {
-                    self.updateBorderViews(selectedIndexPath: IndexPath(row: -1, section: 0))
+                if let selectionInfo = selectionInfo, selectionInfo.tableViewIndexPath == reactor.currentState.tableViewIndexPath {
+                    self?.updateBorderViews(selectedIndexPath: selectionInfo.collectionViewIndexPath)
                 }
             })
             .disposed(by: disposeBag)

@@ -17,18 +17,18 @@ public class SelectHobbyDetailsReactor: ReactorKit.Reactor, Stepper{
         case backButtonTapped
         case nextButtonTapped
         case updateContentSize(CGSize)
-        case selectCollectionViewItem(tableViewIndexPath: IndexPath?, collectionViewIndexPath: IndexPath?)
+        case selectItem
     }
     
     public enum Mutation {
         case setContentSize(CGSize)
-        case setSelectedCollectionViewItem(tableViewIndexPath: IndexPath?, collectionViewIndexPath: IndexPath?)
+        case setSelectItem
     }
     
     public struct State {
         var hobbyCellData: [HobbyModel] = HobbyDetailTableViewCellData.cellData
         var contentSize: CGSize = .zero
-        var selectedIndexPaths: (tableViewIndexPath: IndexPath?, collectionViewIndexPath: IndexPath?)
+        var enableNextButton: Bool = false
     }
     
     public func mutate(action: Action) -> Observable<Mutation> {
@@ -41,8 +41,8 @@ public class SelectHobbyDetailsReactor: ReactorKit.Reactor, Stepper{
             return .empty()
         case .updateContentSize(let size):
             return .just(.setContentSize(size))
-        case .selectCollectionViewItem(let tableViewIndexPath, let collectionViewIndexPath):
-            return Observable.just(.setSelectedCollectionViewItem(tableViewIndexPath: tableViewIndexPath, collectionViewIndexPath: collectionViewIndexPath))
+        case .selectItem:
+            return .just(.setSelectItem)
         }
     }
     
@@ -51,9 +51,8 @@ public class SelectHobbyDetailsReactor: ReactorKit.Reactor, Stepper{
         switch mutation {
         case .setContentSize(let size):
             newState.contentSize = size
-        case .setSelectedCollectionViewItem(let tableViewIndexPath, let collectionViewIndexPath):
-            let indexPaths = (tableViewIndexPath, collectionViewIndexPath)
-            newState.selectedIndexPaths = indexPaths
+        case .setSelectItem:
+            newState.enableNextButton = true
         }
         return newState
     }
