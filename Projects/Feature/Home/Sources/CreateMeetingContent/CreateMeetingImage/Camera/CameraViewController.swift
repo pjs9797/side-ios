@@ -1,7 +1,10 @@
 import UIKit
 import Mantis
+import RxFlow
+import RxCocoa
 
-class CameraViewController: UIImagePickerController, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+class CameraViewController: UIImagePickerController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, Stepper{
+    public var steps = PublishRelay<Step>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -14,20 +17,10 @@ class CameraViewController: UIImagePickerController, UIImagePickerControllerDele
             self.dismiss(animated: true, completion: nil)
             return
         }
-        self.presentEditPhotoViewController(img: selectedImage)
+        self.steps.accept(CreateMeetingStep.presentEditPhotoViewController(image: selectedImage))
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    func presentEditPhotoViewController(img: UIImage) {
-        var config = Mantis.Config()
-        config.cropMode = .async
-        config.cropViewConfig.showAttachedRotationControlView = false
-        config.cropToolbarConfig.toolbarButtonOptions = [.clockwiseRotate, .reset, .ratio, .autoAdjust, .horizontallyFlip]
-        let editPhotoViewController: EditPhotoViewController = Mantis.cropViewController(image: img, config: config)
-        editPhotoViewController.modalPresentationStyle = .overFullScreen
-        self.present(editPhotoViewController, animated: true)
+        self.steps.accept(CreateMeetingStep.dismissViewController)
     }
 }

@@ -3,14 +3,13 @@ import Photos
 import PhotosUI
 import RxSwift
 import RxCocoa
+import ReactorKit
 import SnapKit
 import Shared
-import Mantis
 
-class AlbumViewController: UIViewController{
-    let disposeBag = DisposeBag()
-    let photoAuthType: String
-    let albumViewModel: AlbumViewModel
+
+class AlbumViewController: UIViewController, ReactorKit.View{
+    var disposeBag = DisposeBag()
     let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "앨범"
@@ -81,10 +80,10 @@ class AlbumViewController: UIViewController{
         return view
     }()
     
-    init(photoAuthType: String, albumViewModel: AlbumViewModel){
-        self.photoAuthType = photoAuthType
-        self.albumViewModel = albumViewModel
+    init(with reator: AlbumViewReactor){
         super.init(nibName: nil, bundle: nil)
+        
+        self.reactor = reator
         self.modalPresentationStyle = .overFullScreen
     }
     
@@ -97,93 +96,12 @@ class AlbumViewController: UIViewController{
         
         self.view.backgroundColor = .white
         PHPhotoLibrary.shared().register(self)
-        bind()
         layout()
         photoAuthTypeLayout()
     }
     
     deinit {
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
-    }
-    
-    func bind(){
-        backButton.rx.tap
-            .bind(to: albumViewModel.backButtonTapped)
-            .disposed(by: disposeBag)
-        
-        albumViewModel.backButtonTapped
-            .bind(onNext: { [weak self] in
-                self?.dismiss(animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        selectButton.rx.tap
-            .bind(to: albumViewModel.selectButtonTapped)
-            .disposed(by: disposeBag)
-        
-        albumViewModel.selectButtonTapped
-            .withLatestFrom(albumViewModel.selectedPhotoRelay)
-            .bind(onNext: { [weak self] img in
-                self?.presentEditPhotoViewController(img: img)
-            })
-            .disposed(by: disposeBag)
-        
-        albumViewModel.photosRelay
-            .bind(to: albumCollectionView.rx.items(cellIdentifier: "AlbumCollectionViewCell", cellType: AlbumCollectionViewCell.self)) { index, model, cell in
-                PHImageManager.default().requestImage(for: model, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFill, options: nil) { image, _ in
-                    cell.photoImageView.image = image
-                }
-            }
-            .disposed(by: disposeBag)
-        
-        albumCollectionView.rx.itemSelected
-            .subscribe(onNext: { [weak self] indexPath in
-                let asset = self?.albumViewModel.photosRelay.value[indexPath.item]
-                PHImageManager.default().requestImage(for: asset!, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFill, options: nil) { image, _ in
-                    guard let image = image else { return }
-                    self?.albumViewModel.selectedPhotoRelay.accept(image)
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        albumCollectionView.rx.itemSelected
-            .bind(onNext: { [weak self] indexPath in
-                if let cell = self?.albumCollectionView.cellForItem(at: indexPath) as? AlbumCollectionViewCell {
-                    cell.selectedPhoto(isSelected: true)
-                    self?.selectButton.isEnabled = true
-                    self?.selectButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
-                }
-                
-                if let previousIndexPath = self?.albumViewModel.selectedPhotoIndexRelay.value, previousIndexPath != indexPath {
-                    if let previousCell = self?.albumCollectionView.cellForItem(at: previousIndexPath) as? AlbumCollectionViewCell {
-                        previousCell.selectedPhoto(isSelected: false)
-                    }
-                }
-                self?.albumViewModel.selectedPhotoIndexRelay.accept(indexPath)
-            })
-            .disposed(by: disposeBag)
-        
-        morePhotoButton.rx.tap
-            .bind(to: albumViewModel.morePhotoButtonTapped)
-            .disposed(by: disposeBag)
-        
-        albumViewModel.morePhotoButtonTapped
-            .bind(onNext: { [weak self] in
-                PHPhotoLibrary.shared().presentLimitedLibraryPicker(from: self!)
-            })
-            .disposed(by: disposeBag)
-        
-        photoAuthorizationSettingButton.rx.tap
-            .bind(to: albumViewModel.photoAuthorizationSettingButtonTapped)
-            .disposed(by: disposeBag)
-        
-        albumViewModel.photoAuthorizationSettingButtonTapped
-            .bind(onNext: { _ in
-                if let url = URL(string: UIApplication.openSettingsURLString) {
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                }
-            })
-            .disposed(by: disposeBag)
     }
     
     func layout(){
@@ -261,7 +179,7 @@ class AlbumViewController: UIViewController{
     }
     
     func photoAuthTypeLayout(){
-        if photoAuthType == "authorized"{
+        if self.reactor?.currentState.photoAuthType == "authorized"{
             self.nonePhotoView.isHidden = true
             self.buttonsView.isHidden = true
             self.albumCollectionView.snp.remakeConstraints { make in
@@ -271,9 +189,10 @@ class AlbumViewController: UIViewController{
             }
         }
         else{
-            albumViewModel.photosCntDriver
+            self.reactor?.state.map{ $0.photosCnt }
+                .asDriver(onErrorDriveWith: .empty())
                 .drive(onNext: { [weak self] cnt in
-                    if cnt == 0{
+                    if cnt == 0 {
                         self?.albumCollectionView.isHidden = true
                     }
                     else{
@@ -283,20 +202,123 @@ class AlbumViewController: UIViewController{
                 .disposed(by: disposeBag)
         }
     }
-    
-    func presentEditPhotoViewController(img: UIImage){
-        var config = Mantis.Config()
-        config.cropMode = .async
-        config.cropViewConfig.showAttachedRotationControlView = false
-        config.cropToolbarConfig.toolbarButtonOptions = [.clockwiseRotate, .reset, .ratio, .autoAdjust, .horizontallyFlip]
-        let editPhotoViewController: EditPhotoViewController = Mantis.cropViewController(image: img, config: config)
-        editPhotoViewController.modalPresentationStyle = .overFullScreen
-        self.present(editPhotoViewController, animated: true)
-    }
 }
 
 extension AlbumViewController: PHPhotoLibraryChangeObserver{
     func photoLibraryDidChange(_ changeInstance: PHChange) {
-        self.albumViewModel.fetchLimitedPhotos()
+        self.reactor?.fetchLimitedPhotos()
     }
 }
+
+extension AlbumViewController{
+    func bind(reactor: AlbumViewReactor) {
+        bindAction(reactor: reactor)
+        bindState(reactor: reactor)
+    }
+    
+    private func bindAction(reactor: AlbumViewReactor){
+        backButton.rx.tap
+            .map{ Reactor.Action.backButtonTapped}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        morePhotoButton.rx.tap
+            .map{ Reactor.Action.morePhotoButtonTapped(self)}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        photoAuthorizationSettingButton.rx.tap
+            .map{ Reactor.Action.photoAuthorizationSettingButtonTapped}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        selectButton.rx.tap
+            .map{ Reactor.Action.selectButtonTapped}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        //        albumCollectionView.rx.itemSelected
+        //            .observe(on: MainScheduler.asyncInstance)
+        //            .flatMapLatest { [weak self] indexPath -> Observable<Reactor.Action> in
+        //                guard let self = self, let reactor = self.reactor else {
+        //                    return .empty()
+        //                }
+        //                if let currentSelectedIndexPath = reactor.currentState.selectedIndexPath, currentSelectedIndexPath == indexPath {
+        //                    return Observable.just(Reactor.Action.selectPhoto(nil, indexPath))
+        //                }
+        //                else {
+        //                    let asset = reactor.currentState.photos[indexPath.item]
+        //                    return Observable.create { observer in
+        //                        PHImageManager.default().requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFill, options: nil) { image, _ in
+        //                            observer.onNext(.selectPhoto(image, indexPath))
+        //                            observer.onCompleted()
+        //                        }
+        //                        return Disposables.create()
+        //                    }
+        //                }
+        //            }
+        //            .bind(to: reactor.action)
+        //            .disposed(by: disposeBag)
+        
+        albumCollectionView.rx.itemSelected
+            .observe(on: MainScheduler.asyncInstance)
+            .flatMapLatest { [weak self] indexPath -> Observable<Reactor.Action> in
+                guard let asset = self?.reactor?.currentState.photos[indexPath.item] else {
+                    return .empty()
+                }
+                return Observable.create { observer in
+                    PHImageManager.default().requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFill, options: nil) { image, _ in
+                        observer.onNext(.selectPhoto(image, indexPath))
+                        observer.onCompleted()
+                    }
+                    return Disposables.create()
+                }
+            }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindState(reactor: AlbumViewReactor){
+        reactor.state.map{ $0.photos }
+            .distinctUntilChanged { previousPhotos, currentPhotos in
+                if previousPhotos.count != currentPhotos.count {
+                    return false
+                }
+                return !zip(previousPhotos, currentPhotos).contains { prev, curr in
+                    prev.localIdentifier != curr.localIdentifier
+                }
+            }
+            .bind(to: albumCollectionView.rx.items(cellIdentifier: "AlbumCollectionViewCell", cellType: AlbumCollectionViewCell.self)) { index, model, cell in
+                PHImageManager.default().requestImage(for: model, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFill, options: nil) { image, _ in
+                    cell.configure(image: image)
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        reactor.state.compactMap{ $0.selectedIndexPath }
+            .debug("selectedIndexPath")
+            .observe(on: MainScheduler.asyncInstance)
+            .compactMap{ $0 }
+            .distinctUntilChanged()
+            .bind(onNext: { [weak self] indexPath in
+                if let cell = self?.albumCollectionView.cellForItem(at: indexPath) as? AlbumCollectionViewCell {
+                    cell.selectedPhoto(isSelected: true)
+                }
+                self?.selectButton.isEnabled = true
+                self?.selectButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
+            })
+            .disposed(by: disposeBag)
+        
+        reactor.state.compactMap{ $0.previousSelectedIndexPath }
+            .debug("previousSelectedIndexPath")
+            .observe(on: MainScheduler.asyncInstance)
+            .distinctUntilChanged()
+            .bind(onNext: { [weak self] indexPath in
+                if let previousCell = self?.albumCollectionView.cellForItem(at: indexPath) as? AlbumCollectionViewCell {
+                    previousCell.selectedPhoto(isSelected: false)
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+}
+

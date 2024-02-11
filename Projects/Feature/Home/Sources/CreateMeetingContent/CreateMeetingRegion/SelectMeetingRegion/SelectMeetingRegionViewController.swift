@@ -214,14 +214,6 @@ extension SelectMeetingRegionViewController{
             })
             .disposed(by: disposeBag)
         
-        reactor.state.map{ $0.deniedLocationAuth }
-            .filter{ $0 }
-            .distinctUntilChanged()
-            .bind(onNext: { [weak self] _ in
-                self?.presentDeniedAlert()
-            })
-            .disposed(by: disposeBag)
-        
         reactor.state.map { $0.searchedLocationNames }
             .bind(to: locationTableView.rx.items(cellIdentifier: "LocationTableViewCell", cellType: LocationTableViewCell.self)){ row, data, cell in
                 let locationTableViewCellReactor = LocationTableViewCellReactor(locationName: data)

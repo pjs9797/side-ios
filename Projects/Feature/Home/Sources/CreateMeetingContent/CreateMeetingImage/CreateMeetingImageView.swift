@@ -1,13 +1,12 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import ReactorKit
 import SnapKit
 import Shared
 
-class CreateMeetingImageView: UIView{
-    let disposeBag = DisposeBag()
-    weak var homeNavigationController: UINavigationController!
-    let createMeetingImageViewModel: CreateMeetingImageViewModel
+class CreateMeetingImageView: UIView, ReactorKit.View {
+    public var disposeBag = DisposeBag()
     let imageLabel: UILabel = {
         let label = UILabel()
         label.text = "대표 이미지를 골라주세요!"
@@ -49,89 +48,15 @@ class CreateMeetingImageView: UIView{
         return view
     }()
     
-    init(homeNavigationController: UINavigationController?, createMeetingImageViewModel: CreateMeetingImageViewModel){
-        self.homeNavigationController = homeNavigationController
-        self.createMeetingImageViewModel = createMeetingImageViewModel
+    init(with reactor: CreateMeetingImageReactor){
         super.init(frame: .zero)
         
-        bind()
+        self.reactor = reactor
         layout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func bind(){
-        setDefaultImageButton.rx.tap
-            .bind(to: createMeetingImageViewModel.setDefaultImageButtonTapped)
-            .disposed(by: disposeBag)
-        
-        imageCancelButton.rx.tap
-            .bind(to: createMeetingImageViewModel.imageCancelButtonTapped)
-            .disposed(by: disposeBag)
-        
-        createMeetingImageViewModel.imageCancelButtonTapped
-            .bind(onNext: { [weak self] in
-                EditPhotoViewModel.shared.imgRelay.accept(nil)
-                self?.representativeImageView.isHidden = true
-                self?.imageCancelButton.isHidden = true
-                self?.addImageBtView.cntLabel.text = "0 / 1"
-            })
-            .disposed(by: disposeBag)
-        
-        addImageBtView.tapGesture.rx.event
-            .map{ _ in Void() }
-            .bind(to: createMeetingImageViewModel.addImageBtViewTapped)
-            .disposed(by: disposeBag)
-        
-        createMeetingImageViewModel.addImageBtViewTapped
-            .bind(onNext: { [weak self] in
-                self?.presentPhotoCameraActionSheet()
-            })
-            .disposed(by: disposeBag)
-            
-        createMeetingImageViewModel.presentAlbumDriver
-            .drive(onNext: { [weak self] status in
-                switch status {
-                case "authorized":
-                    self?.homeNavigationController.present(AlbumViewController(photoAuthType: "authorized", albumViewModel: AlbumViewModel()), animated: true)
-                case "limited":
-                    self?.homeNavigationController.present(AlbumViewController(photoAuthType: "limited", albumViewModel: AlbumViewModel()), animated: true)
-                case "denied":
-                    self?.presentDeniedAlert(target: "사진")
-                default:
-                    break
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        createMeetingImageViewModel.presentCameraDriver
-            .drive(onNext: { [weak self] status in
-                switch status {
-                case "authorized":
-                    let cameraViewController = CameraViewController()
-                    cameraViewController.sourceType = .camera
-                    cameraViewController.allowsEditing = true
-                    cameraViewController.cameraDevice = .rear
-                    cameraViewController.cameraCaptureMode = .photo
-                    self?.homeNavigationController.present(cameraViewController, animated: true)
-                case "denied":
-                    self?.presentDeniedAlert(target: "카메라")
-                default:
-                    break
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        EditPhotoViewModel.shared.imgRelay
-            .bind(onNext: { [weak self] img in
-                self?.representativeImageView.image = img
-                self?.representativeImageView.isHidden = false
-                self?.imageCancelButton.isHidden = false
-                self?.addImageBtView.cntLabel.text = "1 / 1"
-            })
-            .disposed(by: disposeBag)
     }
     
     private func layout(){
@@ -175,29 +100,40 @@ class CreateMeetingImageView: UIView{
             make.centerX.bottom.equalToSuperview()
         }
     }
-    
-    func presentPhotoCameraActionSheet() {
-        let alert = UIAlertController(title: "사부작", message: nil, preferredStyle: .actionSheet)
-        let photoLibraryAction = UIAlertAction(title: "앨범에서 사진선택", style: .default) { [weak self] _ in
-            self?.createMeetingImageViewModel.requestPhotoLibraryAuthorization()
-        }
-        let cameraAction = UIAlertAction(title: "카메라 촬영", style: .default) { [weak self] _ in
-            self?.createMeetingImageViewModel.requestCameraAuthorization()
-        }
-        alert.addAction(photoLibraryAction)
-        alert.addAction(cameraAction)
-        alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
-        self.homeNavigationController.present(alert, animated: true, completion: nil)
+}
+
+extension CreateMeetingImageView {
+    func bind(reactor: CreateMeetingImageReactor) {
+        bindAction(reactor: reactor)
+        bindState(reactor: reactor)
     }
     
-    func presentDeniedAlert(target: String) {
-        let alert = UIAlertController(title: nil, message: "\(target) 기능을 사용하려면\n’\(target)’ 접근권한을 허용해야 합니다.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "설정", style: .default, handler: { _ in
-            if let url = URL(string: UIApplication.openSettingsURLString) {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            }
-        }))
-        alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
-        self.homeNavigationController.present(alert, animated: true, completion: nil)
+    private func bindAction(reactor: CreateMeetingImageReactor){
+        addImageBtView.tapGesture.rx.event
+            .map { _ in Reactor.Action.addImageBtViewTapped }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        imageCancelButton.rx.tap
+            .map { Reactor.Action.imageCancelButtonTapped }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        setDefaultImageButton.rx.tap
+            .map { Reactor.Action.setDefaultImageButtonTapped }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindState(reactor: CreateMeetingImageReactor){
+        EditPhotoReactor.shared.state.map { $0.image }
+            .distinctUntilChanged()
+            .bind(onNext: { [weak self] image in
+                self?.representativeImageView.image = image
+                self?.representativeImageView.isHidden = (image == nil)
+                self?.imageCancelButton.isHidden = (image == nil)
+                self?.addImageBtView.cntLabel.text = image == nil ? "0 / 1" : "1 / 1"
+            })
+            .disposed(by: disposeBag)
     }
 }

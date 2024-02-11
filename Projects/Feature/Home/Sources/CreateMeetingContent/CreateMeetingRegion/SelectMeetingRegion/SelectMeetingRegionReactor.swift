@@ -38,7 +38,6 @@ public class SelectMeetingRegionReactor: NSObject, ReactorKit.Reactor, Stepper{
         case setRegionButtonTitle(String)
         case setTextExist(Bool)
         case setLocationText(String?)
-        case presentDeniedAlert
     }
     
     public struct State {
@@ -46,7 +45,6 @@ public class SelectMeetingRegionReactor: NSObject, ReactorKit.Reactor, Stepper{
         var regionButtonTitle: String = "읍,면,동으로 검색하세요."
         var isTextExist: Bool = false
         var locationText: String? = nil
-        var deniedLocationAuth: Bool = false
     }
     
     public func mutate(action: Action) -> Observable<Mutation> {
@@ -108,7 +106,8 @@ public class SelectMeetingRegionReactor: NSObject, ReactorKit.Reactor, Stepper{
                     }
                 }
         case .denyLocationAuth:
-            return .just(.presentDeniedAlert)
+            self.steps.accept(CreateMeetingStep.presentDeniedAlert(target: "위치"))
+            return .empty()
         }
     }
     
@@ -127,8 +126,6 @@ public class SelectMeetingRegionReactor: NSObject, ReactorKit.Reactor, Stepper{
             newState.isTextExist = exist
         case .setLocationText(let text):
             newState.locationText = text
-        case .presentDeniedAlert:
-            newState.deniedLocationAuth = true
         }
         return newState
     }

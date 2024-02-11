@@ -19,7 +19,6 @@ class AlbumCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -43,6 +42,10 @@ class AlbumCollectionViewCell: UICollectionViewCell {
             make.trailing.equalToSuperview().offset(-8)
             make.top.equalToSuperview().offset(8)
         }
+    }
+    
+    func configure(image: UIImage?){
+        self.photoImageView.image = image
     }
     
     func selectedPhoto(isSelected: Bool){
