@@ -52,6 +52,8 @@ public class CreateMeetingContentViewController: UIViewController, ReactorKit.Vi
         self.createMeetingPeriodReactor = createMeetingPeriodReactor
         self.createMeetingImageReactor = createMeetingImageReactor
         super.init(nibName: nil, bundle: nil)
+        
+        self.reactor = createMeetingContentReactor
     }
     
     required init?(coder: NSCoder) {
@@ -79,63 +81,6 @@ public class CreateMeetingContentViewController: UIViewController, ReactorKit.Vi
         self.backButton.tintColor = SharedDSKitAsset.Colors.black.color
         navigationItem.leftBarButtonItem = backButton
     }
-    
-//    func bind(){
-//        backButton.rx.tap
-//            .bind(to: createMeetingContentViewModel.backButtonTapped)
-//            .disposed(by: disposeBag)
-//        
-//        createMeetingContentViewModel.backButtonTapped
-//            .bind(onNext: { [weak self] in
-//                self?.navigationController?.popViewController(animated: true)
-//            })
-//            .disposed(by: disposeBag)
-//        //MARK: 모임 제목
-//        createMeetingTitleView.titleTextField.rx.text.orEmpty
-//            .bind(to: createMeetingContentViewModel.titleTextRelay)
-//            .disposed(by: disposeBag)
-//        //MARK: 모임 가입 수
-//        createMeetingContentViewModel.memberTextRelay
-//            .bind(to: createMeetingMemberView.memberLimitTextField.rx.text)
-//            .disposed(by: disposeBag)
-//        
-//        createMeetingMemberView.memberLimitTextField.rx.text.orEmpty
-//            .map { text in
-//                return String(text.filter { "0123456789".contains($0) })
-//            }
-//            .bind(to: createMeetingContentViewModel.memberTextRelay)
-//            .disposed(by: disposeBag)
-//        //MARK: 모임 날짜
-//        periodViewBindTapGesture()
-//        
-//        //MARK: 모임 소개글
-//        createMeetingWritingView.introductionTextView.rx.text.orEmpty
-//            .bind(to: createMeetingContentViewModel.introductionTextRelay)
-//            .disposed(by: disposeBag)
-//        
-//        createButton.rx.tap
-//            .bind(to: createMeetingContentViewModel.createButtonTapped)
-//            .disposed(by: disposeBag)
-//        
-//        createMeetingContentViewModel.isCreateButtonEnabled
-//            .drive(onNext: { [weak self] isEnable in
-//                if isEnable {
-//                    self?.createButton.isEnabled = isEnable
-//                    self?.createButton.enableNextButton()
-//                }
-//                else{
-//                    self?.createButton.isEnabled = isEnable
-//                    self?.createButton.disableNextButton()
-//                }
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        createMeetingContentViewModel.createButtonTapped
-//            .bind(onNext: { [weak self] in
-//                self?.navigationController?.popToRootViewController(animated: true)
-//            })
-//            .disposed(by: disposeBag)
-//    }
     
     func layout(){
         [progressView,scrollView]
@@ -213,56 +158,20 @@ public class CreateMeetingContentViewController: UIViewController, ReactorKit.Vi
         }
     }
     
-    func periodViewBindTapGesture(){
-        createMeetingPeriodView.dateBtView.tapGesture.rx.event
-               .bind(onNext: { [weak self] _ in
-                   guard let self = self else { return }
-                   if self.createMeetingPeriodView.isCalendarViewVisible {
-                       self.createMeetingPeriodView.calendarViewDisappear()
-                   } else {
-                       self.createMeetingPeriodView.calendarViewAppear()
-                       if self.createMeetingPeriodView.isTimePickerViewVisible {
-                           self.createMeetingPeriodView.timePickerViewDisappear()
-                           self.createMeetingPeriodView.isTimePickerViewVisible = false
-                       }
-                   }
-                   self.createMeetingPeriodView.isCalendarViewVisible.toggle()
-                   self.updateCreateMeetingPeriodViewHeight()
-               })
-               .disposed(by: disposeBag)
-
-           createMeetingPeriodView.timeBtView.tapGesture.rx.event
-            .bind(onNext: { [weak self] _ in
-                   guard let self = self else { return }
-                   if self.createMeetingPeriodView.isTimePickerViewVisible {
-                       self.createMeetingPeriodView.timePickerViewDisappear()
-                   } else {
-                       self.createMeetingPeriodView.timePickerViewAppear()
-                       if self.createMeetingPeriodView.isCalendarViewVisible {
-                           self.createMeetingPeriodView.calendarViewDisappear()
-                           self.createMeetingPeriodView.isCalendarViewVisible = false
-                       }
-                   }
-                   self.createMeetingPeriodView.isTimePickerViewVisible.toggle()
-                   self.updateCreateMeetingPeriodViewHeight()
-               })
-               .disposed(by: disposeBag)
-    }
-    
     func updateCreateMeetingPeriodViewHeight() {
         let baseHeight = 97
         let calendarViewHeight = 358 + 16
         let timePickerViewHeight = 168 + 16
         let newHeight: Int
         
-        if createMeetingPeriodView.isCalendarViewVisible {
+        if createMeetingPeriodView.reactor?.currentState.isCalendarViewVisible ?? false {
             newHeight = baseHeight + calendarViewHeight
-        } else if createMeetingPeriodView.isTimePickerViewVisible {
+        } else if createMeetingPeriodView.reactor?.currentState.isTimePickerViewVisible ?? false {
             newHeight = baseHeight + timePickerViewHeight
         } else {
             newHeight = baseHeight
         }
-
+        
         UIView.animate(withDuration: 0.3, animations:{
             self.createMeetingPeriodView.snp.updateConstraints { make in
                 make.height.equalTo(newHeight)
@@ -280,6 +189,100 @@ extension CreateMeetingContentViewController: UIGestureRecognizerDelegate {
 
 extension CreateMeetingContentViewController{
     public func bind(reactor: CreateMeetingContentReactor) {
-        //
+        bindAction(reactor: reactor)
+        bindState(reactor: reactor)
+    }
+    
+    private func bindAction(reactor: CreateMeetingContentReactor){
+        backButton.rx.tap
+            .map{ Reactor.Action.backButtonTapped}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        createButton.rx.tap
+            .map{ Reactor.Action.createButtonTapped}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        createMeetingTitleView.titleTextField.rx.text.orEmpty
+            .distinctUntilChanged()
+            .map{ Reactor.Action.writeTitleText($0)}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        createMeetingRegionReactor.state.map{ $0.region }
+            .distinctUntilChanged()
+            .map{ Reactor.Action.setRegionText($0)}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        createMeetingMemberView.memberLimitTextField.rx.text.orEmpty
+            .distinctUntilChanged()
+            .map(Reactor.Action.writeMemberLimitText)
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        createMeetingPeriodReactor.state.compactMap { $0.selectedDate }
+            .distinctUntilChanged()
+            .map { Reactor.Action.setSelectedDate($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        createMeetingPeriodReactor.state.compactMap { $0.selectedTime }
+            .distinctUntilChanged()
+            .map { Reactor.Action.setSelectedTime($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        EditPhotoReactor.shared.state.map{ $0.image }
+            .distinctUntilChanged()
+            .map{ Reactor.Action.setImage($0)}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        createMeetingWritingView.introductionTextView.rx.text.orEmpty
+            .distinctUntilChanged()
+            .map{ Reactor.Action.writeIntroductionText($0)}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindState(reactor: CreateMeetingContentReactor){
+        reactor.state.map { $0.isCreateButtonEnabled }
+            .distinctUntilChanged()
+            .bind(onNext: { [weak self] isEnable in
+                if isEnable {
+                    self?.createButton.isEnabled = isEnable
+                    self?.createButton.enableNextButton()
+                }
+                else{
+                    self?.createButton.isEnabled = isEnable
+                    self?.createButton.disableNextButton()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        createMeetingPeriodView.reactor?.state
+            .skip(1)
+            .map { state -> (Bool, Bool) in
+                return (state.isCalendarViewVisible, state.isTimePickerViewVisible)
+            }
+            .bind(onNext: { [weak self] (isCalendarVisible, isTimePickerVisible) in
+                self?.updateCreateMeetingPeriodViewHeight()
+                if isCalendarVisible {
+                    self?.createMeetingPeriodView.calendarViewAppear()
+                }
+                else {
+                    self?.createMeetingPeriodView.calendarViewDisappear()
+                }
+
+                if isTimePickerVisible {
+                    self?.createMeetingPeriodView.timePickerViewAppear()
+                }
+                else {
+                    self?.createMeetingPeriodView.timePickerViewDisappear()
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }

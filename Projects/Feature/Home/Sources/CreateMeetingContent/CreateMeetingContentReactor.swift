@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 import RxSwift
 import RxCocoa
 import ReactorKit
@@ -6,30 +7,6 @@ import RxFlow
 import Shared
 
 public class CreateMeetingContentReactor: ReactorKit.Reactor, Stepper{
-    let disposeBag = DisposeBag()
-    let titleTextRelay = PublishRelay<String>()
-    let memberTextRelay = PublishRelay<String>()
-    let introductionTextRelay = PublishRelay<String>()
-    let backButtonTapped = PublishRelay<Void>()
-    let createButtonTapped = PublishRelay<Void>()
-//    let isCreateButtonEnabled: Driver<Bool>
-//    
-//    public init(meetingRegionViewModel: MeetingRegionViewModel, createMeetingPeriodReactor: CreateMeetingPeriodReactor){
-//        isCreateButtonEnabled = Observable.combineLatest(
-//            titleTextRelay.asObservable(),
-//            memberTextRelay.asObservable(),
-//            introductionTextRelay.asObservable(),
-//            meetingRegionViewModel.currentLocationRelay.asObservable(),
-//            createMeetingPeriodReactor.dateRelay.asObservable(),
-//            createMeetingPeriodReactor.timeRelay.asObservable(),
-//            EditPhotoViewModel.shared.imgRelay.asObservable()
-//        ) { title, member, introduction, location, date, time, img in
-//            return !title.isEmpty && !member.isEmpty && !introduction.isEmpty &&
-//            !location.isEmpty && !date.isEmpty && !time.isEmpty && img != nil
-//        }
-//        .asDriver(onErrorJustReturn: false)
-//    }
-    
     public var initialState: State
     public var steps = PublishRelay<Step>()
     
@@ -39,38 +16,93 @@ public class CreateMeetingContentReactor: ReactorKit.Reactor, Stepper{
     
     public enum Action {
         case backButtonTapped
-        case nextButtonTapped
-        case updateContentSize(CGSize)
+        case createButtonTapped
+        case writeTitleText(String)
+        case setRegionText(String)
+        case writeMemberLimitText(String)
+        case setSelectedDate(String)
+        case setSelectedTime(String)
+        case setImage(UIImage?)
+        case writeIntroductionText(String)
     }
     
     public enum Mutation {
-        case setContentSize(CGSize)
+        case setTitleText(String)
+        case setRegionText(String)
+        case setMemberLimitText(String)
+        case setSelectedDate(String)
+        case setSelectedTime(String)
+        case setImage(UIImage?)
+        case setIntroductionText(String)
     }
     
     public struct State {
-        var hobbyModels: [HobbyModel] = HobbyDetailTableViewCellData.cellData
-        var contentSize: CGSize = .zero
+        var titleText: String = ""
+        var regionText: String = ""
+        var memberLimitText: String = ""
+        var selectedDate: String = ""
+        var selectedTime: String = ""
+        var introductionText: String = ""
+        var image: UIImage? = nil
+        var isCreateButtonEnabled: Bool = false
     }
     
     public func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .backButtonTapped:
-            self.steps.accept(CreateMeetingStep.popViewController)
+            DispatchQueue.main.async{
+                EditPhotoReactor.shared.action.onNext(.clearImage)
+                self.steps.accept(CreateMeetingStep.popViewController)
+            }
             return .empty()
-        case .nextButtonTapped:
+        case .createButtonTapped:
             return .empty()
-        case .updateContentSize(let size):
-                return .just(.setContentSize(size))
+        case .writeTitleText(let text):
+            return .just(.setTitleText(text))
+        case .setRegionText(let text):
+            return .just(.setRegionText(text))
+        case .writeMemberLimitText(let text):
+            return .just(.setMemberLimitText(text))
+        case .setSelectedDate(let date):
+            return .just(.setSelectedDate(date))
+        case .setSelectedTime(let time):
+            return .just(.setSelectedTime(time))
+        case .setImage(let image):
+            return .just(.setImage(image))
+        case .writeIntroductionText(let text):
+            return .just(.setIntroductionText(text))
         }
     }
     
     public func reduce(state: State, mutation: Mutation) -> State {
         var newState = state
         switch mutation {
-        case .setContentSize(let size):
-            newState.contentSize = size
-        
+        case .setTitleText(let text):
+            newState.titleText = text
+        case .setRegionText(let text):
+            newState.regionText = text
+        case .setMemberLimitText(let text):
+            newState.memberLimitText = text
+        case .setSelectedDate(let date):
+            newState.selectedDate = date
+        case .setSelectedTime(let time):
+            newState.selectedTime = time
+        case .setImage(let image):
+            newState.image = image
+        case .setIntroductionText(let text):
+            newState.introductionText = text
         }
+        newState.isCreateButtonEnabled = isCreateButtonEnabled(newState: newState)
         return newState
+    }
+    
+    private func isCreateButtonEnabled(newState: State) -> Bool {
+        return !newState.titleText.isEmpty &&
+        !newState.regionText.isEmpty &&
+        !newState.memberLimitText.isEmpty &&
+        !newState.selectedDate.isEmpty &&
+        !newState.selectedTime.isEmpty &&
+        newState.image != nil &&
+        ( newState.introductionText != "" || newState.introductionText != "자유롭게 소개글을 작성해 보세요!" )
     }
 }

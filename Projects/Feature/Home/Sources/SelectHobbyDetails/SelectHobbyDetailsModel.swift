@@ -79,7 +79,7 @@ struct HobbyDetailTableViewCellData{
             HobbyDetailModel(img: SharedDSKitAsset.Icons.picture.image, title: "사진"),
             HobbyDetailModel(img: SharedDSKitAsset.Icons.video.image, title: "영상"),
             HobbyDetailModel(img: SharedDSKitAsset.Icons.frame371.image, title: "기타")]),
-        HobbyModel(title: "그외", hobbyDetailModel: [
+        HobbyModel(title: "그 외", hobbyDetailModel: [
             HobbyDetailModel(img: SharedDSKitAsset.Icons.cooking.image, title: "요리"),
             HobbyDetailModel(img: SharedDSKitAsset.Icons.volunteer.image, title: "봉사활동"),
             HobbyDetailModel(img: SharedDSKitAsset.Icons.pet.image, title: "반려동물"),

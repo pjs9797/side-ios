@@ -7,9 +7,6 @@ import Shared
 
 class CreateMeetingPeriodView: UIView, ReactorKit.View{
     var disposeBag = DisposeBag()
-    var isCalendarViewVisible = false
-    var isTimePickerViewVisible = false
-    
     let dateTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "모임 날짜는 언제인가요?"
@@ -37,6 +34,7 @@ class CreateMeetingPeriodView: UIView, ReactorKit.View{
         calendarView = CalendarView(with: reactor)
         timePickerView = TimePickerView(with: reactor)
         super.init(frame: .zero)
+        
         self.reactor = reactor
         calendarView.isHidden = true
         timePickerView.isHidden = true
@@ -45,28 +43,6 @@ class CreateMeetingPeriodView: UIView, ReactorKit.View{
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func bind(reactor: CreateMeetingPeriodReactor){
-        bindState(reactor: reactor)
-    }
-    
-    func bindState(reactor: CreateMeetingPeriodReactor){
-        reactor.state.map { $0.selectedDate }
-            .distinctUntilChanged()
-            .bind { [weak self] date in
-                self?.dateBtView.configure(subTitle: date ?? "날짜 선택")
-                self?.dateBtView.subTitleLabel.textColor = .black
-            }
-            .disposed(by: disposeBag)
-        
-        reactor.state.map{ $0.selectedTime }
-            .distinctUntilChanged()
-            .bind{ [weak self] time in
-                self?.timeBtView.configure(subTitle: time ?? "시간 선택")
-                self?.timeBtView.subTitleLabel.textColor = .black
-            }
-            .disposed(by: disposeBag)
     }
     
     func layout(){
@@ -146,5 +122,42 @@ class CreateMeetingPeriodView: UIView, ReactorKit.View{
             }
             self.layoutIfNeeded()
         })
+    }
+}
+
+extension CreateMeetingPeriodView{
+    func bind(reactor: CreateMeetingPeriodReactor){
+        bindAction(reactor: reactor)
+        bindState(reactor: reactor)
+    }
+    
+    private func bindAction(reactor: CreateMeetingPeriodReactor){
+        dateBtView.tapGesture.rx.event
+            .map { _ in Reactor.Action.toggleCalendarView }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        timeBtView.tapGesture.rx.event
+            .map { _ in Reactor.Action.toggleTimePickerView }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindState(reactor: CreateMeetingPeriodReactor){
+        reactor.state.map { $0.selectedDate }
+            .distinctUntilChanged()
+            .bind { [weak self] date in
+                self?.dateBtView.configure(subTitle: date ?? "날짜 선택")
+                self?.dateBtView.subTitleLabel.textColor = .black
+            }
+            .disposed(by: disposeBag)
+        
+        reactor.state.map{ $0.selectedTime }
+            .distinctUntilChanged()
+            .bind{ [weak self] time in
+                self?.timeBtView.configure(subTitle: time ?? "시간 선택")
+                self?.timeBtView.subTitleLabel.textColor = .black
+            }
+            .disposed(by: disposeBag)
     }
 }

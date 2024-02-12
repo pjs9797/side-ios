@@ -25,6 +25,7 @@ public class CreateMeetingRegionReactor: NSObject, ReactorKit.Reactor, Stepper{
     public struct State {
         var isOnline: Bool = true
         var regionButtonTitle: String = "읍,면,동으로 검색하세요."
+        var region: String = ""
     }
     
     public func mutate(action: Action) -> Observable<Mutation> {
@@ -42,7 +43,15 @@ public class CreateMeetingRegionReactor: NSObject, ReactorKit.Reactor, Stepper{
         switch mutation {
         case .setOnlineSwitch(let isOn):
             newState.isOnline = isOn
-            newState.regionButtonTitle = "읍,면,동으로 검색하세요."
+            if isOn {
+                newState.region = "온라인"
+            } else {
+                if newState.regionButtonTitle == "읍,면,동으로 검색하세요." {
+                    newState.region = ""
+                } else {
+                    newState.region = newState.regionButtonTitle
+                }
+            }
             return newState
         }
     }

@@ -29,6 +29,7 @@ class CreateMeetingMemberView: UIView{
         let textField = UITextField()
         textField.placeholder = "100"
         textField.textAlignment = .right
+        textField.keyboardType = .numberPad
         return textField
     }()
     let unitLabel: UILabel = {
