@@ -29,12 +29,15 @@ public class SelectMeetingTypeReactor: ReactorKit.Reactor, Stepper{
     public func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .oneDayButtonTapped:
+            MeetingDataManager.shared.meetingType = "원데이"
             self.steps.accept(HomeStep.goToCreateMeetingFlow(meetingTitle: "원데이 멤버 모집하기"))
             return .just(.dismissView)
         case .shortTermButtonTapped:
+            MeetingDataManager.shared.meetingType = "단기"
             self.steps.accept(HomeStep.goToCreateMeetingFlow(meetingTitle: "단기 멤버 모집하기"))
             return .just(.dismissView)
         case .continuousButtonTapped:
+            MeetingDataManager.shared.meetingType = "지속형"
             self.steps.accept(HomeStep.goToCreateMeetingFlow(meetingTitle: "지속형 멤버 모집하기"))
             return .just(.dismissView)
         case .dimmedViewTapped, .swipeGesturePerformed:

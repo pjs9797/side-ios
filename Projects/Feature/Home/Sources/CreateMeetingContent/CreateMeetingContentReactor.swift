@@ -1,17 +1,22 @@
-import Foundation
 import UIKit
 import RxSwift
 import RxCocoa
 import ReactorKit
 import RxFlow
 import Shared
+import Domain
+
+import Alamofire
+import RxAlamofire
 
 public class CreateMeetingContentReactor: ReactorKit.Reactor, Stepper{
     public var initialState: State
     public var steps = PublishRelay<Step>()
-    
-    public init(){
+    let provider: ServiceProviderType
+    let disposeBag = DisposeBag()
+    public init(provider: ServiceProviderType){
         self.initialState = State()
+        self.provider = provider
     }
     
     public enum Action {
@@ -56,6 +61,32 @@ public class CreateMeetingContentReactor: ReactorKit.Reactor, Stepper{
             }
             return .empty()
         case .createButtonTapped:
+            self.provider.createMeetingService.transformImageToURL(image: [CreateMeetingImageModel.randomImages[1]])
+                .flatMapLatest { uploadRequest -> Observable<String> in
+                    return uploadRequest.rx.responseData()
+                        .flatMap { response, data -> Observable<String> in
+                            let decoder = JSONDecoder()
+                            do {
+                                let getUrlImageResponse = try decoder.decode(TransformImageResponse.self, from: data)
+                                if let urlImage = getUrlImageResponse.urls.first {
+                                    print(urlImage)
+                                    return Observable.just(urlImage)
+                                } else {
+                                    print("Not Find First Data Error")
+                                    return Observable.error(NSError(domain: "No URL Found", code: -1, userInfo: nil))
+                                }
+                            } catch {
+                                print("Decoding error: \(error)")
+                                return Observable.error(error)
+                            }
+                        }
+                }
+                .subscribe(onNext: { urlImage in
+                    print("Upload successful", urlImage)
+                }, onError: { error in
+                    print("Upload failed: \(error)")
+                })
+                .disposed(by: disposeBag)
             return .empty()
         case .writeTitleText(let text):
             return .just(.setTitleText(text))
@@ -103,6 +134,6 @@ public class CreateMeetingContentReactor: ReactorKit.Reactor, Stepper{
         !newState.selectedDate.isEmpty &&
         !newState.selectedTime.isEmpty &&
         newState.image != nil &&
-        ( newState.introductionText != "" || newState.introductionText != "자유롭게 소개글을 작성해 보세요!" )
+        ( !newState.introductionText.isEmpty && newState.introductionText != "자유롭게 소개글을 작성해 보세요!" )
     }
 }

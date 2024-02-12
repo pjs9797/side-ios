@@ -4,6 +4,9 @@ import Alamofire
 import RxAlamofire
 
 public final class CreateMeetingService: APIService {
+    public override init(baseURL: String, isLogging: Bool = false, configuration: URLSessionConfiguration = .default) {
+        super.init(baseURL: baseURL, isLogging: isLogging, configuration: configuration)
+    }
     public func createMeeting(name: String, description: String, memberMaxNumber: Int, startAt: String, mainImage: String, categoryMajor: String, categorySub: String, type: String, activityType: String, locationInfo: String, locationDetail: String?) -> Observable<DataRequest> {
         var parameters: Parameters = [
             "name": name,
@@ -25,7 +28,8 @@ public final class CreateMeetingService: APIService {
     }
     
     public func transformImageToURL(image: [UIImage?]) -> Observable<UploadRequest> {
-        return upload(.post, "/api/v1/files", useAuthHeader: true, images: image)
+        
+        return uploadImageFile(.post, "/api/v1/files", useAuthHeader: true, images: image)
     }
     
     public func searchLocation(address: String) -> Observable<DataRequest> {

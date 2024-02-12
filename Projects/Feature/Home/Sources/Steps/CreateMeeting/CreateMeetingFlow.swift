@@ -106,7 +106,7 @@ final public class CreateMeetingFlow: Flow {
     }
     
     private func coordinateToCreateMeetingContentViewController() -> FlowContributors {
-        let createMeetingContentReactor = CreateMeetingContentReactor()
+        let createMeetingContentReactor = CreateMeetingContentReactor(provider: self.provider)
         let createMeetingRegionReactor = CreateMeetingRegionReactor()
         let createMeetingPeriodReactor = CreateMeetingPeriodReactor()
         let createMeetingImageReactor = self.createMeetingImageReactor
