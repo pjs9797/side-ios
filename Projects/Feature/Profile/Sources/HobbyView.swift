@@ -523,6 +523,5 @@ class HobbyView: UIView {
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().offset(-40)
         }
-
     }
 }
