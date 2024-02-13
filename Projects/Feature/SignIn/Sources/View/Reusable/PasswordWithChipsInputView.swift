@@ -19,6 +19,7 @@ class PasswordWithChipsInputView: UIView {
 
     var inputViewLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "이메일"
         label.font = Fonts.Caption.font
         label.textColor = SharedDSKitAsset.Colors.gr80.color
@@ -30,6 +31,7 @@ class PasswordWithChipsInputView: UIView {
     
     var inputViewErrorLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.Caption.font
         label.textColor = SharedDSKitAsset.Colors.red.color
         label.textAlignment = .left
@@ -37,58 +39,68 @@ class PasswordWithChipsInputView: UIView {
         return label
     }()
     
-    let labelStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.distribution = .fillEqually
-        stackView.spacing = 4
-        stackView.axis = .horizontal
+    let labelStackView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
         
-        return stackView
+        return view
     }()
     
     let englishLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "영어"
         label.font = Fonts.Caption.font
         label.textAlignment = .center
         label.textColor =  SharedDSKitAsset.Colors.text03.color
+        label.layer.cornerRadius = 12
+        label.layer.borderWidth = 1
         
         return label
     }()
     
     let numberLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "숫자"
         label.font = Fonts.Caption.font
         label.textAlignment = .center
         label.textColor = SharedDSKitAsset.Colors.text03.color
+        label.layer.cornerRadius = 12
+        label.layer.borderWidth = 1
         
         return label
     }()
     
     let symbolLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "특수문자"
         label.font = Fonts.Caption.font
         label.textAlignment = .center
         label.textColor = SharedDSKitAsset.Colors.text03.color
+        label.layer.cornerRadius = 12
+        label.layer.borderWidth = 1
         
         return label
     }()
     
     let sixLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "6자리 이상"
         label.font = Fonts.Caption.font
         label.textAlignment = .center
         label.textColor = SharedDSKitAsset.Colors.text03.color
+        label.layer.cornerRadius = 12
+        label.layer.borderWidth = 1
         
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-
+        translatesAutoresizingMaskIntoConstraints = false
         render()
     }
     
@@ -113,14 +125,13 @@ class PasswordWithChipsInputView: UIView {
     
     private func render() {
         labelStackView.addSubViews([englishLabel, numberLabel, symbolLabel, sixLabel])
-        inputViewTextField.addSubViews([inputViewLabel])
-        addSubViews([inputViewTextField, inputViewErrorLabel, labelStackView])
+        addSubViews([inputViewTextField, inputViewErrorLabel, inputViewLabel, labelStackView])
         
         inputViewLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(8)
             make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview()
             make.height.equalTo(17)
+            make.width.equalTo(50)
         }
         
         inputViewTextField.snp.makeConstraints { make in
@@ -135,9 +146,35 @@ class PasswordWithChipsInputView: UIView {
         
         labelStackView.snp.makeConstraints { make in
             make.top.equalTo(inputViewTextField.snp.bottom).offset(8)
-            make.leading.equalToSuperview()
-            make.width.equalTo(212)
+            make.leading.bottom.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-123)
+        }
+        
+        englishLabel.snp.makeConstraints { make in
+            make.top.bottom.leading.equalToSuperview()
+            make.width.equalTo(37)
             make.height.equalTo(24)
+        }
+        
+        numberLabel.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview()
+            make.leading.equalTo(englishLabel.snp.trailing).offset(4)
+            make.trailing.equalTo(symbolLabel.snp.leading).offset(-4)
+            make.width.equalTo(37)
+        }
+        
+        symbolLabel.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview()
+            make.leading.equalTo(numberLabel.snp.trailing).offset(4)
+            make.trailing.equalTo(sixLabel.snp.leading).offset(-4)
+            make.width.equalTo(58)
+        }
+        
+        sixLabel.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview()
+            make.leading.equalTo(symbolLabel.snp.trailing).offset(4)
+            make.trailing.equalToSuperview()
+            make.width.greaterThanOrEqualTo(68)
         }
     }
 }

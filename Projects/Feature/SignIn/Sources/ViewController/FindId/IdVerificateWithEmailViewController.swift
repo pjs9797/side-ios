@@ -47,7 +47,6 @@ public class IdVerificateWithEmailViewController: BaseViewController, ReactorKit
         view.backgroundColor = .white
         setUp()
         render()
-        // Do any additional setup after loading the view.
     }
     
     init(with reactor: Reactor) {
@@ -59,7 +58,6 @@ public class IdVerificateWithEmailViewController: BaseViewController, ReactorKit
         super.configureUI()
         addBackButton()
         addNavigationTitleLabel("아이디 찾기")
-        
     }
     
     required init?(coder: NSCoder) {
@@ -87,14 +85,12 @@ public class IdVerificateWithEmailViewController: BaseViewController, ReactorKit
             make.top.equalTo(idVerificateWithEmailView.titleLabel.snp.bottom).offset(40)
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(20)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-20)
-//            make.height.equalTo(56)
         }
         
         idVerificateWithEmailView.verificationNumberInputView.snp.makeConstraints { make in
             make.top.equalTo(idVerificateWithEmailView.emailVerificateInputView.snp.bottom).offset(24)
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(20)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-20)
-//            make.height.equalTo(56)
         }
         
         idVerificateWithEmailView.verificationCompletedButton.snp.makeConstraints { make in
@@ -104,7 +100,6 @@ public class IdVerificateWithEmailViewController: BaseViewController, ReactorKit
             make.height.equalTo(52)
         }
     }
-    
 }
 
 extension IdVerificateWithEmailViewController {
@@ -136,14 +131,14 @@ extension IdVerificateWithEmailViewController {
             .map { Reactor.Action.writeVerificationNumber($0) }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
-        
     }
     
     private func bindState(reactor: IdVerificateWithEmailReactor) {
         reactor.state.map { $0.isStartTimer }
-            .subscribe(onNext: { [weak self] start in
+            .withUnretained(self)
+            .subscribe(onNext: { viewController, start in
                 if start {
-                    self?.idVerificateWithEmailView.verificationNumberInputView.isHidden = false
+                    viewController.idVerificateWithEmailView.verificationNumberInputView.isHidden = false
                 }
             })
             .disposed(by: disposeBag)
@@ -161,34 +156,36 @@ extension IdVerificateWithEmailViewController {
             .disposed(by: disposeBag)
         
         reactor.state.map { $0.isIncorrectFormedEmail }
-            .subscribe(onNext: { [weak self] error in
+            .withUnretained(self)
+            .subscribe(onNext: { viewController, error in
                 if !error {
-                    self?.idVerificateWithEmailView.emailVerificateInputView.verificationInputViewTextField.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-                    self?.idVerificateWithEmailView.emailVerificateInputView.verificateButton.layer.borderColor = SharedDSKitAsset.Colors.gr50.color.cgColor
-                    self?.idVerificateWithEmailView.emailVerificateInputView.verificationInputViewTextField.leftView?.isHidden = true
+                    viewController.idVerificateWithEmailView.emailVerificateInputView.verificationInputViewTextField.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+                    viewController.idVerificateWithEmailView.emailVerificateInputView.verificateButton.layer.borderColor = SharedDSKitAsset.Colors.gr50.color.cgColor
+                    viewController.idVerificateWithEmailView.emailVerificateInputView.verificationInputViewTextField.leftView?.isHidden = true
                 } else {
-                    self?.idVerificateWithEmailView.emailVerificateInputView.verificationInputViewTextField.layer.borderColor = SharedDSKitAsset.Colors.red.color.cgColor
-                    self?.idVerificateWithEmailView.emailVerificateInputView.inputViewErrorLabel.text = "올바른 이메일 주소를 입력해 주세요."
-                    self?.idVerificateWithEmailView.emailVerificateInputView.verificationInputViewTextField.leftView?.isHidden = false
-                    self?.idVerificateWithEmailView.emailVerificateInputView.verificateButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
-                    self?.idVerificateWithEmailView.emailVerificateInputView.verificateButton.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+                    viewController.idVerificateWithEmailView.emailVerificateInputView.verificationInputViewTextField.layer.borderColor = SharedDSKitAsset.Colors.red.color.cgColor
+                    viewController.idVerificateWithEmailView.emailVerificateInputView.inputViewErrorLabel.text = "올바른 이메일 주소를 입력해 주세요."
+                    viewController.idVerificateWithEmailView.emailVerificateInputView.verificationInputViewTextField.leftView?.isHidden = false
+                    viewController.idVerificateWithEmailView.emailVerificateInputView.verificateButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                    viewController.idVerificateWithEmailView.emailVerificateInputView.verificateButton.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                 }
-                self?.idVerificateWithEmailView.emailVerificateInputView.verificateButton.isEnabled = !error
-                self?.idVerificateWithEmailView.emailVerificateInputView.inputViewErrorLabel.isHidden = !error
+                viewController.idVerificateWithEmailView.emailVerificateInputView.verificateButton.isEnabled = !error
+                viewController.idVerificateWithEmailView.emailVerificateInputView.inputViewErrorLabel.isHidden = !error
             })
             .disposed(by: disposeBag)
         
         reactor.state.map { $0.isVerificationComplete }
-            .subscribe(onNext: { [weak self] complete in
+            .withUnretained(self)
+            .subscribe(onNext: { viewController, complete in
                 if complete {
-                    self?.idVerificateWithEmailView.verificationNumberInputView.inputViewTextField.rightView?.isHidden = true
-                    self?.idVerificateWithEmailView.verificationNumberInputView.inputViewTextField.leftView?.isHidden = false
-                    self?.idVerificateWithEmailView.verificationNumberInputView.inputViewErrorLabel.text = "인증이 완료 되었습니다."
-                    self?.idVerificateWithEmailView.verificationNumberInputView.inputViewErrorLabel.textColor = SharedDSKitAsset.Colors.green.color
-                    self?.idVerificateWithEmailView.verificationCompletedButton.backgroundColor = SharedDSKitAsset.Colors.green.color
+                    viewController.idVerificateWithEmailView.verificationNumberInputView.inputViewTextField.rightView?.isHidden = true
+                    viewController.idVerificateWithEmailView.verificationNumberInputView.inputViewTextField.leftView?.isHidden = false
+                    viewController.idVerificateWithEmailView.verificationNumberInputView.inputViewErrorLabel.text = "인증이 완료 되었습니다."
+                    viewController.idVerificateWithEmailView.verificationNumberInputView.inputViewErrorLabel.textColor = SharedDSKitAsset.Colors.green.color
+                    viewController.idVerificateWithEmailView.verificationCompletedButton.backgroundColor = SharedDSKitAsset.Colors.green.color
                 }
                 else {
-                    self?.idVerificateWithEmailView.verificationCompletedButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                    viewController.idVerificateWithEmailView.verificationCompletedButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
                 }
             })
             .disposed(by: disposeBag)

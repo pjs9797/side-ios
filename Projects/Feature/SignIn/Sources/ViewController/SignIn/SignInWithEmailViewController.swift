@@ -48,7 +48,6 @@ public class SignInWithEmailViewController: BaseViewController, ReactorKit.View 
     }
     
     private func setUp() {
-        
         signInWithEmailView.emailInputView.inputViewTextField.rightView?.isHidden = true
         signInWithEmailView.emailInputView.inputViewTextField.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         signInWithEmailView.emailInputView.inputViewErrorLabel.isHidden = true
@@ -71,7 +70,7 @@ public class SignInWithEmailViewController: BaseViewController, ReactorKit.View 
             make.top.equalTo(signInWithEmailView.emailInputView.snp.bottom).offset(24)
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(20)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-20)
-            make.height.equalTo(81)
+            make.height.equalTo(98)
         }
         
         signInWithEmailView.signInButton.snp.makeConstraints { make in
@@ -93,7 +92,6 @@ public class SignInWithEmailViewController: BaseViewController, ReactorKit.View 
             make.height.equalTo(24)
         }
     }
-
 }
 
 extension SignInWithEmailViewController {
@@ -110,12 +108,14 @@ extension SignInWithEmailViewController {
         
         signInWithEmailView.emailInputView.inputViewTextField.rx.text
             .orEmpty
+            .distinctUntilChanged()
             .map { Reactor.Action.writeEmail($0)}
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
         signInWithEmailView.passwordInputView.inputViewTextField.rx.text
             .orEmpty
+            .distinctUntilChanged()
             .map { Reactor.Action.writePassword($0)}
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
@@ -149,36 +149,59 @@ extension SignInWithEmailViewController {
             .bind(to: signInWithEmailView.signInButton.rx.isEnabled)
             .disposed(by: disposeBag)
         
-        reactor.state.map { $0.incorrectEmailOrPassword }
-            .subscribe(onNext: { [weak self] error in
-                self?.signInWithEmailView.passwordInputView.inputViewErrorLabel.text = "아이디 또는 비밀번호가 올바르지 않습니다.\n입력한 내용을 다시 확인해 주세요."
-                self?.signInWithEmailView.passwordInputView.inputViewErrorLabel.isHidden = !error
+//        reactor.state.map { $0.incorrectEmailOrPassword }
+//            .withUnretained(self)
+//            .subscribe(onNext: { viewController, error in
+//                if error {
+//                    viewController.signInWithEmailView.passwordInputView.inputViewErrorLabel.isHidden = false
+//                }
+//            })
+//            .disposed(by: disposeBag)
+        
+//            .withUnretained(self)
+//            .subscribe(onNext: { viewController, error in
+//                viewController.signInWithEmailView.passwordInputView.inputViewErrorLabel.text = "아이디 또는 비밀번호가 올바르지 않습니다.\n입력한 내용을 다시 확인해 주세요."
+//                viewController.signInWithEmailView.passwordInputView.inputViewErrorLabel.isHidden = !error
+//            })
+//            .disposed(by: disposeBag)
+        
+        reactor.state.compactMap { $0.isIncorrectFormedEmail }
+            .withUnretained(self)
+            .subscribe(onNext: { viewController, error in
+                if !error {
+                    viewController.signInWithEmailView.emailInputView.inputViewTextField.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+                } else {
+                    viewController.signInWithEmailView.emailInputView.inputViewTextField.layer.borderColor = SharedDSKitAsset.Colors.red.color.cgColor
+                }
+                viewController.signInWithEmailView.emailInputView.inputViewErrorLabel.text = "올바른 이메일 주소를 입력해 주세요."
+                viewController.signInWithEmailView.emailInputView.inputViewTextField.rightView?.isHidden = !error
+                viewController.signInWithEmailView.emailInputView.inputViewErrorLabel.isHidden = !error
             })
             .disposed(by: disposeBag)
         
-        reactor.state.map { $0.isIncorrectFormedEmail }
-            .subscribe(onNext: { [weak self] error in
+        reactor.state.compactMap { $0.isIncorrectFormedPassword }
+//            .distinctUntilChanged()
+            .withUnretained(self)
+            .subscribe(onNext: { viewController, error in
                 if !error {
-                    self?.signInWithEmailView.emailInputView.inputViewTextField.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+                    viewController.signInWithEmailView.passwordInputView.inputViewTextField.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+                    viewController.signInWithEmailView.passwordInputView.inputViewTextField.rightView?.isHidden = true
+                    viewController.signInWithEmailView.passwordInputView.inputViewErrorLabel.isHidden = true
                 } else {
-                    self?.signInWithEmailView.emailInputView.inputViewTextField.layer.borderColor = SharedDSKitAsset.Colors.red.color.cgColor
+                    viewController.signInWithEmailView.passwordInputView.inputViewTextField.layer.borderColor = SharedDSKitAsset.Colors.red.color.cgColor
+                    viewController.signInWithEmailView.passwordInputView.inputViewErrorLabel.text = "올바른 비밀번호를 입력해주세요."
+                    viewController.signInWithEmailView.passwordInputView.inputViewTextField.rightView?.isHidden = false
+                    viewController.signInWithEmailView.passwordInputView.inputViewErrorLabel.isHidden = false
                 }
-                self?.signInWithEmailView.emailInputView.inputViewErrorLabel.text = "올바른 이메일 주소를 입력해 주세요."
-                self?.signInWithEmailView.emailInputView.inputViewTextField.rightView?.isHidden = !error
-                self?.signInWithEmailView.emailInputView.inputViewErrorLabel.isHidden = !error
             })
             .disposed(by: disposeBag)
         
-        reactor.state.map { $0.isIncorrectFormedPassword }
-            .subscribe(onNext: { [weak self] error in
-                if !error {
-                    self?.signInWithEmailView.passwordInputView.inputViewTextField.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-                } else {
-                    self?.signInWithEmailView.passwordInputView.inputViewTextField.layer.borderColor = SharedDSKitAsset.Colors.red.color.cgColor
-                }
-                self?.signInWithEmailView.passwordInputView.inputViewErrorLabel.text = "올바른 비밀번호를 입력해주세요."
-                self?.signInWithEmailView.passwordInputView.inputViewTextField.rightView?.isHidden = !error
-                self?.signInWithEmailView.passwordInputView.inputViewErrorLabel.isHidden = !error
+        reactor.state.map { $0.signInFailMessage }
+            .distinctUntilChanged()
+            .withUnretained(self)
+            .subscribe(onNext: { viewController, message in
+                viewController.signInWithEmailView.passwordInputView.inputViewErrorLabel.isHidden = false
+                viewController.signInWithEmailView.passwordInputView.inputViewErrorLabel.text = message
             })
             .disposed(by: disposeBag)
     }

@@ -49,14 +49,13 @@ class SignInWithEmailView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         passwordInputView.inputViewTextField.isSecureTextEntry = true
-        render()
+        passwordInputView.inputViewErrorLabel.numberOfLines = 2
+        emailInputView.inputViewTextField.keyboardType = .emailAddress
+        emailInputView.inputViewTextField.autocorrectionType = .no
+        addSubViews([emailInputView, passwordInputView, signInButton, forgotIdButton, forgotPasswordButton])
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func render() {
-        addSubViews([emailInputView, passwordInputView, signInButton, forgotIdButton, forgotPasswordButton])
     }
 }

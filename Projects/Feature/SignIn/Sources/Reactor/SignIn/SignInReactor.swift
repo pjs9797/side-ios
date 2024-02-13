@@ -54,8 +54,7 @@ public class SignInReactor: ReactorKit.Reactor, Stepper {
             return .just(.setEmailSignUp)
         case .didSignInWithEmailButtonTapped:
             steps.accept(SignInStep.emailSigningRequired)
-            return .just(.setEmailSignUp)
+            return .just(.setEmailSigning)
         }
     }
-    
 }

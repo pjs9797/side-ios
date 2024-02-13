@@ -14,6 +14,7 @@ public class ForgotPasswordView: UIView {
     
     let titleLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "비밀번호 찾는 방법을\n선택해 주세요."
         label.font = Fonts.H02.font
         label.textColor = SharedDSKitAsset.Colors.text01.color
@@ -24,6 +25,7 @@ public class ForgotPasswordView: UIView {
     
     let findWithPhoneNumberButton: UIButton = {
         let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("휴대폰 인증", for: .normal)
         button.titleLabel?.font = Fonts.SH03Bold.font
         button.setTitleColor(SharedDSKitAsset.Colors.text01.color, for: .normal)
@@ -37,6 +39,7 @@ public class ForgotPasswordView: UIView {
     
     let findWithEmailButton: UIButton = {
         let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("이메일 인증", for: .normal)
         button.titleLabel?.font = Fonts.SH03Bold.font
         button.setTitleColor(SharedDSKitAsset.Colors.text01.color, for: .normal)
@@ -50,14 +53,10 @@ public class ForgotPasswordView: UIView {
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        render()
+        addSubViews([titleLabel, findWithPhoneNumberButton, findWithEmailButton])
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func render() {
-        addSubViews([titleLabel, findWithPhoneNumberButton, findWithEmailButton])
     }
 }

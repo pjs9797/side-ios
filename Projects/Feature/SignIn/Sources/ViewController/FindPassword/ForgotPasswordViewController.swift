@@ -27,14 +27,13 @@ public class ForgotPasswordViewController: BaseViewController, ReactorKit.View {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
+        render()
     }
     
     public override func configureUI() {
         super.configureUI()
         addBackButton()
         addNavigationTitleLabel("비밀번호 찾기")
-        render()
     }
     
     init(with reactor: Reactor) {
@@ -49,22 +48,21 @@ public class ForgotPasswordViewController: BaseViewController, ReactorKit.View {
     private func render() {
         forgotPasswordView.titleLabel.snp.makeConstraints { make in
             make.top.equalTo(navigationBarArea.snp.bottom).offset(60)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
-            make.bottom.equalTo(forgotPasswordView.findWithPhoneNumberButton.snp.top).offset(-40)
+            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(20)
         }
         
         forgotPasswordView.findWithPhoneNumberButton.snp.makeConstraints { make in
             make.top.equalTo(forgotPasswordView.titleLabel.snp.bottom).offset(40)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
+            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(20)
+            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(20)
+            make.bottom.equalTo(forgotPasswordView.findWithEmailButton.snp.top).offset(-16)
             make.height.equalTo(105)
         }
         
         forgotPasswordView.findWithEmailButton.snp.makeConstraints { make in
             make.top.equalTo(forgotPasswordView.findWithPhoneNumberButton.snp.bottom).offset(16)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
+            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(20)
+            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-20)
             make.height.equalTo(105)
         }
     }

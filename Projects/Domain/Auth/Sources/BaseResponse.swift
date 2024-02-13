@@ -7,8 +7,11 @@
 
 import Foundation
 
-public struct BaseResponse: Decodable {
-    let code: String
-    let isSuccess: Bool
-    public let message, result: String
+public struct ErrorResponse: Decodable {
+    public let path: String
+    public let statusCode: Int
+    public let detail: String
+    public let reason: String
+    public let error: String
+    public let codeName: String
 }

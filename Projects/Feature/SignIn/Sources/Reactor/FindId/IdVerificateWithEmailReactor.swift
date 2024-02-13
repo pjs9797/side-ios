@@ -107,7 +107,6 @@ public class IdVerificateWithEmailReactor: ReactorKit.Reactor, Stepper {
         case .didTapVerificateNumberButton:
             // provider.signInService 에서 인증번호 인증하기 api 호출하기
             return .empty()
-            
         }
     }
     
