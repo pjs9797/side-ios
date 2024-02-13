@@ -17,6 +17,7 @@ class InputView: UIView {
 
     var inputViewLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "이메일"
         label.font = Fonts.Caption.font
         label.textColor = SharedDSKitAsset.Colors.gr80.color
@@ -28,6 +29,7 @@ class InputView: UIView {
     
     var inputViewErrorLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Fonts.Caption.font
         label.textColor = SharedDSKitAsset.Colors.red.color
         label.textAlignment = .left
@@ -37,7 +39,7 @@ class InputView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-
+        translatesAutoresizingMaskIntoConstraints = false
         render()
     }
     
@@ -52,14 +54,13 @@ class InputView: UIView {
     }
     
     private func render() {
-        inputViewTextField.addSubViews([inputViewLabel])
-        addSubViews([inputViewTextField, inputViewErrorLabel])
+        addSubViews([inputViewTextField, inputViewErrorLabel, inputViewLabel])
         
         inputViewLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(8)
             make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview()
             make.height.equalTo(17)
+            make.width.equalTo(50)
         }
         
         inputViewTextField.snp.makeConstraints { make in

@@ -15,6 +15,7 @@ public class BottomSheetViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = UIColor.black.withAlphaComponent(0.6)
         view.alpha = 0
+        
         return view
     }()
     
@@ -26,6 +27,7 @@ public class BottomSheetViewController: UIViewController {
         view.layer.cornerCurve = .continuous
         view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         view.clipsToBounds = true
+        
         return view
     }()
     
@@ -34,6 +36,7 @@ public class BottomSheetViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = SharedDSKitAsset.Colors.gr10.color
         view.layer.cornerRadius = 3
+        
         return view
     }()
     
@@ -45,7 +48,6 @@ public class BottomSheetViewController: UIViewController {
     
     public init(contentViewController: UIViewController) {
         self.contentViewController = contentViewController
-        
         super.init(nibName: nil, bundle: nil)
         self.modalPresentationStyle = .overFullScreen
     }
@@ -56,20 +58,17 @@ public class BottomSheetViewController: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
         render()
         configureGestures()
     }
     
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         self.showBottomSheet()
     }
     
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        
         coordinator.animate { [weak self] _ in
             self?.showBottomSheet()
         }

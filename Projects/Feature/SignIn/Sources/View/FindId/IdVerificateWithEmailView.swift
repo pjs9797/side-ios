@@ -42,18 +42,10 @@ class IdVerificateWithEmailView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        render()
+        addSubViews([titleLabel, emailVerificateInputView, verificationNumberInputView, verificationCompletedButton])
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setUp() {
-        
-    }
-    
-    private func render() {
-        addSubViews([titleLabel, emailVerificateInputView, verificationNumberInputView, verificationCompletedButton])
     }
 }

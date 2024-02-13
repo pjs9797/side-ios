@@ -55,5 +55,4 @@ class VerificationInputViewTextField: UITextField {
         font = Fonts.Body02.font
         layer.cornerRadius = 16
     }
-    
 }

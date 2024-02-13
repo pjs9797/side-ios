@@ -2,24 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>이 앱은 사용자의 현재 위치를 사용하여 근처의 관심 장소를 찾기 위해 위치 정보가 필요합니다.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>이 앱은 백그라운드에서도 사용자의 위치를 추적하여 지속적인 위치 기반 서비스를 제공합니다.
 &quot;이 앱은 백그라운드에서도 사용자의 위치를 추적하여 지속적인 위치 기반 서비스를 제공합니다.&quot;
 &quot;이 앱은 백그라운드에서도 사용자의 위치를 추적하여 지속적인 위치 기반 서비스를 제공합니다.&quot;
 &quot;이 앱은 백그라운드에서도 사용자의 위치를 추적하여 지속적인 위치 기반 서비스를 제공합니다.&quot;
 이 앱은 백그라운드에서도 사용자의 위치를 추적하여 지속적인 위치 기반 서비스를 제공합니다.</string>
-	<key>FirebaseAppDelegateProxyEnabled</key>
-	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>이 앱은 사용자의 현재 위치를 사용하여 근처의 관심 장소를 찾기 위해 위치 정보가 필요합니다.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>이 앱은 백그라운드에서도 사용자의 위치를 추적하여 지속적인 위치 기반 서비스를 제공합니다.
-&quot;이 앱은 백그라운드에서도 사용자의 위치를 추적하여 지속적인 위치 기반 서비스를 제공합니다.&quot;
-&quot;이 앱은 백그라운드에서도 사용자의 위치를 추적하여 지속적인 위치 기반 서비스를 제공합니다.&quot;
-&quot;이 앱은 백그라운드에서도 사용자의 위치를 추적하여 지속적인 위치 기반 서비스를 제공합니다.&quot;
-이 앱은 백그라운드에서도 사용자의 위치를 추적하여 지속적인 위치 기반 서비스를 제공합니다.</string>
 	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -36,6 +26,8 @@
 		<string>Pretendard-Medium.otf</string>
 		<string>Pretendard-Regular.otf</string>
 	</array>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<string>NO</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -50,10 +42,36 @@
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>app-1-227480331629-ios-cca5b43591e485c85a2664</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+<<<<<<< HEAD
+=======
+	<key>NSCameraUsageDescription</key>
+	<string>카메라 사용을 허용하시겠습니까?</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>사진 목록에 접근을 허용하시겠습니까?</string>
+	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
+	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Pretendard-Bold.otf</string>
+		<string>Pretendard-Medium.otf</string>
+		<string>Pretendard-Regular.otf</string>
+	</array>
+>>>>>>> 7a791bf ([FEAT] Build find ID and password view and fetch sign in API)
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

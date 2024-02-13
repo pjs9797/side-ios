@@ -10,6 +10,7 @@ import Foundation
 import RxSwift
 import Alamofire
 import RxAlamofire
+import FirebaseAuth
 
 public final class SignInService: APIService {
     
@@ -32,7 +33,14 @@ public final class SignInService: APIService {
         parameters.updateValue(email, forKey: "email")
         parameters.updateValue(password, forKey: "password")
         
-        return request(.post, "ASFASGA", useAuthHeader: false, parameters: parameters)
+        return request(.post, "api/v1/auth/login", useAuthHeader: false, parameters: parameters)
+    }
+    
+    public func sendEmailForVerificationToFindId(email: String) -> Observable<DataRequest> {
+        var parameters = Parameters()
+        parameters.updateValue(email, forKey: "email")
+        
+        return request(.post, "api/v1/email/sendEmail")
     }
     
     public func setPasswordWithEmail(email: String, password: String) -> Observable<DataRequest> {

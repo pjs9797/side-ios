@@ -34,19 +34,20 @@ public class SignInWithEmailReactor: ReactorKit.Reactor, Stepper {
     public enum Mutation {
         case setEmail(String)
         case setPassword(String)
-        case setSignInError(String?)
+        case setSignInError(Int?)
         case setUserSignIn
     }
     
     public struct State {
         var isSignInEnable: Bool = false
-        var isIncorrectFormedEmail: Bool = false
-        var isIncorrectFormedPassword: Bool = false
+        var isIncorrectFormedEmail: Bool? = nil
+        var isIncorrectFormedPassword: Bool? = nil
         
         var email: String? = nil
         var password: String? = nil
         
-        var incorrectEmailOrPassword: Bool = false
+        var isSignInFailed: Bool = false
+        var signInFailMessage: String? = nil
     }
     
     private let disposeBag: DisposeBag = DisposeBag()
@@ -81,7 +82,6 @@ public class SignInWithEmailReactor: ReactorKit.Reactor, Stepper {
                   let password = currentState.password else { return .empty() }
             
             return provider.signInService.signIn(email: email, password: password).responseData().flatMap { [weak self] response, data -> Observable<Mutation> in
-                print(response)
                 do {
                     let responseData = try JSONDecoder().decode(SignInResponse.self, from: data) as SignInResponse
                     self?.provider.settingsService.isSignedIn = true
@@ -89,13 +89,19 @@ public class SignInWithEmailReactor: ReactorKit.Reactor, Stepper {
                     self?.provider.settingsService.accessToken = responseData.result.accessToken
                     self?.provider.settingsService.refreshToken = responseData.result.refreshToken
                     
-                    self?.steps.accept(SignInStep.userIsSignedIn)
+//                    self?.steps.accept(SignInStep.userIsSignedIn)
                     
                     return .empty()
                 } catch {
-                    let responseData = try JSONDecoder().decode(BaseResponse.self, from: data) as BaseResponse
-                    
-                    return .just(.setSignInError(responseData.message))
+                    let responseData = try JSONDecoder().decode(ErrorResponse.self, from: data) as ErrorResponse
+                    print("")
+                    print("")
+                    print("")
+                    print("")
+                    print("")
+                    print("🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥")
+                    print(responseData.detail)
+                    return .just(.setSignInError(responseData.statusCode))
                 }
             }
         }
@@ -105,17 +111,31 @@ public class SignInWithEmailReactor: ReactorKit.Reactor, Stepper {
     public func reduce(state: State, mutation: Mutation) -> State {
         var state = state
         
-        state.incorrectEmailOrPassword = false
-        
         switch mutation {
         case .setEmail(let email):
             state.email = email
             
         case .setPassword(let password):
             state.password = password
-            
-        case .setSignInError(let message):
-            state.incorrectEmailOrPassword = true
+            print(password)
+            if checkCorrectFormedPassword(text: password) {
+                // 경고메세지 false
+                state.isIncorrectFormedPassword = false
+                state.isSignInEnable = true
+            }
+            // 비밀번호가 형식에 안맞으면
+            else {
+                // 경고메세지 true
+                state.isIncorrectFormedPassword = true
+            }
+        case .setSignInError(let code):
+            switch code {
+            case 401:
+                state.signInFailMessage = "이메일 또는 비밀번호가 올바르지 않습니다.\n입력한 내용을 다시 확인해 주세요."
+                
+            default:
+                state.signInFailMessage = "알수없는 오류가 발생하였습니다.\n인터넷 환경을 옮기시고, 다시 시도해주세요."
+            }
             
         default:
             break
@@ -128,16 +148,17 @@ public class SignInWithEmailReactor: ReactorKit.Reactor, Stepper {
                 state.isIncorrectFormedEmail = false
             }
             
-            // 비밀번호가 형식에 맞으면
-            if checkCorrectFormedPassword(text: password) {
-                // 경고메세지 false
-                state.isIncorrectFormedPassword = false
-            }
-            // 비밀번호가 형식에 안맞으면
-            else {
-                // 경고메세지 true
-                state.isIncorrectFormedPassword = true
-            }
+//            // 비밀번호가 형식에 맞으면
+//            if checkCorrectFormedPassword(text: password) {
+//                // 경고메세지 false
+//                state.isIncorrectFormedPassword = false
+//                state.isSignInEnable = true
+//            }
+//            // 비밀번호가 형식에 안맞으면
+//            else {
+//                // 경고메세지 true
+//                state.isIncorrectFormedPassword = true
+//            }
         }
         else {
             state.isSignInEnable = false

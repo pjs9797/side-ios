@@ -9,6 +9,9 @@ import Foundation
 import Shared
 import Domain
 
+import FirebaseAuth
+import FirebaseMessaging
+import FirebaseCore
 import RxSwift
 import RxCocoa
 import RxFlow
@@ -42,7 +45,7 @@ public class IdVerificateWithPhoneNumberReactor: ReactorKit.Reactor, Stepper {
         case setVerificateNumber(String)
         
         case updateTime(Int)
-        case apiResponseReceived(Int)
+        case apiResponseReceived(String)
         
         case setTimerString(String)
         case setInitialTime
@@ -61,6 +64,8 @@ public class IdVerificateWithPhoneNumberReactor: ReactorKit.Reactor, Stepper {
         var timerString = ""
         var isVerificationEnable: Bool = false
         var isVerificationComplete: Bool = false
+        
+        var verificationId: String? = nil
         
         var intervalValue: Int?
     }
@@ -91,9 +96,13 @@ public class IdVerificateWithPhoneNumberReactor: ReactorKit.Reactor, Stepper {
                             .map { Mutation.updateTime($0)}
 
             //          provider.signinService 에서 인증번호 요청 api 호출하기
-                        let apiObservable =
-                            Observable<Int>.just(1)
-                            .map { Mutation.apiResponseReceived($0) }
+            
+            let apiObservable = requestVerification(phoneNumber: currentState.phoneNumber)
+                .map { Mutation.apiResponseReceived($0) }
+            
+//                        let apiObservable =
+//                            Observable<Int>.just(1)
+//                            .map { Mutation.apiResponseReceived($0) }
             
             return Observable.concat([
                 Observable.just(.setInitialTime),
@@ -107,7 +116,6 @@ public class IdVerificateWithPhoneNumberReactor: ReactorKit.Reactor, Stepper {
         case .didTapVerificateNumberButton:
             // provider.signInService 에서 인증번호 인증하기 api 호출하기
             return .empty()
-            
         }
     }
     
@@ -138,8 +146,8 @@ public class IdVerificateWithPhoneNumberReactor: ReactorKit.Reactor, Stepper {
             }
             state.timerString = formattedTimerString(time: state.timerTime)
             
-        case .apiResponseReceived(_):
-            break
+        case .apiResponseReceived(let verificationId):
+            state.verificationId = verificationId
         }
         
         if let phoneNumber = state.phoneNumber {
@@ -176,5 +184,37 @@ extension IdVerificateWithPhoneNumberReactor {
         formatter.zeroFormattingBehavior = .pad
         
         return formatter.string(from: TimeInterval(time)) ?? "0:00"
+    }
+    
+    func requestVerification(phoneNumber: String?) -> Observable<String> {
+        let phoneNumber = "+82\(phoneNumber!.replacingOccurrences(of: "-", with: ""))"
+        
+        return Observable.create { observer in
+            PhoneAuthProvider.provider().verifyPhoneNumber(phoneNumber, uiDelegate: nil) { verificationId, error in
+                if let error = error {
+                    return observer.onError(error)
+                }
+                observer.onNext(verificationId ?? "")
+                observer.onCompleted()
+            }
+            return Disposables.create()
+        }
+    }
+    
+    func verifyCode(smsCode: String) -> Single<String> {
+        guard let verificationId = currentState.verificationId else {
+            return .never()
+        }
+        
+        let credential = PhoneAuthProvider.provider().credential(withVerificationID: verificationId, verificationCode: smsCode)
+        
+        return Single.create { single in
+            Auth.auth().signIn(with: credential) { result, error in
+                guard error == nil else { return }
+                
+                single(.success(""))
+            }
+            return Disposables.create()
+        }
     }
 }

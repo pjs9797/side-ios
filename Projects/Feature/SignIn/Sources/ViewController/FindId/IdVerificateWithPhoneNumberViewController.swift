@@ -49,7 +49,6 @@ public class IdVerificateWithPhoneNumberViewController: BaseViewController, Reac
         view.backgroundColor = .white
         setUp()
         render()
-        // Do any additional setup after loading the view.
     }
     
     init(with reactor: Reactor) {
@@ -175,9 +174,9 @@ extension IdVerificateWithPhoneNumberViewController {
             .disposed(by: disposeBag)
         
         idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificationInputViewTextField.rx.text
-            .subscribe(onNext: { [weak self] text in
-                guard let self = self else { return }
-                self.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificationInputViewTextField.text = self.formatPhoneNumber(text)
+            .withUnretained(self)
+            .subscribe(onNext: { viewController, text in
+                viewController.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificationInputViewTextField.text = viewController.formatPhoneNumber(text)
             })
             .disposed(by: disposeBag)
         
@@ -197,9 +196,10 @@ extension IdVerificateWithPhoneNumberViewController {
     
     private func bindState(reactor: IdVerificateWithPhoneNumberReactor) {
         reactor.state.map { $0.isStartTimer }
-            .subscribe(onNext: { [weak self] start in
+            .withUnretained(self)
+            .subscribe(onNext: { viewController, start in
                 if start {
-                    self?.idVerificateWithPhoneNumberView.verificationNumberInputView.isHidden = false
+                    viewController.idVerificateWithPhoneNumberView.verificationNumberInputView.isHidden = false
                 }
             })
             .disposed(by: disposeBag)
@@ -221,34 +221,36 @@ extension IdVerificateWithPhoneNumberViewController {
             .disposed(by: disposeBag)
         
         reactor.state.map { $0.isIncorrectFormedPhoneNumber }
-            .subscribe(onNext: { [weak self] error in
+            .withUnretained(self)
+            .subscribe(onNext: { viewController, error in
                 if !error {
-                    self?.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificationInputViewTextField.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-                    self?.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificateButton.layer.borderColor = SharedDSKitAsset.Colors.gr50.color.cgColor
-                    self?.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificationInputViewTextField.leftView?.isHidden = true
+                    viewController.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificationInputViewTextField.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+                    viewController.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificateButton.layer.borderColor = SharedDSKitAsset.Colors.gr50.color.cgColor
+                    viewController.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificationInputViewTextField.leftView?.isHidden = true
                 } else {
-                    self?.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificationInputViewTextField.layer.borderColor = SharedDSKitAsset.Colors.red.color.cgColor
-                    self?.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.inputViewErrorLabel.text = "올바른 전화번호를 입력해 주세요."
-                    self?.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificationInputViewTextField.leftView?.isHidden = false
-                    self?.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificateButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
-                    self?.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificateButton.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
+                    viewController.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificationInputViewTextField.layer.borderColor = SharedDSKitAsset.Colors.red.color.cgColor
+                    viewController.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.inputViewErrorLabel.text = "올바른 전화번호를 입력해 주세요."
+                    viewController.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificationInputViewTextField.leftView?.isHidden = false
+                    viewController.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificateButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                    viewController.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificateButton.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                 }
-                self?.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificateButton.isEnabled = !error
-                self?.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.inputViewErrorLabel.isHidden = !error
+                viewController.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.verificateButton.isEnabled = !error
+                viewController.idVerificateWithPhoneNumberView.phoneNumberVerificateInputView.inputViewErrorLabel.isHidden = !error
             })
             .disposed(by: disposeBag)
         
         reactor.state.map { $0.isVerificationComplete }
-            .subscribe(onNext: { [weak self] complete in
+            .withUnretained(self)
+            .subscribe(onNext: { viewController, complete in
                 if complete {
-                    self?.idVerificateWithPhoneNumberView.verificationNumberInputView.inputViewTextField.rightView?.isHidden = true
-                    self?.idVerificateWithPhoneNumberView.verificationNumberInputView.inputViewTextField.leftView?.isHidden = false
-                    self?.idVerificateWithPhoneNumberView.verificationNumberInputView.inputViewErrorLabel.text = "인증이 완료 되었습니다."
-                    self?.idVerificateWithPhoneNumberView.verificationNumberInputView.inputViewErrorLabel.textColor = SharedDSKitAsset.Colors.green.color
-                    self?.idVerificateWithPhoneNumberView.verificationCompletedButton.backgroundColor = SharedDSKitAsset.Colors.green.color
+                    viewController.idVerificateWithPhoneNumberView.verificationNumberInputView.inputViewTextField.rightView?.isHidden = true
+                    viewController.idVerificateWithPhoneNumberView.verificationNumberInputView.inputViewTextField.leftView?.isHidden = false
+                    viewController.idVerificateWithPhoneNumberView.verificationNumberInputView.inputViewErrorLabel.text = "인증이 완료 되었습니다."
+                    viewController.idVerificateWithPhoneNumberView.verificationNumberInputView.inputViewErrorLabel.textColor = SharedDSKitAsset.Colors.green.color
+                    viewController.idVerificateWithPhoneNumberView.verificationCompletedButton.backgroundColor = SharedDSKitAsset.Colors.green.color
                 }
                 else {
-                    self?.idVerificateWithPhoneNumberView.verificationCompletedButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                    viewController.idVerificateWithPhoneNumberView.verificationCompletedButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
                 }
             })
             .disposed(by: disposeBag)

@@ -107,11 +107,13 @@ public class AgreementsReactor: ReactorKit.Reactor, Stepper {
             if state.isAgreeFirst && state.isAgreeSecond && state.isAgreeThird && state.isAgreeFourth {
                 // 프로필 생성 진행가능하기
                 state.isAgreeAll = true
+                state.isSigninButtonEnable = true
             }
             else {
                 // 프로필 생성 불가능하기
+                state.isAgreeAll = false
+                state.isSigninButtonEnable = false
             }
-            
             
             return state
         }

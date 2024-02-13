@@ -7,8 +7,7 @@
 
 import UIKit
 import Shared
-
-import FeatureSignInInterface
+import Domain
 
 import RxSwift
 import RxCocoa
@@ -20,45 +19,93 @@ public class AgreementsViewController: UIViewController, ReactorKit.View {
     
     public var disposeBag = DisposeBag()
     
-    let agreeAllRelay = BehaviorRelay<Bool>(value: false)
-    let checkedFirstRelay = BehaviorRelay<Bool>(value: false)
-    let checkedSecondRelay = BehaviorRelay<Bool>(value: false)
-    let checkedThridRelay = BehaviorRelay<Bool>(value: false)
-    let checkedFourthRelay = BehaviorRelay<Bool>(value: false)
-    
     var agreementsView = AgreementsView()
     
     public override func loadView() {
         super.loadView()
         view = agreementsView
     }
+    
+    init(with reactor: Reactor) {
+        super.init(nibName: nil, bundle: nil)
+        self.reactor = reactor
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        configureButtons()
+    }
+}
 
-        // Do any additional setup after loading the view.
-    }
-    
+extension AgreementsViewController {
     public func bind(reactor: AgreementsReactor) {
-        /*
-        
-        let asd = agreementsView.agreeAllCheckboxView.enabledCheckboxButton.rx.tap
-            .map { .}
-         */
-        
+        bindAction(reactor: reactor)
+        bindState(reactor: reactor)
     }
     
-    private func configureButtons() {
-        agreementsView.buttons.map { button in
-            button.enabledCheckboxButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
-        }
+    private func bindAction(reactor: AgreementsReactor) {
+        agreementsView.agreeAllCheckboxView.enabledCheckboxButton.rx.tap
+            .map { Reactor.Action.agreementButtonTapped(.agreeAll) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
         
+        agreementsView.checkbox1.enabledCheckboxButton.rx.tap
+            .map { Reactor.Action.agreementButtonTapped(.checkedFirst) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        agreementsView.checkbox2.enabledCheckboxButton.rx.tap
+            .map { Reactor.Action.agreementButtonTapped(.checkedSecond) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        agreementsView.checkbox3.enabledCheckboxButton.rx.tap
+            .map { Reactor.Action.agreementButtonTapped(.checkedThird) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        agreementsView.checkbox4.enabledCheckboxButton.rx.tap
+            .map { Reactor.Action.agreementButtonTapped(.checkedFourth) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
     }
     
-    @objc private func didTapButton() {
-        agreementsView.buttons.map { button in
-            button.enabledCheckboxButton.isSelected.toggle()
-        }
+    private func bindState(reactor: AgreementsReactor) {
+        reactor.state.map { $0.isAgreeAll }
+            .bind(to: agreementsView.agreeAllCheckboxView.enabledCheckboxButton.rx.isSelected)
+            .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.isAgreeFirst }
+            .bind(to: agreementsView.checkbox1.enabledCheckboxButton.rx.isSelected)
+            .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.isAgreeSecond }
+            .bind(to: agreementsView.checkbox2.enabledCheckboxButton.rx.isSelected)
+            .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.isAgreeThird }
+            .bind(to: agreementsView.checkbox3.enabledCheckboxButton.rx.isSelected)
+            .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.isAgreeFourth }
+            .bind(to: agreementsView.checkbox4.enabledCheckboxButton.rx.isSelected)
+            .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.isSigninButtonEnable }
+            .withUnretained(self)
+            .subscribe(onNext: { viewController, enable in
+                if enable {
+                    viewController.agreementsView.signUpButton.isEnabled = true
+                    viewController.agreementsView.signUpButton.backgroundColor = SharedDSKitAsset.Colors.lightGreen.color
+                }
+                else {
+                    viewController.agreementsView.signUpButton.isEnabled = false
+                    viewController.agreementsView.signUpButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }

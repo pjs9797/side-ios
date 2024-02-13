@@ -52,18 +52,11 @@ class IdVerificateWithPhoneNumberView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        render()
+        phoneNumberVerificateInputView.verificationInputViewTextField.keyboardType = .phonePad
+        addSubViews([titleLabel, descriptionLabel,phoneNumberVerificateInputView, verificationNumberInputView, verificationCompletedButton])
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setUp() {
-        
-    }
-    
-    private func render() {
-        addSubViews([titleLabel, descriptionLabel,phoneNumberVerificateInputView, verificationNumberInputView, verificationCompletedButton])
     }
 }

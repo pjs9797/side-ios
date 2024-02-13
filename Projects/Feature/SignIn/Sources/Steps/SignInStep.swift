@@ -25,7 +25,9 @@ public enum SignInStep: Step {
     case forgotPassword
     case forgotPasswordPhoneNumberIsRequired
     case forgotPasswordEmailIsRequired
-    case newPasswordIsRequired(String)
+    case newPasswordWithEmailIsRequired(String)
+    case newPasswordWIthPhoneNumberIsRequired(String)
     case agreementsIsRequried // SginIn -> SignUp
     case userChangedPassword
+    case userChangedPasswordAndSignInRequired
 }
