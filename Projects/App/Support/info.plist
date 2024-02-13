@@ -57,21 +57,6 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-<<<<<<< HEAD
-=======
-	<key>NSCameraUsageDescription</key>
-	<string>카메라 사용을 허용하시겠습니까?</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>사진 목록에 접근을 허용하시겠습니까?</string>
-	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
-	<true/>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Pretendard-Bold.otf</string>
-		<string>Pretendard-Medium.otf</string>
-		<string>Pretendard-Regular.otf</string>
-	</array>
->>>>>>> 7a791bf ([FEAT] Build find ID and password view and fetch sign in API)
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
