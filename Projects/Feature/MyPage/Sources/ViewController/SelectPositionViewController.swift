@@ -12,7 +12,6 @@ class SelectPositionViewController: UIViewController {
     
     override func loadView() {
         super.loadView()
-        
         view = selectPositionView
     }
 

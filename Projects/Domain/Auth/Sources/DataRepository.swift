@@ -16,6 +16,7 @@ public protocol ServiceProviderType {
     var signInService: SignInService { get }
     var signUpService: SignUpService { get }
     var userService: UserService { get }
+    var myPageService: MyPageService { get }
 }
 
 final public class DataRepository: ServiceProviderType {
@@ -55,5 +56,7 @@ final public class DataRepository: ServiceProviderType {
     lazy public var signUpService: SignUpService = SignUpService(baseURL: APIServiceURL.baseURL, isLogging: true)
     
     lazy public var userService: UserService = UserService(baseURL: APIServiceURL.baseURL, isLogging: true)
+    
+    lazy public var myPageService: MyPageService = MyPageService(baseURL: APIServiceURL.baseURL, isLogging: true)
     
 }

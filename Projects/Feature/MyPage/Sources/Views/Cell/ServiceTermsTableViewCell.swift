@@ -9,7 +9,6 @@ import UIKit
 import Shared
 
 class ServiceTermsTableViewCell: UITableViewCell {
-    static let identifier = "ServiceTermsTableViewCell"
 
     let mainLabel: UILabel = {
         let label = UILabel()
@@ -17,6 +16,7 @@ class ServiceTermsTableViewCell: UITableViewCell {
         label.font = Fonts.Body02.font
         return label
     }()
+    
     let arrowIcon: UIImageView = {
         let imageView = UIImageView()
         imageView.image = SharedDSKitAsset.Icons.iconArrowRight16.image
@@ -25,30 +25,25 @@ class ServiceTermsTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        setupUI()
+        render()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupUI() {
-        let safeArea = self.safeAreaLayoutGuide
+    func render() {
+        addSubViews([mainLabel, arrowIcon])
         
-        [mainLabel, arrowIcon].forEach {
-            self.addSubview($0)
+        mainLabel.snp.makeConstraints { make in
+            make.top.bottom.equalTo(safeAreaLayoutGuide).inset(16)
+            make.leading.equalTo(safeAreaLayoutGuide)
         }
         
-        mainLabel.snp.makeConstraints {
-            $0.top.bottom.equalTo(safeArea).inset(16)
-            $0.leading.equalTo(safeArea)
-        }
-        
-        arrowIcon.snp.makeConstraints {
-            $0.top.bottom.equalTo(safeArea).inset(20)
-            $0.leading.equalTo(mainLabel.snp.trailing).offset(16)
-            $0.trailing.equalTo(safeArea)
+        arrowIcon.snp.makeConstraints { make in
+            make.top.bottom.equalTo(safeAreaLayoutGuide).inset(20)
+            make.leading.equalTo(mainLabel.snp.trailing).offset(16)
+            make.trailing.equalTo(safeAreaLayoutGuide)
         }
     }
 }

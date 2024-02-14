@@ -12,6 +12,7 @@ import RxCocoa
 import RxFlow
 import FeatureSignIn
 import FeatureHome
+import FeatureMyPage
 
 import Domain
 
@@ -44,7 +45,8 @@ final class AppFlow: Flow {
         
         switch step {
         case .signInRequired:
-            return coordinateToSignInViewController()
+//            return coordinateToSignInViewController()
+            return coordinateToMyPageViewController()
             
 //        case .userIsSignedIn:
 //            return coordinateToHomeViewController()
@@ -79,5 +81,17 @@ final class AppFlow: Flow {
         return .one(flowContributor: .contribute(withNextPresentable: homeFlow, withNextStepper: nextStep))
     }
     */
+    
+    private func coordinateToMyPageViewController() -> FlowContributors {
+        let myPageFlow = MyPageFlow(with: provider)
+        
+        Flows.use(myPageFlow, when: .created) { [unowned self] root in
+            self.rootWindow.rootViewController = root
+        }
+        
+        let nextStep = OneStepper(withSingleStep: MyPageStep.myPageRequired)
+        
+        return .one(flowContributor: .contribute(withNextPresentable: myPageFlow, withNextStepper: nextStep))
+    }
 }
 

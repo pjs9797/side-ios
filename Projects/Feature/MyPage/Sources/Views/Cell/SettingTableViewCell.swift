@@ -10,7 +10,6 @@ import Shared
 import SnapKit
 
 class SettingTableViewCell: UITableViewCell {
-    static let identifier = "SettingTableViewCell"
 
     let mainLabel: UILabel = {
         let label = UILabel()
@@ -18,6 +17,7 @@ class SettingTableViewCell: UITableViewCell {
         label.font = Fonts.Body02.font
         return label
     }()
+    
     let infoLabel: UILabel = {
         let label = UILabel()
         label.font = Fonts.Body02.font
@@ -27,29 +27,25 @@ class SettingTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        setupUI()
+        render()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupUI() {
-        let safeArea = self.safeAreaLayoutGuide
-        [mainLabel, infoLabel].forEach {
-            self.addSubview($0)
-        }
+    func render() {
+        addSubViews([mainLabel, infoLabel])
         
         mainLabel.snp.makeConstraints {
-            $0.top.bottom.equalTo(safeArea).inset(16)
-            $0.leading.equalTo(safeArea)
+            $0.top.bottom.equalTo(safeAreaLayoutGuide).inset(16)
+            $0.leading.equalTo(safeAreaLayoutGuide)
         }
         
         infoLabel.snp.makeConstraints {
-            $0.top.bottom.equalTo(safeArea).inset(16)
+            $0.top.bottom.equalTo(safeAreaLayoutGuide).inset(16)
             $0.leading.equalTo(mainLabel.snp.trailing).offset(16)
-            $0.trailing.equalTo(safeArea)
+            $0.trailing.equalTo(safeAreaLayoutGuide)
         }
     }
 }

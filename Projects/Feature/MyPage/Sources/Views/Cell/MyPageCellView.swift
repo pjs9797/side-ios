@@ -8,41 +8,48 @@
 import UIKit
 import Shared
 
-class MypageCellView: UIView {
+import SnapKit
+
+class MyPageCellView: UITableViewCell {
+    
     let mainLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = SharedDSKitAsset.Colors.gr100.color
         label.font = Fonts.Body02.font
-        return label
-    }()
-    let arrowIcon: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = SharedDSKitAsset.Icons.iconArrowRight16.image
-        return imageView
-    }()
-    let countLabel: UILabel = {
-        let label = UILabel()
-        label.font = Fonts.Body02.font
-        label.textColor = SharedDSKitAsset.Colors.text03.color
+        
         return label
     }()
     
-    init(title: String) {
-        super.init(frame: .zero)
-
-        mainLabel.text = title
-        countLabel.text = "0"
-        [mainLabel, countLabel, arrowIcon].forEach{
-            self.addSubview($0)
-        }
-        setupConstraints()
+    let arrowIcon: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = SharedDSKitAsset.Icons.iconArrowRight16.image
+        
+        return imageView
+    }()
+    
+    let countLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = Fonts.Body02.font
+        label.textColor = SharedDSKitAsset.Colors.text03.color
+        
+        return label
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        render()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupConstraints() {
+    func render() {
+        addSubViews([mainLabel, countLabel, arrowIcon])
+        
         let safeArea = self.safeAreaLayoutGuide
 
         mainLabel.snp.makeConstraints {
