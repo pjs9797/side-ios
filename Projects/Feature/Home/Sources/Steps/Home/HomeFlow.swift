@@ -39,10 +39,10 @@ final public class HomeFlow: Flow {
     }
     
     private func coordinateToHomeViewController() -> FlowContributors {
-        let homeViewController = HomeViewController()
-        self.rootViewController.pushViewController(homeViewController, animated: false)
+        let viewController = HomeViewController()
+        self.rootViewController.pushViewController(viewController, animated: false)
         
-        return .one(flowContributor: .contribute(withNextPresentable: homeViewController, withNextStepper: homeViewController))
+        return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: viewController))
     }
     
     private func coordinateToSelectMeetingTypeViewController() -> FlowContributors {

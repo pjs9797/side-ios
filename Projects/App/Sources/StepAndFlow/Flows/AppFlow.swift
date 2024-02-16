@@ -12,6 +12,7 @@ import RxCocoa
 import RxFlow
 import FeatureSignIn
 import FeatureHome
+import FeatureMyPage
 import SharedDSKit
 import Domain
 
@@ -91,18 +92,20 @@ final class AppFlow: Flow {
         
         let homeFlow = HomeFlow(with: provider, with: homeNavigationController)
         //let chatFlow =
-        //let myPageFlow =
+        let myPageFlow = MyPageFlow(with: provider, with: myPageNavigationController)
         
-        Flows.use(homeFlow, when: .created) { [weak self] (homeRoot) in
+        Flows.use(homeFlow, myPageFlow, when: .created) { [weak self] (homeRoot,myPageRoot) in
             
             homeRoot.tabBarItem = UITabBarItem(title: "모임", image: SharedDSKitAsset.Icons.iconHome24.image, tag: 0)
+            myPageRoot.tabBarItem = UITabBarItem(title: "MY", image: SharedDSKitAsset.Icons.iconMy24.image, tag: 2)
             
-            TPTabBarController.viewControllers = [homeRoot]
+            TPTabBarController.viewControllers = [homeRoot, myPageRoot]
             self?.rootWindow.rootViewController = TPTabBarController
         }
 
         return .multiple(flowContributors: [
-            .contribute(withNextPresentable: homeFlow, withNextStepper: OneStepper(withSingleStep: HomeStep.goToHomeViewController))
+            .contribute(withNextPresentable: homeFlow, withNextStepper: OneStepper(withSingleStep: HomeStep.goToHomeViewController)),
+            .contribute(withNextPresentable: myPageFlow, withNextStepper: OneStepper(withSingleStep: MyPageStep.goToMyPageViewController))
         ])
     }
 }
