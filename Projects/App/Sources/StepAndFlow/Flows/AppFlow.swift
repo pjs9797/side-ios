@@ -97,7 +97,7 @@ final class AppFlow: Flow {
         Flows.use(homeFlow, myPageFlow, when: .created) { [weak self] (homeRoot,myPageRoot) in
             
             homeRoot.tabBarItem = UITabBarItem(title: "모임", image: SharedDSKitAsset.Icons.iconHome24.image, tag: 0)
-            myPageRoot.tabBarItem = UITabBarItem(title: "MY", image: SharedDSKitAsset.Icons.iconMy24.image, tag: 2)
+            myPageRoot.tabBarItem = UITabBarItem(title: "마이 페이지", image: SharedDSKitAsset.Icons.iconMy24.image, tag: 2)
             
             TPTabBarController.viewControllers = [homeRoot, myPageRoot]
             self?.rootWindow.rootViewController = TPTabBarController

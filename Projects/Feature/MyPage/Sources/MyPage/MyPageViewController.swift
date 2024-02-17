@@ -15,7 +15,6 @@ public class MyPageViewController: UIViewController, ReactorKit.View{
         button.titleLabel?.font = Fonts.Body02.font
         button.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
         button.layer.borderColor = SharedDSKitAsset.Colors.text03.color.cgColor
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16.0)
         if let title = button.title(for: .normal) {
             let attributedString = NSMutableAttributedString(string: title)
             attributedString.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: 0, length: title.count))
@@ -26,8 +25,7 @@ public class MyPageViewController: UIViewController, ReactorKit.View{
     let userImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = SharedDSKitAsset.Colors.bgLightGray.color
-        imageView.image = SharedDSKitAsset.Icons.iconMy24.image
-        imageView.layer.cornerRadius = 40
+        imageView.layer.cornerRadius = 40*Constants.standardHeight
         return imageView
     }()
     let userNameLabel: UILabel = {
@@ -54,7 +52,8 @@ public class MyPageViewController: UIViewController, ReactorKit.View{
     let interestCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 8
+        layout.minimumLineSpacing = 8*Constants.standardHeight
+        layout.minimumInteritemSpacing = 8*Constants.standardWidth
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(InterestCollectionViewCell.self, forCellWithReuseIdentifier: "InterestCollectionViewCell")
         collectionView.isScrollEnabled = false
@@ -87,17 +86,16 @@ public class MyPageViewController: UIViewController, ReactorKit.View{
         tableView.register(ActivityTableViewCell.self, forCellReuseIdentifier: "ActivityTableViewCell")
         return tableView
     }()
-    var dataSource: RxTableViewSectionedReloadDataSource<ActivitySection>
+    let dataSource = RxTableViewSectionedReloadDataSource<ActivitySection>(
+        configureCell: { _, tableView, indexPath, item in
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityTableViewCell", for: indexPath) as! ActivityTableViewCell
+            let cellReactor = ActivityTableViewCellReactor(titleLabelText: item.title, cntLabelText: item.cnt)
+            cell.reactor = cellReactor
+            return cell
+        }
+    )
     
     public init(with reactor: MyPageReactor) {
-        self.dataSource = RxTableViewSectionedReloadDataSource<ActivitySection>(
-            configureCell: { _, tableView, indexPath, item in
-                let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityTableViewCell", for: indexPath) as! ActivityTableViewCell
-                let cellReactor = ActivityTableViewCellReactor(titleLabelText: item.title, cntLabelText: item.cnt)
-                cell.reactor = cellReactor
-                return cell
-            }
-        )
         super.init(nibName: nil, bundle: nil)
         
         self.reactor = reactor
@@ -111,18 +109,15 @@ public class MyPageViewController: UIViewController, ReactorKit.View{
         super.viewDidLoad()
         
         self.view.backgroundColor = .white
-        interestCollectionView.delegate = self
-        activityTableView.delegate = self
         setNavigationbar()
         layout()
-        self.reactor?.state.map { $0.contentSize }
-            .distinctUntilChanged()
-            .bind(onNext: { [weak self] size in
-                self?.interestCollectionView.snp.updateConstraints { make in
-                    make.height.equalTo(size.height)
-                }
-            })
-            .disposed(by: disposeBag)
+        bindAfterLayout()
+    }
+    
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.reactor?.action.onNext(.loadCellData)
     }
     
     private func setNavigationbar() {
@@ -140,59 +135,59 @@ public class MyPageViewController: UIViewController, ReactorKit.View{
             .forEach{ self.view.addSubview($0) }
         
         modifyButton.snp.makeConstraints { make in
-            make.width.equalTo(75)
-            make.height.equalTo(25)
-            make.trailing.equalToSuperview().offset(-20)
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
+            make.width.equalTo(75*Constants.standardWidth)
+            make.height.equalTo(25*Constants.standardHeight)
+            make.trailing.equalToSuperview().offset(-20*Constants.standardWidth)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16*Constants.standardHeight)
         }
         
         userImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(80)
-            make.leading.equalToSuperview().offset(20)
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(48)
+            make.width.height.equalTo(80*Constants.standardHeight)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(48*Constants.standardHeight)
         }
         
         userNameLabel.snp.makeConstraints { make in
-            make.height.equalTo(25)
-            make.leading.equalTo(userImageView.snp.trailing).offset(24)
-            make.top.equalTo(userImageView.snp.top).offset(4)
+            make.height.equalTo(25*Constants.standardHeight)
+            make.leading.equalTo(userImageView.snp.trailing).offset(24*Constants.standardWidth)
+            make.top.equalTo(userImageView.snp.top).offset(4*Constants.standardHeight)
         }
         
         positionLabel.snp.makeConstraints { make in
-            make.height.equalTo(17)
+            make.height.equalTo(17*Constants.standardHeight)
             make.leading.equalTo(userNameLabel.snp.leading)
-            make.top.equalTo(userNameLabel.snp.bottom).offset(2)
+            make.top.equalTo(userNameLabel.snp.bottom).offset(2*Constants.standardHeight)
         }
         
         emailLabel.snp.makeConstraints { make in
-            make.height.equalTo(21)
+            make.height.equalTo(21*Constants.standardHeight)
             make.leading.equalTo(userNameLabel.snp.leading)
-            make.top.equalTo(positionLabel.snp.bottom).offset(2)
+            make.top.equalTo(positionLabel.snp.bottom).offset(2*Constants.standardHeight)
         }
         
         interestCollectionView.snp.makeConstraints { make in
             make.height.equalTo(0)
             make.leading.equalTo(userNameLabel.snp.leading)
-            make.trailing.equalToSuperview().offset(-20)
-            make.top.equalTo(emailLabel.snp.bottom).offset(16)
+            make.trailing.equalToSuperview().offset(-20*Constants.standardWidth)
+            make.top.equalTo(emailLabel.snp.bottom).offset(16*Constants.standardHeight)
         }
         
         separateView.snp.makeConstraints { make in
-            make.height.equalTo(8)
+            make.height.equalTo(8*Constants.standardHeight)
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(interestCollectionView.snp.bottom).offset(32)
+            make.top.equalTo(interestCollectionView.snp.bottom).offset(32*Constants.standardHeight)
         }
         
         activityLabel.snp.makeConstraints { make in
-            make.height.equalTo(25)
-            make.leading.equalToSuperview().offset(20)
-            make.top.equalTo(separateView.snp.bottom).offset(32)
+            make.height.equalTo(25*Constants.standardHeight)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.top.equalTo(separateView.snp.bottom).offset(32*Constants.standardHeight)
         }
         
         activityTableView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
-            make.top.equalTo(activityLabel.snp.bottom).offset(24)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.trailing.equalToSuperview().offset(-20*Constants.standardWidth)
+            make.top.equalTo(activityLabel.snp.bottom).offset(24*Constants.standardHeight)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
     }
@@ -205,7 +200,11 @@ extension MyPageViewController{
     }
     
     private func bindAction(reactor: MyPageReactor){
-        reactor.action.onNext(.loadCellData)
+        interestCollectionView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
+        
+        activityTableView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
         
         settingButton.rx.tap
             .map{ Reactor.Action.settingButtonTapped}
@@ -236,6 +235,17 @@ extension MyPageViewController{
             .bind(to: activityTableView.rx.items(dataSource: self.dataSource))
             .disposed(by: disposeBag)
     }
+    
+    private func bindAfterLayout(){
+        self.reactor?.state.map { $0.contentSize }
+            .distinctUntilChanged()
+            .bind(onNext: { [weak self] size in
+                self?.interestCollectionView.snp.updateConstraints { make in
+                    make.height.equalTo(size.height*Constants.standardHeight)
+                }
+            })
+            .disposed(by: disposeBag)
+    }
 }
 
 extension MyPageViewController: UICollectionViewDelegateFlowLayout {
@@ -243,13 +253,10 @@ extension MyPageViewController: UICollectionViewDelegateFlowLayout {
         let text = self.reactor?.currentState.collectionViewCellData[indexPath.item] ?? ""
         let font = Fonts.ST01.font
         let textAttributes = [NSAttributedString.Key.font: font]
-        let estimatedTextSize = NSString(string: text).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 17),
-                                                                    options: .usesLineFragmentOrigin,
-                                                                    attributes: textAttributes,
-                                                                    context: nil).size
-        let cellPadding: CGFloat = 16
+        let estimatedTextSize = NSString(string: text).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 17*Constants.standardHeight),options: .usesLineFragmentOrigin,attributes: textAttributes,context: nil).size
+        let cellPadding: CGFloat = 16*Constants.standardWidth
         let cellWidth = estimatedTextSize.width + cellPadding
-        let cellHeight: CGFloat = 25
+        let cellHeight: CGFloat = 25*Constants.standardHeight
         return CGSize(width: cellWidth, height: cellHeight)
     }
 }

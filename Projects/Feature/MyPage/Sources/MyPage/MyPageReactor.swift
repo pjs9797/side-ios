@@ -48,6 +48,7 @@ public class MyPageReactor: ReactorKit.Reactor, Stepper{
             self.steps.accept(MyPageStep.goToSettingViewController)
             return .empty()
         case .modifyButtonTapped:
+            self.steps.accept(MyPageStep.goToModifyProfileViewController)
             return .empty()
         case .updateContentSize(let size):
             return .just(.setContentSize(size))

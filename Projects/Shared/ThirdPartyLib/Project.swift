@@ -28,7 +28,8 @@ let targets: [Target] = [
                 .external(name: "RxAlamofire"),
                 .external(name: "Lottie"),
                 .external(name: "RxKeyboard"),
-                .external(name: "RxDataSources")
+                .external(name: "RxDataSources"),
+                .external(name: "Kingfisher")
             ]
         )
     )

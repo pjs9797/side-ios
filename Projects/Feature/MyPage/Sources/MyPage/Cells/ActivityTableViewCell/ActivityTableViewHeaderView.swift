@@ -30,9 +30,9 @@ class ActivityTableViewHeaderView: UITableViewHeaderFooterView {
         self.contentView.addSubview(headerLabel)
         
         headerLabel.snp.makeConstraints { make in
-            make.height.equalTo(20)
+            make.height.equalTo(20*Constants.standardHeight)
             make.leading.top.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-8)
+            make.bottom.equalToSuperview().offset(-8*Constants.standardHeight)
         }
     }
 }

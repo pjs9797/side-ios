@@ -13,7 +13,6 @@ public class SettingViewController: UIViewController, ReactorKit.View{
         let tableView = UITableView()
         tableView.separatorStyle = .none
         tableView.isScrollEnabled = false
-        
         tableView.rowHeight = UITableView.automaticDimension
         tableView.register(InfoSettingTableViewCell.self, forCellReuseIdentifier: "InfoSettingTableViewCell")
         tableView.register(TermsSettingTableViewCell.self, forCellReuseIdentifier: "TermsSettingTableViewCell")
@@ -23,6 +22,7 @@ public class SettingViewController: UIViewController, ReactorKit.View{
     
     public init(with reactor: SettingReactor) {
         super.init(nibName: nil, bundle: nil)
+        
         self.reactor = reactor
     }
     
@@ -71,8 +71,7 @@ extension SettingViewController{
             .disposed(by: disposeBag)
         
         settingTableView.rx.itemSelected
-            .subscribe(onNext: { [weak self] indexPath in
-                guard let self = self else { return }
+            .subscribe(onNext: { indexPath in
                 let section = reactor.currentState.cellData[indexPath.row]
                 switch section {
                 case .Logout(let mainLabelText):

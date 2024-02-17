@@ -18,3 +18,4 @@ extension SettingSection: SectionModelType {
         self.items = items
     }
 }
+

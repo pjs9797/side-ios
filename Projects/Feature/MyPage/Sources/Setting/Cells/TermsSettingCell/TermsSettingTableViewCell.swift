@@ -34,14 +34,14 @@ class TermsSettingTableViewCell: UITableViewCell, ReactorKit.View {
             .forEach { self.contentView.addSubview($0) }
         
         mainLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.leading.equalToSuperview().offset(20)
-            make.bottom.equalToSuperview().offset(-16)
+            make.top.equalToSuperview().offset(16*Constants.standardHeight)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.bottom.equalToSuperview().offset(-16*Constants.standardHeight)
         }
         
         rightButton.snp.makeConstraints { make in
-            make.width.height.equalTo(16)
-            make.trailing.equalToSuperview().offset(-20)
+            make.width.height.equalTo(16*Constants.standardHeight)
+            make.trailing.equalToSuperview().offset(-20*Constants.standardWidth)
             make.centerY.equalTo(mainLabel)
         }
     }
@@ -49,16 +49,6 @@ class TermsSettingTableViewCell: UITableViewCell, ReactorKit.View {
 
 extension TermsSettingTableViewCell{
     func bind(reactor: TermsSettingTableViewCellReactor) {
-        bindAction(reactor: reactor)
-        bindState(reactor: reactor)
-    }
-    
-    private func bindAction(reactor: TermsSettingTableViewCellReactor){
-        
-        
-    }
-    
-    private func bindState(reactor: TermsSettingTableViewCellReactor){
         reactor.state.map { $0.mainLabelText }
             .distinctUntilChanged()
             .bind(to: mainLabel.rx.text)

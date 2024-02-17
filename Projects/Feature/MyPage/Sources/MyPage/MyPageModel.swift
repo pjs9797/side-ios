@@ -18,3 +18,4 @@ extension ActivitySection: SectionModelType {
         self.items = items
     }
 }
+

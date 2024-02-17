@@ -35,15 +35,15 @@ class InfoSettingTableViewCell: UITableViewCell, ReactorKit.View {
             .forEach { self.contentView.addSubview($0) }
         
         mainLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.leading.equalToSuperview().offset(20)
-            make.bottom.equalToSuperview().offset(-16)
+            make.top.equalToSuperview().offset(16*Constants.standardHeight)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.bottom.equalToSuperview().offset(-16*Constants.standardHeight)
         }
         
         infoLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-20)
-            make.bottom.equalToSuperview().offset(-16)
+            make.top.equalToSuperview().offset(16*Constants.standardHeight)
+            make.trailing.equalToSuperview().offset(-20*Constants.standardWidth)
+            make.bottom.equalToSuperview().offset(-16*Constants.standardHeight)
         }
     }
 }

@@ -11,6 +11,7 @@ final public class MyPageFlow: Flow {
     var provider: ServiceProviderType
     
     private let rootViewController: UINavigationController
+    let selectPositionReactor = SelectPositionReactor()
     
     public init(with provider: ServiceProviderType, with rootViewController: UINavigationController) {
         self.provider = provider
@@ -26,6 +27,10 @@ final public class MyPageFlow: Flow {
             return coordinateToMyPageViewController()
         case .goToSettingViewController:
             return coordinateToSettingViewController()
+        case .goToModifyProfileViewController:
+            return coordinateToModifyProfileViewController()
+        case .presentToSelectPositionViewController:
+            return coordinateToSelectPositionViewController()
         case .presentToWithdrawalAlert:
             return coordinateToWithdrawalAlert()
         }
@@ -48,7 +53,26 @@ final public class MyPageFlow: Flow {
     private func coordinateToSettingViewController() -> FlowContributors {
         let reactor = SettingReactor()
         let viewController = SettingViewController(with: reactor)
+        viewController.hidesBottomBarWhenPushed = true
         self.rootViewController.pushViewController(viewController, animated: true)
+        
+        return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
+    }
+    
+    private func coordinateToModifyProfileViewController() -> FlowContributors {
+        let selectPositionReactor = self.selectPositionReactor
+        let reactor = ModifyProfileReactor()
+        let viewController = ModifyProfileViewController(with: reactor, selectPositionReactor: selectPositionReactor)
+        viewController.hidesBottomBarWhenPushed = true
+        self.rootViewController.pushViewController(viewController, animated: true)
+        
+        return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
+    }
+    
+    private func coordinateToSelectPositionViewController() -> FlowContributors {
+        let reactor = self.selectPositionReactor
+        let viewController = SelectPositionViewController(with: reactor)
+        self.rootViewController.present(viewController, animated: false)
         
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
     }

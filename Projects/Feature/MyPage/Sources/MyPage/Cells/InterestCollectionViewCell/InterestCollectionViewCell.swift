@@ -18,7 +18,7 @@ class InterestCollectionViewCell: UICollectionViewCell, ReactorKit.View {
         super.init(frame: frame)
         
         self.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
-        self.layer.cornerRadius = 12.5
+        self.layer.cornerRadius = 12.5*Constants.standardHeight
         layout()
     }
     
@@ -43,15 +43,6 @@ class InterestCollectionViewCell: UICollectionViewCell, ReactorKit.View {
 
 extension InterestCollectionViewCell{
     func bind(reactor: InterestCollectionViewCellReactor) {
-        bindAction(reactor: reactor)
-        bindState(reactor: reactor)
-    }
-    
-    private func bindAction(reactor: InterestCollectionViewCellReactor){
-        
-    }
-    
-    private func bindState(reactor: InterestCollectionViewCellReactor){
         reactor.state.map { $0.titleLabelText }
             .distinctUntilChanged()
             .bind(to: titleLabel.rx.text)

@@ -41,20 +41,20 @@ class ActivityTableViewCell: UITableViewCell, ReactorKit.View {
             .forEach{ self.contentView.addSubview($0) }
         
         titleLabel.snp.makeConstraints { make in
-            make.height.equalTo(24)
+            make.height.equalTo(24*Constants.standardHeight)
             make.leading.equalToSuperview()
-            make.top.equalToSuperview().offset(16)
-            make.bottom.equalToSuperview().offset(-16)
+            make.top.equalToSuperview().offset(16*Constants.standardHeight)
+            make.bottom.equalToSuperview().offset(-16*Constants.standardHeight)
         }
         
         rightButton.snp.makeConstraints { make in
-            make.width.height.equalTo(16)
+            make.width.height.equalTo(16*Constants.standardHeight)
             make.trailing.equalToSuperview()
             make.centerY.equalTo(titleLabel)
         }
         
         cntLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(rightButton.snp.leading).offset(16)
+            make.trailing.equalTo(rightButton.snp.leading).offset(16*Constants.standardWidth)
             make.centerY.equalTo(titleLabel)
         }
     }
@@ -62,15 +62,6 @@ class ActivityTableViewCell: UITableViewCell, ReactorKit.View {
 
 extension ActivityTableViewCell{
     func bind(reactor: ActivityTableViewCellReactor) {
-        bindAction(reactor: reactor)
-        bindState(reactor: reactor)
-    }
-    
-    private func bindAction(reactor: ActivityTableViewCellReactor){
-        
-    }
-    
-    private func bindState(reactor: ActivityTableViewCellReactor){
         reactor.state.map { $0.titleLabelText }
             .distinctUntilChanged()
             .bind(to: titleLabel.rx.text)
