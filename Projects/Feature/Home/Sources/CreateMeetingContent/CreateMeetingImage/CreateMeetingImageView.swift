@@ -15,14 +15,14 @@ class CreateMeetingImageView: UIView, ReactorKit.View {
     }()
     let addImageBtView: AddImageBtView = {
         let view = AddImageBtView()
-        view.layer.cornerRadius = 16
+        view.layer.cornerRadius = 16*Constants.standardHeight
         view.layer.borderWidth = 1
         view.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         return view
     }()
     lazy var representativeImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.layer.cornerRadius = 16
+        imageView.layer.cornerRadius = 16*Constants.standardHeight
         imageView.layer.borderWidth = 1
         imageView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         imageView.clipsToBounds = true
@@ -65,33 +65,33 @@ class CreateMeetingImageView: UIView, ReactorKit.View {
         setDefaultImageButton.addSubview(bottomBorder)
         
         imageLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
             make.top.equalToSuperview()
         }
         
         addImageBtView.snp.makeConstraints { make in
-            make.width.height.equalTo(100)
-            make.leading.equalToSuperview().offset(20)
-            make.top.equalTo(imageLabel.snp.bottom).offset(16)
+            make.width.height.equalTo(100*Constants.standardHeight)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.top.equalTo(imageLabel.snp.bottom).offset(16*Constants.standardHeight)
         }
         
         representativeImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(100)
-            make.leading.equalTo(addImageBtView.snp.trailing).offset(8)
-            make.top.equalTo(imageLabel.snp.bottom).offset(16)
+            make.width.height.equalTo(100*Constants.standardHeight)
+            make.leading.equalTo(addImageBtView.snp.trailing).offset(8*Constants.standardWidth)
+            make.top.equalTo(imageLabel.snp.bottom).offset(16*Constants.standardHeight)
         }
         
         imageCancelButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.trailing.equalTo(representativeImageView.snp.trailing).offset(8)
-            make.top.equalTo(representativeImageView.snp.top).offset(-8)
+            make.width.height.equalTo(24*Constants.standardHeight)
+            make.trailing.equalTo(representativeImageView.snp.trailing).offset(8*Constants.standardWidth)
+            make.top.equalTo(representativeImageView.snp.top).offset(-8*Constants.standardHeight)
         }
         
         setDefaultImageButton.snp.makeConstraints { make in
-            make.width.equalTo(160)
-            make.height.equalTo(24)
+            make.width.equalTo(160*Constants.standardWidth)
+            make.height.equalTo(24*Constants.standardHeight)
             make.centerX.equalToSuperview()
-            make.top.equalTo(addImageBtView.snp.bottom).offset(24)
+            make.top.equalTo(addImageBtView.snp.bottom).offset(24*Constants.standardHeight)
         }
         
         bottomBorder.snp.makeConstraints { make in

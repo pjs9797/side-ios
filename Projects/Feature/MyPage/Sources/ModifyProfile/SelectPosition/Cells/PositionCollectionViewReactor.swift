@@ -1,5 +1,5 @@
 import RxCocoa
-import UIKit
+import UIKit.UIImage
 import ReactorKit
 import RxFlow
 

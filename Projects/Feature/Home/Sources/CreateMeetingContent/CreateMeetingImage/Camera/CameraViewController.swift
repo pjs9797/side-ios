@@ -1,10 +1,9 @@
 import UIKit
 import Mantis
-import RxFlow
 import RxCocoa
 
-class CameraViewController: UIImagePickerController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, Stepper{
-    public var steps = PublishRelay<Step>()
+class CameraViewController: UIImagePickerController, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+    let cameraReactor = CameraReactor()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -14,13 +13,13 @@ class CameraViewController: UIImagePickerController, UIImagePickerControllerDele
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         guard let selectedImage = info[.editedImage] as? UIImage else {
-            self.dismiss(animated: true, completion: nil)
+            self.cameraReactor.action.onNext(.dismissView)
             return
         }
-        self.steps.accept(CreateMeetingStep.presentEditPhotoViewController(image: selectedImage))
+        self.cameraReactor.action.onNext(.selectImage(selectedImage))
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        self.steps.accept(CreateMeetingStep.dismissViewController)
+        self.cameraReactor.action.onNext(.dismissView)
     }
 }

@@ -15,14 +15,14 @@ class CreateMeetingPeriodView: UIView, ReactorKit.View{
     }()
     let dateBtView: PeriodBtView = {
         let dateBtView = PeriodBtView(title: "모임 날짜", subTitle: "날짜 선택")
-        dateBtView.layer.cornerRadius = 16
+        dateBtView.layer.cornerRadius = 16*Constants.standardHeight
         dateBtView.layer.borderWidth = 1
         dateBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         return dateBtView
     }()
     let timeBtView: PeriodBtView = {
         let timeBtView = PeriodBtView(title: "모임 시간", subTitle: "시간 선택")
-        timeBtView.layer.cornerRadius = 16
+        timeBtView.layer.cornerRadius = 16*Constants.standardHeight
         timeBtView.layer.borderWidth = 1
         timeBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         return timeBtView
@@ -50,37 +50,37 @@ class CreateMeetingPeriodView: UIView, ReactorKit.View{
             .forEach{ self.addSubview($0) }
         
         dateTitleLabel.snp.makeConstraints { make in
-            make.height.equalTo(25)
-            make.leading.equalToSuperview().offset(20)
+            make.height.equalTo(25*Constants.standardHeight)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
             make.top.equalToSuperview()
         }
         
         dateBtView.snp.makeConstraints { make in
-            make.width.equalTo(163.5)
-            make.height.equalTo(56)
-            make.leading.equalToSuperview().offset(20)
-            make.top.equalTo(dateTitleLabel.snp.bottom).offset(16)
+            make.width.equalTo(163.5*Constants.standardWidth)
+            make.height.equalTo(56*Constants.standardHeight)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.top.equalTo(dateTitleLabel.snp.bottom).offset(16*Constants.standardHeight)
         }
         
         timeBtView.snp.makeConstraints { make in
-            make.width.equalTo(163.5)
-            make.height.equalTo(56)
-            make.trailing.equalToSuperview().offset(-20)
-            make.top.equalTo(dateTitleLabel.snp.bottom).offset(16)
+            make.width.equalTo(163.5*Constants.standardWidth)
+            make.height.equalTo(56*Constants.standardHeight)
+            make.trailing.equalToSuperview().offset(-20*Constants.standardWidth)
+            make.top.equalTo(dateTitleLabel.snp.bottom).offset(16*Constants.standardHeight)
         }
         
         calendarView.snp.makeConstraints { make in
-            make.width.equalTo(335)
-            make.height.equalTo(0)
+            make.width.equalTo(335*Constants.standardWidth)
+            make.height.equalTo(0*Constants.standardHeight)
             make.centerX.equalToSuperview()
-            make.top.equalTo(timeBtView.snp.bottom).offset(16)
+            make.top.equalTo(timeBtView.snp.bottom).offset(16*Constants.standardHeight)
         }
 
         timePickerView.snp.makeConstraints { make in
             make.width.equalToSuperview()
             make.height.equalTo(0)
             make.leading.equalToSuperview()
-            make.top.equalTo(timeBtView.snp.bottom).offset(16)
+            make.top.equalTo(timeBtView.snp.bottom).offset(16*Constants.standardHeight)
         }
     }
     
@@ -88,7 +88,7 @@ class CreateMeetingPeriodView: UIView, ReactorKit.View{
         UIView.animate(withDuration: 0.3, animations: {
             self.calendarView.isHidden = false
             self.calendarView.snp.updateConstraints { make in
-                make.height.equalTo(358)
+                make.height.equalTo(358*Constants.standardHeight)
             }
             self.layoutIfNeeded()
         })
@@ -108,7 +108,7 @@ class CreateMeetingPeriodView: UIView, ReactorKit.View{
         UIView.animate(withDuration: 0.3, animations: {
             self.timePickerView.isHidden = false
             self.timePickerView.snp.updateConstraints { make in
-                make.height.equalTo(168)
+                make.height.equalTo(168*Constants.standardHeight)
             }
             self.layoutIfNeeded()
         })

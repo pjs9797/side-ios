@@ -2,10 +2,8 @@ import UIKit
 import Mantis
 import RxSwift
 import RxCocoa
-import RxFlow
 
-class EditPhotoViewController: CropViewController, Stepper {
-    public var steps = PublishRelay<Step>()
+class EditPhotoViewController: CropViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,10 +14,10 @@ class EditPhotoViewController: CropViewController, Stepper {
 extension EditPhotoViewController: CropViewControllerDelegate {
     func cropViewControllerDidCrop(_ cropViewController: Mantis.CropViewController, cropped: UIImage, transformation: Mantis.Transformation, cropInfo: Mantis.CropInfo) {
         EditPhotoReactor.shared.action.onNext(.setImage(cropped))
-        self.steps.accept(CreateMeetingStep.doubleDismissViewController)
+        EditPhotoReactor.shared.action.onNext(.doubleDismissView)
     }
     
     func cropViewControllerDidCancel(_ cropViewController: CropViewController, original: UIImage) {
-        self.steps.accept(CreateMeetingStep.dismissEditPhotoViewController)
+        EditPhotoReactor.shared.action.onNext(.dismissView)
     }
 }

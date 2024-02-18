@@ -1,9 +1,7 @@
 import Foundation
-import RxSwift
 import RxCocoa
 import ReactorKit
 import RxFlow
-import Shared
 
 public class SelectHobbyDetailsReactor: ReactorKit.Reactor, Stepper{
     public var initialState: State
@@ -17,7 +15,7 @@ public class SelectHobbyDetailsReactor: ReactorKit.Reactor, Stepper{
         case backButtonTapped
         case nextButtonTapped
         case updateContentSize(CGSize)
-        case selectItem
+        case selectItem(String,String)
     }
     
     public enum Mutation {
@@ -41,7 +39,9 @@ public class SelectHobbyDetailsReactor: ReactorKit.Reactor, Stepper{
             return .empty()
         case .updateContentSize(let size):
             return .just(.setContentSize(size))
-        case .selectItem:
+        case .selectItem(let categoryMajor, let categorySub):
+            MeetingDataManager.shared.categoryMajor = categoryMajor
+            MeetingDataManager.shared.categorySub = categorySub
             return .just(.setSelectItem)
         }
     }

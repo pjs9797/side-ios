@@ -39,13 +39,13 @@ class PeriodBtView: UIView{
             .forEach{ self.addSubview($0) }
         
         titleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
-            make.top.equalToSuperview().offset(8)
+            make.leading.equalToSuperview().offset(16*Constants.standardWidth)
+            make.top.equalToSuperview().offset(8*Constants.standardHeight)
         }
         
         subTitleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
-            make.top.equalTo(titleLabel.snp.bottom).offset(6)
+            make.leading.equalToSuperview().offset(16*Constants.standardWidth)
+            make.top.equalTo(titleLabel.snp.bottom).offset(6*Constants.standardHeight)
         }
     }
     

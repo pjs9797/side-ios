@@ -1,4 +1,4 @@
-import UIKit
+import UIKit.UIImage
 import Photos
 import ReactorKit
 import RxFlow
@@ -63,11 +63,20 @@ class AlbumViewReactor: ReactorKit.Reactor, Stepper {
                 .just(.setPhotosCnt(photos.count))
             ])
         case .selectPhoto(let photo, let indexPath):
-            return Observable.concat([
-                .just(.setSelectPhoto(photo)),
-                .just(.setSelectIndexPath(indexPath)),
-                .just(.setPreviousSelectedIndexPath(self.currentState.selectedIndexPath))
-            ])
+            if let currentSelectedIndexPath = self.currentState.selectedIndexPath, currentSelectedIndexPath == indexPath {
+                return Observable.concat([
+                    .just(.setSelectPhoto(nil)),
+                    .just(.setSelectIndexPath(nil)),
+                    .just(.setPreviousSelectedIndexPath(indexPath))
+                ])
+            }
+            else {
+                return Observable.concat([
+                    .just(.setSelectPhoto(photo)),
+                    .just(.setSelectIndexPath(indexPath)),
+                    .just(.setPreviousSelectedIndexPath(self.currentState.selectedIndexPath))
+                ])
+            }
         }
     }
     

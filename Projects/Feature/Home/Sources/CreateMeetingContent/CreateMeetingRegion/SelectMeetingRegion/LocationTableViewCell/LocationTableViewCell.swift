@@ -33,25 +33,19 @@ class LocationTableViewCell: UITableViewCell, ReactorKit.View{
         self.contentView.addSubview(locationNameLabel)
         
         locationNameLabel.snp.makeConstraints { make in
-            make.height.equalTo(24)
+            make.height.equalTo(24*Constants.standardHeight)
             make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview().offset(12)
-            make.bottom.equalToSuperview().offset(-12)
+            make.top.equalToSuperview().offset(12*Constants.standardHeight)
+            make.bottom.equalToSuperview().offset(-12*Constants.standardHeight)
         }
     }
 }
 
 extension LocationTableViewCell{
     func bind(reactor: LocationTableViewCellReactor) {
-        bindAction(reactor: reactor)
-        bindState(reactor: reactor)
-    }
-    
-    private func bindAction(reactor: LocationTableViewCellReactor){
-        locationNameLabel.text = reactor.currentState.locationName
-    }
-    
-    private func bindState(reactor: LocationTableViewCellReactor){
-        
+        reactor.state.map{ $0.locationName }
+            .distinctUntilChanged()
+            .bind(to: locationNameLabel.rx.text)
+            .disposed(by: disposeBag)
     }
 }

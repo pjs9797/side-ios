@@ -6,7 +6,7 @@ class StudyBtView: UIView{
     let tapGesture = UITapGestureRecognizer()
     let borderView: UIView = {
         let view = UIView()
-        view.layer.cornerRadius = 40
+        view.layer.cornerRadius = 40*Constants.standardHeight
         view.layer.borderWidth = 1
         view.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
         view.isHidden = true
@@ -15,7 +15,7 @@ class StudyBtView: UIView{
     let imgBgImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = UIColor(red: 0.84, green: 0.81, blue: 1, alpha: 1)
-        imageView.layer.cornerRadius = 36
+        imageView.layer.cornerRadius = 36*Constants.standardHeight
         return imageView
     }()
     lazy var targetImageView: UIImageView = {
@@ -47,19 +47,18 @@ class StudyBtView: UIView{
             .forEach{ self.addSubview($0) }
         
         borderView.snp.makeConstraints { make in
-            make.width.height.equalTo(80)
+            make.width.height.equalTo(80*Constants.standardHeight)
             make.top.equalToSuperview()
             make.centerX.equalToSuperview()
         }
         
         imgBgImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(72)
+            make.width.height.equalTo(72*Constants.standardHeight)
             make.centerX.centerY.equalTo(borderView)
         }
         
         targetImageView.snp.makeConstraints { make in
-            make.width.equalTo(54)
-            make.height.equalTo(54)
+            make.width.height.equalTo(54*Constants.standardHeight)
             make.centerX.centerY.equalTo(imgBgImageView)
         }
         

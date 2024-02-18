@@ -14,7 +14,7 @@ class CreateMeetingMemberView: UIView{
     }()
     let memberView: UIView = {
         let view = UIView()
-        view.layer.cornerRadius = 16
+        view.layer.cornerRadius = 16*Constants.standardHeight
         view.layer.borderWidth = 1
         view.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         return view
@@ -56,31 +56,31 @@ class CreateMeetingMemberView: UIView{
             .forEach{ memberView.addSubview($0) }
         
         memberLimitLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
             make.top.equalToSuperview()
         }
         
         memberView.snp.makeConstraints { make in
-            make.height.equalTo(56)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
-            make.top.equalTo(memberLimitLabel.snp.bottom).offset(16)
+            make.height.equalTo(56*Constants.standardHeight)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.trailing.equalToSuperview().offset(-20*Constants.standardWidth)
+            make.top.equalTo(memberLimitLabel.snp.bottom).offset(16*Constants.standardHeight)
         }
         
         maximumLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
+            make.leading.equalToSuperview().offset(16*Constants.standardWidth)
             make.centerY.equalToSuperview()
         }
         
         unitLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-16)
+            make.trailing.equalToSuperview().offset(-16*Constants.standardWidth)
             make.centerY.equalToSuperview()
         }
         
         memberLimitTextField.snp.makeConstraints { make in
-            make.width.equalTo(200)
-            make.height.equalTo(24)
-            make.trailing.equalTo(unitLabel.snp.leading).offset(-8)
+            make.width.equalTo(200*Constants.standardWidth)
+            make.height.equalTo(24*Constants.standardHeight)
+            make.trailing.equalTo(unitLabel.snp.leading).offset(-8*Constants.standardWidth)
             make.centerY.equalToSuperview()
         }
     }

@@ -6,7 +6,7 @@ class LanguageBtView: UIView{
     let tapGesture = UITapGestureRecognizer()
     let borderView: UIView = {
         let view = UIView()
-        view.layer.cornerRadius = 40
+        view.layer.cornerRadius = 40*Constants.standardHeight
         view.layer.borderWidth = 1
         view.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
         view.isHidden = true
@@ -15,7 +15,7 @@ class LanguageBtView: UIView{
     let imgBgImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = UIColor(red: 0.73, green: 0.79, blue: 0.94, alpha: 1)
-        imageView.layer.cornerRadius = 36
+        imageView.layer.cornerRadius = 36*Constants.standardHeight
         return imageView
     }()
     lazy var targetImageView: UIImageView = {
@@ -47,22 +47,21 @@ class LanguageBtView: UIView{
             .forEach{ self.addSubview($0) }
         
         borderView.snp.makeConstraints { make in
-            make.width.height.equalTo(80)
+            make.width.height.equalTo(80*Constants.standardHeight)
             make.top.equalToSuperview()
             make.centerX.equalToSuperview()
         }
         
         imgBgImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(72)
+            make.width.height.equalTo(72*Constants.standardHeight)
             make.centerX.centerY.equalTo(borderView)
         }
         
         targetImageView.snp.makeConstraints { make in
-            make.width.equalTo(48)
-            make.height.equalTo(48)
-            make.top.equalTo(imgBgImageView.snp.top).offset(12)
+            make.width.height.equalTo(48*Constants.standardHeight)
+            make.top.equalTo(imgBgImageView.snp.top).offset(12*Constants.standardHeight)
             make.leading.equalTo(imgBgImageView.snp.leading)
-                .offset(11.83)
+                .offset(11.83*Constants.standardWidth)
         }
         
         titleLabel.snp.makeConstraints { make in

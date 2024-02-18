@@ -17,14 +17,14 @@ public class SelectMeetingTypeViewController: UIViewController, ReactorKit.View 
     let backView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.layer.cornerRadius = 16
+        view.layer.cornerRadius = 16*Constants.standardHeight
         view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         return view
     }()
     let handleView: UIView = {
         let view = UIView()
         view.backgroundColor = .gray
-        view.layer.cornerRadius = 2.5
+        view.layer.cornerRadius = 2.5*Constants.standardHeight
         return view
     }()
     let oneDayButton: UIButton = {
@@ -116,49 +116,49 @@ public class SelectMeetingTypeViewController: UIViewController, ReactorKit.View 
         
         backView.snp.makeConstraints { make in
             make.width.equalToSuperview()
-            make.height.equalTo(263)
+            make.height.equalTo(263*Constants.standardHeight)
             make.leading.equalToSuperview()
             make.bottom.equalToSuperview()
         }
         
         handleView.snp.makeConstraints { make in
-            make.width.equalTo(56)
-            make.height.equalTo(5)
-            make.top.equalToSuperview().offset(8)
+            make.width.equalTo(56*Constants.standardWidth)
+            make.height.equalTo(5*Constants.standardHeight)
+            make.top.equalToSuperview().offset(8*Constants.standardHeight)
             make.centerX.equalToSuperview()
         }
         
         oneDayButton.snp.makeConstraints { make in
-            make.width.equalTo(335)
-            make.height.equalTo(55)
-            make.top.equalTo(handleView.snp.bottom).offset(40)
+            make.width.equalTo(335*Constants.standardWidth)
+            make.height.equalTo(55*Constants.standardHeight)
+            make.top.equalTo(handleView.snp.bottom).offset(40*Constants.standardHeight)
             make.centerX.equalToSuperview()
         }
         
         firstSeparateView.snp.makeConstraints { make in
-            make.width.equalTo(335)
-            make.height.equalTo(1)
+            make.width.equalTo(335*Constants.standardWidth)
+            make.height.equalTo(1*Constants.standardHeight)
             make.top.equalTo(oneDayButton.snp.bottom)
             make.centerX.equalToSuperview()
         }
         
         shortTermButton.snp.makeConstraints { make in
-            make.width.equalTo(335)
-            make.height.equalTo(55)
+            make.width.equalTo(335*Constants.standardWidth)
+            make.height.equalTo(55*Constants.standardHeight)
             make.top.equalTo(firstSeparateView.snp.bottom)
             make.centerX.equalToSuperview()
         }
         
         secondSeparateView.snp.makeConstraints { make in
-            make.width.equalTo(335)
-            make.height.equalTo(1)
+            make.width.equalTo(335*Constants.standardWidth)
+            make.height.equalTo(1*Constants.standardHeight)
             make.top.equalTo(shortTermButton.snp.bottom)
             make.centerX.equalToSuperview()
         }
         
         continuousButton.snp.makeConstraints { make in
-            make.width.equalTo(335)
-            make.height.equalTo(55)
+            make.width.equalTo(335*Constants.standardWidth)
+            make.height.equalTo(55*Constants.standardHeight)
             make.top.equalTo(secondSeparateView.snp.bottom)
             make.centerX.equalToSuperview()
         }

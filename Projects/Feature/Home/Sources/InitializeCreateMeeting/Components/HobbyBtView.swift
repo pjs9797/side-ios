@@ -7,7 +7,7 @@ class HobbyBtView: UIView{
     let imgBgImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = UIColor(red: 0.84, green: 0.81, blue: 1, alpha: 1)
-        imageView.layer.cornerRadius = 44
+        imageView.layer.cornerRadius = 44*Constants.standardHeight
         return imageView
     }()
     lazy var targetImageView: UIImageView = {
@@ -39,19 +39,19 @@ class HobbyBtView: UIView{
             .forEach{ self.addSubview($0) }
         
         imgBgImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(88)
-            make.top.equalToSuperview().offset(32)
+            make.width.height.equalTo(88*Constants.standardHeight)
+            make.top.equalToSuperview().offset(32*Constants.standardHeight)
             make.centerX.equalToSuperview()
         }
         
         targetImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(76)
-            make.top.equalTo(imgBgImageView.snp.top).offset(1)
+            make.width.height.equalTo(76*Constants.standardHeight)
+            make.top.equalTo(imgBgImageView.snp.top).offset(1*Constants.standardHeight)
             make.centerX.equalToSuperview()
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(imgBgImageView.snp.bottom).offset(16)
+            make.top.equalTo(imgBgImageView.snp.bottom).offset(16*Constants.standardHeight)
             make.centerX.equalToSuperview()
         }
     }

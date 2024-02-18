@@ -1,11 +1,9 @@
-import UIKit
-import RxSwift
+import UIKit.UIImage
 import RxCocoa
 import ReactorKit
 import RxFlow
 import Shared
 import Domain
-
 import Alamofire
 import RxAlamofire
 

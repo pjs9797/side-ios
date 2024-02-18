@@ -32,7 +32,7 @@ class CreateMeetingRegionView: UIView, ReactorKit.View{
         button.setTitleColor(SharedDSKitAsset.Colors.textDisabled.color, for: .normal)
         button.titleLabel?.font = Fonts.Body02.font
         button.layer.borderWidth = 1
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = 16*Constants.standardHeight
         button.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         button.isEnabled = false
         return button
@@ -55,31 +55,31 @@ class CreateMeetingRegionView: UIView, ReactorKit.View{
             .forEach{ self.addSubview($0) }
         
         regionLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
             make.top.equalToSuperview()
         }
         
         onlineLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.top.equalTo(regionLabel.snp.bottom).offset(19.5)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.top.equalTo(regionLabel.snp.bottom).offset(19.5*Constants.standardHeight)
         }
         
         onlineSwitch.snp.makeConstraints { make in
-            make.width.equalTo(51)
-            make.height.equalTo(31)
-            make.trailing.equalToSuperview().offset(-20)
+            make.width.equalTo(51*Constants.standardWidth)
+            make.height.equalTo(31*Constants.standardHeight)
+            make.trailing.equalToSuperview().offset(-20*Constants.standardWidth)
             make.centerY.equalTo(onlineLabel)
         }
         
         regionButton.snp.makeConstraints { make in
-            make.width.equalTo(335)
-            make.height.equalTo(56)
+            make.width.equalTo(335*Constants.standardWidth)
+            make.height.equalTo(56*Constants.standardHeight)
             make.centerX.equalToSuperview()
-            make.top.equalTo(onlineSwitch.snp.bottom).offset(16)
+            make.top.equalTo(onlineSwitch.snp.bottom).offset(16*Constants.standardHeight)
         }
         
         regionButton.titleLabel?.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
+            make.leading.equalToSuperview().offset(16*Constants.standardWidth)
             make.centerY.equalToSuperview()
         }
     }

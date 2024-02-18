@@ -18,7 +18,7 @@ public final class CreateMeetingService: APIService {
             "categorySub": categorySub,
             "type": type,
             "activityType": activityType,
-            "locationInfo": locationInfo
+            "locationInfo": ["location": locationInfo]
         ]
         if let locationDetail = locationDetail {
             parameters.updateValue(locationDetail, forKey: "locationDetail")

@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         let navigationBarAppearance = UINavigationBarAppearance()
             navigationBarAppearance.configureWithOpaqueBackground()
+            navigationBarAppearance.shadowColor = .white
             navigationBarAppearance.titleTextAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor.black
             ]

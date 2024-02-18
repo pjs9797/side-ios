@@ -39,7 +39,7 @@ public class CreateMeetingContentViewController: UIViewController, ReactorKit.Vi
         let button = UIButton()
         button.setTitle("모임 개설하기", for: .normal)
         button.titleLabel?.font = Fonts.SH02Bold.font
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = 16*Constants.standardHeight
         button.layer.borderWidth = 1
         return button
     }()
@@ -73,7 +73,6 @@ public class CreateMeetingContentViewController: UIViewController, ReactorKit.Vi
     
     private func setNavigationbar() {
         self.title = self.meetingTitle
-        self.tabBarController?.tabBar.isHidden = true
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font : Fonts.SH03Bold.font,
             .foregroundColor: UIColor.black
@@ -109,60 +108,60 @@ public class CreateMeetingContentViewController: UIViewController, ReactorKit.Vi
             .forEach{ contentView.addSubview($0) }
         
         mainTitleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.top.equalToSuperview().offset(60)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.top.equalToSuperview().offset(60*Constants.standardHeight)
         }
         
         createMeetingTitleView.snp.makeConstraints { make in
-            make.height.equalTo(153)
+            make.height.equalTo(153*Constants.standardHeight)
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(mainTitleLabel.snp.bottom).offset(40)
+            make.top.equalTo(mainTitleLabel.snp.bottom).offset(40*Constants.standardHeight)
         }
         
         createMeetingRegionView.snp.makeConstraints { make in
-            make.height.equalTo(144)
+            make.height.equalTo(144*Constants.standardHeight)
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(createMeetingTitleView.snp.bottom).offset(40)
+            make.top.equalTo(createMeetingTitleView.snp.bottom).offset(40*Constants.standardHeight)
         }
         
         createMeetingMemberView.snp.makeConstraints { make in
-            make.height.equalTo(97)
+            make.height.equalTo(97*Constants.standardHeight)
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(createMeetingRegionView.snp.bottom).offset(40)
+            make.top.equalTo(createMeetingRegionView.snp.bottom).offset(40*Constants.standardHeight)
         }
         
         createMeetingPeriodView.snp.makeConstraints { make in
-            make.height.equalTo(97)
+            make.height.equalTo(97*Constants.standardHeight)
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(createMeetingMemberView.snp.bottom).offset(40)
+            make.top.equalTo(createMeetingMemberView.snp.bottom).offset(40*Constants.standardHeight)
         }
         
         createMeetingImageView.snp.makeConstraints { make in
-            make.height.equalTo(189)
+            make.height.equalTo(189*Constants.standardHeight)
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(createMeetingPeriodView.snp.bottom).offset(40)
+            make.top.equalTo(createMeetingPeriodView.snp.bottom).offset(40*Constants.standardHeight)
         }
         
         createMeetingWritingView.snp.makeConstraints { make in
-            make.height.equalTo(217)
+            make.height.equalTo(217*Constants.standardHeight)
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(createMeetingImageView.snp.bottom).offset(40)
+            make.top.equalTo(createMeetingImageView.snp.bottom).offset(40*Constants.standardHeight)
         }
         
         createButton.snp.makeConstraints { make in
-            make.width.equalTo(335)
-            make.height.equalTo(52)
+            make.width.equalTo(335*Constants.standardWidth)
+            make.height.equalTo(52*Constants.standardHeight)
             make.centerX.equalToSuperview()
-            make.top.equalTo(createMeetingWritingView.snp.bottom).offset(56)
+            make.top.equalTo(createMeetingWritingView.snp.bottom).offset(56*Constants.standardHeight)
             make.bottom.equalToSuperview()
         }
     }
     
     func updateCreateMeetingPeriodViewHeight() {
-        let baseHeight = 97
-        let calendarViewHeight = 358 + 16
-        let timePickerViewHeight = 168 + 16
-        let newHeight: Int
+        let baseHeight = 97*Constants.standardHeight
+        let calendarViewHeight = (358 + 16)*Constants.standardHeight
+        let timePickerViewHeight = (168 + 16)*Constants.standardHeight
+        let newHeight: CGFloat
         
         if createMeetingPeriodView.reactor?.currentState.isCalendarViewVisible ?? false {
             newHeight = baseHeight + calendarViewHeight
@@ -174,7 +173,7 @@ public class CreateMeetingContentViewController: UIViewController, ReactorKit.Vi
         
         UIView.animate(withDuration: 0.3, animations:{
             self.createMeetingPeriodView.snp.updateConstraints { make in
-                make.height.equalTo(newHeight)
+                make.height.equalTo(newHeight*Constants.standardHeight)
             }
             self.view.layoutIfNeeded()
         })

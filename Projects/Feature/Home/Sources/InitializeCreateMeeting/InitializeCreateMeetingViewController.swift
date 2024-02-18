@@ -24,14 +24,14 @@ public class InitializeCreateMeetingViewController: UIViewController, ReactorKit
     }()
     let developBtView: DevelopBtView = {
         let developBtView = DevelopBtView()
-        developBtView.layer.cornerRadius = 16
+        developBtView.layer.cornerRadius = 16*Constants.standardHeight
         developBtView.layer.borderWidth = 1
         developBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         return developBtView
     }()
     let hobbyBtView: HobbyBtView = {
         let hobbyBtView = HobbyBtView()
-        hobbyBtView.layer.cornerRadius = 16
+        hobbyBtView.layer.cornerRadius = 16*Constants.standardHeight
         hobbyBtView.layer.borderWidth = 1
         hobbyBtView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         return hobbyBtView
@@ -40,7 +40,7 @@ public class InitializeCreateMeetingViewController: UIViewController, ReactorKit
         let button = UIButton()
         button.setTitle("다음", for: .normal)
         button.titleLabel?.font = Fonts.SH02Bold.font
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = 16*Constants.standardHeight
         button.layer.borderWidth = 1
         return button
     }()
@@ -65,7 +65,6 @@ public class InitializeCreateMeetingViewController: UIViewController, ReactorKit
     
     private func setNavigationbar() {
         self.title = self.meetingTitle
-        self.tabBarController?.tabBar.isHidden = true
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font : Fonts.SH03Bold.font,
             .foregroundColor: UIColor.black
@@ -79,35 +78,35 @@ public class InitializeCreateMeetingViewController: UIViewController, ReactorKit
             .forEach{ view.addSubview($0) }
         
         progressView.snp.makeConstraints { make in
-            make.height.equalTo(2)
+            make.height.equalTo(2*Constants.standardHeight)
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
         
         questionLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.top.equalTo(progressView.snp.bottom).offset(60)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.top.equalTo(progressView.snp.bottom).offset(60*Constants.standardHeight)
         }
         
         developBtView.snp.makeConstraints { make in
-            make.width.equalTo(159.5)
-            make.height.equalTo(193)
-            make.leading.equalToSuperview().offset(20)
-            make.top.equalTo(questionLabel.snp.bottom).offset(40)
+            make.width.equalTo(159.5*Constants.standardWidth)
+            make.height.equalTo(193*Constants.standardHeight)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.top.equalTo(questionLabel.snp.bottom).offset(40*Constants.standardHeight)
         }
         
         hobbyBtView.snp.makeConstraints { make in
-            make.width.equalTo(159.5)
-            make.height.equalTo(193)
-            make.trailing.equalToSuperview().offset(-20)
-            make.top.equalTo(questionLabel.snp.bottom).offset(40)
+            make.width.equalTo(159.5*Constants.standardWidth)
+            make.height.equalTo(193*Constants.standardHeight)
+            make.trailing.equalToSuperview().offset(-20*Constants.standardWidth)
+            make.top.equalTo(questionLabel.snp.bottom).offset(40*Constants.standardHeight)
         }
         
         nextButton.snp.makeConstraints { make in
-            make.width.equalTo(335)
-            make.height.equalTo(52)
+            make.width.equalTo(335*Constants.standardWidth)
+            make.height.equalTo(52*Constants.standardHeight)
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-8)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-8*Constants.standardHeight)
         }
     }
 }

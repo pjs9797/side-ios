@@ -19,8 +19,8 @@ class CreateMeetingWritingView: UIView{
         textView.font = Fonts.Body02.font
         textView.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
         textView.layer.borderWidth = 1
-        textView.layer.cornerRadius = 16
-        textView.addLeftPadding(width: 16)
+        textView.layer.cornerRadius = 16*Constants.standardHeight
+        textView.addLeftPadding(width: 16*Constants.standardWidth)
         return textView
     }()
     
@@ -39,14 +39,14 @@ class CreateMeetingWritingView: UIView{
         [introductionLabel,introductionTextView]
             .forEach{ self.addSubview($0) }
         introductionLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
             make.top.equalToSuperview()
         }
         introductionTextView.snp.makeConstraints { make in
-            make.height.equalTo(176)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
-            make.top.equalTo(introductionLabel.snp.bottom).offset(16)
+            make.height.equalTo(176*Constants.standardHeight)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.trailing.equalToSuperview().offset(-20*Constants.standardWidth)
+            make.top.equalTo(introductionLabel.snp.bottom).offset(16*Constants.standardHeight)
         }
     }
 }

@@ -27,17 +27,18 @@ class HobbyDetailTableViewCell: UITableViewCell, ReactorKit.View{
     let hobbyDetailCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: 56, height: 77)
-        layout.minimumLineSpacing = 20
+        layout.itemSize = CGSize(width: 56*Constants.standardWidth, height: 77*Constants.standardHeight)
+        layout.minimumLineSpacing = 20*Constants.standardHeight
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(HobbyDetailCollectionViewCell.self, forCellWithReuseIdentifier: "HobbyDetailCollectionViewCell")
         collectionView.isScrollEnabled = false
         collectionView.isHidden = true
         return collectionView
     }()
-    private var backViewHeightConstraint: Constraint?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
         selectionStyle = .none
         layout()
     }
@@ -58,30 +59,30 @@ class HobbyDetailTableViewCell: UITableViewCell, ReactorKit.View{
             .forEach { backView.addSubview($0) }
         
         backView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
-            make.top.equalToSuperview().offset(4)
-            make.bottom.equalToSuperview().offset(-4)
-            self.backViewHeightConstraint = make.height.greaterThanOrEqualTo(72).constraint
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.trailing.equalToSuperview().offset(-20*Constants.standardWidth)
+            make.top.equalToSuperview().offset(4*Constants.standardHeight)
+            make.bottom.equalToSuperview().offset(-4*Constants.standardHeight)
+            make.height.equalTo(72*Constants.standardHeight).priority(.high)
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.height.equalTo(22)
-            make.leading.equalToSuperview().offset(24)
-            make.top.equalToSuperview().offset(24)
+            make.height.equalTo(22*Constants.standardHeight)
+            make.leading.equalToSuperview().offset(24*Constants.standardWidth)
+            make.top.equalToSuperview().offset(24*Constants.standardHeight)
         }
         
         plusButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.trailing.equalToSuperview().offset(-24)
-            make.top.equalToSuperview().offset(24)
+            make.width.height.equalTo(24*Constants.standardHeight)
+            make.trailing.equalToSuperview().offset(-24*Constants.standardWidth)
+            make.centerY.equalTo(titleLabel)
         }
         
         hobbyDetailCollectionView.snp.makeConstraints { make in
-            make.height.equalTo(277)
-            make.leading.equalToSuperview().offset(24)
-            make.trailing.equalToSuperview().offset(-24)
-            make.top.equalTo(titleLabel.snp.bottom).offset(20)
+            make.height.equalTo(0)
+            make.leading.equalToSuperview().offset(24*Constants.standardWidth)
+            make.trailing.equalToSuperview().offset(-24*Constants.standardWidth)
+            make.top.equalToSuperview().offset(72*Constants.standardHeight)
         }
     }
     
@@ -100,8 +101,6 @@ extension HobbyDetailTableViewCell{
     }
     
     private func bindAction(reactor: HobbyDetailTableViewCellReactor){
-        titleLabel.text = reactor.initialState.hobbyModel.title
-        
         plusButton.rx.tap
             .map { Reactor.Action.toggleCollectionView }
             .bind(to: reactor.action)
@@ -109,23 +108,19 @@ extension HobbyDetailTableViewCell{
     }
     
     private func bindState(reactor: HobbyDetailTableViewCellReactor){
-        reactor.state.map { $0.isCollectionViewHidden }
-            .bind(to: hobbyDetailCollectionView.rx.isHidden)
+        reactor.state.map{ $0.title }
+            .distinctUntilChanged()
+            .bind(to: titleLabel.rx.text)
             .disposed(by: disposeBag)
         
-        reactor.state.map { $0.collectionViewHeight }
-            .distinctUntilChanged()
-            .bind(onNext: { [weak self] height in
-                if height == 0 {
+        reactor.state.map { $0.isCollectionViewHidden }
+            .bind(onNext: { [weak self] status in
+                self?.hobbyDetailCollectionView.isHidden = status
+                self?.layoutIfNeeded()
+                if status {
                     self?.plusButton.setImage(SharedDSKitAsset.Icons.iconArrowPlus24.image, for: .normal)
                 } else {
                     self?.plusButton.setImage(SharedDSKitAsset.Icons.iconArrowFold24.image, for: .normal)
-                }
-                UIView.animate(withDuration: 0.3) {
-                    self?.hobbyDetailCollectionView.snp.updateConstraints { make in
-                        make.height.equalTo(height)
-                    }
-                    self?.backViewHeightConstraint?.update(offset: 72 + height)
                 }
             })
             .disposed(by: disposeBag)
@@ -133,7 +128,8 @@ extension HobbyDetailTableViewCell{
         reactor.state.map { $0.hobbyDetailModels }
             .take(1)
             .bind(to: hobbyDetailCollectionView.rx.items(cellIdentifier: "HobbyDetailCollectionViewCell", cellType: HobbyDetailCollectionViewCell.self)) { index, detailModel, cell in
-                cell.configure(model: detailModel)
+                let cellReactor = HobbyDetailCollectionViewCellReactor(hobbyDetailModel: detailModel)
+                cell.reactor = cellReactor
             }
             .disposed(by: disposeBag)
         
@@ -145,5 +141,20 @@ extension HobbyDetailTableViewCell{
             })
             .disposed(by: disposeBag)
         
+        reactor.state.map { $0.collectionViewHeight }
+            .distinctUntilChanged()
+            .bind(onNext: { [weak self] height in
+                UIView.animate(withDuration: 0.3){
+                    
+                    self?.hobbyDetailCollectionView.snp.updateConstraints { make in
+                        make.height.equalTo(height*Constants.standardHeight)
+                    }
+                    self?.backView.snp.updateConstraints{ make in
+                        make.height.equalTo((72+height)*Constants.standardHeight).priority(.high)
+                    }
+                    //self?.layoutIfNeeded()
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }

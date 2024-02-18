@@ -8,7 +8,6 @@ import Shared
 public class SelectHobbyDetailsViewController: UIViewController, ReactorKit.View{
     public var disposeBag = DisposeBag()
     let meetingTitle: String
-    var selectHobbyDetailsReactor: SelectHobbyDetailsReactor
     let backButton = UIBarButtonItem(image: SharedDSKitAsset.Icons.iconArrowLeft24.image, style: .plain, target: nil, action: nil)
     let scrollView = UIScrollView()
     let contentView = UIView()
@@ -38,14 +37,13 @@ public class SelectHobbyDetailsViewController: UIViewController, ReactorKit.View
         button.setTitle("다음", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = Fonts.SH02Bold.font
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = 16*Constants.standardHeight
         button.layer.borderWidth = 1
         return button
     }()
     
     public init(meetingTitle: String, with reactor: SelectHobbyDetailsReactor) {
         self.meetingTitle = meetingTitle
-        self.selectHobbyDetailsReactor = reactor
         super.init(nibName: nil, bundle: nil)
         self.reactor = reactor
     }
@@ -61,19 +59,11 @@ public class SelectHobbyDetailsViewController: UIViewController, ReactorKit.View
         setNavigationbar()
         self.nextButton.disableNextButton()
         layout()
-        self.selectHobbyDetailsReactor.state.map { $0.contentSize }
-            .distinctUntilChanged()
-            .bind(onNext: { [weak self] size in
-                self?.hobbyDetailTableView.snp.updateConstraints { make in
-                    make.height.equalTo(size.height)
-                }
-            })
-            .disposed(by: disposeBag)
+        bindAfterLayout()
     }
     
     private func setNavigationbar() {
         self.title = self.meetingTitle
-        self.tabBarController?.tabBar.isHidden = true
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font : Fonts.SH03Bold.font,
             .foregroundColor: UIColor.black
@@ -86,11 +76,11 @@ public class SelectHobbyDetailsViewController: UIViewController, ReactorKit.View
         self.view.addSubview(progressView)
         self.view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        [questionLabel,nextButton,hobbyDetailTableView]
+        [questionLabel,hobbyDetailTableView,nextButton]
             .forEach{ contentView.addSubview($0) }
         
         progressView.snp.makeConstraints { make in
-            make.height.equalTo(2)
+            make.height.equalTo(2*Constants.standardHeight)
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
@@ -108,22 +98,22 @@ public class SelectHobbyDetailsViewController: UIViewController, ReactorKit.View
         }
         
         questionLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.top.equalToSuperview().offset(60)
-        }
-        
-        nextButton.snp.makeConstraints { make in
-            make.width.equalTo(335)
-            make.height.equalTo(52)
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-8)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.top.equalToSuperview().offset(60*Constants.standardHeight)
         }
         
         hobbyDetailTableView.snp.makeConstraints { make in
-            make.height.equalTo(2500)
+            make.height.equalTo(0)
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(questionLabel.snp.bottom).offset(36)
-            make.bottom.equalTo(nextButton.snp.top).offset(-36)
+            make.top.equalTo(questionLabel.snp.bottom).offset(36*Constants.standardHeight)
+        }
+        
+        nextButton.snp.makeConstraints { make in
+            make.width.equalTo(335*Constants.standardWidth)
+            make.height.equalTo(52*Constants.standardHeight)
+            make.centerX.equalToSuperview()
+            make.top.equalTo(hobbyDetailTableView.snp.bottom).offset(56*Constants.standardHeight)
+            make.bottom.equalToSuperview().offset(-8*Constants.standardHeight)
         }
     }
 }
@@ -171,8 +161,11 @@ extension SelectHobbyDetailsViewController{
                     .disposed(by: cell.disposeBag)
                 
                 cell.hobbyDetailCollectionView.rx.itemSelected
-                    .take(1)
-                    .map { _ in Reactor.Action.selectItem }
+                    .map { indexPath in
+                        let categoryMajor = reactor.currentState.hobbyCellData[row].title
+                        let categorySub = reactor.currentState.hobbyCellData[row].hobbyDetailModel[indexPath.row].title
+                        return Reactor.Action.selectItem(categoryMajor, categorySub)
+                    }
                     .bind(to: reactor.action)
                     .disposed(by: self.disposeBag)
                 
@@ -205,6 +198,17 @@ extension SelectHobbyDetailsViewController{
             .distinctUntilChanged()
             .bind(onNext: { [weak self] _ in
                 self?.nextButton.enableNextButton()
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindAfterLayout(){
+        self.reactor?.state.map { $0.contentSize }
+            .distinctUntilChanged()
+            .bind(onNext: { [weak self] size in
+                self?.hobbyDetailTableView.snp.updateConstraints { make in
+                    make.height.equalTo(size.height*Constants.standardHeight)
+                }
             })
             .disposed(by: disposeBag)
     }

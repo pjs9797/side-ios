@@ -24,10 +24,10 @@ class CreateMeetingTitleView: UIView{
         let textField = UITextField()
         textField.placeholder = "제목을 입력해 주세요."
         textField.font = Fonts.Body02.font
-        textField.layer.cornerRadius = 16
+        textField.layer.cornerRadius = 16*Constants.standardHeight
         textField.layer.borderWidth = 1
         textField.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-        textField.addLeftPadding(width: 16)
+        textField.addLeftPadding(width: 16*Constants.standardWidth)
         return textField
     }()
     
@@ -46,21 +46,21 @@ class CreateMeetingTitleView: UIView{
             .forEach{ self.addSubview($0) }
         
         subTitleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
             make.top.equalToSuperview()
         }
         
         descriptionLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
-            make.top.equalTo(subTitleLabel.snp.bottom).offset(8)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.trailing.equalToSuperview().offset(-20*Constants.standardWidth)
+            make.top.equalTo(subTitleLabel.snp.bottom).offset(8*Constants.standardHeight)
         }
         
         titleTextField.snp.makeConstraints { make in
-            make.height.equalTo(56)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
-            make.top.equalTo(descriptionLabel.snp.bottom).offset(16)
+            make.height.equalTo(56*Constants.standardHeight)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.trailing.equalToSuperview().offset(-20*Constants.standardWidth)
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(16*Constants.standardHeight)
             make.bottom.equalToSuperview()
         }
     }

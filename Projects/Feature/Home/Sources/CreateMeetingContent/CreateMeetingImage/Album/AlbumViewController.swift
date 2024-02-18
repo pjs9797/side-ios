@@ -34,9 +34,9 @@ class AlbumViewController: UIViewController, ReactorKit.View{
         layout.scrollDirection = .vertical
         let screenWidth = UIScreen.main.bounds.width
         let cellWidth = (screenWidth - 8) / 3
-        layout.itemSize = CGSize(width: cellWidth, height: cellWidth)
-        layout.minimumLineSpacing = 4
-        layout.minimumInteritemSpacing = 4
+        layout.itemSize = CGSize(width: cellWidth*Constants.standardWidth, height: cellWidth*Constants.standardWidth)
+        layout.minimumLineSpacing = 4*Constants.standardHeight
+        layout.minimumInteritemSpacing = 4*Constants.standardWidth
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(AlbumCollectionViewCell.self, forCellWithReuseIdentifier: "AlbumCollectionViewCell")
         return collectionView
@@ -109,41 +109,41 @@ class AlbumViewController: UIViewController, ReactorKit.View{
             .forEach{ view.addSubview($0) }
         
         titleLabel.snp.makeConstraints { make in
-            make.height.equalTo(25)
+            make.height.equalTo(25*Constants.standardHeight)
             make.centerX.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(15.5)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(15.5*Constants.standardHeight)
         }
         
         backButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.leading.equalToSuperview().offset(20)
+            make.width.height.equalTo(24*Constants.standardHeight)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
             make.centerY.equalTo(titleLabel)
         }
         
         selectButton.snp.makeConstraints { make in
-            make.width.equalTo(28)
-            make.height.equalTo(24)
-            make.trailing.equalToSuperview().offset(-20)
+            make.width.equalTo(28*Constants.standardWidth)
+            make.height.equalTo(24*Constants.standardHeight)
+            make.trailing.equalToSuperview().offset(-20*Constants.standardWidth)
             make.centerY.equalTo(titleLabel)
         }
         
         buttonsView.snp.makeConstraints { make in
-            make.height.equalTo(135)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
+            make.height.equalTo(135*Constants.standardHeight)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.trailing.equalToSuperview().offset(-20*Constants.standardWidth)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
         
         nonePhotoView.snp.makeConstraints { make in
             make.width.equalToSuperview()
-            make.height.equalTo(90)
+            make.height.equalTo(90*Constants.standardHeight)
             make.leading.equalToSuperview()
-            make.top.equalTo(titleLabel.snp.bottom).offset(15.5)
+            make.top.equalTo(titleLabel.snp.bottom).offset(15.5*Constants.standardHeight)
         }
         
         albumCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(titleLabel.snp.bottom).offset(15.5)
+            make.top.equalTo(titleLabel.snp.bottom).offset(15.5*Constants.standardHeight)
             make.bottom.equalTo(buttonsView.snp.top)
         }
         
@@ -152,7 +152,7 @@ class AlbumViewController: UIViewController, ReactorKit.View{
         
         morePhotoButton.snp.makeConstraints { make in
             make.width.equalToSuperview()
-            make.height.equalTo(56)
+            make.height.equalTo(56*Constants.standardHeight)
             make.leading.equalToSuperview()
             make.top.equalToSuperview()
         }
@@ -166,7 +166,7 @@ class AlbumViewController: UIViewController, ReactorKit.View{
         
         photoAuthorizationSettingButton.snp.makeConstraints { make in
             make.width.equalToSuperview()
-            make.height.equalTo(79)
+            make.height.equalTo(79*Constants.standardHeight)
             make.leading.equalToSuperview()
             make.top.equalTo(separateView.snp.bottom)
         }
@@ -184,7 +184,7 @@ class AlbumViewController: UIViewController, ReactorKit.View{
             self.buttonsView.isHidden = true
             self.albumCollectionView.snp.remakeConstraints { make in
                 make.leading.trailing.equalToSuperview()
-                make.top.equalTo(titleLabel.snp.bottom).offset(15.5)
+                make.top.equalTo(titleLabel.snp.bottom).offset(15.5*Constants.standardHeight)
                 make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             }
         }
@@ -237,29 +237,6 @@ extension AlbumViewController{
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
-        //        albumCollectionView.rx.itemSelected
-        //            .observe(on: MainScheduler.asyncInstance)
-        //            .flatMapLatest { [weak self] indexPath -> Observable<Reactor.Action> in
-        //                guard let self = self, let reactor = self.reactor else {
-        //                    return .empty()
-        //                }
-        //                if let currentSelectedIndexPath = reactor.currentState.selectedIndexPath, currentSelectedIndexPath == indexPath {
-        //                    return Observable.just(Reactor.Action.selectPhoto(nil, indexPath))
-        //                }
-        //                else {
-        //                    let asset = reactor.currentState.photos[indexPath.item]
-        //                    return Observable.create { observer in
-        //                        PHImageManager.default().requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFill, options: nil) { image, _ in
-        //                            observer.onNext(.selectPhoto(image, indexPath))
-        //                            observer.onCompleted()
-        //                        }
-        //                        return Disposables.create()
-        //                    }
-        //                }
-        //            }
-        //            .bind(to: reactor.action)
-        //            .disposed(by: disposeBag)
-        
         albumCollectionView.rx.itemSelected
             .observe(on: MainScheduler.asyncInstance)
             .flatMapLatest { [weak self] indexPath -> Observable<Reactor.Action> in
@@ -290,19 +267,18 @@ extension AlbumViewController{
             }
             .bind(to: albumCollectionView.rx.items(cellIdentifier: "AlbumCollectionViewCell", cellType: AlbumCollectionViewCell.self)) { index, model, cell in
                 PHImageManager.default().requestImage(for: model, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFill, options: nil) { image, _ in
-                    cell.configure(image: image)
+                    let cellReactor = AlbumCollectionViewCellReactor(image: image)
+                    cell.reactor = cellReactor
                 }
             }
             .disposed(by: disposeBag)
         
         reactor.state.compactMap{ $0.selectedIndexPath }
-            .debug("selectedIndexPath")
             .observe(on: MainScheduler.asyncInstance)
             .compactMap{ $0 }
-            .distinctUntilChanged()
             .bind(onNext: { [weak self] indexPath in
                 if let cell = self?.albumCollectionView.cellForItem(at: indexPath) as? AlbumCollectionViewCell {
-                    cell.selectedPhoto(isSelected: true)
+                    cell.reactor?.action.onNext(.selectImage(true))
                 }
                 self?.selectButton.isEnabled = true
                 self?.selectButton.setTitleColor(SharedDSKitAsset.Colors.text03.color, for: .normal)
@@ -310,13 +286,14 @@ extension AlbumViewController{
             .disposed(by: disposeBag)
         
         reactor.state.compactMap{ $0.previousSelectedIndexPath }
-            .debug("previousSelectedIndexPath")
             .observe(on: MainScheduler.asyncInstance)
-            .distinctUntilChanged()
+            .compactMap{ $0 }
             .bind(onNext: { [weak self] indexPath in
                 if let previousCell = self?.albumCollectionView.cellForItem(at: indexPath) as? AlbumCollectionViewCell {
-                    previousCell.selectedPhoto(isSelected: false)
+                    previousCell.reactor?.action.onNext(.selectImage(false))
                 }
+                self?.selectButton.isEnabled = false
+                self?.selectButton.setTitleColor(SharedDSKitAsset.Colors.gr30.color, for: .normal)
             })
             .disposed(by: disposeBag)
     }

@@ -8,7 +8,7 @@ class HobbyDetailTableViewCellReactor: ReactorKit.Reactor, Stepper{
     public var steps = PublishRelay<Step>()
     
     init(hobbyModel: HobbyModel, tableViewIndexPath: IndexPath) {
-        self.initialState = State(tableViewIndexPath: tableViewIndexPath, hobbyModel: hobbyModel, hobbyDetailModels: hobbyModel.hobbyDetailModel)
+        self.initialState = State(tableViewIndexPath: tableViewIndexPath, hobbyModel: hobbyModel, hobbyDetailModels: hobbyModel.hobbyDetailModel, title: hobbyModel.title)
     }
     
     enum Action {
@@ -30,6 +30,7 @@ class HobbyDetailTableViewCellReactor: ReactorKit.Reactor, Stepper{
         var hobbyDetailModels: [HobbyDetailModel]
         var isCollectionViewHidden: Bool = true
         var collectionViewHeight: CGFloat = 0
+        var title: String
     }
     
     func mutate(action: Action) -> Observable<Mutation> {

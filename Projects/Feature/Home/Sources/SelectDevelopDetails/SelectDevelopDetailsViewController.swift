@@ -32,7 +32,7 @@ public class SelectDevelopDetailsViewController: UIViewController, ReactorKit.Vi
         let button = UIButton()
         button.setTitle("다음", for: .normal)
         button.titleLabel?.font = Fonts.SH02Bold.font
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = 16*Constants.standardHeight
         button.layer.borderWidth = 1
         return button
     }()
@@ -70,63 +70,63 @@ public class SelectDevelopDetailsViewController: UIViewController, ReactorKit.Vi
             .forEach{ self.view.addSubview($0) }
         
         progressView.snp.makeConstraints { make in
-            make.height.equalTo(2)
+            make.height.equalTo(2*Constants.standardHeight)
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
         
         questionLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.top.equalTo(progressView.snp.bottom).offset(60)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.top.equalTo(progressView.snp.bottom).offset(60*Constants.standardHeight)
         }
         
         studyBtView.snp.makeConstraints { make in
-            make.width.equalTo(98.3)
-            make.height.equalTo(104)
-            make.leading.equalToSuperview().offset(20)
-            make.top.equalTo(questionLabel.snp.bottom).offset(40)
+            make.width.equalTo(98.3*Constants.standardWidth)
+            make.height.equalTo(104*Constants.standardHeight)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.top.equalTo(questionLabel.snp.bottom).offset(40*Constants.standardHeight)
         }
         
         sideProjectBtView.snp.makeConstraints { make in
-            make.width.equalTo(98.3)
-            make.height.equalTo(104)
-            make.leading.equalTo(studyBtView.snp.trailing).offset(20)
-            make.top.equalTo(questionLabel.snp.bottom).offset(40)
+            make.width.equalTo(98.3*Constants.standardWidth)
+            make.height.equalTo(104*Constants.standardHeight)
+            make.leading.equalTo(studyBtView.snp.trailing).offset(20*Constants.standardWidth)
+            make.top.equalTo(questionLabel.snp.bottom).offset(40*Constants.standardHeight)
         }
         
         jobChangeBtView.snp.makeConstraints { make in
-            make.width.equalTo(98.3)
-            make.height.equalTo(104)
-            make.trailing.equalToSuperview().offset(-20)
-            make.top.equalTo(questionLabel.snp.bottom).offset(40)
+            make.width.equalTo(98.3*Constants.standardWidth)
+            make.height.equalTo(104*Constants.standardHeight)
+            make.trailing.equalToSuperview().offset(-20*Constants.standardWidth)
+            make.top.equalTo(questionLabel.snp.bottom).offset(40*Constants.standardHeight)
         }
         
         languageBtView.snp.makeConstraints { make in
-            make.width.equalTo(98.3)
-            make.height.equalTo(104)
-            make.leading.equalToSuperview().offset(20)
-            make.top.equalTo(studyBtView.snp.bottom).offset(32)
+            make.width.equalTo(98.3*Constants.standardWidth)
+            make.height.equalTo(104*Constants.standardHeight)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.top.equalTo(studyBtView.snp.bottom).offset(32*Constants.standardHeight)
         }
         
         investmentBtView.snp.makeConstraints { make in
-            make.width.equalTo(98.3)
-            make.height.equalTo(104)
-            make.leading.equalTo(languageBtView.snp.trailing).offset(20)
-            make.top.equalTo(studyBtView.snp.bottom).offset(32)
+            make.width.equalTo(98.3*Constants.standardWidth)
+            make.height.equalTo(104*Constants.standardHeight)
+            make.leading.equalTo(languageBtView.snp.trailing).offset(20*Constants.standardWidth)
+            make.top.equalTo(studyBtView.snp.bottom).offset(32*Constants.standardHeight)
         }
         
         etcBtView.snp.makeConstraints { make in
-            make.width.equalTo(98.3)
-            make.height.equalTo(104)
-            make.trailing.equalToSuperview().offset(-20)
-            make.top.equalTo(studyBtView.snp.bottom).offset(32)
+            make.width.equalTo(98.3*Constants.standardWidth)
+            make.height.equalTo(104*Constants.standardHeight)
+            make.trailing.equalToSuperview().offset(-20*Constants.standardWidth)
+            make.top.equalTo(studyBtView.snp.bottom).offset(32*Constants.standardHeight)
         }
         
         nextButton.snp.makeConstraints { make in
-            make.width.equalTo(335)
-            make.height.equalTo(52)
+            make.width.equalTo(335*Constants.standardWidth)
+            make.height.equalTo(52*Constants.standardHeight)
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-8)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-8*Constants.standardHeight)
         }
     }
 }

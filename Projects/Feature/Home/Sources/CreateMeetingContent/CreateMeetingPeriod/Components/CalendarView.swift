@@ -61,35 +61,35 @@ class CalendarView: UIView, ReactorKit.View{
             .forEach{ headerView.addSubview($0) }
         
         headerView.snp.makeConstraints { make in
-            make.width.equalTo(303)
-            make.height.equalTo(40)
+            make.width.equalTo(303*Constants.standardWidth)
+            make.height.equalTo(40*Constants.standardHeight)
             make.centerX.equalToSuperview()
             make.top.equalToSuperview()
         }
         
         calendar.snp.makeConstraints { make in
-            make.width.equalTo(303)
-            make.height.equalTo(326)
+            make.width.equalTo(303*Constants.standardWidth)
+            make.height.equalTo(326*Constants.standardHeight)
             make.centerX.equalToSuperview()
-            make.top.equalTo(headerView.snp.bottom).offset(8)
+            make.top.equalTo(headerView.snp.bottom).offset(8*Constants.standardHeight)
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.width.equalTo(160)
-            make.height.equalTo(25)
+            make.width.equalTo(160*Constants.standardWidth)
+            make.height.equalTo(25*Constants.standardHeight)
             make.centerX.centerY.equalToSuperview()
         }
         
         previousButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
+            make.width.height.equalTo(24*Constants.standardHeight)
             make.centerY.equalToSuperview()
-            make.trailing.equalTo(titleLabel.snp.leading).offset(-16)
+            make.trailing.equalTo(titleLabel.snp.leading).offset(-16*Constants.standardWidth)
         }
         
         nextButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
+            make.width.height.equalTo(24*Constants.standardHeight)
             make.centerY.equalToSuperview()
-            make.leading.equalTo(titleLabel.snp.trailing).offset(16)
+            make.leading.equalTo(titleLabel.snp.trailing).offset(16*Constants.standardWidth)
         }
     }
     

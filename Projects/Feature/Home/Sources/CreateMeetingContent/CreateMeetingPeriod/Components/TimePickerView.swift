@@ -60,40 +60,40 @@ class TimePickerView: UIView, ReactorKit.View {
             make.edges.equalToSuperview()
         }
         periodUpLine.snp.makeConstraints { make in
-            make.width.equalTo(96)
+            make.width.equalTo(96*Constants.standardWidth)
             make.height.equalTo(1)
-            make.leading.equalToSuperview().offset(59)
-            make.top.equalToSuperview().offset(56)
+            make.leading.equalToSuperview().offset(59*Constants.standardWidth)
+            make.top.equalToSuperview().offset(56*Constants.standardHeight)
         }
         periodUnderLine.snp.makeConstraints { make in
-            make.width.equalTo(96)
+            make.width.equalTo(96*Constants.standardWidth)
             make.height.equalTo(1)
-            make.leading.equalToSuperview().offset(59)
-            make.top.equalToSuperview().offset(112)
+            make.leading.equalToSuperview().offset(59*Constants.standardWidth)
+            make.top.equalToSuperview().offset(112*Constants.standardHeight)
         }
         hourUpLine.snp.makeConstraints { make in
-            make.width.equalTo(68)
+            make.width.equalTo(68*Constants.standardWidth)
             make.height.equalTo(1)
-            make.leading.equalTo(periodUnderLine.snp.trailing).offset(23)
-            make.top.equalToSuperview().offset(56)
+            make.leading.equalTo(periodUnderLine.snp.trailing).offset(23*Constants.standardWidth)
+            make.top.equalToSuperview().offset(56*Constants.standardHeight)
         }
         hourUnderLine.snp.makeConstraints { make in
-            make.width.equalTo(68)
+            make.width.equalTo(68*Constants.standardWidth)
             make.height.equalTo(1)
-            make.leading.equalTo(periodUnderLine.snp.trailing).offset(23)
-            make.top.equalToSuperview().offset(112)
+            make.leading.equalTo(periodUnderLine.snp.trailing).offset(23*Constants.standardWidth)
+            make.top.equalToSuperview().offset(112*Constants.standardHeight)
         }
         minuteUpLine.snp.makeConstraints { make in
-            make.width.equalTo(68)
+            make.width.equalTo(68*Constants.standardWidth)
             make.height.equalTo(1)
-            make.trailing.equalToSuperview().offset(-59)
-            make.top.equalToSuperview().offset(56)
+            make.trailing.equalToSuperview().offset(-59*Constants.standardWidth)
+            make.top.equalToSuperview().offset(56*Constants.standardHeight)
         }
         minuteUnderLine.snp.makeConstraints { make in
-            make.width.equalTo(68)
+            make.width.equalTo(68*Constants.standardWidth)
             make.height.equalTo(1)
-            make.trailing.equalToSuperview().offset(-59)
-            make.top.equalToSuperview().offset(112)
+            make.trailing.equalToSuperview().offset(-59*Constants.standardWidth)
+            make.top.equalToSuperview().offset(112*Constants.standardHeight)
         }
     }
     
@@ -109,15 +109,15 @@ class TimePickerView: UIView, ReactorKit.View {
 extension TimePickerView: UIPickerViewDelegate{
     func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
         switch component {
-        case 0: return 112
-        case 1: return 84
-        case 2: return 84
+        case 0: return 112*Constants.standardWidth
+        case 1: return 84*Constants.standardWidth
+        case 2: return 84*Constants.standardWidth
         default: return 0
         }
     }
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
-        return 56
+        return 56*Constants.standardHeight
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {

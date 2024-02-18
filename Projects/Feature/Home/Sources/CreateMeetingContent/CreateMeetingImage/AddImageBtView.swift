@@ -41,18 +41,18 @@ class AddImageBtView: UIView{
             .forEach{ self.addSubview($0) }
         
         imgBgImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.top.equalToSuperview().offset(16)
+            make.width.height.equalTo(24*Constants.standardHeight)
+            make.top.equalToSuperview().offset(16*Constants.standardHeight)
             make.centerX.equalToSuperview()
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(imgBgImageView.snp.bottom).offset(8)
+            make.top.equalTo(imgBgImageView.snp.bottom).offset(8*Constants.standardHeight)
             make.centerX.equalToSuperview()
         }
         
         cntLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(4)
+            make.top.equalTo(titleLabel.snp.bottom).offset(4*Constants.standardHeight)
             make.centerX.equalToSuperview()
         }
     }

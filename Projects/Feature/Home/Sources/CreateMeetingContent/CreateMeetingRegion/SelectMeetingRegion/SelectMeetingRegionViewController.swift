@@ -23,9 +23,9 @@ class SelectMeetingRegionViewController: UIViewController, ReactorKit.View {
         textField.placeholder = "읍,면,동으로 검색하세요."
         textField.font = Fonts.Body02.font
         textField.layer.borderWidth = 1
-        textField.layer.cornerRadius = 16
+        textField.layer.cornerRadius = 16*Constants.standardHeight
         textField.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
-        textField.addLeftPadding(width: 16)
+        textField.addLeftPadding(width: 16*Constants.standardWidth)
         return textField
     }()
     let clearButton: UIButton = {
@@ -92,71 +92,60 @@ class SelectMeetingRegionViewController: UIViewController, ReactorKit.View {
             .forEach { self.view.addSubview($0) }
         
         titleLabel.snp.makeConstraints { make in
-            make.height.equalTo(25)
+            make.height.equalTo(25*Constants.standardHeight)
             make.centerX.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(15.5)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(15.5*Constants.standardHeight)
         }
         
         backButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.leading.equalToSuperview().offset(20)
+            make.width.height.equalTo(24*Constants.standardHeight)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
             make.centerY.equalTo(titleLabel)
         }
         
         searchTextField.snp.makeConstraints { make in
-            make.height.equalTo(56)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
-            make.top.equalTo(titleLabel.snp.bottom).offset(31.5)
+            make.height.equalTo(56*Constants.standardHeight)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.trailing.equalToSuperview().offset(-20*Constants.standardWidth)
+            make.top.equalTo(titleLabel.snp.bottom).offset(31.5*Constants.standardHeight)
         }
         
         searchButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.trailing.equalTo(searchTextField.snp.trailing).offset(-16)
+            make.width.height.equalTo(24*Constants.standardHeight)
+            make.trailing.equalTo(searchTextField.snp.trailing).offset(-16*Constants.standardWidth)
             make.centerY.equalTo(searchTextField)
         }
         
         clearButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.trailing.equalTo(searchButton.snp.leading).offset(-16)
+            make.width.height.equalTo(24*Constants.standardHeight)
+            make.trailing.equalTo(searchButton.snp.leading).offset(-16*Constants.standardWidth)
             make.centerY.equalTo(searchButton)
         }
         
         currentLocationSettingLabel.snp.makeConstraints { make in
-            make.height.equalTo(27)
-            make.leading.equalToSuperview().offset(40)
-            make.top.equalTo(searchTextField.snp.bottom).offset(16)
+            make.height.equalTo(27*Constants.standardHeight)
+            make.leading.equalToSuperview().offset(40*Constants.standardWidth)
+            make.top.equalTo(searchTextField.snp.bottom).offset(16*Constants.standardHeight)
         }
         
         locationImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(16)
-            make.leading.equalToSuperview().offset(20)
+            make.width.height.equalTo(16*Constants.standardHeight)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
             make.centerY.equalTo(currentLocationSettingLabel)
         }
         
         currentLocationButton.snp.makeConstraints { make in
-            make.width.height.equalTo(16)
-            make.trailing.equalToSuperview().offset(-20)
+            make.width.height.equalTo(16*Constants.standardHeight)
+            make.trailing.equalToSuperview().offset(-20*Constants.standardWidth)
             make.centerY.equalTo(currentLocationSettingLabel)
         }
         
         locationTableView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
-            make.top.equalTo(currentLocationSettingLabel.snp.bottom).offset(12)
+            make.leading.equalToSuperview().offset(20*Constants.standardWidth)
+            make.trailing.equalToSuperview().offset(-20*Constants.standardWidth)
+            make.top.equalTo(currentLocationSettingLabel.snp.bottom).offset(12*Constants.standardHeight)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
-    }
-    
-    func presentDeniedAlert() {
-        let alert = UIAlertController(title: nil, message: "위치 기능을 사용하려면\n’위치’ 접근권한을 허용해야 합니다.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "설정", style: .default, handler: { _ in
-            if let url = URL(string: UIApplication.openSettingsURLString) {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            }
-        }))
-        alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
-        self.present(alert, animated: true, completion: nil)
     }
 }
 

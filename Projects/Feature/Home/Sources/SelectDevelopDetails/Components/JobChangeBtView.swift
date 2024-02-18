@@ -6,7 +6,7 @@ class JobChangeBtView: UIView{
     let tapGesture = UITapGestureRecognizer()
     let borderView: UIView = {
         let view = UIView()
-        view.layer.cornerRadius = 40
+        view.layer.cornerRadius = 40*Constants.standardHeight
         view.layer.borderWidth = 1
         view.layer.borderColor = SharedDSKitAsset.Colors.lightGreen.color.cgColor
         view.isHidden = true
@@ -15,7 +15,7 @@ class JobChangeBtView: UIView{
     let imgBgImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = UIColor(red: 0.95, green: 0.85, blue: 0.66, alpha: 1)
-        imageView.layer.cornerRadius = 36
+        imageView.layer.cornerRadius = 36*Constants.standardHeight
         return imageView
     }()
     lazy var targetImageView: UIImageView = {
@@ -47,22 +47,22 @@ class JobChangeBtView: UIView{
             .forEach{ self.addSubview($0) }
         
         borderView.snp.makeConstraints { make in
-            make.width.height.equalTo(80)
+            make.width.height.equalTo(80*Constants.standardHeight)
             make.top.equalToSuperview()
             make.centerX.equalToSuperview()
         }
         
         imgBgImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(72)
+            make.width.height.equalTo(72*Constants.standardHeight)
             make.centerX.centerY.equalTo(borderView)
         }
         
         targetImageView.snp.makeConstraints { make in
-            make.width.equalTo(40)
-            make.height.equalTo(39.422)
-            make.top.equalTo(imgBgImageView.snp.top).offset(16)
+            make.width.equalTo(40*Constants.standardWidth)
+            make.height.equalTo(39.422*Constants.standardHeight)
+            make.top.equalTo(imgBgImageView.snp.top).offset(16*Constants.standardHeight)
             make.leading.equalTo(imgBgImageView.snp.leading)
-                .offset(16.16)
+                .offset(16.16*Constants.standardWidth)
         }
         
         titleLabel.snp.makeConstraints { make in

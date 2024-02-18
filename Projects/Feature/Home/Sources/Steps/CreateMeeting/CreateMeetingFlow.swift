@@ -84,6 +84,7 @@ final public class CreateMeetingFlow: Flow {
     private func coordinateToInitializeCreateMeetingViewController() -> FlowContributors {
         let reactor = InitializeCreateMeetingReactor()
         let viewController = InitializeCreateMeetingViewController(meetingTitle: self.meetingTitle, with: reactor)
+        viewController.hidesBottomBarWhenPushed = true
         self.rootViewController.pushViewController(viewController, animated: true)
         
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
@@ -132,6 +133,7 @@ final public class CreateMeetingFlow: Flow {
     }
             
     private func coordinateToCameraController() -> FlowContributors {
+        //let reactor = CameraReactor()
         let viewController = CameraViewController()
         viewController.sourceType = .camera
         viewController.allowsEditing = true
@@ -139,7 +141,7 @@ final public class CreateMeetingFlow: Flow {
         viewController.cameraCaptureMode = .photo
         self.rootViewController.present(viewController, animated: true)
                                                      
-        return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: viewController))
+        return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: viewController.cameraReactor))
     }
          
     private func coordinateToEditPhotoViewController(image: UIImage) -> FlowContributors {
@@ -151,7 +153,7 @@ final public class CreateMeetingFlow: Flow {
         viewController.modalPresentationStyle = .overFullScreen
         self.rootViewController.presentedViewController?.present(viewController, animated: true)
                         
-        return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: viewController))
+        return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: EditPhotoReactor.shared))
     }
     
     private func coordinateToPhotoCameraActionSheet() -> FlowContributors {

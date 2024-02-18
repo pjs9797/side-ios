@@ -1,4 +1,3 @@
-import RxSwift
 import RxCocoa
 import ReactorKit
 import RxFlow
@@ -34,6 +33,23 @@ public class SelectDevelopDetailsReactor: ReactorKit.Reactor, Stepper{
             self.steps.accept(CreateMeetingStep.goToCreateMeetingContentViewController)
             return .empty()
         case .detailTypeSelected(let type):
+            switch type{
+            case .study:
+                MeetingDataManager.shared.categoryMajor = "스터디 · 자격증"
+            case .sideProject:
+                MeetingDataManager.shared.categoryMajor = "사이드 프로젝트"
+            case .jobChange:
+                MeetingDataManager.shared.categoryMajor = "이직 준비"
+            case .language:
+                MeetingDataManager.shared.categoryMajor = "어학"
+            case .investment:
+                MeetingDataManager.shared.categoryMajor = "재테크"
+            case .etc:
+                MeetingDataManager.shared.categoryMajor = "기타"
+            case .none:
+                break
+            }
+            MeetingDataManager.shared.categorySub = nil
             return .just(.setDetailType(type))
         }
     }

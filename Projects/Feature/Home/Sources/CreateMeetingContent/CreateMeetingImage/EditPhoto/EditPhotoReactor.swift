@@ -1,9 +1,12 @@
 import ReactorKit
-import UIKit
+import UIKit.UIImage
+import RxFlow
+import RxCocoa
 
-class EditPhotoReactor: ReactorKit.Reactor {
+class EditPhotoReactor: ReactorKit.Reactor, Stepper {
     static let shared = EditPhotoReactor()
     let initialState: State
+    var steps = PublishRelay<Step>()
 
     init() {
         self.initialState = State(image: nil)
@@ -12,6 +15,8 @@ class EditPhotoReactor: ReactorKit.Reactor {
     enum Action {
         case setImage(UIImage?)
         case clearImage
+        case doubleDismissView
+        case dismissView
     }
 
     enum Mutation {
@@ -28,6 +33,12 @@ class EditPhotoReactor: ReactorKit.Reactor {
             return .just(.setImage(image))
         case .clearImage:
             return .just(.setImage(nil))
+        case .doubleDismissView:
+            self.steps.accept(CreateMeetingStep.doubleDismissViewController)
+            return .empty()
+        case .dismissView:
+            self.steps.accept(CreateMeetingStep.dismissViewController)
+            return .empty()
         }
     }
 
