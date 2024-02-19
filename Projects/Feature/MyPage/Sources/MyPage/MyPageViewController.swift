@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 import RxSwift
 import RxCocoa
 import RxDataSources
@@ -24,27 +25,25 @@ public class MyPageViewController: UIViewController, ReactorKit.View{
     }()
     let userImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.clipsToBounds = true
         imageView.backgroundColor = SharedDSKitAsset.Colors.bgLightGray.color
         imageView.layer.cornerRadius = 40*Constants.standardHeight
         return imageView
     }()
-    let userNameLabel: UILabel = {
+    let nicknameLabel: UILabel = {
         var label = UILabel()
-        label.text = "청계산 다람쥐"
         label.font = Fonts.SH03Bold.font
         label.textColor = SharedDSKitAsset.Colors.gr100.color
         return label
     }()
     let positionLabel: UILabel = {
         var label = UILabel()
-        label.text = "미디어 · 전시"
         label.font = Fonts.Caption.font
         label.textColor = SharedDSKitAsset.Colors.text03.color
         return label
     }()
     let emailLabel: UILabel = {
         var label = UILabel()
-        label.text = "lkfjlkj789456@kakao.com"
         label.font = Fonts.Body01.font
         label.textColor = SharedDSKitAsset.Colors.text03.color
         return label
@@ -117,7 +116,7 @@ public class MyPageViewController: UIViewController, ReactorKit.View{
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.reactor?.action.onNext(.loadCellData)
+        self.reactor?.action.onNext(.loadData)
     }
     
     private func setNavigationbar() {
@@ -131,7 +130,7 @@ public class MyPageViewController: UIViewController, ReactorKit.View{
     }
     
     private func layout(){
-        [modifyButton, userImageView, userNameLabel, positionLabel, emailLabel, interestCollectionView, separateView, activityLabel, activityTableView]
+        [modifyButton, userImageView, nicknameLabel, positionLabel, emailLabel, interestCollectionView, separateView, activityLabel, activityTableView]
             .forEach{ self.view.addSubview($0) }
         
         modifyButton.snp.makeConstraints { make in
@@ -147,7 +146,7 @@ public class MyPageViewController: UIViewController, ReactorKit.View{
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(48*Constants.standardHeight)
         }
         
-        userNameLabel.snp.makeConstraints { make in
+        nicknameLabel.snp.makeConstraints { make in
             make.height.equalTo(25*Constants.standardHeight)
             make.leading.equalTo(userImageView.snp.trailing).offset(24*Constants.standardWidth)
             make.top.equalTo(userImageView.snp.top).offset(4*Constants.standardHeight)
@@ -155,19 +154,19 @@ public class MyPageViewController: UIViewController, ReactorKit.View{
         
         positionLabel.snp.makeConstraints { make in
             make.height.equalTo(17*Constants.standardHeight)
-            make.leading.equalTo(userNameLabel.snp.leading)
-            make.top.equalTo(userNameLabel.snp.bottom).offset(2*Constants.standardHeight)
+            make.leading.equalTo(nicknameLabel.snp.leading)
+            make.top.equalTo(nicknameLabel.snp.bottom).offset(2*Constants.standardHeight)
         }
         
         emailLabel.snp.makeConstraints { make in
             make.height.equalTo(21*Constants.standardHeight)
-            make.leading.equalTo(userNameLabel.snp.leading)
+            make.leading.equalTo(nicknameLabel.snp.leading)
             make.top.equalTo(positionLabel.snp.bottom).offset(2*Constants.standardHeight)
         }
         
         interestCollectionView.snp.makeConstraints { make in
             make.height.equalTo(0)
-            make.leading.equalTo(userNameLabel.snp.leading)
+            make.leading.equalTo(nicknameLabel.snp.leading)
             make.trailing.equalToSuperview().offset(-20*Constants.standardWidth)
             make.top.equalTo(emailLabel.snp.bottom).offset(16*Constants.standardHeight)
         }
@@ -224,6 +223,28 @@ extension MyPageViewController{
     }
     
     private func bindState(reactor: MyPageReactor){
+        reactor.state.map{ $0.nickname }
+            .distinctUntilChanged()
+            .bind(to: nicknameLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        reactor.state.map{ $0.email }
+            .distinctUntilChanged()
+            .bind(to: emailLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        reactor.state.map{ $0.profileImage}
+            .distinctUntilChanged()
+            .bind(onNext: { [weak self] urlImage in
+                self?.userImageView.kf.setImage(with:URL(string: urlImage), options: [.processor(RoundCornerImageProcessor(cornerRadius: 40*Constants.standardHeight))])
+            })
+            .disposed(by: disposeBag)
+        
+        reactor.state.map{ $0.position }
+            .distinctUntilChanged()
+            .bind(to: positionLabel.rx.text)
+            .disposed(by: disposeBag)
+        
         reactor.state.map{ $0.collectionViewCellData }
             .bind(to: interestCollectionView.rx.items(cellIdentifier: "InterestCollectionViewCell", cellType: InterestCollectionViewCell.self)) { index, item, cell in
                 let cellReator = InterestCollectionViewCellReactor(titleLabelText: item)
@@ -232,6 +253,7 @@ extension MyPageViewController{
             .disposed(by: disposeBag)
 
         reactor.state.map { $0.tableViewCellData }
+            .distinctUntilChanged()
             .bind(to: activityTableView.rx.items(dataSource: self.dataSource))
             .disposed(by: disposeBag)
     }

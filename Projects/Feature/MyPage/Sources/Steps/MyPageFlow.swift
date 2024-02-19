@@ -25,8 +25,8 @@ final public class MyPageFlow: Flow {
             return popViewController()
         case .goToMyPageViewController:
             return coordinateToMyPageViewController()
-        case .goToSettingViewController:
-            return coordinateToSettingViewController()
+        case .goToSettingViewController(let memberId, let email):
+            return coordinateToSettingViewController(memberId: memberId, email: email)
         case .goToModifyProfileViewController:
             return coordinateToModifyProfileViewController()
         case .presentToSelectPositionViewController:
@@ -43,15 +43,15 @@ final public class MyPageFlow: Flow {
     }
     
     private func coordinateToMyPageViewController() -> FlowContributors {
-        let reactor = MyPageReactor()
+        let reactor = MyPageReactor(provider: self.provider)
         let viewController = MyPageViewController(with: reactor)
         self.rootViewController.pushViewController(viewController, animated: false)
         
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
     }
     
-    private func coordinateToSettingViewController() -> FlowContributors {
-        let reactor = SettingReactor()
+    private func coordinateToSettingViewController(memberId: Int, email: String) -> FlowContributors {
+        let reactor = SettingReactor(memberId: memberId, email: email)
         let viewController = SettingViewController(with: reactor)
         viewController.hidesBottomBarWhenPushed = true
         self.rootViewController.pushViewController(viewController, animated: true)

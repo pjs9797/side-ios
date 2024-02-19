@@ -1,6 +1,6 @@
 import Foundation
 
-struct LocationResponse: Codable{
+struct GetLocation: Codable{
     let id: Int
     let name: String
     let region1: String

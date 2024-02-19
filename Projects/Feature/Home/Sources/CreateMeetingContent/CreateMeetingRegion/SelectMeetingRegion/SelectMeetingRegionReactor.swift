@@ -61,12 +61,11 @@ public class SelectMeetingRegionReactor: NSObject, ReactorKit.Reactor, Stepper{
                 .flatMap { response, data -> Observable<Mutation> in
                     do {
                         let decoder = JSONDecoder()
-                        let getLocationResponse = try decoder.decode([LocationResponse].self, from: data)
+                        let getLocationResponse = try decoder.decode([GetLocation].self, from: data)
                         let names = getLocationResponse.map { $0.name }
                         let SetNames = Array(Set(names)).sorted()
                         return .just(.setSearchedLocationNames(SetNames))
                     } catch {
-                        print("Decoding error: \(error)")
                         return .empty()
                     }
                 }
@@ -92,7 +91,7 @@ public class SelectMeetingRegionReactor: NSObject, ReactorKit.Reactor, Stepper{
                 .flatMap { response, data -> Observable<Mutation> in
                     do {
                         let decoder = JSONDecoder()
-                        let getLocationResponse = try decoder.decode([LocationResponse].self, from: data)
+                        let getLocationResponse = try decoder.decode([GetLocation].self, from: data)
                         if let locationName = getLocationResponse.first?.name {
                             self.steps.accept(CreateMeetingStep.dismissViewController)
                             return .just(.setRegionButtonTitle(locationName))
@@ -100,7 +99,6 @@ public class SelectMeetingRegionReactor: NSObject, ReactorKit.Reactor, Stepper{
                             return .empty()
                         }
                     } catch {
-                        print("Decoding error: \(error)")
                         return .empty()
                     }
                 }

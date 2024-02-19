@@ -36,6 +36,12 @@ class ActivityTableViewCell: UITableViewCell, ReactorKit.View {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        disposeBag = DisposeBag()
+    }
+    
     private func layout(){
         [titleLabel, rightButton, cntLabel]
             .forEach{ self.contentView.addSubview($0) }
@@ -54,7 +60,7 @@ class ActivityTableViewCell: UITableViewCell, ReactorKit.View {
         }
         
         cntLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(rightButton.snp.leading).offset(16*Constants.standardWidth)
+            make.trailing.equalTo(rightButton.snp.leading).offset(-16*Constants.standardWidth)
             make.centerY.equalTo(titleLabel)
         }
     }
@@ -65,6 +71,11 @@ extension ActivityTableViewCell{
         reactor.state.map { $0.titleLabelText }
             .distinctUntilChanged()
             .bind(to: titleLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        reactor.state.map{ $0.cntLabelText }
+            .distinctUntilChanged()
+            .bind(to: cntLabel.rx.text)
             .disposed(by: disposeBag)
     }
 }

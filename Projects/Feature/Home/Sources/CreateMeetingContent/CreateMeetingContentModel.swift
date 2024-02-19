@@ -1,3 +1,3 @@
-struct TransformImageResponse: Codable {
+struct TransformImageToURLResponse: Codable {
     let urls: [String]
 }

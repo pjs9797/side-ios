@@ -4,14 +4,12 @@ import ReactorKit
 import RxFlow
 import Shared
 import Domain
-import Alamofire
-import RxAlamofire
 
 public class CreateMeetingContentReactor: ReactorKit.Reactor, Stepper{
     public var initialState: State
     public var steps = PublishRelay<Step>()
     let provider: ServiceProviderType
-    let disposeBag = DisposeBag()
+    
     public init(provider: ServiceProviderType){
         self.initialState = State()
         self.provider = provider
@@ -59,26 +57,26 @@ public class CreateMeetingContentReactor: ReactorKit.Reactor, Stepper{
             }
             return .empty()
         case .createButtonTapped:
-            self.provider.createMeetingService.transformImageToURL(image: [EditPhotoReactor.shared.currentState.image])
+            return self.provider.createMeetingService.transformImageToURL(image: [EditPhotoReactor.shared.currentState.image])
                 .flatMapLatest { uploadRequest -> Observable<String> in
                     return uploadRequest.rx.responseData()
                         .flatMap { response, data -> Observable<String> in
                             let decoder = JSONDecoder()
                             do {
-                                let getUrlImageResponse = try decoder.decode(TransformImageResponse.self, from: data)
+                                let getUrlImageResponse = try decoder.decode(TransformImageToURLResponse.self, from: data)
                                 if let urlImage = getUrlImageResponse.urls.first {
                                     return Observable.just(urlImage)
-                                } else {
-                                    print("Not Find First Data Error")
+                                } 
+                                else {
                                     return Observable.error(NSError(domain: "No URL Found", code: -1, userInfo: nil))
                                 }
-                            } catch {
-                                print("Decoding error: \(error)")
+                            } 
+                            catch {
                                 return Observable.error(error)
                             }
                         }
                 }
-                .flatMapLatest{ urlImage -> Observable<DataRequest> in
+                .flatMapLatest{ urlImage -> Observable<Mutation> in
                     let startAt = self.convertDateString(dateString: self.currentState.selectedDate, timeString: self.currentState.selectedTime)
                     var activityType: String
                     var locationInfo: String?
@@ -89,25 +87,13 @@ public class CreateMeetingContentReactor: ReactorKit.Reactor, Stepper{
                         activityType = "오프라인"
                         locationInfo = self.currentState.regionText
                     }
-                    return self.provider.createMeetingService.createMeeting(
-                        name: self.currentState.titleText,
-                        description: self.currentState.introductionText,
-                        memberMaxNumber: Int(self.currentState.memberLimitText) ?? 100,
-                        startAt: startAt,
-                        mainImage: urlImage,
-                        categoryMajor: MeetingDataManager.shared.categoryMajor,
-                        categorySub: MeetingDataManager.shared.categorySub,
-                        type: MeetingDataManager.shared.meetingType,
-                        activityType: activityType,
-                        locationInfo: locationInfo,
-                        locationDetail: nil)
+                    return self.provider.createMeetingService.createMeeting(name: self.currentState.titleText, description: self.currentState.introductionText, memberMaxNumber: Int(self.currentState.memberLimitText) ?? 100, startAt: startAt, mainImage: urlImage, categoryMajor: MeetingDataManager.shared.categoryMajor, categorySub: MeetingDataManager.shared.categorySub, type: MeetingDataManager.shared.meetingType, activityType: activityType, locationInfo: locationInfo, locationDetail: nil).responseData()
+                        .flatMap{ response, data -> Observable<Mutation> in
+                            EditPhotoReactor.shared.action.onNext(.clearImage)
+                            self.steps.accept(CreateMeetingStep.createMeetingCompleted)
+                            return .empty()
+                        }
                 }
-                .subscribe(onNext: { _ in
-                    EditPhotoReactor.shared.action.onNext(.clearImage)
-                    self.steps.accept(CreateMeetingStep.createMeetingCompleted)
-                })
-                .disposed(by: disposeBag)
-            return .empty()
         case .writeTitleText(let text):
             return .just(.setTitleText(text))
         case .setRegionText(let text):
