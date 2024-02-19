@@ -127,6 +127,7 @@ extension CreateMeetingRegionView{
                 if location != "읍,면,동으로 검색하세요."{
                     self?.regionButton.setTitle(location, for: .normal)
                     self?.regionButton.setTitleColor(.black, for: .normal)
+                    self?.reactor?.action.onNext(.setRegionButtonTitle(location))
                 }
             })
             .disposed(by: disposeBag)

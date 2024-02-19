@@ -23,6 +23,8 @@ final public class HomeFlow: Flow {
         switch step {
         case .popViewController:
             return popViewController()
+        case .createMeetingCompleted:
+            return popToRootViewController()
         case .goToHomeViewController:
             return coordinateToHomeViewController()
         case .presentSelectMeetingTypeViewController:
@@ -34,6 +36,12 @@ final public class HomeFlow: Flow {
     
     private func popViewController() -> FlowContributors {
         self.rootViewController.popViewController(animated: true)
+        
+        return .none
+    }
+    
+    private func popToRootViewController() -> FlowContributors {
+        self.rootViewController.popToRootViewController(animated: true)
         
         return .none
     }

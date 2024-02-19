@@ -59,7 +59,7 @@ public class CreateMeetingContentReactor: ReactorKit.Reactor, Stepper{
             }
             return .empty()
         case .createButtonTapped:
-            self.provider.createMeetingService.transformImageToURL(image: [CreateMeetingImageModel.randomImages[1]])
+            self.provider.createMeetingService.transformImageToURL(image: [EditPhotoReactor.shared.currentState.image])
                 .flatMapLatest { uploadRequest -> Observable<String> in
                     return uploadRequest.rx.responseData()
                         .flatMap { response, data -> Observable<String> in
@@ -67,7 +67,6 @@ public class CreateMeetingContentReactor: ReactorKit.Reactor, Stepper{
                             do {
                                 let getUrlImageResponse = try decoder.decode(TransformImageResponse.self, from: data)
                                 if let urlImage = getUrlImageResponse.urls.first {
-                                    print(urlImage)
                                     return Observable.just(urlImage)
                                 } else {
                                     print("Not Find First Data Error")
@@ -79,10 +78,33 @@ public class CreateMeetingContentReactor: ReactorKit.Reactor, Stepper{
                             }
                         }
                 }
-                .subscribe(onNext: { urlImage in
-                    print("Upload successful", urlImage)
-                }, onError: { error in
-                    print("Upload failed: \(error)")
+                .flatMapLatest{ urlImage -> Observable<DataRequest> in
+                    let startAt = self.convertDateString(dateString: self.currentState.selectedDate, timeString: self.currentState.selectedTime)
+                    var activityType: String
+                    var locationInfo: String?
+                    if self.currentState.regionText == "온라인" {
+                        activityType = "온라인"
+                        locationInfo = nil
+                    } else {
+                        activityType = "오프라인"
+                        locationInfo = self.currentState.regionText
+                    }
+                    return self.provider.createMeetingService.createMeeting(
+                        name: self.currentState.titleText,
+                        description: self.currentState.introductionText,
+                        memberMaxNumber: Int(self.currentState.memberLimitText) ?? 100,
+                        startAt: startAt,
+                        mainImage: urlImage,
+                        categoryMajor: MeetingDataManager.shared.categoryMajor,
+                        categorySub: MeetingDataManager.shared.categorySub,
+                        type: MeetingDataManager.shared.meetingType,
+                        activityType: activityType,
+                        locationInfo: locationInfo,
+                        locationDetail: nil)
+                }
+                .subscribe(onNext: { _ in
+                    EditPhotoReactor.shared.action.onNext(.clearImage)
+                    self.steps.accept(CreateMeetingStep.createMeetingCompleted)
                 })
                 .disposed(by: disposeBag)
             return .empty()
@@ -127,11 +149,24 @@ public class CreateMeetingContentReactor: ReactorKit.Reactor, Stepper{
     
     private func isCreateButtonEnabled(newState: State) -> Bool {
         return !newState.titleText.isEmpty &&
-        !newState.regionText.isEmpty &&
+        ( !newState.regionText.isEmpty && newState.regionText != "읍,면,동으로 검색하세요." ) &&
         !newState.memberLimitText.isEmpty &&
         !newState.selectedDate.isEmpty &&
         !newState.selectedTime.isEmpty &&
         newState.image != nil &&
         ( !newState.introductionText.isEmpty && newState.introductionText != "자유롭게 소개글을 작성해 보세요!" )
+    }
+    
+    private func convertDateString(dateString: String, timeString: String) -> String {
+        let inputDateFormat = "yyyy.MM.dd a hh:mm"
+        let outputDateFormat = "yyyy-MM-dd HH:mm:ss"
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.dateFormat = inputDateFormat
+        let combinedDateTimeString = dateString + " " + timeString
+        let date = dateFormatter.date(from: combinedDateTimeString)
+        dateFormatter.dateFormat = outputDateFormat
+        
+        return dateFormatter.string(from: date ?? Date())
     }
 }

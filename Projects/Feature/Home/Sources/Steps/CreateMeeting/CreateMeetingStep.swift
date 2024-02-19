@@ -10,6 +10,7 @@ public enum CreateMeetingStep: Step {
     case goToSelectDevelopDetailsViewController
     case goToSelectHobbyDetailsViewController
     case goToCreateMeetingContentViewController
+    case createMeetingCompleted
     case presentSelectMeetingRegionViewController
     case presentAlbumViewController(type: String)
     case presentCameraViewController

@@ -78,6 +78,7 @@ class SelectMeetingRegionViewController: UIViewController, ReactorKit.View {
         super.viewDidLoad()
         
         self.view.backgroundColor = .white
+        self.keyBoardCancel()
         self.layout()
     }
     
@@ -85,6 +86,17 @@ class SelectMeetingRegionViewController: UIViewController, ReactorKit.View {
         super.viewWillAppear(true)
         
         self.reactor?.action.onNext(.clearSearchedLocations)
+    }
+    
+    func keyBoardCancel(){
+        let tapGesture = UITapGestureRecognizer()
+        view.addGestureRecognizer(tapGesture)
+        tapGesture.cancelsTouchesInView = false
+        tapGesture.rx.event
+            .bind(onNext: { [weak self] _ in
+                self?.view.endEditing(true)
+            })
+            .disposed(by: disposeBag)
     }
     
     func layout(){

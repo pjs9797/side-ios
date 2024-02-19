@@ -41,7 +41,12 @@ public class SelectHobbyDetailsReactor: ReactorKit.Reactor, Stepper{
             return .just(.setContentSize(size))
         case .selectItem(let categoryMajor, let categorySub):
             MeetingDataManager.shared.categoryMajor = categoryMajor
-            MeetingDataManager.shared.categorySub = categorySub
+            if categorySub == "기타"{
+                MeetingDataManager.shared.categorySub = "\(categoryMajor)_\(categorySub)"
+            }
+            else{
+                MeetingDataManager.shared.categorySub = categorySub
+            }
             return .just(.setSelectItem)
         }
     }

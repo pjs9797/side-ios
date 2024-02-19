@@ -43,6 +43,8 @@ final public class CreateMeetingFlow: Flow {
             return coordinateToSelectHobbyDetailsViewController()
         case .goToCreateMeetingContentViewController:
             return coordinateToCreateMeetingContentViewController()
+        case .createMeetingCompleted:
+            return .end(forwardToParentFlowWithStep: HomeStep.createMeetingCompleted)
         case .presentSelectMeetingRegionViewController:
             return coordinateToSelectMeetingRegionViewController()
         case .presentAlbumViewController(let type):
@@ -133,7 +135,6 @@ final public class CreateMeetingFlow: Flow {
     }
             
     private func coordinateToCameraController() -> FlowContributors {
-        //let reactor = CameraReactor()
         let viewController = CameraViewController()
         viewController.sourceType = .camera
         viewController.allowsEditing = true

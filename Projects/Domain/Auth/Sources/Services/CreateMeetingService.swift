@@ -7,7 +7,7 @@ public final class CreateMeetingService: APIService {
     public override init(baseURL: String, isLogging: Bool = false, configuration: URLSessionConfiguration = .default) {
         super.init(baseURL: baseURL, isLogging: isLogging, configuration: configuration)
     }
-    public func createMeeting(name: String, description: String, memberMaxNumber: Int, startAt: String, mainImage: String, categoryMajor: String, categorySub: String, type: String, activityType: String, locationInfo: String, locationDetail: String?) -> Observable<DataRequest> {
+    public func createMeeting(name: String, description: String, memberMaxNumber: Int, startAt: String, mainImage: String, categoryMajor: String, categorySub: String?, type: String, activityType: String, locationInfo: String?, locationDetail: String?) -> Observable<DataRequest> {
         var parameters: Parameters = [
             "name": name,
             "description": description,
@@ -15,11 +15,15 @@ public final class CreateMeetingService: APIService {
             "startAt": startAt,
             "mainImage": mainImage,
             "categoryMajor": categoryMajor,
-            "categorySub": categorySub,
             "type": type,
-            "activityType": activityType,
-            "locationInfo": ["location": locationInfo]
+            "activityType": activityType
         ]
+        if let categorySub = categorySub{
+            parameters.updateValue(categorySub, forKey: "categorySub")
+        }
+        if let locationInfo = locationInfo {
+            parameters["locationInfo"] = ["location": locationInfo]
+        }
         if let locationDetail = locationDetail {
             parameters.updateValue(locationDetail, forKey: "locationDetail")
         }
