@@ -27,6 +27,7 @@ struct GetMyProfileResponse: Codable{
     let id: Int
     let nickname: String
     let email: String
+    let birth: String
     let profileImageUrl: String
     let jobMajor: String
     let develops: [String]

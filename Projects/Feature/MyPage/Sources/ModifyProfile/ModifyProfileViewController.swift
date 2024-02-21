@@ -266,6 +266,11 @@ extension ModifyProfileViewController{
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
+        saveButton.rx.tap
+            .map{ Reactor.Action.saveButtonTapped }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
         nicknameTextFieldView.textField.rx.text.orEmpty
             .map{ Reactor.Action.updateNickname($0)}
             .bind(to: reactor.action)
@@ -305,6 +310,13 @@ extension ModifyProfileViewController{
     }
     
     private func bindState(reactor: ModifyProfileReactor){
+        reactor.state.map{ $0.profileImage}
+            .distinctUntilChanged()
+            .bind(onNext: { [weak self] urlImage in
+                self?.userImageView.kf.setImage(with:URL(string: urlImage), options: [.processor(RoundCornerImageProcessor(cornerRadius: 48*Constants.standardHeight))])
+            })
+            .disposed(by: disposeBag)
+        
         reactor.state.map{ $0.nickname }
             .distinctUntilChanged()
             .bind(to: nicknameTextFieldView.textField.rx.text)
@@ -317,7 +329,10 @@ extension ModifyProfileViewController{
         
         self.selectPositionReactor.state.map{ $0.position }
             .distinctUntilChanged()
-            .bind(to: positionTextFieldView.textField.rx.text)
+            .bind(onNext: { [weak self] position in
+                self?.positionTextFieldView.textField.text = position
+                self?.reactor?.action.onNext(.updatePosition(position))
+            })
             .disposed(by: disposeBag)
         
         reactor.state.map{ $0.position }
@@ -328,8 +343,7 @@ extension ModifyProfileViewController{
         reactor.state.map { $0.developCellData }
             .distinctUntilChanged()
             .bind(to: developCollectionView.rx.items(cellIdentifier: "DevelopHobbyCollectionViewCell", cellType: DevelopHobbyCollectionViewCell.self)) { (row, item, cell) in
-                let isSelected = reactor.currentState.selectedDevelopItems.contains(item)
-                let cellReator = DevelopHobbyCollectionViewReactor(title: item, isSelected: isSelected)
+                let cellReator = DevelopHobbyCollectionViewReactor(title: item.item, isSelected: item.isSelected)
                 cell.reactor = cellReator
             }
             .disposed(by: disposeBag)
@@ -337,24 +351,9 @@ extension ModifyProfileViewController{
         reactor.state.map { $0.hobbyCellData }
             .distinctUntilChanged()
             .bind(to: hobbyCollectionView.rx.items(cellIdentifier: "DevelopHobbyCollectionViewCell", cellType: DevelopHobbyCollectionViewCell.self)) { (row, item, cell) in
-                let isSelected = reactor.currentState.selectedHobbyItems.contains(item)
-                let cellReator = DevelopHobbyCollectionViewReactor(title: item, isSelected: isSelected)
+                let cellReator = DevelopHobbyCollectionViewReactor(title: item.item, isSelected: item.isSelected)
                 cell.reactor = cellReator
             }
-            .disposed(by: disposeBag)
-        
-        reactor.state.map{ $0.selectedDevelopItems }
-            .distinctUntilChanged()
-            .bind(onNext: { [weak self] _ in
-                self?.developCollectionView.reloadData()
-            })
-            .disposed(by: disposeBag)
-        
-        reactor.state.map{ $0.selectedHobbyItems }
-            .distinctUntilChanged()
-            .bind(onNext: { [weak self] _ in
-                self?.hobbyCollectionView.reloadData()
-            })
             .disposed(by: disposeBag)
     }
     
@@ -383,9 +382,9 @@ extension ModifyProfileViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var text: String = ""
         if collectionView == self.developCollectionView {
-            text = self.reactor?.currentState.developCellData[indexPath.item] ?? ""
+            text = self.reactor?.currentState.developCellData[indexPath.item].item ?? ""
         } else if collectionView == self.hobbyCollectionView {
-            text = self.reactor?.currentState.hobbyCellData[indexPath.item] ?? ""
+            text = self.reactor?.currentState.hobbyCellData[indexPath.item].item ?? ""
         }
         let font = Fonts.SH01.font
         let textAttributes = [NSAttributedString.Key.font: font]

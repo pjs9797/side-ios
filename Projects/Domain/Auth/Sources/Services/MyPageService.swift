@@ -13,4 +13,16 @@ public final class MyPageService: APIService {
         return request(.get, "/api/v1/accounts/me/profiles", useAuthHeader: true)
     }
     
+    
+    public func modifyMyProfile(nickname: String, birth: String, profileImageUrl: String, jobCategory: String, clubCategories: [String]) -> Observable<DataRequest> {
+        var parameters: Parameters = [
+            "nickname": nickname,
+            "birth": birth,
+            "profileImageUrl": profileImageUrl,
+            "jobCategory": jobCategory,
+            "clubCategories": clubCategories
+        ]
+        
+        return request(.put, "/api/v1/accounts/me/profiles", useAuthHeader: true, parameters: parameters)
+    }
 }

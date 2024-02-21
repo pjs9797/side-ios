@@ -61,7 +61,7 @@ final public class MyPageFlow: Flow {
     
     private func coordinateToModifyProfileViewController() -> FlowContributors {
         let selectPositionReactor = self.selectPositionReactor
-        let reactor = ModifyProfileReactor()
+        let reactor = ModifyProfileReactor(provider: self.provider)
         let viewController = ModifyProfileViewController(with: reactor, selectPositionReactor: selectPositionReactor)
         viewController.hidesBottomBarWhenPushed = true
         self.rootViewController.pushViewController(viewController, animated: true)

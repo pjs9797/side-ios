@@ -49,7 +49,7 @@ public class MyPageViewController: UIViewController, ReactorKit.View{
         return label
     }()
     let interestCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
+        let layout = LeftAlignedCollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = 8*Constants.standardHeight
         layout.minimumInteritemSpacing = 8*Constants.standardWidth
