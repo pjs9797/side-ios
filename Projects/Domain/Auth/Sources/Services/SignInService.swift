@@ -36,11 +36,26 @@ public final class SignInService: APIService {
         return request(.post, "api/v1/auth/login", useAuthHeader: false, parameters: parameters)
     }
     
+    public func sendEmailForVerificationToFindPassword(email: String) -> Observable<DataRequest> {
+        var parameters = Parameters()
+        parameters.updateValue(email, forKey: "email")
+        
+        return request(.post, "api/v1/pw/sendEmail", useAuthHeader: false, parameters: parameters)
+    }
+    
+    public func checkCodeWithEmail(email: String, code: String) -> Observable<DataRequest> {
+        var parameters = Parameters()
+        parameters.updateValue(email, forKey: "email")
+        parameters.updateValue(code, forKey: "code")
+        
+        return request(.post, "api/v1/pw/checkCode", useAuthHeader: false, parameters: parameters)
+    }
+    
     public func sendEmailForVerificationToFindId(email: String) -> Observable<DataRequest> {
         var parameters = Parameters()
         parameters.updateValue(email, forKey: "email")
         
-        return request(.post, "api/v1/email/sendEmail")
+        return request(.post, "api/v1/email/sendEmail", useAuthHeader: false, parameters: parameters)
     }
     
     public func setPasswordWithEmail(email: String, password: String) -> Observable<DataRequest> {
@@ -48,7 +63,7 @@ public final class SignInService: APIService {
         parameters.updateValue(email, forKey: "email")
         parameters.updateValue(password, forKey: "password")
         
-        return request(.post, "ㅁㄴㅇㄴㅁ", useAuthHeader: false, parameters: parameters)
+        return request(.post, "api/v1/pw/changePw", useAuthHeader: false, parameters: parameters)
     }
     
     public func setPasswordWithPhoneNumber(phoneNumber: String, password: String) -> Observable<DataRequest> {
@@ -56,6 +71,6 @@ public final class SignInService: APIService {
         parameters.updateValue(phoneNumber, forKey: "phoneNumber")
         parameters.updateValue(password, forKey: "password")
         
-        return request(.post, "afssaf", useAuthHeader: false, parameters: parameters)
+        return request(.post, "api/v1/phone/pw/changePw", useAuthHeader: false, parameters: parameters)
     }
 }

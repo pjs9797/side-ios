@@ -73,17 +73,13 @@ public class NewPasswordInputWithEmailReactor: ReactorKit.Reactor, Stepper {
             return .just(.setConfirmPassword(confirmPassword))
             
         case .didTapChangePasswordCompleteButton:
-            steps.accept(SignInStep.userChangedPassword)
-            return .empty()
-            /*
-            guard let password = initialState.password else { return .empty() }
-            return provider.signInService.setPasswordWithEmail(email: email, password: password).validate(statusCode: 200...299)
-                .flatMap { [weak self] _ -> Observable<Mutation> in
+            guard let password = currentState.password else { return .empty() }
+            
+            return provider.signInService.setPasswordWithEmail(email: email, password: password).validate(statusCode: 200...299).responseData()
+                .flatMap { [weak self] response, data -> Observable<Mutation> in
                     self?.steps.accept(SignInStep.userChangedPassword)
                     return .empty()
                 }
-            
-            */
         }
     }
     

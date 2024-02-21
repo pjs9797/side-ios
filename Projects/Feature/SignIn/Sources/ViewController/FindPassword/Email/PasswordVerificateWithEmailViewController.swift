@@ -128,7 +128,7 @@ extension PasswordVerificateWithEmailViewController {
         
         passwordVerificateWithEmailView.verificationNumberInputView.inputViewTextField.rx.text
             .orEmpty
-            .map { Reactor.Action.writeVerificationNumber($0) }
+            .map { Reactor.Action.writeVerificationCode($0) }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
@@ -146,13 +146,10 @@ extension PasswordVerificateWithEmailViewController {
             .subscribe(onNext: { viewController, start in
                 if start {
                     viewController.passwordVerificateWithEmailView.verificationNumberInputView.isHidden = false
+                    viewController.passwordVerificateWithEmailView.emailVerificateInputView.verificateButton.setTitle("재인증", for: .normal)
                 }
             })
             .disposed(by: disposeBag)
-        
-//        reactor.state.map { $0.isVerificationComplete }
-//            .bind(to: passwordVerificateWithEmailView.verificationCompletedButton.rx.isEnabled)
-//            .disposed(by: disposeBag)
         
         reactor.state.map { $0.timerTime == 0 }
             .bind(to: passwordVerificateWithEmailView.emailVerificateInputView.verificateButton.rx.isEnabled)
@@ -162,7 +159,8 @@ extension PasswordVerificateWithEmailViewController {
             .bind(to: timerView.rx.text)
             .disposed(by: disposeBag)
         
-        reactor.state.map { $0.isIncorrectFormedEmail }
+        reactor.state.compactMap { $0.isIncorrectFormedEmail }
+            .distinctUntilChanged()
             .withUnretained(self)
             .subscribe(onNext: { viewController, error in
                 if !error {
@@ -173,7 +171,6 @@ extension PasswordVerificateWithEmailViewController {
                     viewController.passwordVerificateWithEmailView.emailVerificateInputView.verificationInputViewTextField.layer.borderColor = SharedDSKitAsset.Colors.red.color.cgColor
                     viewController.passwordVerificateWithEmailView.emailVerificateInputView.inputViewErrorLabel.text = "올바른 이메일 주소를 입력해 주세요."
                     viewController.passwordVerificateWithEmailView.emailVerificateInputView.verificationInputViewTextField.leftView?.isHidden = false
-                    viewController.passwordVerificateWithEmailView.emailVerificateInputView.verificateButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
                     viewController.passwordVerificateWithEmailView.emailVerificateInputView.verificateButton.layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
                 }
                 viewController.passwordVerificateWithEmailView.emailVerificateInputView.verificateButton.isEnabled = !error
@@ -181,20 +178,34 @@ extension PasswordVerificateWithEmailViewController {
             })
             .disposed(by: disposeBag)
         
-        reactor.state.map { $0.isVerificationComplete }
+        reactor.state.compactMap { $0.isVerificationComplete }
+            .distinctUntilChanged()
             .withUnretained(self)
             .subscribe(onNext: { viewController, complete in
                 if complete {
                     viewController.passwordVerificateWithEmailView.verificationNumberInputView.inputViewTextField.rightView?.isHidden = true
                     viewController.passwordVerificateWithEmailView.verificationNumberInputView.inputViewTextField.leftView?.isHidden = false
-                    viewController.passwordVerificateWithEmailView.verificationNumberInputView.inputViewErrorLabel.text = "인증이 완료 되었습니다."
                     viewController.passwordVerificateWithEmailView.verificationNumberInputView.inputViewErrorLabel.textColor = SharedDSKitAsset.Colors.green.color
                     viewController.passwordVerificateWithEmailView.verificationCompletedButton.backgroundColor = SharedDSKitAsset.Colors.green.color
                     viewController.passwordVerificateWithEmailView.verificationCompletedButton.isEnabled = true
                 }
                 else {
+                    viewController.passwordVerificateWithEmailView.verificationNumberInputView.inputViewTextField.rightView?.isHidden = false
+                    viewController.passwordVerificateWithEmailView.verificationNumberInputView.inputViewTextField.leftView?.isHidden = true
+                    viewController.passwordVerificateWithEmailView.verificationNumberInputView.inputViewErrorLabel.text = "인증코드를 입력해주세요."
+                    viewController.passwordVerificateWithEmailView.verificationNumberInputView.inputViewErrorLabel.textColor = SharedDSKitAsset.Colors.text03.color
                     viewController.passwordVerificateWithEmailView.verificationCompletedButton.backgroundColor = SharedDSKitAsset.Colors.bgGray.color
                     viewController.passwordVerificateWithEmailView.verificationCompletedButton.isEnabled = false
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.isIncorrectVerificationCode }
+            .withUnretained(self)
+            .subscribe(onNext: { viewController, error in
+                if error {
+                    viewController.passwordVerificateWithEmailView.verificationNumberInputView.inputViewErrorLabel.text = "인증코드가 올바르지 않습니다. 다시 확인해주세요."
+                    viewController.passwordVerificateWithEmailView.verificationNumberInputView.inputViewErrorLabel.textColor = SharedDSKitAsset.Colors.red.color
                 }
             })
             .disposed(by: disposeBag)

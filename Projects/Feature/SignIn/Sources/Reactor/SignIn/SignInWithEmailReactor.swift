@@ -81,7 +81,7 @@ public class SignInWithEmailReactor: ReactorKit.Reactor, Stepper {
             guard let email = currentState.email,
                   let password = currentState.password else { return .empty() }
             
-            return provider.signInService.signIn(email: email, password: password).responseData().flatMap { [weak self] response, data -> Observable<Mutation> in
+            return provider.signInService.signIn(email: email, password: password).validate(statusCode: 200...299).responseData().flatMap { [weak self] response, data -> Observable<Mutation> in
                 do {
                     let responseData = try JSONDecoder().decode(SignInResponse.self, from: data) as SignInResponse
                     self?.provider.settingsService.isSignedIn = true
@@ -94,12 +94,6 @@ public class SignInWithEmailReactor: ReactorKit.Reactor, Stepper {
                     return .empty()
                 } catch {
                     let responseData = try JSONDecoder().decode(ErrorResponse.self, from: data) as ErrorResponse
-                    print("")
-                    print("")
-                    print("")
-                    print("")
-                    print("")
-                    print("🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥")
                     print(responseData.detail)
                     return .just(.setSignInError(responseData.statusCode))
                 }
