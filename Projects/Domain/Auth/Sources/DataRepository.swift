@@ -60,5 +60,5 @@ final public class DataRepository: ServiceProviderType {
     
     lazy public var createMeetingService: CreateMeetingService = CreateMeetingService(baseURL: APIServiceURL.baseURL, isLogging: true)
     
-    lazy public var myPageService: MyPageService = MyPageService(baseURL: APIServiceURL.baseURL, isLogging: true)
+    lazy public var myPageService: MyPageService = MyPageService(baseURL: APIServiceURL.baseURL, isLogging: false)
 }

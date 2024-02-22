@@ -8,7 +8,7 @@ public class SettingReactor: ReactorKit.Reactor, Stepper{
     
     public init(memberId: Int, email: String){
         self.initialState = State(cellData: [
-            .Info(mainLabelText: "버전 정보", infoLabelText: "v3.0"),
+            .Info(mainLabelText: "버전 정보", infoLabelText: "v1.0"),
             .Info(mainLabelText: "계정연동정보", infoLabelText: email),
             .Terms(mainLabelText: "서비스 이용약관"),
             .Terms(mainLabelText: "개인정보처리방침"),
@@ -20,6 +20,7 @@ public class SettingReactor: ReactorKit.Reactor, Stepper{
     
     public enum Action {
         case backButtonTapped
+        case rightButtonTapped(String)
         case logoutTapped
         case withdrawalTapped
     }
@@ -37,6 +38,18 @@ public class SettingReactor: ReactorKit.Reactor, Stepper{
         switch action {
         case .backButtonTapped:
             self.steps.accept(MyPageStep.popViewController)
+            return .empty()
+        case .rightButtonTapped(let type):
+            switch type{
+            case "서비스 이용약관":
+                self.steps.accept(MyPageStep.goToTermsOfServiceViewController)
+            case "개인정보처리방침":
+                self.steps.accept(MyPageStep.goToPrivacyPolicyViewController)
+            case "위치기반서비스 이용약관":
+                self.steps.accept(MyPageStep.goToLocationServicesTermsViewController)
+            default:
+                break
+            }
             return .empty()
         case .logoutTapped:
             //TODO: 로그아웃버튼탭

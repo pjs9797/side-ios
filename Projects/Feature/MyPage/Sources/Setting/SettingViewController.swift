@@ -100,6 +100,10 @@ extension SettingViewController{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "TermsSettingTableViewCell", for: indexPath) as! TermsSettingTableViewCell
                 let cellReactor = TermsSettingTableViewCellReactor(mainLabelText: mainLabelText)
                 cell.reactor = cellReactor
+                cell.rightButton.rx.tap
+                    .map{ Reactor.Action.rightButtonTapped(mainLabelText)}
+                    .bind(to: reactor.action)
+                    .disposed(by: self.disposeBag)
                 return cell
             case .Logout(let mainLabelText):
                 let cell = tableView.dequeueReusableCell(withIdentifier: "LogoutSettingTableViewCell", for: indexPath) as! LogoutSettingTableViewCell

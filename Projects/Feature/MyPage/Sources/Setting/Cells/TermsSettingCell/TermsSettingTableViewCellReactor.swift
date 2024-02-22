@@ -1,14 +1,15 @@
 import RxCocoa
 import ReactorKit
 
-public class TermsSettingTableViewCellReactor: ReactorKit.Reactor{
-    public var initialState: State
-    public typealias Action = NoAction
+class TermsSettingTableViewCellReactor: ReactorKit.Reactor{
+    var initialState: State
+    typealias Action = NoAction
     
-    public init(mainLabelText: String){
+    init(mainLabelText: String){
         self.initialState = State(mainLabelText: mainLabelText)
     }
-    public struct State {
+    
+    struct State {
         var mainLabelText: String
     }
     

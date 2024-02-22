@@ -29,6 +29,12 @@ final public class MyPageFlow: Flow {
             return coordinateToSettingViewController(memberId: memberId, email: email)
         case .goToModifyProfileViewController:
             return coordinateToModifyProfileViewController()
+        case .goToTermsOfServiceViewController:
+            return coordinateToTermsOfServiceViewController()
+        case .goToPrivacyPolicyViewController:
+            return coordinateToPrivacyPolicyViewController()
+        case .goToLocationServicesTermsViewController:
+            return coordinateToLocationServicesTermsViewController()
         case .presentToSelectPositionViewController:
             return coordinateToSelectPositionViewController()
         case .presentToWithdrawalAlert:
@@ -64,6 +70,30 @@ final public class MyPageFlow: Flow {
         let reactor = ModifyProfileReactor(provider: self.provider)
         let viewController = ModifyProfileViewController(with: reactor, selectPositionReactor: selectPositionReactor)
         viewController.hidesBottomBarWhenPushed = true
+        self.rootViewController.pushViewController(viewController, animated: true)
+        
+        return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
+    }
+    
+    private func coordinateToTermsOfServiceViewController() -> FlowContributors {
+        let reactor = TermsReactor()
+        let viewController = TermsOfServiceViewController(with: reactor)
+        self.rootViewController.pushViewController(viewController, animated: true)
+        
+        return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
+    }
+    
+    private func coordinateToPrivacyPolicyViewController() -> FlowContributors {
+        let reactor = TermsReactor()
+        let viewController = PrivacyPolicyViewController(with: reactor)
+        self.rootViewController.pushViewController(viewController, animated: true)
+        
+        return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
+    }
+    
+    private func coordinateToLocationServicesTermsViewController() -> FlowContributors {
+        let reactor = TermsReactor()
+        let viewController = LocationServicesTermsViewController(with: reactor)
         self.rootViewController.pushViewController(viewController, animated: true)
         
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
