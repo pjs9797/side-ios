@@ -84,3 +84,15 @@ public extension TargetDependency {
         return .project(target: ModulePath.Shared.name + module.rawValue + "Interface", path: .shared(implementation: module))
     }
 }
+
+// MARK: TargetDependency + Flow
+
+public extension TargetDependency {
+    static var flow: Self {
+        return .project(target: ModulePath.Flow.name, path: .flow)
+    }
+    
+    static func flow(implements module: ModulePath.Flow) -> Self {
+        return .project(target: ModulePath.Flow.name + module.rawValue, path: .flow(implementation: module))
+    }
+}

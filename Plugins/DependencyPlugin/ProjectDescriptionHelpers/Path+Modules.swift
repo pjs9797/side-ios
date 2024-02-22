@@ -64,3 +64,14 @@ public extension ProjectDescription.Path {
     }
 }
 
+// MARK: ProjectDescription.Path + Flow
+
+public extension ProjectDescription.Path {
+    static var flow: Self {
+        return .relativeToRoot("Projects/\(ModulePath.Flow.name)")
+    }
+    
+    static func flow(implementation module: ModulePath.Flow) -> Self {
+        return .relativeToRoot("Projects/\(ModulePath.Flow.name)/\(module.rawValue)")
+    }
+}

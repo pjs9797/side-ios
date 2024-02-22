@@ -1,55 +1,53 @@
 //
 //  AppFlow.swift
-//  TP
+//  Flow
 //
-//  Created by 강민성 on 1/15/24.
+//  Created by 강민성 on 2/22/24.
 //
-
 
 import UIKit
 import RxSwift
 import RxCocoa
 import RxFlow
-import FeatureSignIn
-import FeatureHome
-import FeatureMyPage
 
 import Domain
+import CoreStep
 
-struct AppStepper: Stepper {
+public struct AppStepper: Stepper {
     
-    let steps = PublishRelay<Step>()
+    public let steps = PublishRelay<Step>()
     private let provider: ServiceProviderType
     private let disposeBag: DisposeBag = .init()
     
-    init(provider: ServiceProviderType) {
+    public init(provider: ServiceProviderType) {
         self.provider = provider
     }
 }
 
-final class AppFlow: Flow {
-    var root: Presentable {
+public final class AppFlow: Flow {
+    public var root: Presentable {
         return self.rootWindow
     }
     
     private let rootWindow: UIWindow
     private let provider: ServiceProviderType
     
-    init(with window: UIWindow, provider: ServiceProviderType) {
+    public init(with window: UIWindow, provider: ServiceProviderType) {
         self.rootWindow = window
         self.provider = provider
     }
     
-    func navigate(to step: Step) -> FlowContributors {
+    public func navigate(to step: Step) -> FlowContributors {
         guard let step = step as? AppStep else { return .none }
         
         switch step {
         case .signInRequired:
-//            return coordinateToSignInViewController()
-            return coordinateToMyPageViewController()
+            return coordinateToSignInViewController()
+//            return coordinateToMyPageViewController()
             
-//        case .userIsSignedIn:
+        case .userIsSignedIn:
 //            return coordinateToHomeViewController()
+            return coordinateToMyPageViewController()
             
         default:
             return .none
@@ -94,4 +92,3 @@ final class AppFlow: Flow {
         return .one(flowContributor: .contribute(withNextPresentable: myPageFlow, withNextStepper: nextStep))
     }
 }
-

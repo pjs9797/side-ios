@@ -13,6 +13,6 @@ import RxAlamofire
 
 public final class MyPageService: APIService {
     public func getMyProfile() -> Observable<DataRequest> {
-        return request(.get, "api/v1/accounts/me/profiles")
+        return request(.get, "api/v1/accounts/me/profiles", useAuthHeader: true)
     }
 }

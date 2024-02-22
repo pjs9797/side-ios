@@ -13,9 +13,9 @@ public struct SignInResponse: Decodable {
 }
 
 public struct SignInResult: Decodable {
-    public let accessToken, refreshToken: String
+    public let accessToken, refreshToken, type: String
     
     enum CodingKeys: String, CodingKey {
-        case accessToken, refreshToken
+        case accessToken, refreshToken, type
     }
 }

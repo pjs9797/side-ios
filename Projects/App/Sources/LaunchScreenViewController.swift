@@ -9,6 +9,8 @@ import UIKit
 import Shared
 import Domain
 import FeatureSignIn
+import Flow
+import CoreStep
 
 import Lottie
 import RxFlow
@@ -97,9 +99,10 @@ class LaunchScreenViewController: UIViewController {
         
         coordinator.coordinate(flow: appFlow, with: appStepper)
 //        coordinator.coordinate(flow: signInFlow, with: signInStepper)
-        
+        print(provider.settingsService.accessToken)
+        print(provider.settingsService.refreshToken)
         if provider.settingsService.isSignedIn {
-//            appStepper.steps.accept(AppStep.userIsSignedIn)
+            appStepper.steps.accept(AppStep.userIsSignedIn)
         }
         else {
             appStepper.steps.accept(AppStep.signInRequired)

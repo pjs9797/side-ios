@@ -13,6 +13,7 @@ public enum ModulePath {
     case domain(Domain)
     case core(Core)
     case shared(Shared)
+    case flow(Flow)
 }
 
 // MARK: AppModule
@@ -55,6 +56,7 @@ public extension ModulePath {
 public extension ModulePath {
     enum Core: String, CaseIterable {
         case Network
+        case Step
         
         public static let name: String = "Core"
     }
@@ -69,5 +71,15 @@ public extension ModulePath {
         case ThirdPartyLib
         
         public static let name: String = "Shared"
+    }
+}
+
+// MARK: FlowModule
+
+public extension ModulePath {
+    enum Flow: String, CaseIterable {
+        case flow
+        
+        public static let name: String = "Flow"
     }
 }

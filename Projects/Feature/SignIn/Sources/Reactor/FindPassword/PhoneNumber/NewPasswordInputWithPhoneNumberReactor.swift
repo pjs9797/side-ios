@@ -8,6 +8,7 @@
 import Foundation
 import Shared
 import Domain
+import CoreStep
 
 import RxSwift
 import RxCocoa

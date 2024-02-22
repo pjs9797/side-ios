@@ -9,6 +9,7 @@ import Foundation
 import Domain
 import Shared
 import FeatureMyPageInterface
+import CoreStep
 
 import RxSwift
 import RxCocoa
@@ -46,7 +47,7 @@ public class MyPageReactor: ReactorKit.Reactor, Stepper {
     
     private let disposeBag: DisposeBag = DisposeBag()
     
-    init(provider: ServiceProviderType) {
+    public init(provider: ServiceProviderType) {
         self.initialState = State()
         self.provider = provider
     }

@@ -231,3 +231,21 @@ public extension Target {
         return make(factory: newFactory)
     }
 }
+
+// MARK: Target + Flow
+
+public extension Target {
+    static func flow(factory: TargetFactory) -> Self {
+        var newFactory = factory
+        newFactory.name = ModulePath.Flow.name
+        
+        return make(factory: newFactory)
+    }
+    
+    static func flow(implements module: ModulePath.Flow, factory: TargetFactory) -> Self {
+        var newFactory = factory
+        newFactory.name = ModulePath.Flow.name
+        
+        return make(factory: newFactory)
+    }
+}

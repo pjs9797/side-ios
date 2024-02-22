@@ -17,7 +17,7 @@ let targets: [Target] = [
             infoPlist: .file(path: "Support/Info.plist"),
             entitlements: .file(path: .relativeToRoot("App.entitlements")),
             dependencies: [
-                .feature
+                .flow
             ]
         )
     )

@@ -45,7 +45,7 @@ public class MyPageViewController: BaseMyPageViewController, ReactorKit.View {
         addSettingsButton()
     }
     
-    init(with reactor: Reactor) {
+    public init(with reactor: Reactor) {
         super.init(nibName: nil, bundle: nil)
         self.reactor = reactor
     }

@@ -9,11 +9,13 @@ import Foundation
 import Shared
 import Domain
 import FeatureSignInInterface
+import CoreStep
 
 import RxSwift
 import RxCocoa
 import RxFlow
 import ReactorKit
+import RxAlamofire
 
 public class SignInWithEmailReactor: ReactorKit.Reactor, Stepper {
     
@@ -52,7 +54,7 @@ public class SignInWithEmailReactor: ReactorKit.Reactor, Stepper {
     
     private let disposeBag: DisposeBag = DisposeBag()
     
-    init(provider: ServiceProviderType) {
+    public init(provider: ServiceProviderType) {
         self.initialState = State()
         self.provider = provider
     }
@@ -83,13 +85,13 @@ public class SignInWithEmailReactor: ReactorKit.Reactor, Stepper {
             
             return provider.signInService.signIn(email: email, password: password).responseData().flatMap { [weak self] response, data -> Observable<Mutation> in
                 do {
-                    let responseData = try JSONDecoder().decode(SignInResponse.self, from: data) as SignInResponse
+                    let responseData = try JSONDecoder().decode(SignInResult.self, from: data) as SignInResult
                     self?.provider.settingsService.isSignedIn = true
                     self?.provider.settingsService.previousSignInType = .email
-                    self?.provider.settingsService.accessToken = responseData.result.accessToken
-                    self?.provider.settingsService.refreshToken = responseData.result.refreshToken
+                    self?.provider.settingsService.accessToken = responseData.accessToken
+                    self?.provider.settingsService.refreshToken = responseData.refreshToken
                     
-//                    self?.steps.accept(SignInStep.userIsSignedIn)
+                    self?.steps.accept(SignInStep.userIsSignedIn)
                     
                     return .empty()
                 } catch {

@@ -59,7 +59,7 @@ public class SettingsViewController: BaseMyPageViewController, ReactorKit.View {
         render()
     }
     
-    init(with reactor: SettingsReactor) {
+    public init(with reactor: SettingsReactor) {
         super.init(nibName: nil, bundle: nil)
         self.reactor = reactor
     }

@@ -29,7 +29,7 @@ public class SignInViewController: BaseViewController, ReactorKit.View {
         super.viewDidLoad()
     }
     
-    init(with reactor: Reactor) {
+    public init(with reactor: Reactor) {
         super.init(nibName: nil, bundle: nil)
         self.reactor = reactor
     }
