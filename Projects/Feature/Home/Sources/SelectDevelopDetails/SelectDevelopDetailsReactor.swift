@@ -39,7 +39,7 @@ public class SelectDevelopDetailsReactor: ReactorKit.Reactor, Stepper{
             case .sideProject:
                 MeetingDataManager.shared.categoryMajor = "사이드 프로젝트"
             case .jobChange:
-                MeetingDataManager.shared.categoryMajor = "이직 준비"
+                MeetingDataManager.shared.categoryMajor = "이직준비"
             case .language:
                 MeetingDataManager.shared.categoryMajor = "어학"
             case .investment:

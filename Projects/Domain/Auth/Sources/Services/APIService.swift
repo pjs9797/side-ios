@@ -35,7 +35,7 @@ public class APIService {
         httpHeaders.add(name: "Content-Type", value: "application/json")
         httpHeaders.add(name: "accept", value: "*/*")
         if useAuthHeader {
-            httpHeaders.add(name: "Authorization", value: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDIyOTQwNzgsInN1YiI6IjMifQ.Ql_B0vL7i3o07qu-f8uPcyTQdpD7CxI3MhBRTJUe_pY")
+            httpHeaders.add(name: "Authorization", value: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDMyMzk2NTQsInN1YiI6IjMifQ.JfjdxrwfTaskxd-Z2kSPSprjat5vrpDW1sGblEb1QRE")
         }
         
         if let headers = headers {
@@ -52,7 +52,7 @@ public class APIService {
         httpHeaders.add(name: "Content-Type", value: "multipart/form-data")
         httpHeaders.add(name: "accept", value: "*/*")
         if useAuthHeader {
-            httpHeaders.add(name: "Authorization", value: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDIyOTQwNzgsInN1YiI6IjMifQ.Ql_B0vL7i3o07qu-f8uPcyTQdpD7CxI3MhBRTJUe_pY")
+            httpHeaders.add(name: "Authorization", value: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDMyMzk2NTQsInN1YiI6IjMifQ.JfjdxrwfTaskxd-Z2kSPSprjat5vrpDW1sGblEb1QRE")
         }
         
         if let headers = headers {

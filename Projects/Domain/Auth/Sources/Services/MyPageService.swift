@@ -25,4 +25,14 @@ public final class MyPageService: APIService {
         
         return request(.put, "/api/v1/accounts/me/profiles", useAuthHeader: true, parameters: parameters)
     }
+    
+    public func getMyClubs(page: Int, size: Int) -> Observable<DataRequest> {
+        
+        return request(.get, "/api/v1/accounts/me/clubs?page=\(page)&size=\(size)", useAuthHeader: true, encoding: URLEncoding.default)
+    }
+    
+    public func getBookmarkClubs(page: Int, size: Int) -> Observable<DataRequest> {
+        
+        return request(.get, "/api/v1/accounts/me/clubs/bookmarks?page=\(page)&size=\(size)", useAuthHeader: true, encoding: URLEncoding.default)
+    }
 }

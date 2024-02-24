@@ -85,11 +85,15 @@ public class MyPageViewController: UIViewController, ReactorKit.View{
         tableView.register(ActivityTableViewCell.self, forCellReuseIdentifier: "ActivityTableViewCell")
         return tableView
     }()
-    let dataSource = RxTableViewSectionedReloadDataSource<ActivitySection>(
+    lazy var dataSource = RxTableViewSectionedReloadDataSource<ActivitySection>(
         configureCell: { _, tableView, indexPath, item in
             let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityTableViewCell", for: indexPath) as! ActivityTableViewCell
             let cellReactor = ActivityTableViewCellReactor(titleLabelText: item.title, cntLabelText: item.cnt)
             cell.reactor = cellReactor
+            cell.rightButton.rx.tap
+                .map{ Reactor.Action.goToMyActivityButtonTapped }
+                .bind(to: self.reactor!.action)
+                .disposed(by: self.disposeBag)
             return cell
         }
     )
@@ -214,7 +218,7 @@ extension MyPageViewController{
             .map{ Reactor.Action.modifyButtonTapped }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
-        
+                
         interestCollectionView.rx.observe(CGSize.self, "contentSize")
             .compactMap { $0 }
             .map(Reactor.Action.updateContentSize)

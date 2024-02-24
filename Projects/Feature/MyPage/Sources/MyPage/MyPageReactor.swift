@@ -18,6 +18,7 @@ public class MyPageReactor: ReactorKit.Reactor, Stepper{
         case loadData
         case settingButtonTapped
         case modifyButtonTapped
+        case goToMyActivityButtonTapped
         case updateContentSize(CGSize)
     }
     
@@ -29,6 +30,8 @@ public class MyPageReactor: ReactorKit.Reactor, Stepper{
         case setPosition(String)
         case setCollectionViewCellData([String])
         case setTableViewCellData([ActivitySection])
+        case setMyClubCount(Int)
+        case setClubBookmarkCount(Int)
         case setContentSize(CGSize)
     }
     
@@ -40,6 +43,8 @@ public class MyPageReactor: ReactorKit.Reactor, Stepper{
         var position: String = ""
         var collectionViewCellData: [String] = []
         var tableViewCellData: [ActivitySection] = []
+        var myClubCount: Int = 0
+        var clubBookmarkCount: Int = 0
         var contentSize: CGSize = .zero
     }
     
@@ -70,7 +75,9 @@ public class MyPageReactor: ReactorKit.Reactor, Stepper{
                             .just(.setProfileImage(profileImage)),
                             .just(.setPosition(position)),
                             .just(.setCollectionViewCellData(CollectionViewCellData)),
-                            .just(.setTableViewCellData(tableViewCellData))
+                            .just(.setTableViewCellData(tableViewCellData)),
+                            .just(.setMyClubCount(myProfileResponse.myClubCount)),
+                            .just(.setClubBookmarkCount(myProfileResponse.clubBookmarkCount))
                         ])
                     } catch {
                         return .empty()
@@ -81,6 +88,9 @@ public class MyPageReactor: ReactorKit.Reactor, Stepper{
             return .empty()
         case .modifyButtonTapped:
             self.steps.accept(MyPageStep.goToModifyProfileViewController)
+            return .empty()
+        case .goToMyActivityButtonTapped:
+            self.steps.accept(MyPageStep.goToMyActivityViewController(myClubCount: self.currentState.myClubCount, clubBookmarkCount: self.currentState.clubBookmarkCount))
             return .empty()
         case .updateContentSize(let size):
             return .just(.setContentSize(size))
@@ -104,6 +114,10 @@ public class MyPageReactor: ReactorKit.Reactor, Stepper{
             newState.collectionViewCellData = cellData
         case .setTableViewCellData(let cellData):
             newState.tableViewCellData = cellData
+        case .setMyClubCount(let cnt):
+            newState.myClubCount = cnt
+        case .setClubBookmarkCount(let cnt):
+            newState.clubBookmarkCount = cnt
         case .setContentSize(let size):
             newState.contentSize = size
         }
