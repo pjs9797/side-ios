@@ -21,6 +21,7 @@ class MyActivityReactor: ReactorKit.Reactor, Stepper {
     enum Action {
         case loadData
         case backButtonTapped
+        case bookmarkButtonTapped(IndexPath)
         case updateMyMeetingTableViewContentSize(CGSize)
         case updateBookmarkMeetingTableViewContentSize(CGSize)
     }
@@ -69,6 +70,18 @@ class MyActivityReactor: ReactorKit.Reactor, Stepper {
         case .backButtonTapped:
             self.steps.accept(MyPageStep.popViewController)
             return .empty()
+        case .bookmarkButtonTapped(let indexPath):
+            var updatedBookmarkClubs = currentState.bookmarkClubs
+            updatedBookmarkClubs.remove(at: indexPath.row)
+            return self.provider.myPageService.deleteBookmarkClub(clubId: self.currentState.bookmarkClubs[indexPath.row].club.id).responseData()
+                .flatMap { response, data -> Observable<Mutation> in
+                    if response.statusCode == 204 {
+                        return .just(.setBookmarkClubs(updatedBookmarkClubs))
+                    }
+                    else{
+                        return .empty()
+                    }
+                }
         case .updateMyMeetingTableViewContentSize(let size):
             return .just(.setMyMeetingTableViewContentSize(size))
         case .updateBookmarkMeetingTableViewContentSize(let size):

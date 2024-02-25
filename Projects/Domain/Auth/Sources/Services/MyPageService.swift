@@ -35,4 +35,9 @@ public final class MyPageService: APIService {
         
         return request(.get, "/api/v1/accounts/me/clubs/bookmarks?page=\(page)&size=\(size)", useAuthHeader: true, encoding: URLEncoding.default)
     }
+    
+    public func deleteBookmarkClub(clubId: Int) -> Observable<DataRequest> {
+        
+        return request(.delete, "/api/v1/clubs/bookmarks/\(clubId)", useAuthHeader: true, encoding: URLEncoding.default)
+    }
 }

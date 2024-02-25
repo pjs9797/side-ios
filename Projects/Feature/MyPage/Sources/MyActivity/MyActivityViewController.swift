@@ -169,7 +169,7 @@ extension MyActivityViewController{
         
         bookmarkMeetingTableView.rx.observe(CGSize.self, "contentSize")
             .compactMap { $0 }
-            .map(Reactor.Action.updateMyMeetingTableViewContentSize)
+            .map(Reactor.Action.updateBookmarkMeetingTableViewContentSize)
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
     }
@@ -188,18 +188,23 @@ extension MyActivityViewController{
             }
             .disposed(by: disposeBag)
         
-//        reactor.state.map{ $0.bookmarkClubs }
-//            .distinctUntilChanged { prev, curr in
-//                let prevIds = Set(prev.map { $0.club.id })
-//                let currIds = Set(curr.map { $0.club.id })
-//                return prevIds == currIds
-//            }
-//            .debug("bookmarkClubs")
-//            .bind(to: bookmarkMeetingTableView.rx.items(cellIdentifier: "MeetingTableViewCell", cellType: MeetingTableViewCell.self)){ row, items, cell in
-//                let cellReator = MeetingTableViewCellReactor(item: items)
-//                cell.reactor = cellReator
-//            }
-//            .disposed(by: disposeBag)
+        reactor.state.map{ $0.bookmarkClubs }
+            .observe(on:MainScheduler.asyncInstance)
+            .distinctUntilChanged { prev, curr in
+                let prevIds = Set(prev.map { $0.club.id })
+                let currIds = Set(curr.map { $0.club.id })
+                return prevIds == currIds
+            }
+            .bind(to: bookmarkMeetingTableView.rx.items(cellIdentifier: "MeetingTableViewCell", cellType: MeetingTableViewCell.self)){ row, items, cell in
+                let indexPath = IndexPath(row: row, section: 0)
+                let cellReator = MeetingTableViewCellReactor(item: items)
+                cell.reactor = cellReator
+                cell.bookmarkButton.rx.tap
+                    .map{ Reactor.Action.bookmarkButtonTapped(indexPath) }
+                    .bind(to: reactor.action)
+                    .disposed(by: cell.disposeBag)
+            }
+            .disposed(by: disposeBag)
     }
     
     private func bindAfterLayout(){

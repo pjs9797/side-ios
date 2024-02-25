@@ -93,7 +93,7 @@ public class MyPageViewController: UIViewController, ReactorKit.View{
             cell.rightButton.rx.tap
                 .map{ Reactor.Action.goToMyActivityButtonTapped }
                 .bind(to: self.reactor!.action)
-                .disposed(by: self.disposeBag)
+                .disposed(by: cell.disposeBag)
             return cell
         }
     )
