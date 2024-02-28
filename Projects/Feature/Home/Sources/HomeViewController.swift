@@ -22,6 +22,37 @@ public class HomeViewController: UIViewController, Stepper {
     }
     public override func viewDidLoad() {
         super.viewDidLoad()
+        homeView.studyButton.rx.tap.subscribe(onNext: {
+            let nav = CategorySelectedSelfDevelopmentViewController()
+            nav.flag = "study"
+            self.navigationController?.pushViewController(nav, animated: true)
+        })
+        homeView.sideButton.rx.tap.subscribe(onNext: {
+            let nav = CategorySelectedSelfDevelopmentViewController()
+            nav.flag = "side"
+            self.navigationController?.pushViewController(nav, animated: true)
+        })
+        homeView.changeJobButton.rx.tap.subscribe(onNext: {
+            let nav = CategorySelectedSelfDevelopmentViewController()
+            nav.flag = "change"
+            self.navigationController?.pushViewController(nav, animated: true)
+        })
+        homeView.languageButton.rx.tap.subscribe(onNext: {
+            let nav = CategorySelectedSelfDevelopmentViewController()
+            nav.flag = "language"
+            self.navigationController?.pushViewController(nav, animated: true)
+        })
+        homeView.investmentButton.rx.tap.subscribe(onNext: {
+            let nav = CategorySelectedSelfDevelopmentViewController()
+            nav.flag = "investment"
+            self.navigationController?.pushViewController(nav, animated: true)
+        })
+        homeView.etcButton.rx.tap.subscribe(onNext: {
+            let nav = CategorySelectedSelfDevelopmentViewController()
+            nav.flag = "etc"
+            self.navigationController?.pushViewController(nav, animated: true)
+        })
+        navigationSetup()
         homeView.plusButton.rx.tap
             .bind(onNext: { [weak self] in
                 self?.steps.accept(HomeStep.presentSelectMeetingTypeViewController)
@@ -35,12 +66,18 @@ public class HomeViewController: UIViewController, Stepper {
         homeView.segmentedControl.setTitleTextAttributes(titleTextAttributes1, for: .selected)
         homeView.segmentedControl.setTitleTextAttributes(titleTextAttributes2, for: .normal)
     }
-    
+
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
     }
-    
+
+    func navigationSetup() {
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        backBarButtonItem.tintColor = .black
+        self.navigationItem.backBarButtonItem = backBarButtonItem
+    }
+
     @objc private func didChangeValue(segment: UISegmentedControl) {
         if segment.selectedSegmentIndex == 0 {
             homeView.recommendView.isHidden = false
@@ -56,6 +93,4 @@ public class HomeViewController: UIViewController, Stepper {
             homeView.hobbyView.isHidden = false
         }
     }
-
 }
-

@@ -18,8 +18,18 @@ class InputViewTextField: UITextField {
         return imageView
     }()
     
+    let okImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(systemName: "checkmark")
+        imageView.tintColor = SharedDSKitAsset.Colors.green.color
+        
+        return imageView
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
+        translatesAutoresizingMaskIntoConstraints = false
         textColor = .black
         layer.borderWidth = 1.0
         layer.borderColor = SharedDSKitAsset.Colors.gr10.color.cgColor
@@ -54,5 +64,4 @@ class InputViewTextField: UITextField {
         font = Fonts.Body02.font
         layer.cornerRadius = 16
     }
-    
 }

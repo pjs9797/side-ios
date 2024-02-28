@@ -28,12 +28,12 @@ public final class CreateMeetingService: APIService {
             parameters.updateValue(locationDetail, forKey: "locationDetail")
         }
         
-        return request(.post, "/api/v1/clubs", useAuthHeader: true, parameters: parameters)
+        return request(.post, "api/v1/clubs", useAuthHeader: true, parameters: parameters)
     }
     
     public func transformImageToURL(image: [UIImage?]) -> Observable<UploadRequest> {
         
-        return uploadImageFile(.post, "/api/v1/files", useAuthHeader: true, images: image)
+        return uploadImageFile(.post, "api/v1/files", useAuthHeader: true, images: image)
     }
     
     public func searchLocation(address: String) -> Observable<DataRequest> {
@@ -41,11 +41,11 @@ public final class CreateMeetingService: APIService {
             return Observable.error(AFError.invalidURL(url: address))
         }
         
-        return request(.get, "/api/v1/locations/search?address=\(encodedAddress)", useAuthHeader: true, encoding: URLEncoding.default)
+        return request(.get, "api/v1/locations/search?address=\(encodedAddress)", useAuthHeader: true, encoding: URLEncoding.default)
     }
     
     public func getLocation(longitude: String, latitude: String) -> Observable<DataRequest> {
         
-        return request(.get, "/api/v1/locations/coordinate?longitude=\(longitude)&latitude=\(latitude)", useAuthHeader: true, encoding: URLEncoding.default)
+        return request(.get, "api/v1/locations/coordinate?longitude=\(longitude)&latitude=\(latitude)", useAuthHeader: true, encoding: URLEncoding.default)
     }
 }

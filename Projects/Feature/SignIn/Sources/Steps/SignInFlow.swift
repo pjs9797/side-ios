@@ -69,7 +69,7 @@ final public class SignInFlow: Flow {
             
         case .forgotIdEmailisRequired:
             return coordinateToIdVerificateWithEmailViewController()
-            /*
+        
         case .forgotIdPhoneNumberIsRequired:
             return coordinateToIdVerificateWithPhoneNumberViewController()
             
@@ -82,9 +82,17 @@ final public class SignInFlow: Flow {
         case .forgotPasswordPhoneNumberIsRequired:
             return coordinateToPasswordVerificateWithPhoneNumberViewController()
             
-        case .newPasswordIsRequired(let email):
-            return coordinateToNewPasswordInputViewController(email: email)
-         */
+        case .newPasswordWithEmailIsRequired(let email):
+            return coordinateToNewPasswordInputWithEmailViewController(email: email)
+            
+        case .userChangedPassword:
+            return coordinateToNewPasswordCompleteViewController()
+            
+        case .userChangedPasswordAndSignInRequired:
+            return coordinateToRootViewController()
+            
+        case .newPasswordWIthPhoneNumberIsRequired(let phoneNumber):
+            return coordinateToNewPasswordInputWithPhoneNumberViewController(phoneNumber: phoneNumber)
         default:
             return .none
         }
@@ -114,8 +122,9 @@ final public class SignInFlow: Flow {
     
     private func coordinateToAgreementsViewController() -> FlowContributors {
         let reactor = AgreementsReactor(provider: provider)
-        let viewController = AgreementsViewController()
+        let viewController = AgreementsViewController(with: reactor)
         let bottomSheetViewController = BottomSheetViewController(contentViewController: viewController)
+        self.rootViewController.present(bottomSheetViewController, animated: true)
         
         return .one(flowContributor: .contribute(withNextPresentable: bottomSheetViewController, withNextStepper: reactor))
     }
@@ -136,8 +145,6 @@ final public class SignInFlow: Flow {
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
     }
     
-    /*
-    
     private func coordinateToIdVerificateWithPhoneNumberViewController() -> FlowContributors {
         let reactor = IdVerificateWithPhoneNumberReactor(provider: provider)
         let viewController = IdVerificateWithPhoneNumberViewController(with: reactor)
@@ -153,6 +160,7 @@ final public class SignInFlow: Flow {
         
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
     }
+    
     
     private func coordinateToPasswordVerificateWithEmailViewController() -> FlowContributors {
         let reactor = PasswordVerificateWithEmailReactor(provider: provider)
@@ -170,14 +178,35 @@ final public class SignInFlow: Flow {
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
     }
     
-    private func coordinateToNewPasswordInputViewController(email: String?) -> FlowContributors {
+    private func coordinateToNewPasswordInputWithEmailViewController(email: String?) -> FlowContributors {
         guard let email = email else { return .none }
-        let reactor = NewPasswordInputReactor(provider: provider, email: email)
-        let viewController = NewPasswordInputViewController(with: reactor)
+        let reactor = NewPasswordInputWithEmailReactor(provider: provider, email: email)
+        let viewController = NewPasswordInputWithEmailViewController(with: reactor)
         self.rootViewController.pushViewController(viewController, animated: true)
         
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
     }
     
-    */
+    private func coordinateToNewPasswordInputWithPhoneNumberViewController(phoneNumber: String?) -> FlowContributors {
+        guard let phoneNumber = phoneNumber else { return .none }
+        let reactor = NewPasswordInputWithPhoneNumberReactor(provider: provider, phoneNumber: phoneNumber)
+        let viewController = NewPasswordInputWithPhoneNumberViewController(with: reactor)
+        self.rootViewController.pushViewController(viewController, animated: true)
+        
+        return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
+    }
+    private func coordinateToNewPasswordCompleteViewController() -> FlowContributors {
+        let reactor = NewPasswordCompleteRactor(provider: provider)
+        let viewController = NewPasswordCompleteViewController(with: reactor)
+        self.rootViewController.pushViewController(viewController, animated: true)
+        
+        return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
+    }
+    
+    private func coordinateToRootViewController() -> FlowContributors {
+        self.rootViewController.popToRootViewController(animated: true)
+        
+        return .none
+    }
+    
 }

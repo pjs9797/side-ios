@@ -8,9 +8,7 @@
 import Foundation
 
 public struct SignInResponse: Decodable {
-    let code: String
-    let isSuccess: Bool
-    let message: String
+    public let type: String
     public let result: SignInResult
 }
 
