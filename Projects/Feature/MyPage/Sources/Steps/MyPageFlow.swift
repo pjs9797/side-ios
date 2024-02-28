@@ -12,6 +12,7 @@ final public class MyPageFlow: Flow {
     
     private let rootViewController: UINavigationController
     let selectPositionReactor = SelectPositionReactor()
+    var settingReactor: SettingReactor?
     
     public init(with provider: ServiceProviderType, with rootViewController: UINavigationController) {
         self.provider = provider
@@ -41,6 +42,9 @@ final public class MyPageFlow: Flow {
             return coordinateToSelectPositionViewController()
         case .presentToWithdrawalAlert:
             return coordinateToWithdrawalAlert()
+        //TODO: AppStep 연결 후 주석 삭제
+//        case .endMyPage:
+//            return .end(forwardToParentFlowWithStep: AppStep.signInRequired)
         }
     }
     
@@ -68,7 +72,8 @@ final public class MyPageFlow: Flow {
     }
     
     private func coordinateToSettingViewController(memberId: Int, email: String) -> FlowContributors {
-        let reactor = SettingReactor(memberId: memberId, email: email)
+        let reactor = SettingReactor(provider: self.provider, memberId: memberId, email: email)
+        self.settingReactor = reactor
         let viewController = SettingViewController(with: reactor)
         viewController.hidesBottomBarWhenPushed = true
         self.rootViewController.pushViewController(viewController, animated: true)
@@ -121,7 +126,7 @@ final public class MyPageFlow: Flow {
     private func coordinateToWithdrawalAlert() -> FlowContributors {
         let alert = UIAlertController(title: "정말 탈퇴하시겠습니까?", message: "회원 탈퇴 시 계정 정보는 삭제되어\n복구가 불가해요.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "탈퇴하기", style: .default, handler: { _ in
-            //TODO: 회원 탈퇴 이벤트 작성
+            self.settingReactor?.action.onNext(.withdrawalConfirm)
         }))
         alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
         self.rootViewController.present(alert, animated: true, completion: nil)

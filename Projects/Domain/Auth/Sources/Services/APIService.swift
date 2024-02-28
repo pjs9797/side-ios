@@ -34,6 +34,7 @@ public class APIService {
         var httpHeaders = HTTPHeaders()
         httpHeaders.add(name: "Content-Type", value: "application/json")
         httpHeaders.add(name: "accept", value: "*/*")
+        // 나중에 제거 or SettingService.shared.accessToken로
         if useAuthHeader {
             httpHeaders.add(name: "Authorization", value: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDMyMzk2NTQsInN1YiI6IjMifQ.JfjdxrwfTaskxd-Z2kSPSprjat5vrpDW1sGblEb1QRE")
         }
@@ -51,6 +52,7 @@ public class APIService {
         var httpHeaders = HTTPHeaders()
         httpHeaders.add(name: "Content-Type", value: "multipart/form-data")
         httpHeaders.add(name: "accept", value: "*/*")
+        // 나중에 제거 or SettingService.shared.accessToken로
         if useAuthHeader {
             httpHeaders.add(name: "Authorization", value: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDMyMzk2NTQsInN1YiI6IjMifQ.JfjdxrwfTaskxd-Z2kSPSprjat5vrpDW1sGblEb1QRE")
         }

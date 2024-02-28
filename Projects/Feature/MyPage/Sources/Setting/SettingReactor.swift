@@ -1,12 +1,14 @@
 import RxCocoa
 import ReactorKit
 import RxFlow
+import Domain
 
 public class SettingReactor: ReactorKit.Reactor, Stepper{
     public var initialState: State
     public var steps = PublishRelay<Step>()
+    public let provider: ServiceProviderType
     
-    public init(memberId: Int, email: String){
+    public init(provider: ServiceProviderType, memberId: Int, email: String){
         self.initialState = State(cellData: [
             .Info(mainLabelText: "버전 정보", infoLabelText: "v1.0"),
             .Info(mainLabelText: "계정연동정보", infoLabelText: email),
@@ -16,6 +18,7 @@ public class SettingReactor: ReactorKit.Reactor, Stepper{
             .Logout(mainLabelText: "로그아웃"),
             .Logout(mainLabelText: "회원 탈퇴")
         ], memberId: memberId)
+        self.provider = provider
     }
     
     public enum Action {
@@ -23,6 +26,7 @@ public class SettingReactor: ReactorKit.Reactor, Stepper{
         case rightButtonTapped(String)
         case logoutTapped
         case withdrawalTapped
+        case withdrawalConfirm
     }
     
     public enum Mutation {
@@ -52,11 +56,19 @@ public class SettingReactor: ReactorKit.Reactor, Stepper{
             }
             return .empty()
         case .logoutTapped:
-            //TODO: 로그아웃버튼탭
+            //TODO: AppStep 연결 후 주석 삭제
+            //self?.steps.accept(MyPageStep.endMyPage)
             return .empty()
         case .withdrawalTapped:
             self.steps.accept(MyPageStep.presentToWithdrawalAlert)
             return .empty()
+        case .withdrawalConfirm:
+            return self.provider.myPageService.widthdraw(memberId: self.currentState.memberId).responseData()
+                .flatMap { [weak self] _ -> Observable<Mutation> in
+                    //TODO: AppStep 연결 후 주석 삭제
+                    //self?.steps.accept(MyPageStep.endMyPage)
+                    return .empty()
+                }
         }
     }
     

@@ -40,4 +40,9 @@ public final class MyPageService: APIService {
         
         return request(.delete, "/api/v1/clubs/bookmarks/\(clubId)", useAuthHeader: true, encoding: URLEncoding.default)
     }
+    
+    public func widthdraw(memberId: Int) -> Observable<DataRequest> {
+        
+        return request(.delete, "/api/v1/accounts/withdraw/\(memberId)", useAuthHeader: true, encoding: URLEncoding.default)
+    }
 }

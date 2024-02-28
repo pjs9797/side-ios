@@ -65,7 +65,7 @@ public class MyPageReactor: ReactorKit.Reactor, Stepper{
                         let tableViewCellData = [
                             ActivitySection(header: "모임", items: [
                                 ActivityTableViewItem(title: "내 모임", cnt: String(myProfileResponse.myClubCount)),
-                                ActivityTableViewItem(title: "진행 모임", cnt: String(myProfileResponse.clubBookmarkCount))
+                                ActivityTableViewItem(title: "찜한 모임", cnt: String(myProfileResponse.clubBookmarkCount))
                             ])
                         ]
                         return Observable.concat([

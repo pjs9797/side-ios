@@ -11,4 +11,6 @@ public enum MyPageStep: Step {
     case goToLocationServicesTermsViewController
     case presentToSelectPositionViewController
     case presentToWithdrawalAlert
+    //TODO: AppStep 연결 후 주석 삭제
+    //case endMyPage
 }
