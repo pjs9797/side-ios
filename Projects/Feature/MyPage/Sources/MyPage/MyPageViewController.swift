@@ -250,6 +250,7 @@ extension MyPageViewController{
             .disposed(by: disposeBag)
         
         reactor.state.map{ $0.collectionViewCellData }
+            .distinctUntilChanged()
             .bind(to: interestCollectionView.rx.items(cellIdentifier: "InterestCollectionViewCell", cellType: InterestCollectionViewCell.self)) { index, item, cell in
                 let cellReator = InterestCollectionViewCellReactor(titleLabelText: item)
                 cell.reactor = cellReator
