@@ -1,6 +1,6 @@
 
 # 👨‍👩‍👦‍👦 사부작 👨‍👩‍👦‍👦 
-> 사부작 퇴근 후 자기 계발과 취미 생활을 찾아보자!
+> 사부작 퇴근 후 자기 계발과 취미 생활을 찾아보자! 👉 개발 완료 후 배포 예정
 
 ![](https://github.com/PromiseApp/iOS/assets/99011004/b519d26b-5b9b-48d7-8c40-a6b79f4f7800)
 
@@ -113,3 +113,12 @@
 
 - 프로필 수정 기능 제공
 - 직무 선택 시 직무 세부 항목 화면 present되며 항목 선택 시 dismiss
+
+### 모임 생성 이미지 및 프로필 이미지 수정
+<img src="https://github.com/PromiseApp/iOS/assets/99011004/c6be73ce-c3d7-4008-acc2-1e10a2b34225" width="200">
+<img src="https://github.com/PromiseApp/iOS/assets/99011004/e03c57ac-eff6-4e7a-a98a-fbf54f1573cd" width="200">
+<img src="https://github.com/PromiseApp/iOS/assets/99011004/1b83cbfc-6f2a-4c32-9f90-e77f38f7fa22" width="200">
+<img src="https://github.com/PromiseApp/iOS/assets/99011004/f7a39fe0-b6c2-4b0f-900a-8164c0f30565" width="200">
+
+- 이미지 선택 시 앨범 화면 제공
+- 사진 권한 '제한된 접근', '모든 접근'에 따른 개별 앨범 화면 
